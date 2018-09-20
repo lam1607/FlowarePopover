@@ -1,6 +1,6 @@
 # FlowarePopover
 
-FlowarePopover as named, is the custom popover based on NSPopover and other libraries to display an NSViewController or NSView on a NSWindow or NSView popup.
+FlowarePopover as named, is the custom popover based on NSPopover and other libraries to display an NSViewController or NSView on an NSWindow or NSView popup.
 
 ## Requirements
 
