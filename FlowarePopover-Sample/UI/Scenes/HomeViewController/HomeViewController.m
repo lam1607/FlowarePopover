@@ -237,10 +237,6 @@
     //    self._popoverWindow.closesWhenApplicationBecomesInactive = YES;
     //    self._popoverWindow.popoverMovable = YES;
     
-    //    if (NSEqualRects(self.filmsViewController.view.frame, contentViewRect) == NO) {
-    //        [self.filmsViewController.view setFrame:contentViewRect];
-    //    }
-    
     [self._popoverWindow setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationLeftToRight];
     
     [self showRelativeToRectOfViewWithPopover:self._popoverWindow edgeType:FLOPopoverEdgeTypeBelowLeftEdge atView:sender];
@@ -266,10 +262,6 @@
     //    self._popoverView.closesWhenPopoverResignsKey = YES;
     //    self._popoverView.closesWhenApplicationBecomesInactive = YES;
     //    self._popoverView.popoverMovable = YES;
-    
-    //    if (NSEqualRects(self.newsViewController.view.frame, contentViewRect) == NO) {
-    //        [self.newsViewController.view setFrame:contentViewRect];
-    //    }
     
     [self._popoverView setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationLeftToRight];
     
@@ -385,7 +377,7 @@
         } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"popoverView"]) {
             [self showPopoverViewRelativeToRectOfView:sender];
         } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"popoverMix"]) {
-//            [self showPopoverMixRelativeToRectOfView:sender];
+            //            [self showPopoverMixRelativeToRectOfView:sender];
             [self showPopoverMixRelativeToView:sender];
         }
     }

@@ -47,6 +47,8 @@
 @property (nonatomic, assign) BOOL closesWhenPopoverResignsKey;
 @property (nonatomic, assign) BOOL closesWhenApplicationBecomesInactive;
 
+@property (nonatomic, assign) BOOL animatedWithContext;
+
 /**
  * Make the popover movable.
  */

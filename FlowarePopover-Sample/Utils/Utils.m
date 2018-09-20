@@ -93,23 +93,6 @@
 }
 
 #pragma mark -
-#pragma mark - Localizable & language
-#pragma mark -
-+ (BOOL)isEnglishLanguage {
-        // Format is Lang - Region
-    NSString *fullString = [[NSLocale preferredLanguages] firstObject];
-    NSMutableArray *langAndRegion = [NSMutableArray arrayWithArray:[fullString componentsSeparatedByString:DASH]];
-    NSString *language = fullString;
-    
-    if (langAndRegion.count > 0) {
-            // Language is the first item - Region is the last item
-        language = [langAndRegion objectAtIndex:0];
-    }
-    
-    return [language isEqualToString:LANGUAGE_CODE_ENGLISH];
-}
-
-#pragma mark -
 #pragma mark - Format view
 #pragma mark -
 + (void)setViewTransparent:(NSView *)view withBackgroundColor:(NSColor *)color {
@@ -147,72 +130,8 @@
 }
 
 #pragma mark -
-#pragma mark - Validations
-#pragma mark -
-+ (BOOL)isValidEmail:(NSString *)email {
-    BOOL stricterFilter = NO;
-    NSString *stricterFilterString = @"^[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$";
-    NSString *laxString = @"^.+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*$";
-    NSString *regex = stricterFilter ? stricterFilterString : laxString;
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"SELF MATCHES %@", regex];
-    
-    return [predicate evaluateWithObject:email];
-}
-
-+ (BOOL)isValidPassword:(NSString *)password {
-    NSString *regex = @"^.*(?=.{6,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$";
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"SELF MATCHES %@", regex];
-    
-    return [predicate evaluateWithObject:password];
-}
-
-#pragma mark -
-#pragma mark - Date time
-#pragma mark -
-+ (NSDate *)dateFromString:(NSString *)dateStr withFormat:(NSString *)dateFormat {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setLocale:[NSLocale systemLocale]];
-    [dateFormatter setDateFormat:dateFormat];
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-    
-    NSDate *result = [dateFormatter dateFromString:dateStr];
-    
-    return result;
-}
-
-+ (NSString *)stringFromCurrentTimeZoneDate:(NSDate *)currentTimeZoneDate withFormat:(NSString *)dateFormat {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setLocale:[NSLocale systemLocale]];
-    [dateFormatter setDateFormat:dateFormat];
-    [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-    
-    NSString *result = [dateFormatter stringFromDate:currentTimeZoneDate];
-    
-    return result;
-}
-
-+ (NSString *)stringFromDate:(NSDate *)date withFormat:(NSString *)dateFormat {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setLocale:[NSLocale systemLocale]];
-    [dateFormatter setDateFormat:dateFormat];
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-    
-    NSString *result = [dateFormatter stringFromDate:date];
-    
-    return result;
-}
-
-#pragma mark -
 #pragma mark - String
 #pragma mark -
-+ (NSString *)uniqueString {
-    return [[NSProcessInfo processInfo] globallyUniqueString];
-}
-
-+ (NSString *)trimOfString:(NSString *)str {
-    return [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-}
-
 + (NSSize)sizeOfControl:(NSControl *)control {
     return [self sizeOfControl:control withWidth:control.frame.size.width];
 }

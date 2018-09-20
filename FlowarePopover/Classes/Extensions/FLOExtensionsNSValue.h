@@ -1,31 +1,25 @@
 //
-//  NSValue (FLOAdditions)
+//  FLOExtensionsNSValue.h
 //  FlowarePopover
 //
-//  Created by Floware Team on 11/23/17.
-//  Copyright © 2017 Floware Inc. All rights reserved.
+//  Created by lamnguyen on 9/20/18.
+//  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-
 #import <Foundation/Foundation.h>
-
-#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
-#import <UIKit/UIKit.h>
-#elif TARGET_OS_MAC
 #import <AppKit/AppKit.h>
-#endif
 
 typedef NS_ENUM(NSInteger, FLOValueType) {
-	FLOValueTypeNumber,
-	FLOValueTypePoint,
-	FLOValueTypeSize,
-	FLOValueTypeRect,
-	FLOValueTypeAffineTransform,
-	FLOValueTypeTransform3D,
-	FLOValueTypeUnknown
+    FLOValueTypeNumber,
+    FLOValueTypePoint,
+    FLOValueTypeSize,
+    FLOValueTypeRect,
+    FLOValueTypeAffineTransform,
+    FLOValueTypeTransform3D,
+    FLOValueTypeUnknown
 };
 
-@interface NSValue (FLOAdditions)
+@interface NSValue (FLOExtensionsNSValue)
 
 - (CGRect)flo_rectValue;
 - (CGSize)flo_sizeValue;

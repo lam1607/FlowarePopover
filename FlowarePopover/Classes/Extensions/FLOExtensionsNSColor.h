@@ -1,14 +1,14 @@
 //
-//  NSColor+FLOAdditions.h
+//  FLOExtensionsNSColor.h
 //  FlowarePopover
 //
-//  Created by lamnguyen on 8/21/18.
+//  Created by lamnguyen on 9/20/18.
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
 
-@interface NSColor (FLOAdditions)
+@interface NSColor (FLOExtensionsNSColor)
 
 - (instancetype)initWithHex:(NSString *)hex;
 

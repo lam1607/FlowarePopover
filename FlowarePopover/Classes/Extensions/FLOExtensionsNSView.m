@@ -1,23 +1,26 @@
 //
-//  NSView+WSAnimator.m
+//  FLOExtensionsNSView.m
 //  FlowarePopover
 //
-//  Created by Truong Quang Hung on 12/21/16.
-//  Copyright © 2016 Floware Inc. All rights reserved.
+//  Created by lamnguyen on 9/20/18.
+//  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "NSView+Animator.h"
+#import "FLOExtensionsNSView.h"
 
-#import <QuartzCore/CAAnimation.h>
-#import <QuartzCore/CoreImage.h>
-
-#import "CABasicAnimation+Extensions.h"
-#import "FLOGraphicsContext.h"
-#import "FLOKeyframeAnimation.h"
+#import "FLOExtensionsCABasicAnimation.h"
+#import "FLOExtensionsCAKeyframeAnimation.h"
+#import "FLOExtensionsGraphicsContext.h"
 
 #import "FLOPopoverConstants.h"
 
-@implementation NSView (Animator)
+typedef NS_ENUM(NSInteger, AXIS_XY) {
+    axis_x = 1,
+    axis_y
+};
+
+@implementation NSView (FLOExtensionsNSView)
+
 - (NSImage *)imageRepresentationOffscreen:(NSRect)screenBounds {
     // Grab the image representation of the window, without the shadows.
     CGImageRef windowImageRef;
@@ -59,7 +62,9 @@
     return newLayer;
 }
 
-#pragma mark internals
+#pragma mark -
+#pragma mark - Internals
+#pragma mark -
 - (CGRect)shadowRect {
     CGRect windowBounds = (CGRect){ .size = self.frame.size };
     CGRect rect = CGRectInset(windowBounds, -JNWAnimatableWindowShadowHorizontalOutset, 0);
@@ -76,7 +81,9 @@
     };
 }
 
-#pragma mark view animated
+#pragma mark -
+#pragma mark - View animated
+#pragma mark -
 static const CGFloat JNWAnimatableWindowShadowOpacity = 0.58f;
 static const CGSize JNWAnimatableWindowShadowOffset = (CGSize){ 0, -30.f };
 static const CGFloat JNWAnimatableWindowShadowRadius = 19.f;
@@ -84,8 +91,8 @@ static const CGFloat JNWAnimatableWindowShadowHorizontalOutset = 7.f;
 static const CGFloat JNWAnimatableWindowShadowTopOffset = 14.f;
 
 static CALayer *subLayer;
+
 - (void)resizeAnimationWithDuration:(NSTimeInterval)duration fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame fromOpacity:(CGFloat)fromOpacity toOpacity:(CGFloat)toOpacity {
-    
     subLayer = [CALayer layer];
     subLayer.contentsScale = 1.2;
     
@@ -108,7 +115,6 @@ static CALayer *subLayer;
     
     subLayer.contentsGravity = kCAGravityResize;
     subLayer.opaque = YES;
-
     
     // ensure that the layer's contents are set before we get rid of the real window.
     subLayer.frame = [self convertWindowFrameToScreenFrame:fromFrame];
@@ -126,13 +132,13 @@ static CALayer *subLayer;
     [CATransaction begin];
     [CATransaction setAnimationDuration:5];
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-
+    
     [CATransaction setCompletionBlock:^{
         
         [subLayer removeFromSuperlayer];
         subLayer = nil;
     }];
-
+    
     [subLayer addAnimation:animation forKey:@"shadowPath"];
     subLayer.contents = finalImg;
     subLayer.frame = toFrame;
@@ -141,7 +147,6 @@ static CALayer *subLayer;
 }
 
 - (void)transformAlongAxis:(NSInteger)axis scaleFactor:(CGFloat)scaleFactor startPoint:(CGFloat)startPoint endPoint:(CGFloat)endPoint onDuration:(CGFloat)duration {
-
     // ensure that the layer's contents are set before we get rid of the real window.
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
@@ -168,14 +173,14 @@ static CALayer *subLayer;
 }
 
 - (void)transitionAlongAxis:(NSInteger)axis startPoint:(NSPoint)startPoint endPoint:(NSPoint)endPoint onDuration:(CGFloat)duration {
-    
     // ensure that the layer's contents are set before we get rid of the real window.
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
     [CATransaction commit];
     
     CABasicAnimation* positionAnim;
-    if(axis == axis_x) {
+    
+    if (axis == axis_x) {
         positionAnim = [CABasicAnimation animationWithKeyPath:@"position"];
         positionAnim.fromValue = [NSValue valueWithPoint:startPoint];
         positionAnim.toValue = [NSValue valueWithPoint:endPoint];
@@ -196,31 +201,33 @@ static CALayer *subLayer;
     [CATransaction commit];
 }
 
-#pragma mark utilities
+#pragma mark -
+#pragma mark - Utilities
+#pragma mark -
 - (void)animatedDisplayWillBeginAtPoint:(NSPoint)beginPoint endedAtPoint:(NSPoint)endedPoint handler:(void(^)(void))handler {
-     [self.layer removeAllAnimations];
-     // along x-axis / this is
-     CABasicAnimation *animationx = [CABasicAnimation animationWithKeyPath:nil];
-     
-     animationx.toValue = [NSValue valueWithPoint:endedPoint];
-     animationx.fromValue = [NSValue valueWithPoint:beginPoint];
-     
-     CABasicAnimation *topOpacity = [CABasicAnimation animationWithKeyPath:nil];
-     topOpacity.fromValue = @(0.0);
-     topOpacity.toValue = @(1);
-     
-     [CATransaction begin];
-     [CATransaction setAnimationDuration:0.3];
-     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
-     [CATransaction setCompletionBlock:^{
-         if(handler != nil) {
-             handler();
-         }
-     }];
+    [self.layer removeAllAnimations];
+    // along x-axis / this is
+    CABasicAnimation *animationx = [CABasicAnimation animationWithKeyPath:nil];
     
-     [self.layer addAnimation:animationx forKey:@"position.x"];
-     [self.layer addAnimation:topOpacity forKey:@"opacity"];
-     [CATransaction commit];
+    animationx.toValue = [NSValue valueWithPoint:endedPoint];
+    animationx.fromValue = [NSValue valueWithPoint:beginPoint];
+    
+    CABasicAnimation *topOpacity = [CABasicAnimation animationWithKeyPath:nil];
+    topOpacity.fromValue = @(0.0);
+    topOpacity.toValue = @(1);
+    
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:0.3];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
+    [CATransaction setCompletionBlock:^{
+        if(handler != nil) {
+            handler();
+        }
+    }];
+    
+    [self.layer addAnimation:animationx forKey:@"position.x"];
+    [self.layer addAnimation:topOpacity forKey:@"opacity"];
+    [CATransaction commit];
 }
 
 - (void)animatedCloseWillBeginAtPoint:(NSPoint)beginPoint endedAtPoint:(NSPoint)endedPoint handler:(void(^)(void))handler {

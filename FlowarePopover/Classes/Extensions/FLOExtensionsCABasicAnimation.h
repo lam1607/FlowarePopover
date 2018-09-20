@@ -1,16 +1,19 @@
 //
-//  CAAnimation+Extensions.h
+//  FLOExtensionsCABasicAnimation.h
 //  FlowarePopover
 //
-//  Created by Truong Quang Hung on 12/21/16.
-//  Copyright © 2016 Floware Inc. All rights reserved.
+//  Created by lamnguyen on 9/20/18.
+//  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface CABasicAnimation (Extensions)
+@interface CABasicAnimation (FLOExtensionsCABasicAnimation)
 
+#pragma mark -
+#pragma mark - Transformation animation
+#pragma mark -
 + (CAAnimation *)transformAxisXAnimationWithDuration:(NSTimeInterval)aDuration
                               forLayerBeginningOnTop:(BOOL)beginsOnTop
                                          scaleFactor:(CGFloat)scaleFactor
@@ -27,7 +30,9 @@
                                            toOpacity:(CGFloat)toOpacity;
 + (CAAnimation *)resizeAnimationWithDuration:(NSTimeInterval)aDuration fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame fromOpacity:(CGFloat)fromOpacity toOpacity:(CGFloat)toOpacity;
 
-+ (CAAnimation *)flipAnimationWithDuration:(NSTimeInterval)duration forLayerBeginningOnTop:(BOOL)beginsOnTop scaleFactor:(CGFloat)scaleFactor;
+#pragma mark -
+#pragma mark - Animation to disappear a view
+#pragma mark -
 + (CAAnimation *)disappearAxisXAnimationWithDuration:(NSTimeInterval)aDuration
                               forLayerBeginningOnTop:(BOOL)beginsOnTop
                                          scaleFactor:(CGFloat)scaleFactor
@@ -36,7 +41,15 @@
                               forLayerBeginningOnTop:(BOOL)beginsOnTop
                                          scaleFactor:(CGFloat)scaleFactor
                                         translationY:(CGFloat)transY;
-#pragma mark rotate anim
+
+#pragma mark -
+#pragma mark - Flip Rotation animation
+#pragma mark -
++ (CAAnimation *)flipAnimationWithDuration:(NSTimeInterval)duration forLayerBeginningOnTop:(BOOL)beginsOnTop scaleFactor:(CGFloat)scaleFactor;
+
+#pragma mark -
+#pragma mark - Rotation animation
+#pragma mark -
 + (void)rotateAnimationForKey:(NSString *)animKey withDuration:(NSTimeInterval)aDuration forButton:(NSButton *)rotateBtn;
 
 @end

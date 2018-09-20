@@ -1,16 +1,16 @@
 //
-//  NSWindow+Animator.m
+//  FLOExtensionsNSWindow.m
 //  FlowarePopover
 //
-//  Created by lamnguyen on 9/10/18.
+//  Created by lamnguyen on 9/20/18.
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "NSWindow+Animator.h"
+#import "FLOExtensionsNSWindow.h"
 
 #import "FLOPopoverConstants.h"
 
-@implementation NSWindow (Animator)
+@implementation NSWindow (FLOExtensionsNSWindow)
 
 - (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame {
     [self showingAnimated:showing fromFrame:fromFrame toFrame:toFrame source:nil];

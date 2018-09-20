@@ -1,14 +1,16 @@
 //
-//  FLOGraphicsContext.m
+//  FLOExtensionsGraphicsContext.m
 //  FlowarePopover
 //
-//  Created by Hung Truong on 8/20/18.
+//  Created by lamnguyen on 9/20/18.
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "FLOGraphicsContext.h"
+#import "FLOExtensionsGraphicsContext.h"
 
-#pragma mark Graphics context creation
+#pragma mark -
+#pragma mark - Graphics context creation
+#pragma mark -
 CGContextRef FLOCreateGraphicsContext(CGSize size, CGColorSpaceRef colorSpace) {
     size_t width = size.width;
     size_t height = size.height;
@@ -20,7 +22,9 @@ CGContextRef FLOCreateGraphicsContext(CGSize size, CGColorSpaceRef colorSpace) {
     return ctx;
 }
 
-@implementation FLOGraphicsContext
+
+@implementation FLOExtensionsGraphicsContext
+
 + (NSImage *)imageRepresentationOnRect:(NSRect)rect representationWindow:(NSWindow *)representationWindow {
     // Grab the image representation of the window, without the shadows.
     CGImageRef windowImageRef = CGWindowListCreateImage(rect, kCGWindowListOptionIncludingWindow, (CGWindowID)representationWindow.windowNumber, kCGWindowImageBoundsIgnoreFraming);
@@ -93,10 +97,10 @@ CGContextRef FLOCreateGraphicsContext(CGSize size, CGColorSpaceRef colorSpace) {
     
     [bitmapRep setSize:view.bounds.size];
     [view cacheDisplayInRect:view.bounds toBitmapImageRep:bitmapRep];
-
+    
     NSImage *image = [[NSImage alloc] initWithSize:view.bounds.size];
     [image addRepresentation:bitmapRep];
-
+    
     return image;
 }
 

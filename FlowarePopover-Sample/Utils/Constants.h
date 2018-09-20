@@ -29,18 +29,6 @@ typedef NS_ENUM(NSInteger, FLOWindowMode) {
 #endif
 
 //
-// App languages & Language codes
-// Refer from:
-// https://www.loc.gov/standards/iso639-2/php/code_list.php
-// http://www.asahi-net.or.jp/~ax2s-kmtn/ref/iso639.html
-//
-#define APP_LANGUAGE_VIETNAMESE                                 @"TIẾNG VIỆT"
-#define APP_LANGUAGE_ENGLISH                                    @"ENGLISH"
-
-#define LANGUAGE_CODE_VIETNAMESE                                @"vi"
-#define LANGUAGE_CODE_ENGLISH                                   @"en"
-
-//
 // Define Color
 // Convert between RGB and HEX from
 // https://www.webpagefx.com/web-design/hex-to-rgb/

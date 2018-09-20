@@ -9,7 +9,6 @@
 #ifndef FLOPopoverConstants_h
 #define FLOPopoverConstants_h
 
-#define FLO_CONST_SHOULD_USE_ANIMATION_FRAME
 #define FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD                                          0.2f
 #define FLO_CONST_POPOVER_BOTTOM_OFFSET                                                     5.0f
 

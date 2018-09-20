@@ -1,15 +1,15 @@
 //
-//  FLOKeyframeAnimation.h
+//  FLOExtensionsCAKeyframeAnimation.h
 //  FlowarePopover
 //
-//  Created by Floware Team on 3/6/18.
+//  Created by lamnguyen on 9/20/18.
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface FLOKeyframeAnimation : CAKeyframeAnimation
+@interface FLOExtensionsCAKeyframeAnimation : CAKeyframeAnimation
 
 @property (nonatomic, assign) CGFloat stiffness;
 

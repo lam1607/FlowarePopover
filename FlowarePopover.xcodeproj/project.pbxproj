@@ -66,12 +66,29 @@
 		DE8E5E7221535110002AE872 /* FLOPopoverWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE463D21534005004E8DEF /* FLOPopoverWindowController.m */; };
 		DE8E5E732153512C002AE872 /* FLOViewPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464F21534005004E8DEF /* FLOViewPopup.m */; };
 		DE8E5E7421535132002AE872 /* FLOWindowPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE463921534005004E8DEF /* FLOWindowPopup.m */; };
-		DE8E5E752153514E002AE872 /* FLOGraphicsContext.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464721534005004E8DEF /* FLOGraphicsContext.m */; };
 		DE8E5E7621535154002AE872 /* FLOPopoverUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE463B21534005004E8DEF /* FLOPopoverUtils.m */; };
 		DE8E5E772153515C002AE872 /* FLOPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE463A21534005004E8DEF /* FLOPopoverBackgroundView.m */; };
-		DE8E5E782153536D002AE872 /* NSColor+FLOAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464821534005004E8DEF /* NSColor+FLOAdditions.m */; };
-		DE8E5E7921535392002AE872 /* NSView+Animator.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464621534005004E8DEF /* NSView+Animator.m */; };
-		DE8E5E7A21535395002AE872 /* NSWindow+Animator.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464A21534005004E8DEF /* NSWindow+Animator.m */; };
+		DE8E5E812153B62B002AE872 /* FLOExtensionsNSWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = DE8E5E7F2153B62B002AE872 /* FLOExtensionsNSWindow.h */; };
+		DE8E5E822153B62B002AE872 /* FLOExtensionsNSWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E802153B62B002AE872 /* FLOExtensionsNSWindow.m */; };
+		DE8E5E852153B69E002AE872 /* FLOExtensionsNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = DE8E5E832153B69E002AE872 /* FLOExtensionsNSView.h */; };
+		DE8E5E862153B69E002AE872 /* FLOExtensionsNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E842153B69E002AE872 /* FLOExtensionsNSView.m */; };
+		DE8E5E892153B7AF002AE872 /* FLOExtensionsCABasicAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = DE8E5E872153B7AF002AE872 /* FLOExtensionsCABasicAnimation.h */; };
+		DE8E5E8A2153B7AF002AE872 /* FLOExtensionsCABasicAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E882153B7AF002AE872 /* FLOExtensionsCABasicAnimation.m */; };
+		DE8E5E8D2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = DE8E5E8B2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.h */; };
+		DE8E5E8E2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E8C2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.m */; };
+		DE8E5E912153B8C1002AE872 /* FLOExtensionsNSValue.h in Headers */ = {isa = PBXBuildFile; fileRef = DE8E5E8F2153B8C1002AE872 /* FLOExtensionsNSValue.h */; };
+		DE8E5E922153B8C1002AE872 /* FLOExtensionsNSValue.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E902153B8C1002AE872 /* FLOExtensionsNSValue.m */; };
+		DE8E5E952153BAAC002AE872 /* FLOExtensionsGraphicsContext.h in Headers */ = {isa = PBXBuildFile; fileRef = DE8E5E932153BAAC002AE872 /* FLOExtensionsGraphicsContext.h */; };
+		DE8E5E962153BAAC002AE872 /* FLOExtensionsGraphicsContext.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E942153BAAC002AE872 /* FLOExtensionsGraphicsContext.m */; };
+		DE8E5E992153BC4E002AE872 /* FLOExtensionsNSColor.h in Headers */ = {isa = PBXBuildFile; fileRef = DE8E5E972153BC4E002AE872 /* FLOExtensionsNSColor.h */; };
+		DE8E5E9A2153BC4E002AE872 /* FLOExtensionsNSColor.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E982153BC4E002AE872 /* FLOExtensionsNSColor.m */; };
+		DE8E5E9B2153BD29002AE872 /* FLOExtensionsCABasicAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E882153B7AF002AE872 /* FLOExtensionsCABasicAnimation.m */; };
+		DE8E5E9C2153BD2E002AE872 /* FLOExtensionsCAKeyframeAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E8C2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.m */; };
+		DE8E5E9D2153BD32002AE872 /* FLOExtensionsNSColor.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E982153BC4E002AE872 /* FLOExtensionsNSColor.m */; };
+		DE8E5E9E2153BD36002AE872 /* FLOExtensionsGraphicsContext.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E942153BAAC002AE872 /* FLOExtensionsGraphicsContext.m */; };
+		DE8E5E9F2153BD3A002AE872 /* FLOExtensionsNSValue.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E902153B8C1002AE872 /* FLOExtensionsNSValue.m */; };
+		DE8E5EA02153BD3E002AE872 /* FLOExtensionsNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E842153B69E002AE872 /* FLOExtensionsNSView.m */; };
+		DE8E5EA12153BD42002AE872 /* FLOExtensionsNSWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E802153B62B002AE872 /* FLOExtensionsNSWindow.m */; };
 		DEDE45F521533F86004E8DEF /* FlowarePopover.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE45F321533F86004E8DEF /* FlowarePopover.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DEDE465621534005004E8DEF /* FLOViewPopup.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE463821534005004E8DEF /* FLOViewPopup.h */; };
 		DEDE465721534005004E8DEF /* FLOWindowPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE463921534005004E8DEF /* FLOWindowPopup.m */; };
@@ -79,20 +96,6 @@
 		DEDE465921534005004E8DEF /* FLOPopoverUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE463B21534005004E8DEF /* FLOPopoverUtils.m */; };
 		DEDE465A21534005004E8DEF /* FLOPopover.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE463C21534005004E8DEF /* FLOPopover.h */; };
 		DEDE465B21534005004E8DEF /* FLOPopoverWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE463D21534005004E8DEF /* FLOPopoverWindowController.m */; };
-		DEDE465C21534005004E8DEF /* NSColor+FLOAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE463F21534005004E8DEF /* NSColor+FLOAdditions.h */; };
-		DEDE465D21534005004E8DEF /* CABasicAnimation+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464021534005004E8DEF /* CABasicAnimation+Extensions.m */; };
-		DEDE465E21534005004E8DEF /* FLOGraphicsContext.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE464121534005004E8DEF /* FLOGraphicsContext.h */; };
-		DEDE465F21534005004E8DEF /* NSView+Animator.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE464221534005004E8DEF /* NSView+Animator.h */; };
-		DEDE466021534005004E8DEF /* FLOKeyframeAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464321534005004E8DEF /* FLOKeyframeAnimation.m */; };
-		DEDE466121534005004E8DEF /* NSValue+FLOAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464421534005004E8DEF /* NSValue+FLOAdditions.m */; };
-		DEDE466221534005004E8DEF /* NSWindow+Animator.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE464521534005004E8DEF /* NSWindow+Animator.h */; };
-		DEDE466321534005004E8DEF /* NSView+Animator.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464621534005004E8DEF /* NSView+Animator.m */; };
-		DEDE466421534005004E8DEF /* FLOGraphicsContext.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464721534005004E8DEF /* FLOGraphicsContext.m */; };
-		DEDE466521534005004E8DEF /* NSColor+FLOAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464821534005004E8DEF /* NSColor+FLOAdditions.m */; };
-		DEDE466621534005004E8DEF /* CABasicAnimation+Extensions.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE464921534005004E8DEF /* CABasicAnimation+Extensions.h */; };
-		DEDE466721534005004E8DEF /* NSWindow+Animator.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464A21534005004E8DEF /* NSWindow+Animator.m */; };
-		DEDE466821534005004E8DEF /* NSValue+FLOAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE464B21534005004E8DEF /* NSValue+FLOAdditions.h */; };
-		DEDE466921534005004E8DEF /* FLOKeyframeAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE464C21534005004E8DEF /* FLOKeyframeAnimation.h */; };
 		DEDE466A21534005004E8DEF /* FLOPopoverWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DEDE464D21534005004E8DEF /* FLOPopoverWindowController.xib */; };
 		DEDE466B21534005004E8DEF /* FLOWindowPopup.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE464E21534005004E8DEF /* FLOWindowPopup.h */; };
 		DEDE466C21534005004E8DEF /* FLOViewPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464F21534005004E8DEF /* FLOViewPopup.m */; };
@@ -224,6 +227,20 @@
 		DE8E5E25215348EF002AE872 /* DataCellPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataCellPresenter.h; sourceTree = "<group>"; };
 		DE8E5E26215348EF002AE872 /* DataCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataCellView.m; sourceTree = "<group>"; };
 		DE8E5E27215348EF002AE872 /* DataCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DataCellView.xib; sourceTree = "<group>"; };
+		DE8E5E7F2153B62B002AE872 /* FLOExtensionsNSWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOExtensionsNSWindow.h; sourceTree = "<group>"; };
+		DE8E5E802153B62B002AE872 /* FLOExtensionsNSWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOExtensionsNSWindow.m; sourceTree = "<group>"; };
+		DE8E5E832153B69E002AE872 /* FLOExtensionsNSView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOExtensionsNSView.h; sourceTree = "<group>"; };
+		DE8E5E842153B69E002AE872 /* FLOExtensionsNSView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOExtensionsNSView.m; sourceTree = "<group>"; };
+		DE8E5E872153B7AF002AE872 /* FLOExtensionsCABasicAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOExtensionsCABasicAnimation.h; sourceTree = "<group>"; };
+		DE8E5E882153B7AF002AE872 /* FLOExtensionsCABasicAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOExtensionsCABasicAnimation.m; sourceTree = "<group>"; };
+		DE8E5E8B2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOExtensionsCAKeyframeAnimation.h; sourceTree = "<group>"; };
+		DE8E5E8C2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOExtensionsCAKeyframeAnimation.m; sourceTree = "<group>"; };
+		DE8E5E8F2153B8C1002AE872 /* FLOExtensionsNSValue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOExtensionsNSValue.h; sourceTree = "<group>"; };
+		DE8E5E902153B8C1002AE872 /* FLOExtensionsNSValue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOExtensionsNSValue.m; sourceTree = "<group>"; };
+		DE8E5E932153BAAC002AE872 /* FLOExtensionsGraphicsContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOExtensionsGraphicsContext.h; sourceTree = "<group>"; };
+		DE8E5E942153BAAC002AE872 /* FLOExtensionsGraphicsContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOExtensionsGraphicsContext.m; sourceTree = "<group>"; };
+		DE8E5E972153BC4E002AE872 /* FLOExtensionsNSColor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOExtensionsNSColor.h; sourceTree = "<group>"; };
+		DE8E5E982153BC4E002AE872 /* FLOExtensionsNSColor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOExtensionsNSColor.m; sourceTree = "<group>"; };
 		DEDE45F021533F86004E8DEF /* FlowarePopover.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FlowarePopover.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEDE45F321533F86004E8DEF /* FlowarePopover.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlowarePopover.h; sourceTree = "<group>"; };
 		DEDE45F421533F86004E8DEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -233,20 +250,6 @@
 		DEDE463B21534005004E8DEF /* FLOPopoverUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLOPopoverUtils.m; sourceTree = "<group>"; };
 		DEDE463C21534005004E8DEF /* FLOPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLOPopover.h; sourceTree = "<group>"; };
 		DEDE463D21534005004E8DEF /* FLOPopoverWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLOPopoverWindowController.m; sourceTree = "<group>"; };
-		DEDE463F21534005004E8DEF /* NSColor+FLOAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+FLOAdditions.h"; sourceTree = "<group>"; };
-		DEDE464021534005004E8DEF /* CABasicAnimation+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CABasicAnimation+Extensions.m"; sourceTree = "<group>"; };
-		DEDE464121534005004E8DEF /* FLOGraphicsContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLOGraphicsContext.h; sourceTree = "<group>"; };
-		DEDE464221534005004E8DEF /* NSView+Animator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+Animator.h"; sourceTree = "<group>"; };
-		DEDE464321534005004E8DEF /* FLOKeyframeAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLOKeyframeAnimation.m; sourceTree = "<group>"; };
-		DEDE464421534005004E8DEF /* NSValue+FLOAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSValue+FLOAdditions.m"; sourceTree = "<group>"; };
-		DEDE464521534005004E8DEF /* NSWindow+Animator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindow+Animator.h"; sourceTree = "<group>"; };
-		DEDE464621534005004E8DEF /* NSView+Animator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+Animator.m"; sourceTree = "<group>"; };
-		DEDE464721534005004E8DEF /* FLOGraphicsContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLOGraphicsContext.m; sourceTree = "<group>"; };
-		DEDE464821534005004E8DEF /* NSColor+FLOAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+FLOAdditions.m"; sourceTree = "<group>"; };
-		DEDE464921534005004E8DEF /* CABasicAnimation+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CABasicAnimation+Extensions.h"; sourceTree = "<group>"; };
-		DEDE464A21534005004E8DEF /* NSWindow+Animator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindow+Animator.m"; sourceTree = "<group>"; };
-		DEDE464B21534005004E8DEF /* NSValue+FLOAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSValue+FLOAdditions.h"; sourceTree = "<group>"; };
-		DEDE464C21534005004E8DEF /* FLOKeyframeAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLOKeyframeAnimation.h; sourceTree = "<group>"; };
 		DEDE464D21534005004E8DEF /* FLOPopoverWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FLOPopoverWindowController.xib; sourceTree = "<group>"; };
 		DEDE464E21534005004E8DEF /* FLOWindowPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLOWindowPopup.h; sourceTree = "<group>"; };
 		DEDE464F21534005004E8DEF /* FLOViewPopup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLOViewPopup.m; sourceTree = "<group>"; };
@@ -295,12 +298,12 @@
 			children = (
 				DE8E5E28215348EF002AE872 /* Application */,
 				DE8E5D64215348EE002AE872 /* Common */,
-				DE8E5D8F215348EE002AE872 /* Models */,
 				DE8E5D9C215348EE002AE872 /* Repositories */,
-				DE8E5D62215348EE002AE872 /* Resources */,
 				DE8E5DAD215348EE002AE872 /* Sevices */,
+				DE8E5D8F215348EE002AE872 /* Models */,
 				DE8E5DC2215348EE002AE872 /* UI */,
 				DE8E5DBE215348EE002AE872 /* Utils */,
+				DE8E5D62215348EE002AE872 /* Resources */,
 				DE8E5D89215348EE002AE872 /* Supporting-Files */,
 			);
 			path = "FlowarePopover-Sample";
@@ -333,9 +336,9 @@
 		DE8E5D85215348EE002AE872 /* AppleScript */ = {
 			isa = PBXGroup;
 			children = (
+				DE8E5D88215348EE002AE872 /* AppleScript.h */,
 				DE8E5D86215348EE002AE872 /* AppleScript.m */,
 				DE8E5D87215348EE002AE872 /* AppleScriptBridge.applescript */,
-				DE8E5D88215348EE002AE872 /* AppleScript.h */,
 			);
 			path = AppleScript;
 			sourceTree = "<group>";
@@ -402,10 +405,10 @@
 		DE8E5D9C215348EE002AE872 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				DE8E5DA9215348EE002AE872 /* Base */,
 				DE8E5D9D215348EE002AE872 /* Film */,
 				DE8E5DA1215348EE002AE872 /* Comic */,
 				DE8E5DA5215348EE002AE872 /* News */,
-				DE8E5DA9215348EE002AE872 /* Base */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -413,8 +416,8 @@
 		DE8E5D9D215348EE002AE872 /* Film */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5D9E215348EE002AE872 /* FilmRepository.h */,
 				DE8E5D9F215348EE002AE872 /* FilmRepositoryProtocols.h */,
+				DE8E5D9E215348EE002AE872 /* FilmRepository.h */,
 				DE8E5DA0215348EE002AE872 /* FilmRepository.m */,
 			);
 			path = Film;
@@ -423,9 +426,9 @@
 		DE8E5DA1215348EE002AE872 /* Comic */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DA2215348EE002AE872 /* ComicRepository.m */,
 				DE8E5DA3215348EE002AE872 /* ComicRepositoryProtocols.h */,
 				DE8E5DA4215348EE002AE872 /* ComicRepository.h */,
+				DE8E5DA2215348EE002AE872 /* ComicRepository.m */,
 			);
 			path = Comic;
 			sourceTree = "<group>";
@@ -433,9 +436,9 @@
 		DE8E5DA5215348EE002AE872 /* News */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DA6215348EE002AE872 /* NewsRepository.m */,
 				DE8E5DA7215348EE002AE872 /* NewsRepositoryProtocols.h */,
 				DE8E5DA8215348EE002AE872 /* NewsRepository.h */,
+				DE8E5DA6215348EE002AE872 /* NewsRepository.m */,
 			);
 			path = News;
 			sourceTree = "<group>";
@@ -443,9 +446,9 @@
 		DE8E5DA9215348EE002AE872 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				DE8E5DAC215348EE002AE872 /* BaseRepositoryProtocols.h */,
 				DE8E5DAA215348EE002AE872 /* BaseRepository.h */,
 				DE8E5DAB215348EE002AE872 /* BaseRepository.m */,
-				DE8E5DAC215348EE002AE872 /* BaseRepositoryProtocols.h */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -453,10 +456,10 @@
 		DE8E5DAD215348EE002AE872 /* Sevices */ = {
 			isa = PBXGroup;
 			children = (
+				DE8E5DBA215348EE002AE872 /* Base */,
 				DE8E5DAE215348EE002AE872 /* Film */,
 				DE8E5DB2215348EE002AE872 /* Comic */,
 				DE8E5DB6215348EE002AE872 /* News */,
-				DE8E5DBA215348EE002AE872 /* Base */,
 			);
 			path = Sevices;
 			sourceTree = "<group>";
@@ -464,9 +467,9 @@
 		DE8E5DAE215348EE002AE872 /* Film */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DAF215348EE002AE872 /* FilmService.m */,
-				DE8E5DB0215348EE002AE872 /* FilmService.h */,
 				DE8E5DB1215348EE002AE872 /* FilmServiceProtocols.h */,
+				DE8E5DB0215348EE002AE872 /* FilmService.h */,
+				DE8E5DAF215348EE002AE872 /* FilmService.m */,
 			);
 			path = Film;
 			sourceTree = "<group>";
@@ -484,9 +487,9 @@
 		DE8E5DB6215348EE002AE872 /* News */ = {
 			isa = PBXGroup;
 			children = (
+				DE8E5DB9215348EE002AE872 /* NewsServiceProtocols.h */,
 				DE8E5DB7215348EE002AE872 /* NewsService.h */,
 				DE8E5DB8215348EE002AE872 /* NewsService.m */,
-				DE8E5DB9215348EE002AE872 /* NewsServiceProtocols.h */,
 			);
 			path = News;
 			sourceTree = "<group>";
@@ -494,9 +497,9 @@
 		DE8E5DBA215348EE002AE872 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DBB215348EE002AE872 /* BaseService.m */,
 				DE8E5DBC215348EE002AE872 /* BaseServiceProtocols.h */,
 				DE8E5DBD215348EE002AE872 /* BaseService.h */,
+				DE8E5DBB215348EE002AE872 /* BaseService.m */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -504,8 +507,8 @@
 		DE8E5DBE215348EE002AE872 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DBF215348EE002AE872 /* Utils.h */,
 				DE8E5DC0215348EE002AE872 /* Constants.h */,
+				DE8E5DBF215348EE002AE872 /* Utils.h */,
 				DE8E5DC1215348EE002AE872 /* Utils.m */,
 			);
 			path = Utils;
@@ -547,10 +550,10 @@
 			isa = PBXGroup;
 			children = (
 				DE8E5DC7215348EE002AE872 /* ViewProtocols */,
-				DE8E5DC9215348EE002AE872 /* ComicsViewController.h */,
 				DE8E5DCA215348EE002AE872 /* Presenter */,
-				DE8E5DCE215348EE002AE872 /* ComicsViewController.xib */,
+				DE8E5DC9215348EE002AE872 /* ComicsViewController.h */,
 				DE8E5DCF215348EE002AE872 /* ComicsViewController.m */,
+				DE8E5DCE215348EE002AE872 /* ComicsViewController.xib */,
 			);
 			path = ComicsViewController;
 			sourceTree = "<group>";
@@ -566,9 +569,9 @@
 		DE8E5DCA215348EE002AE872 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DCB215348EE002AE872 /* ComicsPresenter.m */,
-				DE8E5DCC215348EE002AE872 /* ComicsPresenter.h */,
 				DE8E5DCD215348EE002AE872 /* ComicsPresenterProtocols.h */,
+				DE8E5DCC215348EE002AE872 /* ComicsPresenter.h */,
+				DE8E5DCB215348EE002AE872 /* ComicsPresenter.m */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -576,11 +579,11 @@
 		DE8E5DD2215348EE002AE872 /* NewsViewController */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DD3215348EE002AE872 /* NewsViewController.m */,
 				DE8E5DD4215348EE002AE872 /* ViewProtocols */,
-				DE8E5DD6215348EE002AE872 /* NewsViewController.xib */,
 				DE8E5DD7215348EE002AE872 /* Presenter */,
 				DE8E5DDB215348EE002AE872 /* NewsViewController.h */,
+				DE8E5DD3215348EE002AE872 /* NewsViewController.m */,
+				DE8E5DD6215348EE002AE872 /* NewsViewController.xib */,
 			);
 			path = NewsViewController;
 			sourceTree = "<group>";
@@ -597,8 +600,8 @@
 			isa = PBXGroup;
 			children = (
 				DE8E5DD8215348EE002AE872 /* NewsPresenterProtocols.h */,
-				DE8E5DD9215348EE002AE872 /* NewsPresenter.m */,
 				DE8E5DDA215348EE002AE872 /* NewsPresenter.h */,
+				DE8E5DD9215348EE002AE872 /* NewsPresenter.m */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -607,8 +610,8 @@
 			isa = PBXGroup;
 			children = (
 				DE8E5DDD215348EE002AE872 /* ViewProtocols */,
-				DE8E5DDF215348EE002AE872 /* FilmsViewController.h */,
 				DE8E5DE0215348EE002AE872 /* Presenter */,
+				DE8E5DDF215348EE002AE872 /* FilmsViewController.h */,
 				DE8E5DE4215348EE002AE872 /* FilmsViewController.m */,
 				DE8E5DE5215348EE002AE872 /* FilmsViewController.xib */,
 			);
@@ -626,8 +629,8 @@
 		DE8E5DE0215348EE002AE872 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DE1215348EE002AE872 /* FilmsPresenter.h */,
 				DE8E5DE2215348EE002AE872 /* FilmsPresenterProtocols.h */,
+				DE8E5DE1215348EE002AE872 /* FilmsPresenter.h */,
 				DE8E5DE3215348EE002AE872 /* FilmsPresenter.m */,
 			);
 			path = Presenter;
@@ -637,9 +640,9 @@
 			isa = PBXGroup;
 			children = (
 				DE8E5DE7215348EE002AE872 /* ViewProtocols */,
-				DE8E5DE9215348EE002AE872 /* DataViewController.m */,
 				DE8E5DEA215348EE002AE872 /* Presenter */,
 				DE8E5DEE215348EE002AE872 /* DataViewController.h */,
+				DE8E5DE9215348EE002AE872 /* DataViewController.m */,
 				DE8E5DEF215348EE002AE872 /* DataViewController.xib */,
 			);
 			path = DataViewController;
@@ -656,9 +659,9 @@
 		DE8E5DEA215348EE002AE872 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DEB215348EE002AE872 /* DataPresenter.m */,
 				DE8E5DEC215348EE002AE872 /* DataPresenterProtocols.h */,
 				DE8E5DED215348EE002AE872 /* DataPresenter.h */,
+				DE8E5DEB215348EE002AE872 /* DataPresenter.m */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -685,8 +688,8 @@
 		DE8E5DF4215348EE002AE872 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DF5215348EE002AE872 /* HomePresenter.h */,
 				DE8E5DF6215348EE002AE872 /* HomePresenterProtocols.h */,
+				DE8E5DF5215348EE002AE872 /* HomePresenter.h */,
 				DE8E5DF7215348EE002AE872 /* HomePresenter.m */,
 			);
 			path = Presenter;
@@ -724,8 +727,8 @@
 		DE8E5E02215348EE002AE872 /* CustomNSOutlineView */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5E03215348EE002AE872 /* CustomNSOutlineView.m */,
 				DE8E5E04215348EE002AE872 /* CustomNSOutlineView.h */,
+				DE8E5E03215348EE002AE872 /* CustomNSOutlineView.m */,
 			);
 			path = CustomNSOutlineView;
 			sourceTree = "<group>";
@@ -745,8 +748,8 @@
 			isa = PBXGroup;
 			children = (
 				DE8E5E07215348EE002AE872 /* ViewProtocols */,
-				DE8E5E09215348EE002AE872 /* NewsCellView.h */,
 				DE8E5E0A215348EE002AE872 /* Presenter */,
+				DE8E5E09215348EE002AE872 /* NewsCellView.h */,
 				DE8E5E0E215348EE002AE872 /* NewsCellView.m */,
 				DE8E5E0F215348EE002AE872 /* NewsCellView.xib */,
 			);
@@ -764,9 +767,9 @@
 		DE8E5E0A215348EE002AE872 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
+				DE8E5E0D215348EE002AE872 /* NewsCellPresenterProtocols.h */,
 				DE8E5E0B215348EE002AE872 /* NewsCellPresenter.h */,
 				DE8E5E0C215348EE002AE872 /* NewsCellPresenter.m */,
-				DE8E5E0D215348EE002AE872 /* NewsCellPresenterProtocols.h */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -774,8 +777,8 @@
 		DE8E5E10215348EE002AE872 /* ComicCellView */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5E11215348EE002AE872 /* ComicCellView.m */,
 				DE8E5E12215348EE002AE872 /* ComicCellView.h */,
+				DE8E5E11215348EE002AE872 /* ComicCellView.m */,
 				DE8E5E13215348EE002AE872 /* ComicCellView.xib */,
 			);
 			path = ComicCellView;
@@ -785,10 +788,10 @@
 			isa = PBXGroup;
 			children = (
 				DE8E5E15215348EE002AE872 /* ViewProtocols */,
-				DE8E5E17215348EE002AE872 /* FilmCellView.xib */,
 				DE8E5E18215348EE002AE872 /* Presenter */,
-				DE8E5E1C215348EE002AE872 /* FilmCellView.m */,
 				DE8E5E1D215348EE002AE872 /* FilmCellView.h */,
+				DE8E5E1C215348EE002AE872 /* FilmCellView.m */,
+				DE8E5E17215348EE002AE872 /* FilmCellView.xib */,
 			);
 			path = FilmCellView;
 			sourceTree = "<group>";
@@ -805,8 +808,8 @@
 			isa = PBXGroup;
 			children = (
 				DE8E5E19215348EE002AE872 /* FilmCellPresenterProtocols.h */,
-				DE8E5E1A215348EE002AE872 /* FilmCellPresenter.m */,
 				DE8E5E1B215348EE002AE872 /* FilmCellPresenter.h */,
+				DE8E5E1A215348EE002AE872 /* FilmCellPresenter.m */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -815,8 +818,8 @@
 			isa = PBXGroup;
 			children = (
 				DE8E5E1F215348EF002AE872 /* ViewProtocols */,
-				DE8E5E21215348EF002AE872 /* DataCellView.h */,
 				DE8E5E22215348EF002AE872 /* Presenter */,
+				DE8E5E21215348EF002AE872 /* DataCellView.h */,
 				DE8E5E26215348EF002AE872 /* DataCellView.m */,
 				DE8E5E27215348EF002AE872 /* DataCellView.xib */,
 			);
@@ -834,9 +837,9 @@
 		DE8E5E22215348EF002AE872 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5E23215348EF002AE872 /* DataCellPresenter.m */,
 				DE8E5E24215348EF002AE872 /* DataCellPresenterProtocols.h */,
 				DE8E5E25215348EF002AE872 /* DataCellPresenter.h */,
+				DE8E5E23215348EF002AE872 /* DataCellPresenter.m */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -905,20 +908,20 @@
 		DEDE463E21534005004E8DEF /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				DEDE464921534005004E8DEF /* CABasicAnimation+Extensions.h */,
-				DEDE464021534005004E8DEF /* CABasicAnimation+Extensions.m */,
-				DEDE464121534005004E8DEF /* FLOGraphicsContext.h */,
-				DEDE464721534005004E8DEF /* FLOGraphicsContext.m */,
-				DEDE464C21534005004E8DEF /* FLOKeyframeAnimation.h */,
-				DEDE464321534005004E8DEF /* FLOKeyframeAnimation.m */,
-				DEDE463F21534005004E8DEF /* NSColor+FLOAdditions.h */,
-				DEDE464821534005004E8DEF /* NSColor+FLOAdditions.m */,
-				DEDE464B21534005004E8DEF /* NSValue+FLOAdditions.h */,
-				DEDE464421534005004E8DEF /* NSValue+FLOAdditions.m */,
-				DEDE464221534005004E8DEF /* NSView+Animator.h */,
-				DEDE464621534005004E8DEF /* NSView+Animator.m */,
-				DEDE464521534005004E8DEF /* NSWindow+Animator.h */,
-				DEDE464A21534005004E8DEF /* NSWindow+Animator.m */,
+				DE8E5E872153B7AF002AE872 /* FLOExtensionsCABasicAnimation.h */,
+				DE8E5E882153B7AF002AE872 /* FLOExtensionsCABasicAnimation.m */,
+				DE8E5E8B2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.h */,
+				DE8E5E8C2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.m */,
+				DE8E5E972153BC4E002AE872 /* FLOExtensionsNSColor.h */,
+				DE8E5E982153BC4E002AE872 /* FLOExtensionsNSColor.m */,
+				DE8E5E932153BAAC002AE872 /* FLOExtensionsGraphicsContext.h */,
+				DE8E5E942153BAAC002AE872 /* FLOExtensionsGraphicsContext.m */,
+				DE8E5E8F2153B8C1002AE872 /* FLOExtensionsNSValue.h */,
+				DE8E5E902153B8C1002AE872 /* FLOExtensionsNSValue.m */,
+				DE8E5E832153B69E002AE872 /* FLOExtensionsNSView.h */,
+				DE8E5E842153B69E002AE872 /* FLOExtensionsNSView.m */,
+				DE8E5E7F2153B62B002AE872 /* FLOExtensionsNSWindow.h */,
+				DE8E5E802153B62B002AE872 /* FLOExtensionsNSWindow.m */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -942,22 +945,22 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE8E5E812153B62B002AE872 /* FLOExtensionsNSWindow.h in Headers */,
+				DE8E5E952153BAAC002AE872 /* FLOExtensionsGraphicsContext.h in Headers */,
+				DE8E5E892153B7AF002AE872 /* FLOExtensionsCABasicAnimation.h in Headers */,
 				DEDE466F21534005004E8DEF /* FLOPopoverWindowController.h in Headers */,
-				DEDE465E21534005004E8DEF /* FLOGraphicsContext.h in Headers */,
+				DE8E5E912153B8C1002AE872 /* FLOExtensionsNSValue.h in Headers */,
+				DE8E5E992153BC4E002AE872 /* FLOExtensionsNSColor.h in Headers */,
 				DEDE465621534005004E8DEF /* FLOViewPopup.h in Headers */,
-				DEDE466821534005004E8DEF /* NSValue+FLOAdditions.h in Headers */,
 				DEDE467221534005004E8DEF /* FLOPopoverUtils.h in Headers */,
 				DEDE465A21534005004E8DEF /* FLOPopover.h in Headers */,
 				DEDE45F521533F86004E8DEF /* FlowarePopover.h in Headers */,
+				DE8E5E8D2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.h in Headers */,
+				DE8E5E852153B69E002AE872 /* FLOExtensionsNSView.h in Headers */,
 				DEDE466E21534005004E8DEF /* FLOPopoverBackgroundView.h in Headers */,
-				DEDE466621534005004E8DEF /* CABasicAnimation+Extensions.h in Headers */,
 				DEDE466D21534005004E8DEF /* FLOPopoverService.h in Headers */,
 				DEDE467121534005004E8DEF /* FLOPopoverConstants.h in Headers */,
 				DEDE466B21534005004E8DEF /* FLOWindowPopup.h in Headers */,
-				DEDE465C21534005004E8DEF /* NSColor+FLOAdditions.h in Headers */,
-				DEDE465F21534005004E8DEF /* NSView+Animator.h in Headers */,
-				DEDE466221534005004E8DEF /* NSWindow+Animator.h in Headers */,
-				DEDE466921534005004E8DEF /* FLOKeyframeAnimation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1069,12 +1072,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE8E5E7A21535395002AE872 /* NSWindow+Animator.m in Sources */,
-				DE8E5E7921535392002AE872 /* NSView+Animator.m in Sources */,
-				DE8E5E782153536D002AE872 /* NSColor+FLOAdditions.m in Sources */,
+				DE8E5EA12153BD42002AE872 /* FLOExtensionsNSWindow.m in Sources */,
+				DE8E5EA02153BD3E002AE872 /* FLOExtensionsNSView.m in Sources */,
+				DE8E5E9F2153BD3A002AE872 /* FLOExtensionsNSValue.m in Sources */,
+				DE8E5E9E2153BD36002AE872 /* FLOExtensionsGraphicsContext.m in Sources */,
+				DE8E5E9D2153BD32002AE872 /* FLOExtensionsNSColor.m in Sources */,
+				DE8E5E9C2153BD2E002AE872 /* FLOExtensionsCAKeyframeAnimation.m in Sources */,
+				DE8E5E9B2153BD29002AE872 /* FLOExtensionsCABasicAnimation.m in Sources */,
 				DE8E5E772153515C002AE872 /* FLOPopoverBackgroundView.m in Sources */,
 				DE8E5E7621535154002AE872 /* FLOPopoverUtils.m in Sources */,
-				DE8E5E752153514E002AE872 /* FLOGraphicsContext.m in Sources */,
 				DE8E5E7421535132002AE872 /* FLOWindowPopup.m in Sources */,
 				DE8E5E732153512C002AE872 /* FLOViewPopup.m in Sources */,
 				DE8E5E7221535110002AE872 /* FLOPopoverWindowController.m in Sources */,
@@ -1125,18 +1131,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				DEDE465921534005004E8DEF /* FLOPopoverUtils.m in Sources */,
-				DEDE466421534005004E8DEF /* FLOGraphicsContext.m in Sources */,
-				DEDE466521534005004E8DEF /* NSColor+FLOAdditions.m in Sources */,
-				DEDE466121534005004E8DEF /* NSValue+FLOAdditions.m in Sources */,
+				DE8E5E8A2153B7AF002AE872 /* FLOExtensionsCABasicAnimation.m in Sources */,
+				DE8E5E9A2153BC4E002AE872 /* FLOExtensionsNSColor.m in Sources */,
+				DE8E5E922153B8C1002AE872 /* FLOExtensionsNSValue.m in Sources */,
 				DEDE465821534005004E8DEF /* FLOPopoverBackgroundView.m in Sources */,
 				DEDE467021534005004E8DEF /* FLOPopover.m in Sources */,
-				DEDE465D21534005004E8DEF /* CABasicAnimation+Extensions.m in Sources */,
 				DEDE465721534005004E8DEF /* FLOWindowPopup.m in Sources */,
-				DEDE466021534005004E8DEF /* FLOKeyframeAnimation.m in Sources */,
-				DEDE466721534005004E8DEF /* NSWindow+Animator.m in Sources */,
+				DE8E5E962153BAAC002AE872 /* FLOExtensionsGraphicsContext.m in Sources */,
+				DE8E5E822153B62B002AE872 /* FLOExtensionsNSWindow.m in Sources */,
+				DE8E5E8E2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.m in Sources */,
 				DEDE466C21534005004E8DEF /* FLOViewPopup.m in Sources */,
-				DEDE466321534005004E8DEF /* NSView+Animator.m in Sources */,
 				DEDE465B21534005004E8DEF /* FLOPopoverWindowController.m in Sources */,
+				DE8E5E862153B69E002AE872 /* FLOExtensionsNSView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

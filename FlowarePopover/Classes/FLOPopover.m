@@ -46,6 +46,7 @@
         self.closesWhenPopoverResignsKey = NO;
         self.closesWhenApplicationBecomesInactive = NO;
         self.popoverMovable = NO;
+        self.animatedWithContext = NO;
     }
     
     return self;
@@ -62,6 +63,7 @@
         self.closesWhenApplicationBecomesInactive = NO;
         self.popoverMovable = NO;
         self.popoverShouldDetach = NO;
+        self.animatedWithContext = NO;
     }
     
     return self;
@@ -169,6 +171,13 @@
         self.windowPopup.popoverMovable = popoverShouldDetach;
         self.windowPopup.popoverShouldDetach = popoverShouldDetach;
     }
+}
+
+- (void)setAnimatedWithContext:(BOOL)animatedWithContext {
+    _animatedWithContext = animatedWithContext;
+    
+    self.viewPopup.animatedWithContext = animatedWithContext;
+    self.windowPopup.animatedWithContext = animatedWithContext;
 }
 
 #pragma mark -

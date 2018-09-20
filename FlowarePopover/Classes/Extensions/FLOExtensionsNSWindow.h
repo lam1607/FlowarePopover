@@ -1,15 +1,15 @@
 //
-//  NSWindow+Animator.h
+//  FLOExtensionsNSWindow.h
 //  FlowarePopover
 //
-//  Created by lamnguyen on 9/10/18.
+//  Created by lamnguyen on 9/20/18.
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface NSWindow (Animator)
+@interface NSWindow (FLOExtensionsNSWindow)
 
 - (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame;
 - (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame source:(id)source;

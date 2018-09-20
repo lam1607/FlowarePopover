@@ -1,14 +1,14 @@
 //
-//  NSColor+FLOAdditions.m
+//  FLOExtensionsNSColor.m
 //  FlowarePopover
 //
-//  Created by lamnguyen on 8/21/18.
+//  Created by lamnguyen on 9/20/18.
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "NSColor+FLOAdditions.h"
+#import "FLOExtensionsNSColor.h"
 
-@implementation NSColor (FLOAdditions)
+@implementation NSColor (FLOExtensionsNSColor)
 
 #pragma mark -
 #pragma mark - Initialize

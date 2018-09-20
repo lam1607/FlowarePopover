@@ -1,13 +1,14 @@
 //
-//  FLOKeyframeAnimation.m
+//  FLOExtensionsCAKeyframeAnimation.m
 //  FlowarePopover
 //
-//  Created by Floware Team on 3/6/18.
+//  Created by lamnguyen on 9/20/18.
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "FLOKeyframeAnimation.h"
-#import "NSValue+FLOAdditions.h"
+#import "FLOExtensionsCAKeyframeAnimation.h"
+
+#import "FLOExtensionsNSValue.h"
 
 static const CGFloat FLOAnimationDefaultMass = 5.f;
 static const CGFloat FLOAnimationDefaultDamping = 30.f;
@@ -15,14 +16,14 @@ static const CGFloat FLOAnimationDefaultStiffness = 300.f;
 static const CGFloat FLOAnimationKeyframeStep = 0.001f;
 static const CGFloat FLOAnimationMinimumThreshold = 0.0001f;
 
-@interface FLOKeyframeAnimation()
+@interface FLOExtensionsCAKeyframeAnimation()
 
 @property (nonatomic, copy) NSArray *interpolatedValues;
 @property (nonatomic, assign) BOOL needsRecalculation;
 
 @end
 
-@implementation FLOKeyframeAnimation
+@implementation FLOExtensionsCAKeyframeAnimation
 
 #pragma mark -
 #pragma mark - Initialization
@@ -44,7 +45,7 @@ static const CGFloat FLOAnimationMinimumThreshold = 0.0001f;
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-    FLOKeyframeAnimation *copy = [super copyWithZone:zone];
+    FLOExtensionsCAKeyframeAnimation *copy = [super copyWithZone:zone];
     
     copy.interpolatedValues = self.interpolatedValues;
     copy.duration = self.interpolatedValues.count * FLOAnimationKeyframeStep;

@@ -52,11 +52,6 @@
 + (void)copy:(NSObject *)copy from:(NSObject *)object withZone:(NSZone *)zone;
 
 #pragma mark -
-#pragma mark - Localizable & language
-#pragma mark -
-+ (BOOL)isEnglishLanguage;
-
-#pragma mark -
 #pragma mark - Format view
 #pragma mark -
 + (void)setViewTransparent:(NSView *)view withBackgroundColor:(NSColor *)color;
@@ -68,23 +63,8 @@
 + (BOOL)isEmptyObject:(id)obj;
 
 #pragma mark -
-#pragma mark - Validations
-#pragma mark -
-+ (BOOL)isValidEmail:(NSString *)email;
-+ (BOOL)isValidPassword:(NSString *)password;
-
-#pragma mark -
-#pragma mark - Date time
-#pragma mark -
-+ (NSDate *)dateFromString:(NSString *)dateStr withFormat:(NSString *)dateFormat;
-+ (NSString *)stringFromCurrentTimeZoneDate:(NSDate *)currentTimeZoneDate withFormat:(NSString *)dateFormat;
-+ (NSString *)stringFromDate:(NSDate *)date withFormat:(NSString *)dateFormat;
-
-#pragma mark -
 #pragma mark - String
 #pragma mark -
-+ (NSString *)uniqueString;
-+ (NSString *)trimOfString:(NSString *)str;
 + (NSSize)sizeOfControl:(NSControl *)control;
 + (NSSize)sizeOfControl:(NSControl *)control withWidth:(CGFloat)width;
 + (CGFloat)heightForWidth:(CGFloat)width string:(NSAttributedString*)string;

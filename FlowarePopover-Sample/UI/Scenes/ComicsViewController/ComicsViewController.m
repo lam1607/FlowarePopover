@@ -58,7 +58,6 @@
 #pragma mark - Setup UI
 #pragma mark -
 - (void)setupUI {
-    //    [self setBackgroundColor:[NSColor clearColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.view];
     [self setBackgroundColor:[NSColor clearColor] forView:self.view];
     
     NSSize screenSize = [Utils screenSize];
@@ -95,11 +94,11 @@
 #pragma mark - CustomNSOutlineViewDelegate
 #pragma mark -
 - (void)outlineView:(CustomNSOutlineView *)outlineView didSelectRow:(NSInteger)row {
-    //    if (row < [self._comicsPresenter comics].count) {
-    //        Comic *selected = [[self._comicsPresenter comics] objectAtIndex:row];
-    //
-    //        [[NSWorkspace sharedWorkspace] openURL:selected.pageUrl];
-    //    }
+    if (row < [self._comicsPresenter comics].count) {
+        Comic *selected = [[self._comicsPresenter comics] objectAtIndex:row];
+        
+        [[NSWorkspace sharedWorkspace] openURL:selected.pageUrl];
+    }
 }
 
 #pragma mark -

@@ -62,8 +62,6 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
         CGContextAddPath(currentContext, self.clippingPath);
         CGContextSetBlendMode(currentContext, kCGBlendModeCopy);
         CGContextSetFillColorWithColor(currentContext, self.pathColor);
-        //        [[NSColor colorMoss] setStroke];
-        //        CGContextDrawPath(currentContext, kCGPathFillStroke);
         CGContextEOFillPath(currentContext);
     }
 }
@@ -390,27 +388,9 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
             break;
     }
     
-    //    CGPathMoveToPoint(path, NULL, minBasePoint.x, minBasePoint.y);
-    //    CGPathAddLineToPoint(path, NULL, tipPoint.x, tipPoint.y);
-    //    CGPathAddLineToPoint(path, NULL, maxBasePoint.x, maxBasePoint.y);
-    
-    CGFloat horEdge = PopoverBackgroundViewArrowWidth / 5;
-    CGFloat bottomAngle = atan(PopoverBackgroundViewArrowHeight / (PopoverBackgroundViewArrowWidth / 2));
-    CGFloat bottom_cp2x = horEdge * cos(bottomAngle);
-    CGFloat bottom_cp2y = horEdge * sin(bottomAngle);
-    
-    CGPathMoveToPoint(path, NULL, minBasePoint.x - horEdge, minBasePoint.y);
-    CGPathAddCurveToPoint(path, NULL, minBasePoint.x - horEdge, minBasePoint.y, minBasePoint.x, minBasePoint.y, minBasePoint.x + bottom_cp2x, minBasePoint.y + bottom_cp2y);
-    
-    CGFloat verEdge = 2.0f;
-    CGFloat top_cp2x = 0.5 * verEdge;
-    CGFloat top_cp2y = 0.2 * verEdge;
-    CGPathAddLineToPoint(path, NULL, tipPoint.x - top_cp2x, tipPoint.y - verEdge);
-    CGPathAddCurveToPoint(path, NULL, tipPoint.x - top_cp2x, tipPoint.y - verEdge, tipPoint.x, tipPoint.y - top_cp2y, tipPoint.x + top_cp2x, tipPoint.y - verEdge);
-    CGPathAddLineToPoint(path, NULL, tipPoint.x + top_cp2x, tipPoint.y - verEdge);
-    
-    CGPathAddCurveToPoint(path, NULL, maxBasePoint.x - bottom_cp2x, maxBasePoint.y + bottom_cp2y, maxBasePoint.x, maxBasePoint.y, maxBasePoint.x + horEdge, maxBasePoint.y);
-    CGPathAddLineToPoint(path, NULL, maxBasePoint.x + horEdge, maxBasePoint.y);
+    CGPathMoveToPoint(path, NULL, minBasePoint.x, minBasePoint.y);
+    CGPathAddLineToPoint(path, NULL, tipPoint.x, tipPoint.y);
+    CGPathAddLineToPoint(path, NULL, maxBasePoint.x, maxBasePoint.y);
     
     return path;
 }

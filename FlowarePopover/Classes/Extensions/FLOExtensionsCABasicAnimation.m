@@ -1,22 +1,21 @@
 //
-//  CAAnimation+Extensions.m
+//  FLOExtensionsCABasicAnimation.m
 //  FlowarePopover
 //
-//  Created by Truong Quang Hung on 12/21/16.
-//  Copyright © 2016 Floware Inc. All rights reserved.
+//  Created by lamnguyen on 9/20/18.
+//  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "CABasicAnimation+Extensions.h"
+#import "FLOExtensionsCABasicAnimation.h"
 
-@implementation CABasicAnimation (Extensions)
-+ (CAAnimation *)transformAxisXAnimationWithDuration:(NSTimeInterval)aDuration
-                              forLayerBeginningOnTop:(BOOL)beginsOnTop
-                                         scaleFactor:(CGFloat)scaleFactor
-                                          fromTransX:(CGFloat)fromTransX
-                                            toTransX:(CGFloat)toTransX
-                                         fromOpacity:(CGFloat)fromOpacity
-                                           toOpacity:(CGFloat)toOpacity {
-    
+@implementation CABasicAnimation (FLOExtensionsCABasicAnimation)
+
+#pragma mark -
+#pragma mark - Transformation animation
+#pragma mark -
++ (CAAnimation *)transformAxisXAnimationWithDuration:(NSTimeInterval)aDuration forLayerBeginningOnTop:(BOOL)beginsOnTop scaleFactor:(CGFloat)scaleFactor
+                                          fromTransX:(CGFloat)fromTransX toTransX:(CGFloat)toTransX
+                                         fromOpacity:(CGFloat)fromOpacity toOpacity:(CGFloat)toOpacity {
     // move X-axis
     CABasicAnimation *translationX = [CABasicAnimation animationWithKeyPath:@"transform.translation.x"];
     translationX.fromValue = @(fromTransX);
@@ -49,14 +48,9 @@
     return animationGroup;
 }
 
-+ (CAAnimation *)transformAxisYAnimationWithDuration:(NSTimeInterval)aDuration
-                              forLayerBeginningOnTop:(BOOL)beginsOnTop
-                                         scaleFactor:(CGFloat)scaleFactor
-                                          fromTransY:(CGFloat)fromTransY
-                                            toTransY:(CGFloat)toTransY
-                                         fromOpacity:(CGFloat)fromOpacity
-                                           toOpacity:(CGFloat)toOpacity {
-    
++ (CAAnimation *)transformAxisYAnimationWithDuration:(NSTimeInterval)aDuration forLayerBeginningOnTop:(BOOL)beginsOnTop scaleFactor:(CGFloat)scaleFactor
+                                          fromTransY:(CGFloat)fromTransY toTransY:(CGFloat)toTransY
+                                         fromOpacity:(CGFloat)fromOpacity toOpacity:(CGFloat)toOpacity {
     // move X-axis
     CABasicAnimation *translationY = [CABasicAnimation animationWithKeyPath:@"transform.translation.y"];
     translationY.fromValue = @(fromTransY);
@@ -89,16 +83,16 @@
 }
 
 + (CAAnimation *)resizeAnimationWithDuration:(NSTimeInterval)aDuration fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame fromOpacity:(CGFloat)fromOpacity toOpacity:(CGFloat)toOpacity {
-    
     // Combine the flipping and shrinking into one smooth animation
     CAAnimationGroup *groupAnimation = [CAAnimationGroup animation];
     
     return groupAnimation;
 }
 
-#pragma mark anim to disappear a view
+#pragma mark -
+#pragma mark - Animation to disappear a view
+#pragma mark -
 + (CAAnimation *)disappearAxisYAnimationWithDuration:(NSTimeInterval)aDuration forLayerBeginningOnTop:(BOOL)beginsOnTop scaleFactor:(CGFloat)scaleFactor translationY:(CGFloat)transY {
-    
     // move Y-axis
     CABasicAnimation *translationY = [CABasicAnimation animationWithKeyPath:@"transform.translation.y"];
     translationY.toValue = @(transY);
@@ -132,7 +126,6 @@
 }
 
 + (CAAnimation *)disappearAxisXAnimationWithDuration:(NSTimeInterval)aDuration forLayerBeginningOnTop:(BOOL)beginsOnTop scaleFactor:(CGFloat)scaleFactor translationX:(CGFloat)transX {
-    
     // move X-axis
     CABasicAnimation *translationX = [CABasicAnimation animationWithKeyPath:@"transform.translation.x"];
     translationX.toValue = @(transX);
@@ -165,9 +158,10 @@
     return animationGroup;
 }
 
-#pragma mark anim flip rotation
+#pragma mark -
+#pragma mark - Flip Rotation animation
+#pragma mark -
 + (CAAnimation *)flipAnimationWithDuration:(NSTimeInterval)aDuration forLayerBeginningOnTop:(BOOL)beginsOnTop scaleFactor:(CGFloat)scaleFactor {
-    
     // Rotating halfway (pi radians) around the Y axis
     // gives the appearance of flipping
     CABasicAnimation *flipAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.y"];
@@ -199,7 +193,9 @@
     return animationGroup;
 }
 
-#pragma mark rotate anim
+#pragma mark -
+#pragma mark - Rotation animation
+#pragma mark -
 + (void)rotateAnimationForKey:(NSString *)animKey withDuration:(NSTimeInterval)aDuration forButton:(NSButton *)rotateBtn  {
     CABasicAnimation *ani = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
     ani.fromValue = [NSNumber numberWithFloat:0];

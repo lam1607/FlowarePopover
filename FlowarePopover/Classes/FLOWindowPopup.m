@@ -10,9 +10,9 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "FLOGraphicsContext.h"
-#import "NSView+Animator.h"
-#import "NSWindow+Animator.h"
+#import "FLOExtensionsGraphicsContext.h"
+#import "FLOExtensionsNSView.h"
+#import "FLOExtensionsNSWindow.h"
 
 #import "FLOPopoverWindowController.h"
 
@@ -607,18 +607,18 @@
 - (void)popoverShowing:(BOOL)showing animated:(BOOL)animated {
     BOOL shouldShowAnimated = animated;
     
-#ifndef FLO_CONST_SHOULD_USE_ANIMATION_FRAME
-    if (shouldShowAnimated &&
-        ((showing == NO) && ((self.popoverMovable == YES) || (self.popoverShouldDetach == YES)) && (self.popoverDidMove == YES))) {
-        shouldShowAnimated = NO;
-        self.popoverDidMove = NO;
+    if (self.animatedWithContext == YES) {
+        if (shouldShowAnimated &&
+            ((showing == NO) && ((self.popoverMovable == YES) || (self.popoverShouldDetach == YES)) && (self.popoverDidMove == YES))) {
+            shouldShowAnimated = NO;
+            self.popoverDidMove = NO;
+        }
+        
+        if (shouldShowAnimated && (self.applicationWindowDidChange == YES)) {
+            shouldShowAnimated = NO;
+            self.applicationWindowDidChange = NO;
+        }
     }
-    
-    if (shouldShowAnimated && (self.applicationWindowDidChange == YES)) {
-        shouldShowAnimated = NO;
-        self.applicationWindowDidChange = NO;
-    }
-#endif
     
     if (shouldShowAnimated) {
         switch (self.animationBehaviour) {
@@ -636,11 +636,11 @@
 }
 
 - (void)popoverTransitionAnimationShowing:(BOOL)showing {
-#ifdef FLO_CONST_SHOULD_USE_ANIMATION_FRAME
-    [self popoverTransitionAnimationFrameShowing:showing];
-#else
-    [self popoverTransitionAnimationContextShowing:showing];
-#endif
+    if (self.animatedWithContext == YES) {
+        [self popoverTransitionAnimationContextShowing:showing];
+    } else {
+        [self popoverTransitionAnimationFrameShowing:showing];
+    }
 }
 
 - (void)popoverTransitionAnimationContextShowing:(BOOL)showing {
@@ -721,7 +721,7 @@
  * @param snapshotView contains the snapshot image.
  */
 - (void)takeSnapshotImageFromView:(NSView *)view toView:(NSView *)snapshotView {
-    NSImage *image = [FLOGraphicsContext snapshotImageFromView:view];
+    NSImage *image = [FLOExtensionsGraphicsContext snapshotImageFromView:view];
     [snapshotView layer].contents = image;
 }
 

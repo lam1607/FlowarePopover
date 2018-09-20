@@ -1,17 +1,19 @@
 //
-//  FLOGraphicsContext.h
+//  FLOExtensionsGraphicsContext.h
 //  FlowarePopover
 //
-//  Created by Hung Truong on 8/20/18.
+//  Created by lamnguyen on 9/20/18.
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
+#pragma mark -
 #pragma mark - Graphics context creation
+#pragma mark -
 extern CGContextRef FLOCreateGraphicsContext(CGSize size, CGColorSpaceRef colorSpace);
 
-@interface FLOGraphicsContext : NSObject
+@interface FLOExtensionsGraphicsContext : NSObject
 
 + (NSImage *)imageRepresentationOnRect:(NSRect)rect representationWindow:(NSWindow *)representationWindow;
 + (NSImage *)screenShotView:(NSView *)aView forRect:(NSRect)aRect inWindow:(NSWindow *)aWindow;
