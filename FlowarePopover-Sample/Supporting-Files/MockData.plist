@@ -1,0 +1,1260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>comics</key>
+        <array>
+            <dict>
+                <key>name</key>
+                <string>The Academia Waltz</string>
+                <key>shortDesc</key>
+                <string>The Academia Waltz was Berke Breathed&apos;s first cartoon, published daily from 1978 to 1979 in The Daily Texan at The University of Texas at Austin...</string>
+                <key>longDesc</key>
+                <string>The Academia Waltz was Berke Breathed&apos;s first cartoon, published daily from 1978 to 1979 in The Daily Texan at The University of Texas at Austin, where he was a student. The strip focused primarily on college life, although it sometimes made references to big news stories of the time (such as the incident at Three Mile Island in 1979).</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/aw/large_rec-201701251555.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/academiawaltz/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Lalo Alcaraz</string>
+                <key>shortDesc</key>
+                <string>Lalo Alcaraz -- award-winning editorial cartoonist and Latino journalist -- captures the essence of the country’s changing cultural and political landscape.</string>
+                <key>longDesc</key>
+                <string>Lalo Alcaraz -- award-winning editorial cartoonist and Latino journalist -- captures the essence of the country’s changing cultural and political landscape. Alcaraz has produced editorial cartoons for LA Weekly since 1992 and also creates cartoons in Spanish for La Opinion, the United States’ oldest Spanish-language newspaper. His work has appeared in The New York Times, The Village Voice, Los Angeles Times, Variety, Hispanic Magazine, Latina magazine, La Jornada in Mexico City, BUNTE, (Germany’s People magazine) and many other publications. Add instant variety to your Web site’s news and opinion offerings with Alcaraz’s intelligent, youthful and thought-provoking perspective.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/la/large_rec-201701251555.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/laloalcaraz/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Michael Andrew</string>
+                <key>shortDesc</key>
+                <string>About Michael Andrew Comic Strips</string>
+                <key>longDesc</key>
+                <string>Featuring political comics by Michael Andrew.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/tmt/large_tmt_rec_201703061139.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/michael-andrew/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>At the Zoo</string>
+                <key>shortDesc</key>
+                <string>What do chimpanzees say about us when we&apos;re not around? What happens when a penguin watches too much TV?</string>
+                <key>longDesc</key>
+                <string>What do chimpanzees say about us when we&apos;re not around? What happens when a penguin watches too much TV? What do you do with a lion who&apos;s scared of going to the vet? Find out At the Zoo...</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/atz/large_rec-201701251558.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/at-the-zoo/2018/08/06</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Back to B.C.</string>
+                <key>shortDesc</key>
+                <string>Follow Johnny Hart’s classic strip, B.C., from its humble beginnings in 1958! Join the original five (B.C., Peter, Wiley, Clumsy and Thor)...</string>
+                <key>longDesc</key>
+                <string>Follow Johnny Hart’s classic strip, B.C., from its humble beginnings in 1958! Join the original five (B.C., Peter, Wiley, Clumsy and Thor) as they discover fire, befriend dinosaurs, try to figure out women and make a new friend, Curls.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/cbc/large_rec-201701251558.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/back-to-bc/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Back in the Day</string>
+                <key>shortDesc</key>
+                <string>It was a different world back when dinosaurs roamed the earth. There were as yet no sugar substitutes, so hyper-activity was rampant.</string>
+                <key>longDesc</key>
+                <string>It was a different world back when dinosaurs roamed the earth. There were as yet no sugar substitutes, so hyper-activity was rampant. And brains were small, so &quot;I&apos;m with stupid&quot; t-shirts were hot. It was a time of abundant flora and verbal fun-a, a rough and beastly world in which sometimes the flaky survived, and, fortunately for us, hungry doomed life forms spoke perfectly good English.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/bid/large_rec-201701251556.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/backintheday/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>The Best Medicine Cartoon</string>
+                <key>shortDesc</key>
+                <string>Single-panel cartoons covering topics ranging from homicidal vegetables to trees with human-scented air fresheners...</string>
+                <key>longDesc</key>
+                <string>Single-panel cartoons covering topics ranging from homicidal vegetables to trees with human-scented air fresheners; The Best Medicine Cartoon will give you a dose of the best medicine: laughter (way better than that nasty cherry stuff).</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/tbm/large_rec-201701251558.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/the-best-medicine/2017/12/22</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Bob the Squirrel</string>
+                <key>shortDesc</key>
+                <string>Welcome to the wonderful world of obsessive compulsive cartoonist Frank Page and his band of misfits. Bob the Squirrel chronicles the life and times of Bob...</string>
+                <key>longDesc</key>
+                <string>Welcome to the wonderful world of obsessive compulsive cartoonist Frank Page and his band of misfits. Bob the Squirrel chronicles the life and times of Bob, a squirrel and Frank, the human he&apos;s taken in as his own. Other ingredients in this comic strip stew include Frank&apos;s girlfriend- the effervescent &quot;foofy coffee chick&quot; Lezley, her daughter Lauren and Maggie, the overly protective pug mix. And to complete the meal, why don&apos;t we throw in Frank&apos;s dog, a jack russell terrier named Lucy---a dog who loves to climb trees, eat nacho chips and generally be the yang to Bob&apos;s ying. There&apos;s something for everyone in Bob the Squirrel... so, make a daily stop to see what&apos;s going on. You will not be disappointed.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/bob/large_rec-201701251554.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/bobthesquirrel/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Bully</string>
+                <key>shortDesc</key>
+                <string>Bully is a dialogue-free comic strip about Bully, a short-tempered egomaniacal French bulldog, and his merciful family.</string>
+                <key>longDesc</key>
+                <string>Bully is a dialogue-free comic strip about Bully, a short-tempered egomaniacal French bulldog, and his merciful family. With no dialogue, Bully finds himself in vast visual storylines that find him as big as a house one day and small as a mouse the next. Not to be outdone, home life is just as adventurous with Bob and Annie (mom and pop), his puppy pal Buddy, and an enormous grudge for the evil mailman.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/bully/large_rec-201701251558.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/bully/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Dinosaur Comics</string>
+                <key>shortDesc</key>
+                <string>Dinosaur Comics is a comic where the pictures never change, but the words do! IT&apos;S HONESTLY BETTER THAN IT SOUNDS. T-Rex, Utahraptor...</string>
+                <key>longDesc</key>
+                <string>Dinosaur Comics is a comic where the pictures never change, but the words do! IT&apos;S HONESTLY BETTER THAN IT SOUNDS. T-Rex, Utahraptor, Dromiceiomimus and friends discuss Very Important Things, ranging from the nature of love all the way to whether or not who smelt it is truly the same as whosoever dealt it. (This hasn&apos;t actually happened in the comic, but it&apos;s actually not a bad idea).</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/dco/large_rec-201701251558.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/dinosaur-comics/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Edge City</string>
+                <key>shortDesc</key>
+                <string>They&apos;re the stars of Edge City, a nationally-syndicated, ground-breaking comic strip about a hip, Jewish-American family juggling relationships, careers, ...</string>
+                <key>longDesc</key>
+                <string>They&apos;re the stars of Edge City, a nationally-syndicated, ground-breaking comic strip about a hip, Jewish-American family juggling relationships, careers, and tradition at the fast-pace of modern life. Fueled by caffeine and gasoline, Len and Abby and their kids, Colin and Carly, power their way through self-employment, after school activities, pursuing their dreams, and lining up for carpool. It&apos;s life on the edge every day in Edge City!</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/ec/large_rec-201701251558.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/edge-city/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>The Fusco Brothers</string>
+                <key>shortDesc</key>
+                <string>J.C. Duffy’s hilariously unique comic strip features the four Fusco bachelors</string>
+                <key>longDesc</key>
+                <string>J.C. Duffy’s hilariously unique comic strip features the four Fusco bachelors - Rolf, Lance, Al, and Lars, along with Lance’s girlfriend, Gloria, as well as Axel, the Fusco’s faithful wolverine. These wacky characters startle and delight readers with their off-the-wall antics and verbal acrobatics.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/fu/large_rec-201701251556.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/thefuscobrothers/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Get a Life</string>
+                <key>shortDesc</key>
+                <string>Get a life!&quot; is a common admonition, one more easily uttered than accomplished. Tim Lachowski&apos;s cartoon panel of the same name offers telling glimpses of the process in all its awkward absurdity</string>
+                <key>longDesc</key>
+                <string>&quot;Get a life!&quot; is a common admonition, one more easily uttered than accomplished. Tim Lachowski&apos;s cartoon panel of the same name offers telling glimpses of the process in all its awkward absurdity. Whether or not its sly dry capture of lifeâ€™s rimshot moments helps readers achieve the goal, it faithfully provides those engaged in the attempt an insightful daily laugh.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/gal/large_rec-201701251556.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/getalife/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Ginger Meggs</string>
+                <key>shortDesc</key>
+                <string>Ginger Meggs, Australia&apos;s most popular and longest-running comic strip, was created in the early 1920s by Jimmy Bancks.</string>
+                <key>longDesc</key>
+                <string>Ginger Meggs, Australia&apos;s most popular and longest-running comic strip, was created in the early 1920s by Jimmy Bancks. The strip follows the escapades of a red-haired prepubescent mischief-maker who lives in an inner suburban working-class household. While employed at The Bulletin, Bancks submitted cartoons to the Sydney Sunday Sun, where he began his Us Fellers strip in 1921 in the &quot;Sunbeams&quot; section of the Sunday Sun. Ginger first appeared in Us Fellers on 13 November 1921, drawn by Bancks.[1] When Bancks died on 1 July 1952 from a heart attack, Ron Vivian took over the strip (1953-1973), followed by Lloyd Piper (1973-1982), James Kemsley (1983-2007) and since 2007, Jason Chatfield...</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/gin/large_rec-201701251554.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/gingermeggs/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Goats</string>
+                <key>shortDesc</key>
+                <string>Goats is a sci-fi parody epic, humor imagined on an epic scale. More than a simple gag-a-day strip, ...</string>
+                <key>longDesc</key>
+                <string>Goats is a sci-fi parody epic, humor imagined on an epic scale. More than a simple gag-a-day strip, the anarchic and hyper-inventive Goats has a sprawling storyline starring two ordinary techies who are tasked with saving the universe from utter destruction and the demonic chickens, cyborg goldfish, omnisexual aliens, disgruntled hackers, Mayan death gods, and random celebrities they encounter along the way.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/goat/large_rec.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/goats/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>The Grizzwells</string>
+                <key>shortDesc</key>
+                <string>About The Grizzwells Comic Strips</string>
+                <key>longDesc</key>
+                <string>For a family strip with bite, you can&apos;t do better than The Grizzwells, starring a four-bear family of grizzlies.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/gw/large_rec-201701251556.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/thegrizzwells/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Human Cull</string>
+                <key>shortDesc</key>
+                <string>Human Cull is a tongue-in-cheek cartoon about an alien making the world a better place by removing the most annoying people.</string>
+                <key>longDesc</key>
+                <string>Human Cull is a tongue-in-cheek cartoon about an alien making the world a better place by removing the most annoying people. Litter-droppers, telemarketers and other miscreants are all vaporised painlessly by ray gun, leaving a nicer world. Alex Hallatt came up with Human Cull after seeing someone dropping litter. She didn’t want to confront him, but channelled her frustration into a little green man who could. Alex also has a syndicated comic strip called Arctic Circle and illustrates all sorts of other things that you can see at www.alexhallatt.com. Her first chapter book for kids, FAB (Friends Against Bullying) Club is now out in paperback.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/hcu/large_rec-201701251557.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/human-cull/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>In the Bleachers</string>
+                <key>shortDesc</key>
+                <string>Whatever your athletic interest, golf, baseball, running, or basketball and whether you haven’t picked up a ball since high school ...</string>
+                <key>longDesc</key>
+                <string>Whatever your athletic interest, golf, baseball, running, or basketball and whether you haven’t picked up a ball since high school or you’re a serious sports fanatic, everyone can see the humor and irony highlighted by In the Bleachers. Steve Moore helps us laugh at ourselves and those in the professional spotlight by drawing attention to the comedy of sports.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/bl/large_rec-201701251555.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/inthebleachers/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Ink Pen</string>
+                <key>shortDesc</key>
+                <string>Ink Pen: the insider’s look at the seedy underbelly of cartoon character employment. Find out what happened to loveable Bixby the Rat!</string>
+                <key>longDesc</key>
+                <string>Ink Pen: the insider’s look at the seedy underbelly of cartoon character employment. Find out what happened to loveable Bixby the Rat! Witness the struggles of Ham Hock, the talking pig, as he tries to break into a business that sees him as nothing more than a slab of meat. Meet (briefly) the plucky sidekicks, thrust into danger by careless superheroes and the villains they duel.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/ink/large_rec-201701251556.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/inkpen/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Jane&apos;s World</string>
+                <key>shortDesc</key>
+                <string>Jane’s World stars the loveable misfit, Jane Wyatt. It’s a comic full of girl-on-girl action, chicks with guns, a vegan menace, vintage Winnebagos, ...</string>
+                <key>longDesc</key>
+                <string>Jane’s World stars the loveable misfit, Jane Wyatt. It’s a comic full of girl-on-girl action, chicks with guns, a vegan menace, vintage Winnebagos, drag queens, and downward career spirals. You know, the usual for stability-challenged Jane. In short, Jane is a magnet for the kind of drama that makes for good comedy.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/jw/large_jw_rec_201806070913.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/janesworld/2018/08/07</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Kid Beowulf</string>
+                <key>shortDesc</key>
+                <string>Kid Beowulf is an action adventure comic strip inspired by the original epic poem, Beowulf.</string>
+                <key>longDesc</key>
+                <string>Kid Beowulf is an action adventure comic strip inspired by the original epic poem, Beowulf.  In the original epic poem Beowulf and Grendel are sworn enemies, in Kid Beowulf they are brothers! The first book in the series &quot;Kid Beowulf: The Blood-Bound Oath&quot; is the mysterious origin story of the twins.  Book two, &quot;Kid Beowulf: The Song of Roland&quot; follows the brothers and their adventure into France where they meet the French hero Roland, and the great king Charlemagne.  Both stories have been serialized online at GoComics since 2012. The Kid Beowulf series is available to buy in print through Andrews McMeel Publishing.  Kid Beowulf will appeal to fans of Bone, Asterix, TinTin, and Avatar: The Last Airbender.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/kb/large_kb_rec_201702021317.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/kid-beowulf/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Kliban&apos;s Cats</string>
+                <key>shortDesc</key>
+                <string>If by some strange happenstance you have never before seen a Kliban cat drawing, you will instantly recognize that each and every one of them captures the essence of…</string>
+                <key>longDesc</key>
+                <string>If by some strange happenstance you have never before seen a Kliban cat drawing, you will instantly recognize that each and every one of them captures the essence of…. cat. A well-established illustrator and cartoonist (Playboy, The New Yorker, Never Eat Anything Bigger Than Your Head, et al) B. Kliban used to devote off-moments in his studio to drawing his felines Nitty, Norton, Burton Rustle and Noko Marie the Snake. An editor friend saw this work and convinced Kliban to let her take it publishers, and in 1975 Workman published CAT, a huge bestseller which inspired an outbreak of cat love that has not abated to this day. That groundbreaking book was followed by more books, and more drawings, which manifested on calendars, cards, mugs, ceramics, clothing – almost 9,000 unique items to date. And the book that started it all is still in print. Cat people of the world, rejoice -- and savor the twice-a-week pleasure of KLIBAN’S CATS.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/klic/large_rec-201701251557.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/klibans-cats/2018/08/07</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Lard&apos;s World Peace Tips</string>
+                <key>shortDesc</key>
+                <string>Lard&apos;s World Peace Tips&apos; is a unique new comic strip about a small grey man with a mission to create world peace.</string>
+                <key>longDesc</key>
+                <string>&apos;Lard&apos;s World Peace Tips&apos; is a unique new comic strip about a small grey man with a mission to create world peace. Along with his friends Alice and Little Joe and a massive cast of other animals, vegetables and minerals, Lard is set to inspire people of all ages to perform acts of kindness and generosity…or just have a good laugh. In a time of global uncertainty, Lard&apos;s eccentric wisdom offers a witty and unorthodox alternative that might just work...! Go Lard!!!! &apos;Lard&apos;s World Peace Tips&apos; is created by Keith Tutt (Pablo – the little red fox) and illustrator Daniel Saunders.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/ltwp/large_rec-201701251558.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/lards-world-peace-tips/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Lucky Cow</string>
+                <key>shortDesc</key>
+                <string>Drive down any main street in America and you will undoubtedly pass by at least one, most likely two or three restaurants of the fast food variety.</string>
+                <key>longDesc</key>
+                <string>Drive down any main street in America and you will undoubtedly pass by at least one, most likely two or three restaurants of the fast food variety. Pushing burgers, tacos, fried chicken and milk shakes, these quick stops have become a familiar source of comfort for travelers far from home and a favorite stop for a late-night snack. Mark Pett’s LUCKY COW delves into the humor of the fast food, minimum wage experience, as teenagers struggle to balance school, their social lives and working at Lucky Cow and the managers hope to keep major disasters to a minimum during peak business hours. It all adds up to a hilarious combination.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/luc/large_rec-201701251556.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/luckycow/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Microcosm</string>
+                <key>shortDesc</key>
+                <string>Microcosm is a comic that explores our little solar system in this big universe. It is a unique blend of astronomy and science with a whole lot of humor mixed in.</string>
+                <key>longDesc</key>
+                <string>Microcosm is a comic that explores our little solar system in this big universe. It is a unique blend of astronomy and science with a whole lot of humor mixed in. Ever wonder what Pluto thinks about being demoted to a dwarf planet? Or what the gas giants would talk about if they were on Spacebook? Wonder no more! Outer space can be a harsh, unforgiving place, and together our planets are making the best of it.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/quark/large_rec-201701251558.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/microcosm/2018/07/31</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Non Sequitur</string>
+                <key>shortDesc</key>
+                <string>Non Sequitur is Wiley Miller&apos;s wry look at the absurdities of everyday life. A hit with fans of all ages, the strip is syndicated in more than 700 newspapers.</string>
+                <key>longDesc</key>
+                <string>Non Sequitur is Wiley Miller&apos;s wry look at the absurdities of everyday life. A hit with fans of all ages, the strip is syndicated in more than 700 newspapers. Non Sequitur has received four National Cartoonists Society divisional awards, the most prestigious in cartooning. Wiley Miller also won the 2013 Ruben Award for Outstanding Cartoonist of the Year. It is the only comic strip to win the coveted award in its first year of syndication and the only one to ever win in both the best comic strip and best comic panel categories. This hilarious creation is not only creative but also clever. It tackles current cultural issues such as politics, celebrities, male-female relations, materialistic desires and society&apos;s obsession with weight. Non Sequitur will have you laughing at the controversy of everyday life.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/nq/large_rec-201701251555.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/nonsequitur/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Ollie and Quentin</string>
+                <key>shortDesc</key>
+                <string>Ollie and Quentin is a buddy comic about the unlikely friendship between a seagull and an adventurous lugworm.</string>
+                <key>longDesc</key>
+                <string>Ollie and Quentin is a buddy comic about the unlikely friendship between a seagull and an adventurous lugworm. They treat us to their bird&apos;s eye and worm&apos;s eye views of the bizarre human world in which we live. Ollie and Quentin are best friends despite the obvious food chain disparity that suggests Ollie should be more interested in Quentin as a snack rather than as a friend. They both live in the pretty coastal town of Bigley Bay with Nobby, an affable single guy who serves as both foil and witness to their silly, mischievous high jinks.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/oq/large_rec-201701251557.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/ollie-and-quentin/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Pibgorn</string>
+                <key>shortDesc</key>
+                <string>A fantastic saga of adventure both high and low, of forbidden passion and iambic pentameter, of fays, fools, organists, demons, accordions, heaven, ...</string>
+                <key>longDesc</key>
+                <string>A fantastic saga of adventure both high and low, of forbidden passion and iambic pentameter, of fays, fools, organists, demons, accordions, heaven, hell and Shakespeare, Pibgorn follows the whims and flights of its eponymous fairy heroine as she plies her conviction that there must be more to life than depositing dew drops on dandelions and sleeping under mushrooms.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/pib/large_rec-201701251554.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/pibgorn/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Pop Culture Shock Therapy</string>
+                <key>shortDesc</key>
+                <string>Pop Culture Shock Therapy is a single panel newspaper comic by New Jersey cartoonist Doug Bratton that parodies entertainment media, ...</string>
+                <key>longDesc</key>
+                <string>Pop Culture Shock Therapy is a single panel newspaper comic by New Jersey cartoonist Doug Bratton that parodies entertainment media, from television and film to cartoon characters and celebrities. Launched as a self-syndicated feature to college newspapers in 2002, Pop Culture Shock Therapy is now syndicated as a weekly feature by Ink Bottle Syndicate and appears in newspapers throughout the United States. In 2010, Pop Culture Shock Therapy earned its creator a Reuben Division Award Nomination for Best Newspaper comic panel. A combination “best of” collection and humor book titled The Deranged Stalker’s Journal of Pop Culture Shock Therapy was released by Andrews McMeel Publishing.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/pcst/large_rec-201701251557.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/pop-culture-shock-therapy/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>PreTeena</string>
+                <key>shortDesc</key>
+                <string>Remember those transitional years between childhood and adolescence -- the days when you were playing on the swing set one minute, ...</string>
+                <key>longDesc</key>
+                <string>Remember those transitional years between childhood and adolescence -- the days when you were playing on the swing set one minute, and daydreaming about the fifth-grade love of your life the next? This is the life of Teena Keene -- almost 11 years old, a fifth grader and a good student. She’s an avid inline skater and not quite ready to give up her dolls. But makeup and boys, particularly Gordo Brandt, are beginning to vie for her attention. Teena teeters between child and budding teen, and enjoys being a little of both.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/pr/large_rec-201701251555.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/preteena/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Rubes</string>
+                <key>shortDesc</key>
+                <string>Talking cows, less-than-bright kids and multiple varieties of flora and fauna make their appearance in the witty offbeat cartoon panel, ...</string>
+                <key>longDesc</key>
+                <string>Talking cows, less-than-bright kids and multiple varieties of flora and fauna make their appearance in the witty offbeat cartoon panel, Rubes by Leigh Rubin. Rubin’s hilarious cast of characters and absurd view of the world have made Rubes a favorite with readers everywhere.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/crrub/large_rec-201701251555.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/rubes/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Sketchshark Comics</string>
+                <key>shortDesc</key>
+                <string>About Sketchshark Comics Comic Strips</string>
+                <key>longDesc</key>
+                <string>Sketchshark Comics by Megan Dong is a surreal and hilarious comic about everything from depressive Pomeranians to extremely sassy aquatic creatures.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/sketch/large_rec-201701251559.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/sketchshark-comics/2018/03/26</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Speechless</string>
+                <key>shortDesc</key>
+                <string>SPEECHLESS is based on the old adage that a picture is worth a thousand words. It&apos;s mainly visual humor, ...</string>
+                <key>longDesc</key>
+                <string>SPEECHLESS is based on the old adage that a picture is worth a thousand words. It&apos;s mainly visual humor, with the occasional poignant episode thrown in for some relief/balance. At times it may take a bit more observational skills on the part of the reader, but hopefully that very fact will increase the reader&apos;s rewards when they finally &quot;get it&quot;. And appropriately enough, animals which for the most part are &quot;speechless&quot;, will play a majority role in the feature.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/wor/large_rec-201701251557.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/speechless/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Tarzan</string>
+                <key>shortDesc</key>
+                <string>The legendary hero Tarzan enjoys the distinction of starring in the first adventure comic strip, the first continuity strip, ...</string>
+                <key>longDesc</key>
+                <string>The legendary hero Tarzan enjoys the distinction of starring in the first adventure comic strip, the first continuity strip, and the first strip to appeal to readers for multiple generations. Some of these storylines date back decades, but the ape man&apos;s adventures never get old.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/tz/large_rec-201701251556.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/tarzan/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Tank McNamara</string>
+                <key>shortDesc</key>
+                <string>Jeff Millar and Bill Hinds have displayed a knack for finding the absurdity in big-time athletics and using it to turn sports fans into devoted readers</string>
+                <key>longDesc</key>
+                <string>Jeff Millar and Bill Hinds have displayed a knack for finding the absurdity in big-time athletics and using it to turn sports fans into devoted readers - especially with the ever-popular &quot;Sports Jerk of the Year&quot; contest. Sports is Tank McNamara’s beat, his livelihood. A former professional football player who’s now a TV sportscaster, Tank McNamara reports on the breaking sports stories of the day: the hot players and angry coaches, the pending lawsuits and drawn-out strikes, the constant roar and ever-increasing hype that make organized sports one of the world’s most lucrative businesses.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/tm/large_rec-201701251555.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/tankmcnamara/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>The Wandering Melon</string>
+                <key>shortDesc</key>
+                <string>When my melon goes off on a free-style cerebral stroll, untethered from the constraints of boring stuff like logic and reason it sometimes just meanders aimlessly for a while and then eventually returns empty handed.</string>
+                <key>longDesc</key>
+                <string>When my melon goes off on a free-style cerebral stroll, untethered from the constraints of boring stuff like logic and reason it sometimes just meanders aimlessly for a while and then eventually returns empty handed. Other times however, it comes back bearing some interesting little nuggets. For example; an idea for a weird invention or toy, a goofy little animation, a quirky memory from childhood or a slightly dark gag cartoon. Who knows what the wandering melon is going to drag home from its journeys?! OK, ok enough of the melon analogies. The Wandering Melon comic is a collection of “art” resulting from whatever ideas pop into my head. This makes it a little hard to categorize but hopefully it will put a smile on your face or at least make you say, “Hmmm, that was odd”. I hope that you all become HARDCORE and REPEAT Melons!</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/wml/large_rec-201701251558.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/the-wandering-melon/2018/08/04</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Widdershins</string>
+                <key>shortDesc</key>
+                <string>Widdershins is a series of Victorian-era adventure stories, set in the fictional town of Widdershins, ...</string>
+                <key>longDesc</key>
+                <string>Widdershins is a series of Victorian-era adventure stories, set in the fictional town of Widdershins, West Yorkshire- England’s magical epicentre, home to bounty hunters, failed wizards, stage magicians, and more, besides.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/wid/large_wid_rec_201703081409.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/widdershins/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>World of Wonder</string>
+                <key>shortDesc</key>
+                <string>About World of Wonder, for 15 years, World of Wonder has been exploring the realms of history, science, nature and technology in newspapers around the world.</string>
+                <key>longDesc</key>
+                <string>About World of Wonder, for 15 years, World of Wonder has been exploring the realms of history, science, nature and technology in newspapers around the world. Creator Laurie Triefeldt, an award-winning graphic journalist, uses beautiful, full-color illustrations to give readers mini-lessons on such diverse topics as storms, Utah, castles, monarch butterflies, Vikings and jellyfish. In 2007, World of Wonder won the National Cartoonists Society&apos;s award for best newspaper illustration. In 2006 and 2002, World of Wonder also won a Distinguished Achievement Award for Excellence in Educational Publishing from the Association of Educational Publishers.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/wow/large_rec-201701251557.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/world-of-wonder/2018/08/05</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Yaffle</string>
+                <key>shortDesc</key>
+                <string>‘Yaffle’ is a local or dialect English name for the green woodpecker; a fascinating bird possessing an incredibly unique laugh.</string>
+                <key>longDesc</key>
+                <string>‘Yaffle’ is a local or dialect English name for the green woodpecker; a fascinating bird possessing an incredibly unique laugh. Since we are often found perched in trees creating our offbeat panels we thought what better name to use for our strip then one of this wonderful giggling bird! Watch for our little friend secretly hidden in every panel.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/yaff/large_yaff_rec_201803270907.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/yaffle/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Zack Hill</string>
+                <key>shortDesc</key>
+                <string>Ten-year-old Zack now lives with his widowed mother, who runs a boarding house full of oddballs.</string>
+                <key>longDesc</key>
+                <string>Ten-year-old Zack now lives with his widowed mother, who runs a boarding house full of oddballs. A hyperactive kid with an overactive imagination, Zack sometimes causes her to pull her hair out as she tries to make ends meet.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/crzhi/large_rec-201701251556.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/zackhill/2018/08/08</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>9 Chickweed Lane</string>
+                <key>shortDesc</key>
+                <string>A rarity in the comics, 9 Chickweed Lane spotlights music and dance with superb artistry that complements Brooke McEldowney&apos;s strong-minded characters.</string>
+                <key>longDesc</key>
+                <string>A rarity in the comics, 9 Chickweed Lane spotlights music and dance with superb artistry that complements Brooke McEldowney&apos;s strong-minded characters. A popular comic strip about three generations of family, 9 Chickweed Lane features strong characters, flights of fancy and an intuitive grasp of all kinds of relationships. The strip was recognized in 2006 for its brilliant artistry and intellectual humor when it was named Best Newspaper Comic Strip by the National Cartoonists Society. The strip appears in 60 newspapers worldwide, including the Los Angeles Times, Houston Chronicle, Calgary Sun and Columbus Dispatch. Central character Edda Burber is dancing to the beat of a different drummer these days as McEldowney focuses 9 Chickweed Lane more on the story of a young woman who moves away from home to perform with a prestigious metropolitan ballet company in New York City. Although it may seem like a completely new strip, 9 Chickweed Lane is peopled with very familiar friends, like furry feline Solange, and Edda&apos;s childhood friend and recent love interest, Amos.</string>
+                <key>imageUrl</key>
+                <string>https://avatar.amuniversal.com/feature_avatars/recommendation_images/features/cw/large_rec-201701251556.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.gocomics.com/9chickweedlane/2018/08/08</string>
+            </dict>
+        </array>
+        <key>news</key>
+        <array>
+            <dict>
+                <key>title</key>
+                <string>A 347-Acre Estate in Kent, England, Lists for £5.675M</string>
+                <key>content</key>
+                <string>A 347-acre agricultural and residential estate in Kent, England, hit the market earlier this month for £5.675 million (US$7.25 million), according to a spokesperson for BTF Partnership, the brokerage representing the property.
+                    
+                    The property has been owned by the Thoburn family for the past 100 years, but they are selling upon the death of Patricia Thoburn at 90 years old last October, according to a news release. The Thoburn family could not be reached for comment.</string>
+                <key>imageUrl</key>
+                <string>https://mansion-global-app.s3.amazonaws.com/article-images/2018/08/high-res-36549_006.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.mansionglobal.com/articles/a-347-acre-estate-in-kent-england-lists-for-5-675m-106100</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>Lake Tahoe Home Where Howard Hughes Lived Until His Death Sells for $17.5M</string>
+                <key>content</key>
+                <string>A lakefront property in Lake Tahoe, Nevada, owned for more than two decades by the notorious businessman, pilot and director Howard Hughes, has sold for $17.5 million after being on and off the market for five years, listing records show.</string>
+                <key>imageUrl</key>
+                <string>https://mansion-global-app.s3.amazonaws.com/article-images/2018/08/HowardHughesTahoeHouse.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.mansionglobal.com/articles/lake-tahoe-home-where-howard-hughes-lived-until-his-death-sells-for-17-5m-106586</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>London Buyer Demographic Shifting</string>
+                <key>content</key>
+                <string>The demographics and motivation of buyers in London is shifting, as the capital comes to terms with the upcoming Brexit and property tax changes, according to a report Monday from Black Brick, a London-based real estate agency.</string>
+                <key>imageUrl</key>
+                <string>https://static.mansionglobal.com/production/media/article-images/de641617b43185fc98336137f82e3534/large_GettyImages-9407002461.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.mansionglobal.com/articles/london-buyer-demographic-shifting-106256</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>Toll Brothers Profit Jumps as Wealthy Americans Spend</string>
+                <key>content</key>
+                <string>One of the nation’s largest builders of high-end homes rode strong sales to a 30% jump in quarterly profit, bucking weakness in the broader U.S. housing market and bolstering evidence that the wealthiest Americans are spending big as the economy strengthens.</string>
+                <key>imageUrl</key>
+                <string>https://static2.mansionglobal.com/production/media/article-images/f376d3cb4b3ecbe0fbc34dc05cf2f7a2/large_S1-AV642_TOLLBR_M_20180820183708.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.mansionglobal.com/articles/toll-brothers-profit-jumps-as-wealthy-americans-spend-106306</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>Supertalls Give a Boost Manhattan Luxury Activity</string>
+                <key>content</key>
+                <string>Manhattan’s supertall luxury towers brought some eye-popping sales to an otherwise unimpressive week for the borough’s high-end real estate market, according to the Olshan Report on Monday.</string>
+                <key>imageUrl</key>
+                <string>https://static2.mansionglobal.com/production/media/article-images/f16c19b8ac54e871bd6f830d643f1a89/large_GettyImages-643997141.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.mansionglobal.com/articles/supertalls-give-a-boost-manhattan-luxury-activity-106072</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>New N.Y. Rangers Coach David Quinn Buys $2.6M Chelsea Loft</string>
+                <key>content</key>
+                <string>David Quinn, the new head coach of the New York Rangers, is putting down roots in the Big Apple, starting with a $2.67 million loft in Chelsea.
+                    
+                    Mr. Quinn, who’s making the move to New York City following a five-year stint as the men's hockey coach at Boston University, closed Wednesday afternoon on a one-bedroom apartment at Chelsea Mercantile, a 100-year-old, limestone-clad garment factory converted into luxury condominiums.</string>
+                <key>imageUrl</key>
+                <string>https://mansion-global-app.s3.amazonaws.com/article-images/2018/08/rangers2.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.mansionglobal.com/articles/new-rangers-coach-david-quinn-buys-2-6m-chelsea-loft-106439</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>Meryl Streep Lists Tribeca Penthouse for Almost $25 Million</string>
+                <key>content</key>
+                <string>Meryl Streep, who holds the record for the most Academy Award nominations of any actor, is making some changes to her real estate portfolio.
+                    
+                    On Thursday, she put her Manhattan penthouse on the market for $24.6 million.</string>
+                <key>imageUrl</key>
+                <string>https://m.wsj.net/video/20180823/082318_streep/082318_streep_1280x720.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.mansionglobal.com/articles/meryl-streep-lists-tribeca-penthouse-for-almost-25-million-106259</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>TV's writers' rooms have a mother of a problem</string>
+                <key>content</key>
+                <string>The writer's assistant was exhausted.
+                    It was April, she was spending 10 to 12 hours a day working on a production for a comedy pilot, and the baby she was carrying was due in the first week of May.
+                    "I was real knocked up," she says, with the kind of comedic edge to her voice that implies she's someone who knows how to deliver a perfectly timed punchline.</string>
+                <key>imageUrl</key>
+                <string>https://cdn.cnn.com/cnnnext/dam/assets/180726141620-mother-screen-writers-super-169.jpg</string>
+                <key>pageUrl</key>
+                <string>https://edition.cnn.com/2018/08/03/entertainment/tv-writer-moms-part-1/index.html</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>Talbingo residents worried the town's tourism will suffer from Snowy 2.0</string>
+                <key>content</key>
+                <string>Residents in the town of Talbingo in southern New South Wales are worried the Snowy 2.0 project will destroy their town.
+                    
+                    In the summer months, locals said the population of the small country town grew ten-fold, mostly thanks to water sport enthusiasts who flocked to Talbingo Dam.
+                    
+                    But, if Snowy Hydro's project goes ahead, there are concern boats could be banned from using the waterway while construction works are completed.</string>
+                <key>imageUrl</key>
+                <string>http://www.abc.net.au/news/image/10078838-3x2-700x467.jpg</string>
+                <key>pageUrl</key>
+                <string>http://www.abc.net.au/news/2018-08-24/talbingo-tourism-threatened-by-snowy-scheme/10078388</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>Super Netball: Meet 'silent assassin' Karla Pretorius, Sunshine Coast Lightning's grand final weapon</string>
+                <key>content</key>
+                <string>Sunshine Coast Lightning goal defence, Karla Pretorius, will play a vital role in her team's attempt to create history and win back-to-back Super Netball titles in Perth this weekend.</string>
+                <key>imageUrl</key>
+                <string>http://www.abc.net.au/news/image/10160384-3x2-700x467.jpg</string>
+                <key>pageUrl</key>
+                <string>http://www.abc.net.au/news/2018-08-24/super-netball:sunshine-coast-lightning-grand-final/10160292</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>Hurricane Lane brings torrential rains to Hawaii&apos;s Big Island</string>
+                <key>content</key>
+                <string>Nearly 20 inches of rain fell on parts of Hawaii’s Big Island as Hurricane Lane approached the state early Friday, with flooding and landslides blocking roads.
+                    
+                    Lane weakened to a Category 3 storm, but by 5 p.m. local time Thursday (11 p.m. ET) still had maximum sustained winds of 120 mph Thursday. The hurricane&apos;s center was around 240 miles south of Honolulu, and was moving north-northwest at 6 mph.</string>
+                <key>imageUrl</key>
+                <string>https://media4.s-nbcnews.com/j/MSNBC/Components/Video/201808/f_mash_la_hawaii_ugc2_180823.860;484;7;70;5.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.nbcnews.com/news/weather/torrential-rains-hit-hawaii-s-big-island-hurricane-lane-approaches-n903316</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>Cincinnati Enquirer tweet goes viral after masses confuse them with supermarket tabloid</string>
+                <key>content</key>
+                <string>The National Enquirer is gracing the nation’s headlines again on Thursday, but somehow a newsroom in Cincinnati is receiving all the attention on social media.</string>
+                <key>imageUrl</key>
+                <string>https://media4.s-nbcnews.com/j/newscms/2018_34/2542381/180823-Cincinnati-Enquirer-ac-848p_dc308f3be97a5d755c7e8d00c1c0a7f8.fit-2000w.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.nbcnews.com/news/us-news/cincinnati-enquirer-tweet-goes-viral-after-masses-confuse-them-supermarket-n903401</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>Trump, allies use Mollie Tibbetts killing as rallying cry, but her family is not on board</string>
+                <key>content</key>
+                <string>President Donald Trump and his Republican allies seem to be convinced there is political gold in the tragic death of Iowa college student Mollie Tibbetts — and they began mining for it as soon as her accused killer was identified as a Mexican immigrant.</string>
+                <key>imageUrl</key>
+                <string>https://media1.s-nbcnews.com/j/newscms/2018_34/2541616/180823-mollie-tibbetts-al-1124_c48637c3e4c2ea12c5dfcbc6dfccb7ae.fit-2000w.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.nbcnews.com/news/us-news/trump-allies-use-mollie-tibbetts-killing-rallying-cry-her-family-n903226</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>Mexican psychedelics meets lasers: Meet Burning Man favorite Mayan Warrior</string>
+                <key>content</key>
+                <string>Much of the nightlife for the nearly 70,000 attendees of the upcoming Burning Man 2018 is inspired by DJ sound systems in portable venues, resulting in open-air raves raging into the morning hours amid Nevada&apos;s Black Rock Desert.</string>
+                <key>imageUrl</key>
+                <string>https://media4.s-nbcnews.com/j/newscms/2018_33/2536156/180818-art-car-mayan-warrior-1-ew-628p_c45d12e8fc2736f8215c1a57738e2c07.fit-2000w.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.nbcnews.com/news/latino/mexican-psychedelics-meets-lasers-meet-burning-man-favorite-mayan-warrior-n901841</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>Hurricane Lane on course for collision with Hawaii</string>
+                <key>content</key>
+                <string>Hawaii residents strapped in and forecasters warned of &quot;life-threatening impacts&quot; for the arrival of what could turn out to be the strongest hurricane to hit the islands in a quarter-century.</string>
+                <key>imageUrl</key>
+                <string>https://media2.s-nbcnews.com/j/MSNBC/Components/Video/201808/nc_hawaii_preps_180822.860;484;7;70;5.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.nbcnews.com/news/weather/life-threatening-hurricane-lane-course-overnight-collision-hawaii-n903016</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>Verizon admits &apos;throttling&apos; data to Calif. firefighters amid blaze</string>
+                <key>content</key>
+                <string>Verizon is admitting that it made a mistake in slowing the wireless data speeds of California firefighters as they battled what has been called the largest fire in state history this month.</string>
+                <key>imageUrl</key>
+                <string>https://media2.s-nbcnews.com/j/newscms/2018_32/2527996/180811-mendocino-complex-fire-al-1634_07b57e830c4c319e4d326b07e1f53483.fit-2000w.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.nbcnews.com/tech/tech-news/verizon-admits-throttling-data-calif-firefighters-amid-blaze-n902991</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>DNA tells the story of a Neanderthal mom and a Denisovan dad</string>
+                <key>content</key>
+                <string>People’s sexual indiscretions may follow them for a very long time. Scientists say they just determined that the bone of a girl who died 50,000 years ago shows that she had a Neanderthal mother and a Denisovan father.</string>
+                <key>imageUrl</key>
+                <string>https://media4.s-nbcnews.com/j/newscms/2018_34/2540401/180822-denisova-cave-view-above-crop-se-344p_625e3187946f8d212a1706a6d0c8c4de.fit-2000w.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.nbcnews.com/science/science-news/dna-tells-story-neanderthal-mom-denisovan-dad-n902961</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>Mollie Tibbetts case: Undocumented immigrant charged with murder of missing Iowa student</string>
+                <key>content</key>
+                <string>An undocumented immigrant has been charged with the murder of a University of Iowa college student who was last seen during an evening jog over a month ago, authorities said Tuesday.
+                    
+                    Cristhian Bahena Rivera, 24, was charged with first-degree murder in the death of Mollie Tibbetts, 20, according to the Iowa Division of Criminal Investigation.</string>
+                <key>imageUrl</key>
+                <string>https://media4.s-nbcnews.com/j/MSNBC/Components/Video/201808/tdy_news_mott_iowa_mollie_180822_1920x1080.860;484;7;70;5.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.nbcnews.com/news/us-news/mollie-tibbetts-missing-iowa-college-student-believed-be-found-dead-n902471</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>The Goutte d’Or - emerging design hub of Paris</string>
+                <key>content</key>
+                <string>“What I really like is the feeling of being in a village,” said furniture designer Fabrice Daigremont. “Everyone knows each other. If you need advice or to borrow a tool, you can just pop into one of the other workshops and someone will be able to help.” Daigremont, who designs and makes high-end lamps, tables and stools alongside his work as an architect, is talking about the Goutte d’Or district of north Paris, where he has a showroom and workshop.</string>
+                <key>imageUrl</key>
+                <string>http://ichef.bbci.co.uk/wwfeatures/wm/live/1600_640/images/live/p0/6j/50/p06j50nr.jpg</string>
+                <key>pageUrl</key>
+                <string>http://www.bbc.com/travel/story/20180823-the-goutte-dor-emerging-design-hub-of-paris</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>Is this phrase the Swiss Army knife of Japanese?</string>
+                <key>content</key>
+                <string>There are some languages where deploying one tiny little phrase unlocks doors.
+                    It’s a phrase that “makes Japan go around,” according to Shihoko Goto, senior associate at the Woodrow Wilson Center, a US think tank, referring to a commonplace (yet ambiguous) Japanese phrase: ‘yoroshiku onegaishimasu’.</string>
+                <key>imageUrl</key>
+                <string>http://ichef.bbci.co.uk/wwfeatures/wm/live/1600_640/images/live/p0/6h/qk/p06hqknm.jpg</string>
+                <key>pageUrl</key>
+                <string>http://www.bbc.com/capital/story/20180821-is-this-phrase-the-swiss-army-knife-of-japanese</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>How to make flavoured vodka</string>
+                <key>content</key>
+                <string>Want some inspiration for your next kitchen project? Try making your own flavoured vodka with our easy step-by-step technique and recipes. Whether you want something fresh and fruity, savoury and herby or clean and crisp with a spicy kick, we have something to fill up your glass. </string>
+                <key>imageUrl</key>
+                <string>https://www.bbcgoodfood.com/sites/default/files/guide/guide-image/2018/08/cosmo-cocktail.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.bbcgoodfood.com/howto/guide/how-make-flavoured-vodka</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>Norway’s plan for a fleet of electric plannes</string>
+                <key>content</key>
+                <string>In July 2018, Norway’s transport minister Ketil Solvik-Olsen and Dag Falk-Petersen, the head of the country’s airport company Avinor, took a very special flight together.
+                    In front of the press they squeezed into the cockpit of a two-seat plane made by the Slovenian company Pipistrel. With Falk-Petersen at the controls, the pair took a short flight lasting a few minutes around Oslo in an Alpha Electro G2.</string>
+                <key>imageUrl</key>
+                <string>http://ichef.bbci.co.uk/wwfeatures/wm/live/1600_640/images/live/p0/6j/56/p06j5655.jpg</string>
+                <key>pageUrl</key>
+                <string>http://www.bbc.com/future/story/20180814-norways-plan-for-a-fleet-of-electric-planes</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>Aerial photos reveal the stark divide between rich and poor</string>
+                <key>content</key>
+                <string>The photos are part of Mr Miller&apos;s Unequal Scenes project, which he started in April 2016 to challenge people&apos;s acceptance of inequality.
+                    The South African-based photographer says: &quot;From the minute you land in Cape Town, you are surrounded by shacks.</string>
+                <key>imageUrl</key>
+                <string>https://ichef.bbci.co.uk/news/976/cpsprodpb/1066C/production/_103108176_mdrum_rich_meets_poor-18.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.bbc.com/news/in-pictures-45257901</string>
+            </dict>
+            <dict>
+                <key>title</key>
+                <string>A Grade II-Listed House in Surrey on Five Acres</string>
+                <key>content</key>
+                <string>This almost 700-year-old country house on the outskirts of a quaint English village is looking for a new lord or lady of the manor.
+                    
+                    Known as Barhatch Farm, the Grade II-listed house is a &quot;seriously historic house,&quot; according to listing agent Lottie Geaves of Savills.</string>
+                <key>imageUrl</key>
+                <string>https://m.wsj.net/video/20180821/082218lotd_uk/082218lotd_uk_1280x720.jpg</string>
+                <key>pageUrl</key>
+                <string>https://www.mansionglobal.com/articles/a-grade-ii-listed-house-in-surrey-on-five-acres-105547</string>
+            </dict>
+        </array>
+        <key>films</key>
+        <array>
+            <dict>
+                <key>name</key>
+                <string>The Nun</string>
+                <key>releaseDate</key>
+                <string>2018-09-07</string>
+                <key>synopsis</key>
+                <string>When a young nun at a cloistered abbey in Romania takes her own life, a priest with a haunted past and a novitiate on the threshold of her final vows are sent by the Vatican to investigate. Together they uncover the order's unholy secret. Risking not only their lives but their faith and their very souls, they confront a malevolent force in the form of the same demonic nun that first terrorized audiences in "The Conjuring 2", as the abbey becomes a horrific battleground between the living and the damned.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/246316/246316h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/246316_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>The Predator</string>
+                <key>releaseDate</key>
+                <string>2018-09-13</string>
+                <key>synopsis</key>
+                <string>From the outer reaches of space to the small-town streets of suburbia, the hunt comes home in Shane Black's explosive reinvention of the Predator series. Now, the universe's most lethal hunters are stronger, smarter and deadlier than ever before, having genetically upgraded themselves with DNA from other species. When a young boy accidentally triggers their return to Earth, only a ragtag crew of ex-soldiers and a disgruntled science teacher can prevent the end of the human race.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/227902/227902h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/227902_uk_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Bohemian Rhapsody</string>
+                <key>releaseDate</key>
+                <string>2018-10-24</string>
+                <key>synopsis</key>
+                <string>Bohemian Rhapsody is a foot-stomping celebration of Queen, their music and their extraordinary lead singer Freddie Mercury, who defied stereotypes and shattered convention to become one of the most beloved entertainers on the planet. The film traces the meteoric rise of the band through their iconic songs and revolutionary sound, their near-implosion as Mercury's lifestyle spirals out of control, and their triumphant reunion on the eve of Live Aid, where Mercury, facing a life-threatening illness, leads the band in one of the greatest performances in the history of rock music. In the process, cementing the legacy of a band that were always more like a family, and who continue to inspire outsiders, dreamers and music lovers to this day.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/249928/249928h1.jpg</string>
+                <key>trailerUrl</key>
+                <string></string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>The House With A Clock In Its Walls</string>
+                <key>releaseDate</key>
+                <string>2018-09-21</string>
+                <key>synopsis</key>
+                <string>In the tradition of Amblin classics where fantastical events occur in the most unexpected places, Jack Black and two-time Academy Award® winner Cate Blanchett star in THE HOUSE WITH A CLOCK IN ITS WALLS, from Amblin Entertainment.  The magical adventure tells the spine-tingling tale of 10-year-old Lewis (Owen Vaccaro) who goes to live with his uncle in a creaky old house with a mysterious tick-tocking heart.  But his new town's sleepy façade jolts to life with a secret world of warlocks and witches when Lewis accidentally awakens the dead.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/258136/258136h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/258136_uk_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Funny Girl: The Musical</string>
+                <key>releaseDate</key>
+                <string>2018-10-24</string>
+                <key>synopsis</key>
+                <string>Funny Girl first opened on Broadway on the 26th March 1964 at the Winter Garden Theatre. It later transferred to the Majestic Theatre and The Broadway Theatre and closed in 1967.The original book was written by Isobel Lennart, music composed by Jule Styne and lyrics written by Bob Merrill. The musical is semi-biographical, based on the life and career of Broadway star, film actress and Comedienne Fanny Brice. Lennart originally named the book for the show My Man; this was changed to Funny Girl during the creation of the production. Ray Stark, Brice's son-in-law via her daughter Frances, produced the original version of the stage show.</string>
+                <key>imageUrl</key>
+                <string></string>
+                <key>trailerUrl</key>
+                <string></string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>The Wife</string>
+                <key>releaseDate</key>
+                <string>2018-09-28</string>
+                <key>synopsis</key>
+                <string>After nearly forty years of marriage, JOAN and JOE CASTLEMAN (Glenn Close and Jonathan Pryce) are complements. Where Joe is casual, Joan is elegant. Where Joe is vain, Joan is self-effacing. And where Joe enjoys his very public role as Great American Novelist, Joan pours her considerable intellect, grace, charm, and diplomacy into the private role of Great Man's Wife. Joe is about to be awarded the Nobel Prize for his acclaimed and prolific body of work. Joe's literary star has blazed since he and Joan first met in the late 1950. THE WIFE interweaves the story of the couple's youthful passion and ambition with a portrait of a marriage, thirty-plus years later - a lifetime's shared compromises, secrets, betrayals, and mutual love.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/255318/255318h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/255318_uk_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Mirai (Mirai no Mirai)</string>
+                <key>releaseDate</key>
+                <string>2018-11-02</string>
+                <key>synopsis</key>
+                <string>Kun, a little boy, enjoys a happy childhood until the arrival of his baby sister, Mirai. As the new baby becomes the center of his parents' attention, he becomes increasingly jealous. Little by little, he withdraws into himself. In the backyard where he likes to take refuge, grows a magical family tree. Kun finds himself suddenly catapulted into a fantastic world where the past and the present mingle. One after another, he meets his relatives at different ages: his mother, as a little girl; his great-grandfather, as an energetic young man; and his little sister, as a teenager. Through these adventures, Kun is able to discover his own story.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/267369/267369h1.jpg</string>
+                <key>trailerUrl</key>
+                <string></string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Faces, Places (Visages, villages)</string>
+                <key>releaseDate</key>
+                <string>2018-09-21</string>
+                <key>synopsis</key>
+                <string>Agnes Varda and JR have things in common: their passion for images in general and more particularly questionning the places where they are showed, how they are shared, exposed. Agnès chose cinema. JR chose to create open-air photographic galleries.When Agnès and JR met in 2015, they immediately wanted to work together, shoot a film in France, far from the cities. Random encounters or prepared projects, they will go towards the others and get them to follow them on their trip with JR's photographic truck. The film is also about their friendship that grows during the shooting, between surprises and malice, laughing of their differences.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/249715/249715h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/249715_uk_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>The King of Thieves</string>
+                <key>releaseDate</key>
+                <string>2018-09-14</string>
+                <key>synopsis</key>
+                <string>KING OF THIEVES is the incredible true story of the spectacular Hatton Garden diamond heist, the biggest and most daring in British history, humorously told through career best performances from a stellar cast.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/271194/271194h2.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/271194_uk_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>A Simple Favor</string>
+                <key>releaseDate</key>
+                <string>2018-09-21</string>
+                <key>synopsis</key>
+                <string>A SIMPLE FAVOR, directed by Paul Feig, centers around Stephanie (Anna Kendrick), a mommy vlogger who seeks to uncover the truth behind her best friend Emily's (Blake Lively) sudden disappearance from their small town. Stephanie is joined by Emily's husband Sean (Henry Golding) in this stylish thriller filled with twists and betrayals, secrets and revelations, love and loyalty, murder and revenge.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/267479/267479h1.jpg</string>
+                <key>trailerUrl</key>
+                <string></string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Crazy Rich Asians</string>
+                <key>releaseDate</key>
+                <string>2018-09-14</string>
+                <key>synopsis</key>
+                <string>"Crazy Rich Asians" follows native New Yorker Rachel Chu (Wu) as she accompanies her longtime boyfriend, Nick Young (Golding), to his best friend's wedding in Singapore.  Excited about visiting Asia for the first time but nervous about meeting Nick's family, Rachel is unprepared to learn that Nick has neglected to mention a few key details about his life.  It turns out that he is not only the scion of one of the country's wealthiest families but also one of its most sought-after bachelors.  Being on Nick's arm puts a target on Rachel's back, with jealous socialites and, worse, Nick's own disapproving mother (Yeoh) taking aim.  And it soon becomes clear that while money can't buy love, it can definitely complicate things.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/245041/245041h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/245041_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>American Animals</string>
+                <key>releaseDate</key>
+                <string>2018-09-07</string>
+                <key>synopsis</key>
+                <string>The extraordinary and thrilling true story of four friends (Evan Peters, Barry Keoghan, Blake Jenner, and Jared Abrahamson) living an ordinary existence who brazenly attempt to execute one of the most audacious art heists in US history. But not everything is as it seems, and as the daring theft unfolds through each of their perspectives, each of them start to question whether their attempts to inject excitement and purpose into their lives is simply a misguided attempt at achieving the American Dream.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/263762/263762h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/263762_uk_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Black 47</string>
+                <key>releaseDate</key>
+                <string>2018-09-07</string>
+                <key>synopsis</key>
+                <string>One man's ruthless pursuit of justice plays out against the darkest chapter of Irish history in this riveting revenge thriller. In 1847, battle-hardened soldier Feeney (James Frecheville) deserts the British army to return home to Ireland, where he finds his country ravaged beyond recognition by the Great Famine. When he discovers that his mother has died of starvation and his brother has been hanged by the British, something snaps, sending Feeney on a relentless quest to get even with the powers-that-be who have wronged both his family and his country. There is only one man who can stop Feeney's bloody crusade: disgraced British army veteran Hannah (Hugo Weaving), whose own loyalties may be more complex than they appear</string>
+                <key>imageUrl</key>
+                <string></string>
+                <key>trailerUrl</key>
+                <string></string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string></string>
+                <key>releaseDate</key>
+                <string></string>
+                <key>synopsis</key>
+                <string></string>
+                <key>imageUrl</key>
+                <string></string>
+                <key>trailerUrl</key>
+                <string></string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>The Miseducation of Cameron Post</string>
+                <key>releaseDate</key>
+                <string>2018-09-07</string>
+                <key>synopsis</key>
+                <string>Cameron Post (Chloë Grace Moretz) looks the part of a perfect high school girl. But after she's caught with another girl in the back seat of a car on prom night, Cameron is quickly shipped off to a conversion therapy center that treats teens struggling with same-sex attraction. At the facility, Cameron is subjected to outlandish discipline, dubious de-gaying methods, and earnest Christian rock songs but this unusual setting also provides her with an unlikely gay community. For the first time, Cameron connects with peers, and she's able to find her place among fellow outcasts.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/263768/263768h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/263768_uk_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Matangi/Maya/M.I.A</string>
+                <key>releaseDate</key>
+                <string>2018-09-21</string>
+                <key>synopsis</key>
+                <string>Drawn from a cache of personal video recordings from the past 22 years, director Steve Loveridge's Sundance award winning MATANGI / MAYA / M.I.A. is a startlingly personal profile of the critically acclaimed artist, chronicling her remarkable journey from refugee immigrant to pop star. She began as Matangi. Daughter of the founder of Sri Lanka's armed Tamil resistance, she hid from the government in the face of a vicious and bloody civil war. When her family fled to the UK, she became Maya, a precocious and creative immigrant teenager in London. Finally, the world met her as M.I.A. when she emerged on the global stage, having created a mashup, cut-and-paste identity that pulled from every corner of her journey along the way; a sonic sketchbook that blended Tamil politics, art school punk, hip-hop beats and the unwavering, ultra-confident voice of a burgeoning multicultural youth. Never one to compromise on her vision, Maya kept her camera rolling throughout. MATANGI / MAYA / M.I.A. provides unparalleled, intimate access to the artist in her battles with the music industry and mainstream media as her success and fame explodes, becoming one of the most recognizable, outspoken and provocative voices in music today.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/263812/263812h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/263812_uk_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Disney's Christopher Robin</string>
+                <key>releaseDate</key>
+                <string>2018-08-17</string>
+                <key>synopsis</key>
+                <string>In the heat-warming live action adventure "Disney's Christopher Robin" the young boy who loved embarking on adventures in the Hundred Acre Wood with a band of spirited and loveable stuffed animals, has grown up and lost his way. Now it is up to his childhood friends to venture into our world and help Christopher Robin remember the loving and playful boy who is still inside.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/264884/264884h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/264884_high_V2.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>The Happytime Murders</string>
+                <key>releaseDate</key>
+                <string>2018-08-17</string>
+                <key>synopsis</key>
+                <string>No Sesame. All Street. THE HAPPYTIME MURDERS is a filthy comedy set in the underbelly of Los Angeles where puppets and humans coexist. Two clashing detectives with a shared secret, one human (Melissa McCarthy) and one puppet, are forced to work together again to solve the brutal murders of the former cast of a beloved classic puppet television show.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/219035/219035h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/219035_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Mamma Mia! Here We Go Again</string>
+                <key>releaseDate</key>
+                <string>2018-07-20</string>
+                <key>synopsis</key>
+                <string>Ten years after Mamma Mia! The Movie, you are invited to return to the magical Greek island of Kalokairi in an all-new original musical based on the songs of ABBA.  With the film's original cast returning and new additions including Lily James (Cinderella, Baby Driver). As the film goes back and forth in time to show how relationships forged in the past resonate in the present, James will play the role of Young Donna.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/251463/251463h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/251463_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>The Meg</string>
+                <key>releaseDate</key>
+                <string>2018-08-10</string>
+                <key>synopsis</key>
+                <string>A deep-sea submersible part of an international undersea observation program has been attacked by a massive creature, previously thought to be extinct, and now lies disabled at the bottom of the deepest trench in the Pacific with its crew trapped inside. With time running out, expert deep sea rescue diver Jonas Taylor is recruited by a visionary Chinese oceanographer, against the wishes of his daughter Suyin, to save the crew and the ocean itself from this unstoppable threat: a pre-historic 75-foot-long shark known as the Megalodon. What no one could have imagined is that, years before, Taylor had encountered this same terrifying creature. Now, teamed with Suyin, he must confront his fears and risk his own life to save everyone trapped below bringing him face to face once more with the greatest and largest predator of all time.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/232774/232774h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/232774_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Searching</string>
+                <key>releaseDate</key>
+                <string>2018-08-31</string>
+                <key>synopsis</key>
+                <string>After David Kim (John Cho)'s 16-year-old daughter goes missing, a local investigation is opened and a detective is assigned to the case. But 37 hours later and without a single lead, David decides to search the one place no one has looked yet, where all secrets are kept today: his daughter's laptop. In a hyper-modern thriller told via the technology devices we use every day to communicate, David must trace his daughter's digital footprints before she disappears forever.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/8517/008517h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/8517_uk_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>The Incredibles 2</string>
+                <key>releaseDate</key>
+                <string>2018-07-13</string>
+                <key>synopsis</key>
+                <string>Everyone's favorite family of superheroes is back in Incredibles 2 but this time Helen (voice of Holly Hunter) is in the spotlight, leaving Bob (voice of Craig T. Nelson) at home with Violet (voice of Sarah Vowell) and Dash (voice of Huck Milner) to navigate the day-to-day heroics of normal life. It's a tough transition for everyone, made tougher by the fact that the family is still unaware of baby Jack-Jack's emerging superpowers. When a new villain hatches a brilliant and dangerous plot, the family and Frozone (voice of Samuel L. Jackson) must find a way to work together again which is easier said than done, even when they're all Incredible.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/219672/219672h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/219672_high_V3.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>BlacKkKlansman</string>
+                <key>releaseDate</key>
+                <string>2018-08-24</string>
+                <key>synopsis</key>
+                <string>From visionary filmmaker Spike Lee comes the incredible true story of an American hero. It's the early 1970s, and Ron Stallworth (John David Washington) is the first African-American detective to serve in the Colorado Springs Police Department. Determined to make a name for himself, Stallworth bravely sets out on a dangerous mission: infiltrate and expose the Ku Klux Klan. The young detective soon recruits a more seasoned colleague, Flip Zimmerman (Adam Driver), into the undercover investigation of a lifetime. Together, they team up to take down the extremist hate group as the organization aims to sanitize its violent rhetoric to appeal to the mainstream. Produced by the team behind the Academy-Award winning Get Out.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/269760/269760h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/269760_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>The Equalizer 2</string>
+                <key>releaseDate</key>
+                <string>2018-08-17</string>
+                <key>synopsis</key>
+                <string>Denzel Washington returns to one of his signature roles in the first sequel of his career. Robert McCall serves an unflinching justice for the exploited and oppressed - but how far will he go when that is someone he loves?</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/212415/212415h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/212415_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Yardie</string>
+                <key>releaseDate</key>
+                <string>2018-08-24</string>
+                <key>synopsis</key>
+                <string>On a hot night in Kingston, Jamaica, 1973, Jerry Dread stops the music at an outdoor party to encourage a truce between warring gangs. His little brother Denis looks on from the crowd as an assassin's bullet rings out, taking Jerry's life. A decade later, Denis is the right-hand man to gang-boss Fox, who sends him on a loyalty-testing mission to London. But when the mission goes wrong, Denis hides out with an old flame and decides to find his brother's killer.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/263807/263807h2.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/263807_uk_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Hotel Transylvania 3: Summer Vacation</string>
+                <key>releaseDate</key>
+                <string>2018-07-27</string>
+                <key>synopsis</key>
+                <string>In Sony Pictures Animation's Hotel Transylvania 3, Mavis surprises Dracula with a family voyage on a luxury monster cruise ship so he can take a summer vacation from providing everyone else's vacation at the hotel, and the rest of Drac's Pack cannot resist tagging along.   The monsters are all having a great time, indulging in all of the shipboard fun the cruise has to offer, from monster volleyball to colossus sized buffets and exotic excursions, but then the unexpected happens as Drac falls for the intriguing-yet-dangerous captain of the ship.  Balancing family, friends, and a budding romance might just be too much, even for the most powerful vampire.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/221876/221876h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/221876_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>The Children Act</string>
+                <key>releaseDate</key>
+                <string>2018-08-24</string>
+                <key>synopsis</key>
+                <string>As her marriage to Jack (Stanley Tucci) flounders, eminent High Court judge Fiona Maye (Emma Thompson) has a life-changing decision to make at work - should she force a teenage boy, Adam (Fionn Whitehead), to have the blood transfusion that will save his life? Her unorthodox visit to his hospital bedside has a profound impact on them both, stirring strong new emotions in the boy and long-buried feelings in her.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/255308/255308h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/255308_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>The Spy Who Dumped Me</string>
+                <key>releaseDate</key>
+                <string>2018-08-24</string>
+                <key>synopsis</key>
+                <string>Audrey (Mila Kunis) and Morgan (Kate McKinnon), two thirty-year-old best friends in Los Angeles, are thrust unexpectedly into an international conspiracy when Audrey's ex-boyfriend shows up at their apartment with a team of deadly assassins on his trail. Surprising even themselves, the duo jump into action, on the run throughout Europe from assassins and a suspicious-but-charming British agent, as they hatch a plan to save the world.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/250293/250293h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/250293_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Ant-Man and the Wasp</string>
+                <key>releaseDate</key>
+                <string>2018-08-03</string>
+                <key>synopsis</key>
+                <string>From the Marvel Cinematic Universe comes a new chapter featuring heroes with the astonishing ability to shrink: "Ant-Man and The Wasp". In the aftermath of "Captain America:  Civil War", Scott Lang (Rudd) grapples with the consequences of his choices as both a Super Hero and a father.  As he struggles to rebalance his home life with his responsibilities as Ant-Man, he's confronted by Hope van Dyne (Lilly) and Dr. Hank Pym (Douglas) with an urgent new mission. Scott must once again put on the suit and learn to fight alongside The Wasp as the team works together to uncover secrets from their past.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/219670/219670h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/219670_high_V2.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Mission: Impossible - Fallout</string>
+                <key>releaseDate</key>
+                <string>2018-07-25</string>
+                <key>synopsis</key>
+                <string>The best intentions often come back to haunt you.  MISSION: IMPOSSIBLE - FALLOUT finds Ethan Hunt (Tom Cruise) and his IMF team (Alec Baldwin, Simon Pegg, Ving Rhames) along with some familiar allies (Rebecca Ferguson, Michelle Monaghan) in a race against time after a mission gone wrong.  Henry Cavill, Angela Bassett, and Vanessa Kirby also join the dynamic cast with filmmaker Christopher McQuarrie returning to the helm.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/241678/241678h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/241678_high_V2.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>The Festival</string>
+                <key>releaseDate</key>
+                <string>2018-08-17</string>
+                <key>synopsis</key>
+                <string>When Nick's (Joe Thomas) girlfriend dumps him at graduation, he has a colossal meltdown in front of the entire university. He's convinced his life is over, but his best mate Shane (Hammed Animashaun) has the perfect solution: three days at an epic music festival. With the help of "festival aficionado" and certified oddball Amy (Emmy Award? nominee Claudia O'Doherty), Shane tries to get Nick to embrace the music, the mayhem and the mud.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/261298/261298h2.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/261298_uk_high_V2.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Luis and the Aliens</string>
+                <key>releaseDate</key>
+                <string>2018-08-24</string>
+                <key>synopsis</key>
+                <string>Growing up as half-orphan with an Ufologist-Dad (Armin Sonntag) who's obsessed to prove to the whole world that alien exist, 12-year-old Luis hasn't had an easy and certainly not a normal life. As nobody believes Armin Sonntag, not even Luis, it's quite a big surprise when one day, three awkward little aliens (Mog, Nag and Wabo) crash-land right in front of Luis. Excited and without bias, Luis wants to show his Dad his discovery and finds out that his father would 'shockfrost' his new friends. Meanwhile the school principal suspects that Luis cannot be getting the attention and upbringing from his father that the boy needs and decides that Luis should be sent to a boarding school. A wild adventure starts where Luis and his friends from outer space try to reach the huge mothership, to bring the aliens home. And perhaps Luis should just leave with them to get away from all these problems here on Earth...</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/264035/264035h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/264035_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Slender Man</string>
+                <key>releaseDate</key>
+                <string>2018-08-24</string>
+                <key>synopsis</key>
+                <string>In a small town in Massachusetts, four high school girls perform a ritual in an attempt to debunk the lore of SLENDER MAN. When one of the girls goes mysteriously missing, they begin to suspect that she is, in fact, his latest victim.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/243963/243963h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/243963_high_V2.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Alpha</string>
+                <key>releaseDate</key>
+                <string>2018-08-24</string>
+                <key>synopsis</key>
+                <string>An epic adventure set in the last Ice Age. Europe, 20,000 years ago. While on his first hunt with his tribe's most elite group, a young man is injured and left for dead. Awakening to find himself broken and alone -- he must learn to survive and navigate the harsh and unforgiving wilderness. Reluctantly taming a lone wolf abandoned by its pack, the pair learn to rely on each other and become unlikely allies, enduring countless dangers and overwhelming odds in order to find their way home before the deadly winter arrives.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/236409/236409h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/236409_uk_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Action Point</string>
+                <key>releaseDate</key>
+                <string>2018-08-31</string>
+                <key>synopsis</key>
+                <string>Everyone's favorite daredevil Johnny Knoxville is back to his hilariously painful antics in the upcoming comedy ACTION POINT. Knoxville stars as D.C., the crackpot owner of a low-rent, out-of-control amusement park where the rides are designed with minimum safety for maximum fun. Just as D.C.'s estranged teenage daughter Boogie comes to visit, a corporate mega-park opens nearby and jeopardizes the future of Action Point. To save his beloved theme park and his relationship with his daughter, D.C. and his loony crew of misfits risk everything to pull out all the stops - and stunts - making for another wild ride from the star of BAD GRANDPA and JACKASS.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/248282/248282h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/248282_uk_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Upgrade</string>
+                <key>releaseDate</key>
+                <string>2018-08-31</string>
+                <key>synopsis</key>
+                <string>Grey Trace, a technophobe in a utopian near-future when computers control nearly everything - from cars to crime-surveillance - is paralyzed in a freak mugging.  But when a billionaire technologist offers him an experimental paralysis cure, an implanted computer chip called STEM. Grey finds that the chip has a voice and a mind of its own.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/265572/265572h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/265572_uk_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Cold War (Zimna wojna)</string>
+                <key>releaseDate</key>
+                <string>2018-08-14</string>
+                <key>synopsis</key>
+                <string>A passionate love story between two people of different backgrounds and temperaments, who are fatefully mismatched and yet condemned to each other. Set against the background of the Cold War in the 1950s in Poland, Berlin, Yugoslavia and Paris, the film depicts an impossible love story in impossible times.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/270621/270621h2.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/270621_uk_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Teen Titans GO! to the Movies</string>
+                <key>releaseDate</key>
+                <string>2018-08-03</string>
+                <key>synopsis</key>
+                <string>When the Teen Titans go to the big screen, they go big! "Teen Titans GO! to the Movies" finds our egocentric, wildly satirical Super Heroes in their first feature film extravaganza - a fresh, gleefully clever, kid-appropriately crass and tongue-in-cheek play on the superhero genre, complete with musical numbers. It seems to the Teens that all the major superheroes out there are starring in their own movies everyone but the Teen Titans, that is!  But de facto leader Robin is determined to remedy the situation, and be seen as a star instead of a sidekick.  If only they could get the hottest Hollywood film director to notice them.  With a few madcap ideas and a song in their heart, the Teen Titans head to Tinsel Town, certain to pull off their dream.  But when the group is radically misdirected by a seriously super villain and his maniacal plan to take over the Earth, things really go awry.  The team finds their friendship and their fighting spirit failing, putting the very fate of the Teen Titans themselves on the line!</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/258091/258091h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/258091_high_V2.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>A Stork's Journey</string>
+                <key>releaseDate</key>
+                <string>2018-08-31</string>
+                <key>synopsis</key>
+                <string>A Stork's Journey follows Richard, a sparrow orphaned at birth and raised by storks who believes that he is a stork, too! But when winter comes and the storks prepare to migrate to Africa, his stork family must reveal his true identity and leave him behind in the forest with the other sparrows since he would not survive the long journey. Determined to prove he is a stork after all, Richard ventures south on an epic adventure, accompanied by friends big and small, to unleash his true potential and be reunited with his family.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/246377/246377h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/246377_uk_high.mp4</string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Giant Pear (Den utrolige historie om den kaempestore paere)</string>
+                <key>releaseDate</key>
+                <string>2018-07-27</string>
+                <key>synopsis</key>
+                <string>"Life peacefully passes by in the cosy coastal village of Sunnytown, where a little cat named Mitcho and a small elephant Sebastian spend their time. All seems quite ordinary until one day, the beloved mayor, JB, unexpectedly disappears from the town! While fishing, Mitcho catches a message in a bottle - enclosed is a tiny seed, which the duo plant, and a letter from the missing JB, who writes that he is stranded on a Mysterious Island and has made a great discovery. Then, just as things can't get any stranger, Mitcho and Sebastian wake up the next day to see the seed they planted has magically turned into...a giant pear! Using the ginormous pear as a boat, our two new friends must gather their courage and embark on a great journey, facing sea dragons, pirates and curious ghosts to help save the Mayor and bring him home. Bright, bouncy and busy from start, take a great big bite of The Giant Pear, the perfect family adventure!</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/242278/242278h1.jpg</string>
+                <key>trailerUrl</key>
+                <string></string>
+            </dict>
+            <dict>
+                <key>name</key>
+                <string>Jurassic World: Fallen Kingdom</string>
+                <key>releaseDate</key>
+                <string>2018-06-06</string>
+                <key>synopsis</key>
+                <string>It's been three years since theme park and luxury resort Jurassic World was destroyed by dinosaurs out of containment.  Isla Nublar now sits abandoned by humans while the surviving dinosaurs fend for themselves in the jungles. When the island's dormant volcano begins roaring to life, Owen (Chris Pratt) and Claire (Bryce Dallas Howard) mount a campaign to rescue the remaining dinosaurs from this extinction-level event.  Owen is driven to find Blue, his lead raptor who's still missing in the wild, and Claire has grown a respect for these creatures she now makes her mission.  Arriving on the unstable island as lava begins raining down, their expedition uncovers a conspiracy that could return our entire planet to a perilous order not seen since prehistoric times.</string>
+                <key>imageUrl</key>
+                <string>https://d3ltpb4h29tx4j.cloudfront.net/214486/214486h1.jpg</string>
+                <key>trailerUrl</key>
+                <string>https://dzm1iom8kpoas.cloudfront.net/214486_high_V3.mp4</string>
+            </dict>
+        </array>
+    </dict>
+</plist>

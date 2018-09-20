@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView identifier="NewsCellView" id="c22-O7-iKe" customClass="NewsCellView">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="259"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="DOA-hR-ig7" userLabel="View Container">
+                    <rect key="frame" x="15" y="10" width="450" height="239"/>
+                    <subviews>
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="G3P-jN-joc" userLabel="Image View">
+                            <rect key="frame" x="15" y="74" width="420" height="150"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="150" id="5u3-X0-tYq"/>
+                            </constraints>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="GdW-y3-gSv"/>
+                        </imageView>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="msY-3v-4Su" userLabel="Lbl Content">
+                            <rect key="frame" x="13" y="15" width="424" height="17"/>
+                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Content" id="iNG-NM-Mus">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Hr1-ts-KDW" userLabel="Lbl Title">
+                            <rect key="frame" x="13" y="42" width="424" height="17"/>
+                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="left" title="Title" id="5Eb-m3-Geg">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="Hr1-ts-KDW" secondAttribute="trailing" constant="15" id="4Hh-ef-rb4"/>
+                        <constraint firstItem="Hr1-ts-KDW" firstAttribute="top" secondItem="G3P-jN-joc" secondAttribute="bottom" constant="15" id="Gw8-rt-pNP"/>
+                        <constraint firstItem="msY-3v-4Su" firstAttribute="leading" secondItem="DOA-hR-ig7" secondAttribute="leading" constant="15" id="M4Q-hm-YIR"/>
+                        <constraint firstItem="G3P-jN-joc" firstAttribute="leading" secondItem="DOA-hR-ig7" secondAttribute="leading" constant="15" id="O1F-iR-pcT"/>
+                        <constraint firstItem="G3P-jN-joc" firstAttribute="top" secondItem="DOA-hR-ig7" secondAttribute="top" constant="15" id="Xcp-lx-EA5"/>
+                        <constraint firstAttribute="trailing" secondItem="msY-3v-4Su" secondAttribute="trailing" constant="15" id="eFN-yR-a42"/>
+                        <constraint firstItem="msY-3v-4Su" firstAttribute="top" secondItem="Hr1-ts-KDW" secondAttribute="bottom" constant="10" id="gxS-ew-CKF"/>
+                        <constraint firstAttribute="bottom" secondItem="msY-3v-4Su" secondAttribute="bottom" constant="15" id="pgz-Vu-s5C"/>
+                        <constraint firstAttribute="trailing" secondItem="G3P-jN-joc" secondAttribute="trailing" constant="15" id="tui-1E-rh2"/>
+                        <constraint firstItem="Hr1-ts-KDW" firstAttribute="leading" secondItem="DOA-hR-ig7" secondAttribute="leading" constant="15" id="vix-aD-a6R"/>
+                    </constraints>
+                </customView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="DOA-hR-ig7" secondAttribute="bottom" constant="10" id="4f1-sQ-jIv"/>
+                <constraint firstItem="DOA-hR-ig7" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="15" id="C9W-Am-tuV"/>
+                <constraint firstItem="DOA-hR-ig7" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="10" id="Ksh-Zl-jJK"/>
+                <constraint firstAttribute="trailing" secondItem="DOA-hR-ig7" secondAttribute="trailing" constant="15" id="sJw-qC-7Mf"/>
+            </constraints>
+            <connections>
+                <outlet property="imgView" destination="G3P-jN-joc" id="l86-Vm-e1l"/>
+                <outlet property="lblContent" destination="msY-3v-4Su" id="FMN-XV-Byw"/>
+                <outlet property="lblTitle" destination="Hr1-ts-KDW" id="fZ5-9o-cqg"/>
+                <outlet property="vContainer" destination="DOA-hR-ig7" id="ieF-34-ZE8"/>
+            </connections>
+        </customView>
+    </objects>
+</document>
