@@ -23,9 +23,6 @@ To integrate Alamofire into your Xcode project using CocoaPods, specify it in yo
 ```ruby
 platform :osx, '10.11'
 
-source 'https://github.com/CocoaPods/Specs.git'
-source 'https://github.com/lam1607/FlowarePopover-Specs'
-
 target '<Your Target Name>' do
   pod 'FlowarePopover'
 end
