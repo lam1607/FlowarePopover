@@ -18,7 +18,7 @@ FlowarePopover as named, is the custom popover based on NSPopover and other libr
 $ sudo gem install cocoapods
 ```
 
-To integrate Alamofire into your Xcode project using CocoaPods, specify it in your `Podfile`:
+To integrate FlowarePopover into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
 platform :osx, '10.11'
