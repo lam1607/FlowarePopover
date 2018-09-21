@@ -283,7 +283,7 @@
     }
     
     self._popoverMix.alwaysOnTop = YES;
-    //    self._popoverMix.shouldShowArrow = YES;
+    self._popoverMix.shouldShowArrow = YES;
     self._popoverMix.animated = YES;
     //    self._popoverMix.closesWhenPopoverResignsKey = YES;
     //    self._popoverMix.closesWhenApplicationBecomesInactive = YES;
@@ -312,7 +312,7 @@
     }
     
     self._popoverMix.alwaysOnTop = YES;
-    //    self._popoverMix.shouldShowArrow = YES;
+    self._popoverMix.shouldShowArrow = YES;
     self._popoverMix.animated = YES;
     //    self._popoverMix.closesWhenPopoverResignsKey = YES;
     //    self._popoverMix.closesWhenApplicationBecomesInactive = YES;

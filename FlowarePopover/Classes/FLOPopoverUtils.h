@@ -12,6 +12,21 @@
 
 @interface FLOPopoverUtils : NSObject
 
+@property (nonatomic, strong, readonly) NSWindow *appMainWindow;
+
+@property (nonatomic, strong, readonly) NSWindow *topWindow;
+@property (nonatomic, strong, readonly) NSView *topView;
+
+@property (nonatomic, strong, readonly) NSWindow *animatedWindow;
+
++ (FLOPopoverUtils *)sharedInstance;
+
+- (void)setTopmostWindow:(NSWindow *)topmostWindow;
+- (void)setTopmostView:(NSView *)topmostView;
+
+#pragma mark -
+#pragma mark - Utilities
+#pragma mark -
 + (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame withAnimationType:(FLOPopoverAnimationTransition)animationType showing:(BOOL)showing;
 
 @end

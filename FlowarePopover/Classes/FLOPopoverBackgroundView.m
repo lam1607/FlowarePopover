@@ -8,7 +8,7 @@
 
 #import "FLOPopoverBackgroundView.h"
 
-#import "FLOPopoverWindowController.h"
+#import "FLOPopoverUtils.h"
 
 static CGFloat getMedianXFromRects(CGRect r1, CGRect r2) {
     CGFloat minX = fmax(NSMinX(r1), NSMinX(r2));
@@ -107,7 +107,10 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
     _fillColor = NSColor.clearColor;
     
     _clippingView = [[FLOPopoverClippingView alloc] initWithFrame:self.bounds];
+    
     self.clippingView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    self.clippingView.translatesAutoresizingMaskIntoConstraints = YES;
+    
     [self addSubview:self.clippingView];
     
     return self;
@@ -299,7 +302,7 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
     CGFloat minY = NSMinY(contentRect);
     CGFloat maxY = NSMaxY(contentRect);
     
-    NSWindow *window = (self.window != nil) ? self.window : [[FLOPopoverWindow sharedInstance] appMainWindow];
+    NSWindow *window = (self.window != nil) ? self.window : [[FLOPopoverUtils sharedInstance] appMainWindow];
     CGRect windowRect = [window convertRectFromScreen:self.popoverOrigin];
     CGRect originRect = [self convertRect:windowRect fromView:nil];
     CGFloat midOriginX = floor(getMedianXFromRects(originRect, contentRect));
@@ -399,7 +402,7 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
 #pragma mark - Mouse events
 #pragma mark -
 - (void)mouseDown:(NSEvent *)event {
-    BOOL isFLOWindowPopover = self.window != [[FLOPopoverWindow sharedInstance] appMainWindow];
+    BOOL isFLOWindowPopover = self.window != [[FLOPopoverUtils sharedInstance] appMainWindow];
     self.originalMouseOffset = isFLOWindowPopover ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:self.window.contentView];
     self.dragging = NO;
 }
@@ -409,7 +412,7 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
     
     if (NSEqualSizes(self.arrowSize, NSZeroSize) && (self.shouldMovable || self.shouldDetach)) {
         if (self.dragging) {
-            BOOL isFLOWindowPopover = self.window != [[FLOPopoverWindow sharedInstance] appMainWindow];
+            BOOL isFLOWindowPopover = self.window != [[FLOPopoverUtils sharedInstance] appMainWindow];
             
             NSPoint currentMouseOffset = isFLOWindowPopover ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:self.window.contentView];
             NSPoint difference = NSMakePoint(currentMouseOffset.x - self.originalMouseOffset.x, currentMouseOffset.y - self.originalMouseOffset.y);
@@ -427,7 +430,7 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
 
 - (void)mouseUp:(NSEvent *)event {
     if (self.dragging) {
-        NSWindow *applicationWindow = [[FLOPopoverWindow sharedInstance] appMainWindow];
+        NSWindow *applicationWindow = [[FLOPopoverUtils sharedInstance] appMainWindow];
         BOOL isFLOWindowPopover = self.window != applicationWindow;
         
         if ([self.delegate respondsToSelector:@selector(didPopoverMakeMovement)]) {

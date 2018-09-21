@@ -29,13 +29,14 @@
     NSWindow *_popoverTempWindow;
 }
 
-@property (nonatomic, strong) NSWindow *popoverWindow;
+@property (nonatomic, strong) FLOPopoverWindow *popoverWindow;
 @property (nonatomic, assign) NSWindowLevel popoverWindowLevel;
 @property (nonatomic, assign) CGFloat popoverVerticalMargins;
 @property (nonatomic, assign) BOOL popoverDidMove;
 
 @property (nonatomic, assign) BOOL isRelativeToRectOfView;
 @property (nonatomic, strong) NSView *positioningVirtualView;
+@property (nonatomic, assign) BOOL shouldUpdatePositioningRect;
 @property (nonatomic, assign) BOOL applicationWindowDidChange;
 
 @property (nonatomic, strong) NSView *contentView;
@@ -61,7 +62,7 @@
 
 - (instancetype)initWithContentView:(NSView *)contentView {
     if (self = [super init]) {
-        _appMainWindow = [[FLOPopoverWindow sharedInstance] appMainWindow];
+        _appMainWindow = [[FLOPopoverUtils sharedInstance] appMainWindow];
         _contentView = contentView;
         _backgroundView = [[FLOPopoverBackgroundView alloc] initWithFrame:contentView.frame];
         _anchorPoint = CGPointMake(0.0f, 0.0f);
@@ -73,6 +74,7 @@
         _closesWhenPopoverResignsKey = NO;
         _closesWhenApplicationBecomesInactive = NO;
         _isRelativeToRectOfView = YES;
+        _shouldUpdatePositioningRect = NO;
     }
     
     return self;
@@ -80,7 +82,7 @@
 
 - (instancetype)initWithContentViewController:(NSViewController *)contentViewController {
     if (self = [super init]) {
-        _appMainWindow = [[FLOPopoverWindow sharedInstance] appMainWindow];
+        _appMainWindow = [[FLOPopoverUtils sharedInstance] appMainWindow];
         _contentViewController = contentViewController;
         _contentView = contentViewController.view;
         _backgroundView = [[FLOPopoverBackgroundView alloc] initWithFrame:contentViewController.view.frame];
@@ -91,6 +93,7 @@
         _closesWhenPopoverResignsKey = NO;
         _closesWhenApplicationBecomesInactive = NO;
         _isRelativeToRectOfView = YES;
+        _shouldUpdatePositioningRect = NO;
     }
     
     return self;
@@ -181,7 +184,7 @@
 }
 
 - (void)setTopMostWindowIfNecessary {
-    NSWindow *topWindow = [[FLOPopoverWindow sharedInstance] topWindow];
+    NSWindow *topWindow = [[FLOPopoverUtils sharedInstance] topWindow];
     NSArray *windowStack = _appMainWindow.childWindows;
     
     if ((topWindow != nil) && [windowStack containsObject:topWindow]) {
@@ -216,40 +219,46 @@
             NSRect visibleRect = [_appMainWindow.contentView visibleRect];
             NSSize contentViewSize = NSEqualSizes(self.contentSize, NSZeroSize) ? self.contentView.frame.size : self.contentSize;
             
+            CGFloat topContant = visibleRect.size.height + virtualViewHeight - positioningRect.origin.y - contentViewSize.height;
+            
             NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.positioningVirtualView
                                                                    attribute:NSLayoutAttributeTop
                                                                    relatedBy:NSLayoutRelationEqual
-                                                                      toItem:positioningView.window.contentView
+                                                                      toItem:_appMainWindow.contentView
                                                                    attribute:NSLayoutAttributeTop
                                                                   multiplier:1
-                                                                    constant:(visibleRect.size.height + virtualViewHeight - positioningRect.origin.y - contentViewSize.height)];
+                                                                    constant:topContant];
             
-            if (positioningRect.origin.x > (positioningView.window.frame.size.width / 2)) {
-                NSLayoutConstraint *trailing = [NSLayoutConstraint constraintWithItem:positioningView.window.contentView
+            if (positioningRect.origin.x > (visibleRect.size.width / 2)) {
+                CGFloat trailingContant = visibleRect.size.width + virtualViewWidth - positioningRect.origin.x;
+                
+                NSLayoutConstraint *trailing = [NSLayoutConstraint constraintWithItem:_appMainWindow.contentView
                                                                             attribute:NSLayoutAttributeTrailing
                                                                             relatedBy:NSLayoutRelationEqual
                                                                                toItem:self.positioningVirtualView
                                                                             attribute:NSLayoutAttributeTrailing
                                                                            multiplier:1
-                                                                             constant:(visibleRect.size.width + virtualViewWidth - positioningRect.origin.x)];
+                                                                             constant:trailingContant];
                 
                 [top setActive:YES];
                 [trailing setActive:YES];
                 
-                [positioningView.window.contentView addConstraints:@[top, trailing]];
+                [_appMainWindow.contentView addConstraints:@[top, trailing]];
             } else {
+                CGFloat leadingContant = positioningRect.origin.x + virtualViewWidth;
+                
                 NSLayoutConstraint *leading = [NSLayoutConstraint constraintWithItem:self.positioningVirtualView
                                                                            attribute:NSLayoutAttributeLeading
                                                                            relatedBy:NSLayoutRelationEqual
-                                                                              toItem:positioningView.window.contentView
+                                                                              toItem:_appMainWindow.contentView
                                                                            attribute:NSLayoutAttributeLeading
                                                                           multiplier:1
-                                                                            constant:(positioningRect.origin.x + virtualViewWidth)];
+                                                                            constant:leadingContant];
                 
                 [top setActive:YES];
                 [leading setActive:YES];
                 
-                [positioningView.window.contentView addConstraints:@[top, leading]];
+                [_appMainWindow.contentView addConstraints:@[top, leading]];
             }
             
             NSLayoutConstraint *width = [NSLayoutConstraint constraintWithItem:self.positioningVirtualView
@@ -273,6 +282,41 @@
             [self.positioningVirtualView addConstraints:@[width, height]];
         }
         
+        if ((self.shouldUpdatePositioningRect == YES) &&
+            (self.positioningVirtualView != nil) && [self.positioningVirtualView isDescendantOf:_appMainWindow.contentView]) {
+            CGFloat virtualViewWidth = 1.0f;
+            CGFloat virtualViewHeight = 1.0f;
+            NSRect visibleRect = [_appMainWindow.contentView visibleRect];
+            NSSize contentViewSize = NSEqualSizes(self.contentSize, NSZeroSize) ? self.contentView.frame.size : self.contentSize;
+            
+            CGFloat topContant = visibleRect.size.height + virtualViewHeight - positioningRect.origin.y - contentViewSize.height;
+            CGFloat trailingContant = visibleRect.size.width + virtualViewWidth - positioningRect.origin.x;
+            CGFloat leadingContant = positioningRect.origin.x + virtualViewWidth;
+            
+            for (NSLayoutConstraint *constraint in _appMainWindow.contentView.constraints) {
+                if ((constraint.firstItem == self.positioningVirtualView) || (constraint.secondItem == self.positioningVirtualView)) {
+                    if (constraint.firstAttribute == NSLayoutAttributeTop) {
+                        constraint.constant = topContant;
+                    }
+                    
+                    if (constraint.firstAttribute == NSLayoutAttributeLeading) {
+                        constraint.constant = leadingContant;
+                    }
+                    
+                    if (constraint.firstAttribute == NSLayoutAttributeTrailing) {
+                        constraint.constant = trailingContant;
+                    }
+                }
+            }
+            
+            self.shouldUpdatePositioningRect = NO;
+            
+            [_appMainWindow.contentView setNeedsUpdateConstraints:YES];
+            [_appMainWindow.contentView updateConstraints];
+            [_appMainWindow.contentView updateConstraintsForSubtreeIfNeeded];
+            [_appMainWindow.contentView layoutSubtreeIfNeeded];
+        }
+        
         [self.positioningVirtualView setHidden:NO];
     }
 }
@@ -294,12 +338,32 @@
     self.animationType = animationType;
 }
 
+- (void)rearrangePopoverWithNewContentViewFrame:(NSRect)newFrame {
+    [self.contentView setFrame:newFrame];
+    self.originalViewSize = newFrame.size;
+    self.contentSize = newFrame.size;
+    
+    if (self.shown) {
+        [self showIfNeeded:NO];
+    }
+}
+
 - (void)rearrangePopoverWithNewContentViewFrame:(NSRect)newFrame positioningRect:(NSRect)rect; {
     [self.contentView setFrame:newFrame];
     self.originalViewSize = newFrame.size;
     self.contentSize = newFrame.size;
     
-    [self showIfNeeded:NO];
+    if (NSEqualPoints(rect.origin, self.positioningRect.origin) == NO) {
+        self.shouldUpdatePositioningRect = YES;
+    }
+    
+    [self setupPositioningVirtualViewWithView:self.positioningView positioningRect:rect];
+    
+    self.positioningRect = (self.positioningVirtualView != nil) ? self.positioningVirtualView.bounds : NSZeroRect;
+    
+    if (self.shown) {
+        [self showIfNeeded:NO];
+    }
 }
 
 /**
@@ -390,8 +454,11 @@
     
     [self.backgroundView setViewMovable:self.popoverMovable];
     [self.backgroundView setWindowDetachable:self.popoverShouldDetach];
-    [self.backgroundView setShouldShowArrow:self.shouldShowArrow];
-    [self.backgroundView setArrowColor:self.contentView.layer.backgroundColor];
+    
+    if (self.isRelativeToRectOfView) {
+        [self.backgroundView setShouldShowArrow:self.shouldShowArrow];
+        [self.backgroundView setArrowColor:self.contentView.layer.backgroundColor];
+    }
     
     if (self.popoverMovable || self.popoverShouldDetach) {
         self.backgroundView.delegate = self;
@@ -403,6 +470,7 @@
     
     NSRect contentViewFrame = [self.backgroundView contentViewFrameForBackgroundFrame:self.backgroundView.bounds popoverEdge:popoverEdge];
     self.contentView.autoresizingMask = (NSViewWidthSizable | NSViewHeightSizable);
+    self.contentView.translatesAutoresizingMaskIntoConstraints = YES;
     self.contentView.frame = contentViewFrame;
     
     if (![self.contentView isDescendantOf:self.backgroundView]) {
@@ -410,7 +478,7 @@
     }
     
     if (self.popoverWindow == nil) {
-        self.popoverWindow = [[NSWindow alloc] initWithContentRect:popoverScreenRect styleMask:NSWindowStyleMaskBorderless backing:NSBackingStoreBuffered defer:YES];
+        self.popoverWindow = [[FLOPopoverWindow alloc] initWithContentRect:popoverScreenRect styleMask:NSWindowStyleMaskBorderless backing:NSBackingStoreBuffered defer:YES];
         self.popoverWindow.hasShadow = YES;
         self.popoverWindow.releasedWhenClosed = NO;
         self.popoverWindow.opaque = NO;
@@ -420,7 +488,9 @@
     
     [self.popoverWindow setFrame:popoverScreenRect display:NO];
     
-    [self.positioningView.window addChildWindow:self.popoverWindow ordered:NSWindowAbove];
+    if (![self.positioningView.window.childWindows containsObject:self.popoverWindow]) {
+        [self.positioningView.window addChildWindow:self.popoverWindow ordered:NSWindowAbove];
+    }
     
     self.popoverWindow.level = self.popoverWindowLevel;
     
@@ -430,7 +500,7 @@
         _popoverTempWindow = self.popoverWindow;
         
         if (self.alwaysOnTop) {
-            [[FLOPopoverWindow sharedInstance] setTopmostWindow:self.popoverWindow];
+            [[FLOPopoverUtils sharedInstance] setTopmostWindow:self.popoverWindow];
         }
         
         [self setTopMostWindowIfNecessary];
@@ -649,7 +719,7 @@
             //============================================================================================================
             // Create animation window
             //============================================================================================================
-            _animatedWindow = [[FLOPopoverWindow sharedInstance] animatedWindow];
+            _animatedWindow = [[FLOPopoverUtils sharedInstance] animatedWindow];
         }
         
         if (![self.popoverWindow.childWindows containsObject:_animatedWindow]) {

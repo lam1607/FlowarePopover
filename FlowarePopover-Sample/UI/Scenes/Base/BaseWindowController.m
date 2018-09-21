@@ -8,7 +8,7 @@
 
 #import "BaseWindowController.h"
 
-#import "FLOPopoverWindowController.h"
+#import "FLOPopoverUtils.h"
 
 #import "AppDelegate.h"
 
@@ -131,7 +131,7 @@ static BaseWindowController *_sharedInstance = nil;
 - (void)showChildenWindowsOnActivate {
     for (NSWindow *childWindow in self.window.childWindows) {
         if (childWindow.level >= self.window.level) {
-            if (childWindow == [FLOPopoverWindow sharedInstance].topWindow) {
+            if (childWindow == [FLOPopoverUtils sharedInstance].topWindow) {
                 childWindow.level = NSStatusWindowLevel;
             } else {
                 childWindow.level = NSFloatingWindowLevel;
@@ -147,7 +147,7 @@ static BaseWindowController *_sharedInstance = nil;
         if (![appDelegate isEntitlementAppFocused]) {
             childWindow.level = self.window.level;
         } else {
-            if (childWindow == [FLOPopoverWindow sharedInstance].topWindow) {
+            if (childWindow == [FLOPopoverUtils sharedInstance].topWindow) {
                 childWindow.level = NSFloatingWindowLevel;
             } else {
                 childWindow.level = self.window.level;

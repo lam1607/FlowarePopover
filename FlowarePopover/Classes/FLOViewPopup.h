@@ -33,6 +33,7 @@
 #pragma mark -
 - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationTransition)animationType;
 
+- (void)rearrangePopoverWithNewContentViewFrame:(NSRect)newFrame;
 - (void)rearrangePopoverWithNewContentViewFrame:(NSRect)newFrame positioningRect:(NSRect)rect;
 
 /**

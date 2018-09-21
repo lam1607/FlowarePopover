@@ -218,6 +218,14 @@
     [self.windowPopup setAnimationBehaviour:animationBehaviour type:animationType];
 }
 
+- (void)rearrangePopoverWithNewContentViewFrame:(NSRect)newFrame {
+    if (self.popupType == FLOWindowPopover) {
+        [self.windowPopup rearrangePopoverWithNewContentViewFrame:newFrame];
+    } else {
+        [self.viewPopup rearrangePopoverWithNewContentViewFrame:newFrame];
+    }
+}
+
 - (void)rearrangePopoverWithNewContentViewFrame:(NSRect)newFrame positioningRect:(NSRect)rect {
     if (self.popupType == FLOWindowPopover) {
         [self.windowPopup rearrangePopoverWithNewContentViewFrame:newFrame positioningRect:rect];
