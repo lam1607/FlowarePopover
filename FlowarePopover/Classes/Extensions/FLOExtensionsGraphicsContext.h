@@ -11,7 +11,7 @@
 #pragma mark -
 #pragma mark - Graphics context creation
 #pragma mark -
-extern CGContextRef FLOCreateGraphicsContext(CGSize size, CGColorSpaceRef colorSpace);
+extern CGContextRef FLOExtensionsGraphicsContextCreate(CGSize size, CGColorSpaceRef colorSpace);
 
 @interface FLOExtensionsGraphicsContext : NSObject
 

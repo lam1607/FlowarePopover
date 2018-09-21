@@ -216,7 +216,7 @@ static const CGFloat FLOAnimationMinimumThreshold = 0.0001f;
     
     for (NSInteger i = 0; i < count; i++) {
         distances[i] = [toNumbers[i] floatValue] - [fromNumbers[i] floatValue];
-        thresholds[i] = FLOAnimationThreshold(fabs(distances[i]));
+        thresholds[i] = FLOExtensionsCAKeyframeAnimationThreshold(fabs(distances[i]));
     }
     
     CFTimeInterval step = FLOAnimationKeyframeStep;
@@ -230,10 +230,10 @@ static const CGFloat FLOAnimationMinimumThreshold = 0.0001f;
         BOOL thresholdReached = YES;
         
         for (NSInteger i = 0; i < count; i++) {
-            stepProposedValues[i] = FLOAbsolutePosition(distances[i], elapsed, 0, self.damping, self.mass, self.stiffness, [fromNumbers[i] floatValue]);
+            stepProposedValues[i] = FLOExtensionsCAKeyframeAbsolutePosition(distances[i], elapsed, 0, self.damping, self.mass, self.stiffness, [fromNumbers[i] floatValue]);
             
             if (thresholdReached)
-                thresholdReached = FLOThresholdReached(stepValues[i], stepProposedValues[i], [toNumbers[i] floatValue], thresholds[i]);
+                thresholdReached = FLOExtensionsCAKeyframeThresholdReached(stepValues[i], stepProposedValues[i], [toNumbers[i] floatValue], thresholds[i]);
         }
         
         if (thresholdReached)
@@ -255,7 +255,7 @@ static const CGFloat FLOAnimationMinimumThreshold = 0.0001f;
     return valuesMapped;
 }
 
-BOOL FLOThresholdReached(CGFloat previousValue, CGFloat proposedValue, CGFloat finalValue, CGFloat threshold) {
+BOOL FLOExtensionsCAKeyframeThresholdReached(CGFloat previousValue, CGFloat proposedValue, CGFloat finalValue, CGFloat threshold) {
     CGFloat previousDifference = fabs(proposedValue - previousValue);
     CGFloat finalDifference = fabs(previousValue - finalValue);
     
@@ -266,7 +266,7 @@ BOOL FLOThresholdReached(CGFloat previousValue, CGFloat proposedValue, CGFloat f
     return NO;
 }
 
-BOOL FLOCalculationsAreComplete(CGFloat value1, CGFloat proposedValue1, CGFloat to1, CGFloat value2, CGFloat proposedValue2, CGFloat to2, CGFloat value3, CGFloat proposedValue3, CGFloat to3) {
+BOOL FLOExtensionsCAKeyframeCalculationsAreComplete(CGFloat value1, CGFloat proposedValue1, CGFloat to1, CGFloat value2, CGFloat proposedValue2, CGFloat to2, CGFloat value3, CGFloat proposedValue3, CGFloat to3) {
     return ((fabs(proposedValue1 - value1) < FLOAnimationKeyframeStep) && (fabs(value1 - to1) < FLOAnimationKeyframeStep)
             && (fabs(proposedValue2 - value2) < FLOAnimationKeyframeStep) && (fabs(value2 - to2) < FLOAnimationKeyframeStep)
             && (fabs(proposedValue3 - value3) < FLOAnimationKeyframeStep) && (fabs(value3 - to3) < FLOAnimationKeyframeStep));
@@ -275,28 +275,28 @@ BOOL FLOCalculationsAreComplete(CGFloat value1, CGFloat proposedValue1, CGFloat 
 #pragma mark -
 #pragma mark - Damped Harmonic Oscillation
 #pragma mark -
-CGFloat FLOAngularFrequency(CGFloat k, CGFloat m, CGFloat b) {
+CGFloat FLOExtensionsCAKeyframeAngularFrequency(CGFloat k, CGFloat m, CGFloat b) {
     CGFloat w0 = sqrt(k / m);
-    CGFloat frequency = sqrt(pow(w0, 2) - (pow(b, 2) / (4*pow(m, 2))));
+    CGFloat frequency = sqrt(pow(w0, 2) - (pow(b, 2) / (4 * pow(m, 2))));
     if (isnan(frequency)) frequency = 0;
     
     return frequency;
 }
 
-CGFloat FLORelativePosition(CGFloat A, CGFloat t, CGFloat phi, CGFloat b, CGFloat m, CGFloat k) {
+CGFloat FLOExtensionsCAKeyframeRelativePosition(CGFloat A, CGFloat t, CGFloat phi, CGFloat b, CGFloat m, CGFloat k) {
     if (A == 0) return A;
     CGFloat ex = (-b / (2 * m) * t);
-    CGFloat freq = FLOAngularFrequency(k, m, b);
+    CGFloat freq = FLOExtensionsCAKeyframeAngularFrequency(k, m, b);
     
-    return A * exp(ex) * cos(freq*t + phi);
+    return A * exp(ex) * cos(freq * t + phi);
 }
 
-CGFloat FLOAbsolutePosition(CGFloat A, CGFloat t, CGFloat phi, CGFloat b, CGFloat m, CGFloat k, CGFloat from) {
-    return from + A - FLORelativePosition(A, t, phi, b, m, k);
+CGFloat FLOExtensionsCAKeyframeAbsolutePosition(CGFloat A, CGFloat t, CGFloat phi, CGFloat b, CGFloat m, CGFloat k, CGFloat from) {
+    return from + A - FLOExtensionsCAKeyframeRelativePosition(A, t, phi, b, m, k);
 }
 
 // This feels a bit hacky. I'm sure there's a better way to accomplish this.
-CGFloat FLOAnimationThreshold(CGFloat magnitude) {
+CGFloat FLOExtensionsCAKeyframeAnimationThreshold(CGFloat magnitude) {
     return FLOAnimationMinimumThreshold * magnitude;
 }
 

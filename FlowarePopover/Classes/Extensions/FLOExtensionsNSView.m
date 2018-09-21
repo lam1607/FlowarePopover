@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, AXIS_XY) {
     CGColorSpaceRef colorSpace = CGImageGetColorSpace(windowImageRef);
     CGSize imageSize = CGSizeMake(CGImageGetWidth(windowImageRef), CGImageGetHeight(windowImageRef));
     
-    CGContextRef ctx = FLOCreateGraphicsContext(screenBounds.size, colorSpace);
+    CGContextRef ctx = FLOExtensionsGraphicsContextCreate(screenBounds.size, colorSpace);
     
     // Draw the window image into the newly-created context.
     CGContextDrawImage(ctx, (CGRect){ .size = imageSize }, windowImageRef);

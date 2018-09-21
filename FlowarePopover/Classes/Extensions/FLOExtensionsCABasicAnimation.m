@@ -82,7 +82,8 @@
     return animationGroup;
 }
 
-+ (CAAnimation *)resizeAnimationWithDuration:(NSTimeInterval)aDuration fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame fromOpacity:(CGFloat)fromOpacity toOpacity:(CGFloat)toOpacity {
++ (CAAnimation *)resizeAnimationWithDuration:(NSTimeInterval)aDuration fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame
+                                 fromOpacity:(CGFloat)fromOpacity toOpacity:(CGFloat)toOpacity {
     // Combine the flipping and shrinking into one smooth animation
     CAAnimationGroup *groupAnimation = [CAAnimationGroup animation];
     
@@ -92,7 +93,8 @@
 #pragma mark -
 #pragma mark - Animation to disappear a view
 #pragma mark -
-+ (CAAnimation *)disappearAxisYAnimationWithDuration:(NSTimeInterval)aDuration forLayerBeginningOnTop:(BOOL)beginsOnTop scaleFactor:(CGFloat)scaleFactor translationY:(CGFloat)transY {
++ (CAAnimation *)disappearAxisYAnimationWithDuration:(NSTimeInterval)aDuration forLayerBeginningOnTop:(BOOL)beginsOnTop scaleFactor:(CGFloat)scaleFactor
+                                        translationY:(CGFloat)transY {
     // move Y-axis
     CABasicAnimation *translationY = [CABasicAnimation animationWithKeyPath:@"transform.translation.y"];
     translationY.toValue = @(transY);
@@ -125,7 +127,8 @@
     return animationGroup;
 }
 
-+ (CAAnimation *)disappearAxisXAnimationWithDuration:(NSTimeInterval)aDuration forLayerBeginningOnTop:(BOOL)beginsOnTop scaleFactor:(CGFloat)scaleFactor translationX:(CGFloat)transX {
++ (CAAnimation *)disappearAxisXAnimationWithDuration:(NSTimeInterval)aDuration forLayerBeginningOnTop:(BOOL)beginsOnTop scaleFactor:(CGFloat)scaleFactor
+                                        translationX:(CGFloat)transX {
     // move X-axis
     CABasicAnimation *translationX = [CABasicAnimation animationWithKeyPath:@"transform.translation.x"];
     translationX.toValue = @(transX);

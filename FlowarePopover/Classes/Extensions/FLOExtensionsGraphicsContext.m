@@ -11,7 +11,7 @@
 #pragma mark -
 #pragma mark - Graphics context creation
 #pragma mark -
-CGContextRef FLOCreateGraphicsContext(CGSize size, CGColorSpaceRef colorSpace) {
+CGContextRef FLOExtensionsGraphicsContextCreate(CGSize size, CGColorSpaceRef colorSpace) {
     size_t width = size.width;
     size_t height = size.height;
     size_t bitsPerComponent = 8;
@@ -31,7 +31,7 @@ CGContextRef FLOCreateGraphicsContext(CGSize size, CGColorSpaceRef colorSpace) {
     
     CGColorSpaceRef colorSpace = CGImageGetColorSpace(windowImageRef);
     CGSize imageSize = CGSizeMake(rect.size.width, rect.size.height);
-    CGContextRef ctx = FLOCreateGraphicsContext(imageSize, colorSpace);
+    CGContextRef ctx = FLOExtensionsGraphicsContextCreate(imageSize, colorSpace);
     
     // Draw the window image into the newly-created context.
     CGContextDrawImage(ctx, (CGRect){ .size = imageSize }, windowImageRef);
