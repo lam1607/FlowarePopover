@@ -339,7 +339,6 @@
 }
 
 - (void)rearrangePopoverWithNewContentViewFrame:(NSRect)newFrame {
-    [self.contentView setFrame:newFrame];
     self.originalViewSize = newFrame.size;
     self.contentSize = newFrame.size;
     
@@ -349,7 +348,6 @@
 }
 
 - (void)rearrangePopoverWithNewContentViewFrame:(NSRect)newFrame positioningRect:(NSRect)rect; {
-    [self.contentView setFrame:newFrame];
     self.originalViewSize = newFrame.size;
     self.contentSize = newFrame.size;
     
@@ -469,7 +467,6 @@
     self.backgroundView.popoverEdge = popoverEdge;
     
     NSRect contentViewFrame = [self.backgroundView contentViewFrameForBackgroundFrame:self.backgroundView.bounds popoverEdge:popoverEdge];
-    self.contentView.autoresizingMask = (NSViewWidthSizable | NSViewHeightSizable);
     self.contentView.translatesAutoresizingMaskIntoConstraints = YES;
     self.contentView.frame = contentViewFrame;
     

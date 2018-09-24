@@ -164,11 +164,7 @@
     
     contentViewRect = NSMakeRect(contentViewRect.origin.x, contentViewRect.origin.y, contentViewRect.size.width, contentViewHeight);
     
-    CGFloat positioningRectX = visibleRect.size.width - contentViewRect.size.width - verticalMargin / 2;
-    CGFloat positioningRectY = visibleRect.size.height - menuHeight - verticalMargin / 2 - contentViewHeight;
-    NSRect positioningRect = NSMakeRect(positioningRectX, positioningRectY, 0.0f, 0.0f);
-    
-    [self._popoverMix rearrangePopoverWithNewContentViewFrame:contentViewRect positioningRect:positioningRect];
+    [self._popoverMix rearrangePopoverWithNewContentViewFrame:contentViewRect];
 }
 
 - (void)setWindowLevelForPopover:(FLOPopover *)popover {
