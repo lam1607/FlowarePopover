@@ -14,7 +14,7 @@
 @implementation FLOPopoverWindow
 
 - (BOOL)canBecomeKeyWindow {
-    return YES;
+    return self.canBecomeKey;
 }
 
 @end

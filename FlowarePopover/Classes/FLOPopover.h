@@ -13,8 +13,8 @@
 @protocol FLOPopoverDelegate <NSObject>
 
 @optional
-- (void)popoverDidShow:(NSResponder *)popover;
-- (void)popoverDidClose:(NSResponder *)popover;
+- (void)floPopoverDidShow:(NSResponder *)popover;
+- (void)floPopoverDidClose:(NSResponder *)popover;
 
 @end
 
@@ -24,21 +24,13 @@
 
 @property (weak, readwrite) id<FLOPopoverDelegate> delegate;
 
-/* @Internal agruments
- */
+#pragma mark -
+#pragma mark - Properties
+#pragma mark -
 @property (nonatomic, strong, readonly) NSView *contentView;
 @property (nonatomic, strong, readonly) NSViewController *contentViewController;
 @property (nonatomic, assign, readonly) FLOPopoverType popupType;
 
-/* @Inits
- */
-- (id)initWithContentView:(NSView *)contentView;
-- (id)initWithContentView:(NSView *)contentView popoverType:(FLOPopoverType)popoverType;
-- (id)initWithContentViewController:(NSViewController *)contentViewController;
-- (id)initWithContentViewController:(NSViewController *)contentViewController popoverType:(FLOPopoverType)popoverType;
-
-/* @Properties
- */
 @property (nonatomic, readonly, getter = isShown) BOOL shown;
 
 @property (nonatomic, assign) BOOL alwaysOnTop;
@@ -46,8 +38,6 @@
 @property (nonatomic, assign) BOOL animated;
 @property (nonatomic, assign) BOOL closesWhenPopoverResignsKey;
 @property (nonatomic, assign) BOOL closesWhenApplicationBecomesInactive;
-
-@property (nonatomic, assign) BOOL animatedWithContext;
 
 /**
  * Make the popover movable.
@@ -58,6 +48,32 @@
  * Make the popover detach from its parent window. Only apply for FLOWindowPopover type.
  */
 @property (nonatomic, assign) BOOL popoverShouldDetach;
+
+/**
+ * Make the popover become key window. Only apply for FLOWindowPopover type.
+ */
+@property (nonatomic, assign) BOOL canBecomeKey;
+
+#pragma mark -
+#pragma mark - Initialize
+#pragma mark -
+/**
+ * Initialize the FLOPopover with content view and type is FLOViewPopover by default.
+ *
+ * @param contentView the view needs displayed on FLOPopover
+ * @return FLOPopover instance
+ */
+- (id)initWithContentView:(NSView *)contentView;
+- (id)initWithContentView:(NSView *)contentView popoverType:(FLOPopoverType)popoverType;
+
+/**
+ * Initialize the FLOPopover with content view controller and type is FLOViewPopover by default.
+ *
+ * @param contentViewController the view controller needs displayed on FLOPopover
+ * @return FLOPopover instance
+ */
+- (id)initWithContentViewController:(NSViewController *)contentViewController;
+- (id)initWithContentViewController:(NSViewController *)contentViewController popoverType:(FLOPopoverType)popoverType;
 
 #pragma mark -
 #pragma mark - Display
@@ -71,8 +87,14 @@
 
 - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationTransition)animationType;
 
-- (void)rearrangePopoverWithNewContentViewFrame:(NSRect)newFrame;
-- (void)rearrangePopoverWithNewContentViewFrame:(NSRect)newFrame positioningRect:(NSRect)rect;
+
+/**
+ * Re-arrange the popover with new content view size.
+ *
+ * @param newSize new size of content view.
+ */
+- (void)setPopoverContentViewSize:(NSSize)newSize;
+- (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;
 
 /**
  * Display the popover relative to the rect of positioning view
@@ -90,7 +112,6 @@
  * @param rect the given rect that popover should be displayed at.
  */
 - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect;
-
 
 #pragma mark -
 #pragma mark - Utilities

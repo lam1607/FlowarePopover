@@ -8,14 +8,14 @@
 
 #import "FLOPopoverUtils.h"
 
-@interface FLOPopoverUtils ()
+@interface FLOPopoverUtils () <NSWindowDelegate>
 
 @property (nonatomic, strong, readwrite) NSWindow *appMainWindow;
 
 @property (nonatomic, strong, readwrite) NSWindow *topWindow;
 @property (nonatomic, strong, readwrite) NSView *topView;
 
-@property (nonatomic, strong, readwrite) NSWindow *animatedWindow;
+@property (nonatomic, assign, readwrite) BOOL appMainWindowResized;
 
 @end
 
@@ -35,6 +35,9 @@
     dispatch_once(&onceToken, ^{
         _sharedInstance = [[FLOPopoverUtils alloc] init];
         _sharedInstance.appMainWindow = [NSApp mainWindow];
+        _sharedInstance.appMainWindow.delegate = _sharedInstance;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:_sharedInstance selector:@selector(windowDidResize:) name:NSWindowDidResizeNotification object:nil];
     });
     
     return _sharedInstance;
@@ -55,19 +58,8 @@
     return _topView;
 }
 
-- (NSWindow *)animatedWindow {
-    if (_animatedWindow == nil) {
-        _animatedWindow = [[NSWindow alloc] initWithContentRect:self.appMainWindow.screen.visibleFrame styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
-        
-        _animatedWindow.hidesOnDeactivate = YES;
-        _animatedWindow.releasedWhenClosed = NO;
-        _animatedWindow.opaque = NO;
-        _animatedWindow.hasShadow = NO;
-        _animatedWindow.backgroundColor = [NSColor clearColor];
-        _animatedWindow.contentView.wantsLayer = YES;
-    }
-    
-    return _animatedWindow;
+- (BOOL)appMainWindowResized {
+    return _appMainWindowResized;
 }
 
 - (void)setTopmostWindow:(NSWindow *)topmostWindow {
@@ -79,9 +71,16 @@
 }
 
 #pragma mark -
+#pragma mark - Local implementations
+#pragma mark -
+- (void)windowDidEndResize {
+    _appMainWindowResized = NO;
+}
+
+#pragma mark -
 #pragma mark - Utilities
 #pragma mark -
-+ (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame withAnimationType:(FLOPopoverAnimationTransition)animationType showing:(BOOL)showing {
+- (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame withAnimationType:(FLOPopoverAnimationTransition)animationType showing:(BOOL)showing {
     switch (animationType) {
         case FLOPopoverAnimationLeftToRight:
             if (showing) {
@@ -115,6 +114,28 @@
             break;
         default:
             break;
+    }
+}
+
+#pragma mark -
+#pragma mark - NSWindowDelegate
+#pragma mark -
+- (NSSize)windowWillResize:(NSWindow *)sender toSize:(NSSize)frameSize {
+    if (sender == self.appMainWindow) {
+        _appMainWindowResized = YES;
+    }
+    
+    return frameSize;
+}
+
+- (void)windowDidResize:(NSNotification *)notification {
+    if ([notification.name isEqualToString:NSWindowDidResizeNotification] && [notification.object isKindOfClass:[NSWindow class]]) {
+        NSWindow *resizedWindow = (NSWindow *) notification.object;
+        
+        if (resizedWindow == self.appMainWindow) {
+            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(windowDidEndResize) object:nil];
+            [self performSelector:@selector(windowDidEndResize) withObject:nil afterDelay:0.5f];
+        }
     }
 }
 

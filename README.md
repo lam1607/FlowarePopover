@@ -194,8 +194,8 @@ Currently only the **`FLOPopoverAnimationBehaviorTransition`** type is supported
 The popover have two delegations with protocol `FLOPopoverDelegate`:
 
 ```
-- (void)popoverDidShow:(NSResponder *)popover;
-- (void)popoverDidClose:(NSResponder *)popover;
+- (void)floPopoverDidShow:(NSResponder *)popover;
+- (void)floPopoverDidClose:(NSResponder *)popover;
 ```
 
 

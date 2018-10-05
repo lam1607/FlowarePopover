@@ -36,8 +36,13 @@
 @property (weak) IBOutlet NSButton *btnShowWindowPopup;
 @property (weak) IBOutlet NSView *vShowViewPopup;
 @property (weak) IBOutlet NSButton *btnShowViewPopup;
+@property (weak) IBOutlet NSView *vShowSecondBar;
+@property (weak) IBOutlet NSButton *btnShowSecondBar;
 @property (weak) IBOutlet NSView *vShowDataMix;
 @property (weak) IBOutlet NSButton *btnShowDataMix;
+
+@property (weak) IBOutlet NSView *vSecondBar;
+@property (weak) IBOutlet NSLayoutConstraint *constraintVSecondBarHeight;
 
 @property (nonatomic, strong) HomePresenter *_homePresenter;
 
@@ -110,8 +115,15 @@
     [self setBackgroundColor:[NSColor colorLavender] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vShowViewPopup];
     [self setTitle:@"View popover" attributes:titleAttributes forControl:self.btnShowViewPopup];
     
+    [self setBackgroundColor:[NSColor colorBlue] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vShowSecondBar];
+    [self setTitle:@"Show second bar" attributes:titleAttributes forControl:self.btnShowSecondBar];
+    
     [self setBackgroundColor:[NSColor colorViolet] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vShowDataMix];
     [self setTitle:@"Mix popover" attributes:titleAttributes forControl:self.btnShowDataMix];
+    
+    [self setBackgroundColor:[NSColor colorBackground] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vSecondBar];
+    
+    self.constraintVSecondBarHeight.constant = 0.0f;
 }
 
 #pragma mark -
@@ -156,15 +168,48 @@
 - (void)handlePopoverMixRelativeToViewContentSizeChange {
     NSRect visibleRect = [self.view visibleRect];
     CGFloat menuHeight = self.vMenu.frame.size.height;
+    CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
     CGFloat verticalMargin = 10.0f;
-    CGFloat availableHeight = visibleRect.size.height - menuHeight - verticalMargin;
+    CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
     CGFloat contentHeight = [self.comicsViewController getContentSizeHeight];
     CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : contentHeight;
     NSRect contentViewRect = self.comicsViewController.view.frame;
     
     contentViewRect = NSMakeRect(contentViewRect.origin.x, contentViewRect.origin.y, contentViewRect.size.width, contentViewHeight);
     
-    [self._popoverMix rearrangePopoverWithNewContentViewFrame:contentViewRect];
+    [self._popoverMix setPopoverContentViewSize:contentViewRect.size];
+}
+
+- (void)handleShowSecondBar {
+    CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
+    
+    if (secondBarHeight < 40.0f) {
+        secondBarHeight = 40.0f;
+    } else {
+        secondBarHeight = 0.0f;
+    }
+    
+    self.constraintVSecondBarHeight.constant = secondBarHeight;
+    
+    [self.vSecondBar setNeedsUpdateConstraints:YES];
+    [self.vSecondBar updateConstraints];
+    [self.vSecondBar updateConstraintsForSubtreeIfNeeded];
+    [self.vSecondBar layoutSubtreeIfNeeded];
+    
+    NSRect visibleRect = [self.view visibleRect];
+    CGFloat menuHeight = self.vMenu.frame.size.height;
+    CGFloat verticalMargin = 10.0f;
+    CGFloat contentViewWidth = 350.0f;
+    CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
+    CGFloat contentHeight = [self.comicsViewController getContentSizeHeight];
+    CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : contentHeight;
+    NSRect contentViewRect = NSMakeRect(0.0f, 0.0f, contentViewWidth, contentViewHeight);
+    
+    CGFloat positioningRectX = visibleRect.size.width - contentViewRect.size.width - verticalMargin / 2;
+    CGFloat positioningRectY = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin / 2 - contentViewHeight;
+    NSRect contentRect = NSMakeRect(positioningRectX, positioningRectY, contentViewRect.size.width, contentViewRect.size.height);
+    
+    [self._popoverMix setPopoverContentViewSize:contentViewRect.size positioningRect:contentRect];
 }
 
 - (void)setWindowLevelForPopover:(FLOPopover *)popover {
@@ -198,7 +243,7 @@
     }
 }
 
-- (void)showRelativeToViewWithRect:(NSRect)positioningRect byPopover:(FLOPopover *)popover atView:(NSView *)positioningView {
+- (void)showRelativeToViewWithRect:(NSRect)rect byPopover:(FLOPopover *)popover atView:(NSView *)positioningView {
     if (popover.delegate == nil) {
         popover.delegate = self;
     }
@@ -208,7 +253,7 @@
     if ([popover isShown]) {
         [popover closePopover:popover];
     } else {
-        [popover showRelativeToView:positioningView withRect:positioningRect];
+        [popover showRelativeToView:positioningView withRect:rect];
     }
 }
 
@@ -249,7 +294,7 @@
     if (self._popoverView == nil) {
         [self.newsViewController.view setFrame:contentViewRect];
         
-        self._popoverView = [[FLOPopover alloc] initWithContentViewController:self.newsViewController popoverType:FLOViewPopover];
+        self._popoverView = [[FLOPopover alloc] initWithContentViewController:self.newsViewController popoverType:FLOWindowPopover];
     }
     
     //    self._popoverView.alwaysOnTop = YES;
@@ -294,9 +339,10 @@
 - (void)showPopoverMixRelativeToView:(NSView *)sender {
     NSRect visibleRect = [self.view visibleRect];
     CGFloat menuHeight = self.vMenu.frame.size.height;
+    CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
     CGFloat verticalMargin = 10.0f;
     CGFloat contentViewWidth = 350.0f;
-    CGFloat availableHeight = visibleRect.size.height - menuHeight - verticalMargin;
+    CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
     CGFloat contentHeight = [self.comicsViewController getContentSizeHeight];
     CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : contentHeight;
     NSRect contentViewRect = NSMakeRect(0.0f, 0.0f, contentViewWidth, contentViewHeight);
@@ -316,12 +362,12 @@
     //    self._popoverMix.popoverShouldDetach = YES;
     
     CGFloat positioningRectX = visibleRect.size.width - contentViewRect.size.width - verticalMargin / 2;
-    CGFloat positioningRectY = visibleRect.size.height - menuHeight - verticalMargin / 2 - contentViewHeight;
-    NSRect positioningRect = NSMakeRect(positioningRectX, positioningRectY, 0.0f, 0.0f);
+    CGFloat positioningRectY = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin / 2 - contentViewHeight;
+    NSRect contentRect = NSMakeRect(positioningRectX, positioningRectY, contentViewRect.size.width, contentViewRect.size.height);
     
     [self._popoverMix setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft];
     
-    [self showRelativeToViewWithRect:positioningRect byPopover:self._popoverMix atView:sender];
+    [self showRelativeToViewWithRect:contentRect byPopover:self._popoverMix atView:sender];
     [self observePopoverMixRelativeToViewContentSizeChange];
 }
 
@@ -348,6 +394,10 @@
     [self._homePresenter doSelectSender:@{@"type": @"popoverView", @"object": sender}];
 }
 
+- (IBAction)btnShowSecondBar_clicked:(NSButton *)sender {
+    [self._homePresenter doSelectSender:@{@"type": @"showSecondBar", @"object": sender}];
+}
+
 - (IBAction)btnShowDataMix_clicked:(NSButton *)sender {
     [self._homePresenter doSelectSender:@{@"type": @"popoverMix", @"object": sender}];
 }
@@ -372,8 +422,10 @@
             [self showPopoverWindowRelativeToRectOfView:sender];
         } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"popoverView"]) {
             [self showPopoverViewRelativeToRectOfView:sender];
+        } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"showSecondBar"]) {
+            [self handleShowSecondBar];
         } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"popoverMix"]) {
-            //            [self showPopoverMixRelativeToRectOfView:sender];
+//            [self showPopoverMixRelativeToRectOfView:sender];
             [self showPopoverMixRelativeToView:sender];
         }
     }
@@ -382,10 +434,10 @@
 #pragma mark -
 #pragma mark - FLOPopoverDelegate
 #pragma mark -
-- (void)popoverDidShow:(NSResponder *)popover {
+- (void)floPopoverDidShow:(NSResponder *)popover {
 }
 
-- (void)popoverDidClose:(NSResponder *)popover {
+- (void)floPopoverDidClose:(NSResponder *)popover {
 }
 
 @end

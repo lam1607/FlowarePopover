@@ -264,26 +264,22 @@ static CALayer *subLayer;
 }
 
 - (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame duration:(NSTimeInterval)duration source:(id)source {
-    //============================================================================================================
-    // **NOTE: NSViewAnimationFadeInEffect, NSViewAnimationFadeOutEffect "not working" with NSView
-    // Therefore, we should use the NSAnimationContext for fade-in, fade-out here for temporarily
-    //============================================================================================================
-    [[self animator] setAlphaValue:showing ? 0.0f : 1.0f];
+    self.wantsLayer = YES;
+    [self setFrame:fromFrame];
     
-    [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration:1.45 * duration];
-    [[self animator] setAlphaValue:showing ? 1.0f : 0.0f];
-    [NSAnimationContext endGrouping];
-    //============================================================================================================
+    CABasicAnimation *fadeAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    fadeAnimation.fromValue = [NSNumber numberWithFloat:showing ? 0.0f : 1.0f];
+    fadeAnimation.toValue = [NSNumber numberWithFloat:showing ? 1.0f : 0.0f];
+    fadeAnimation.duration = duration;
     
     NSString *fadeEffect = showing ? NSViewAnimationFadeInEffect : NSViewAnimationFadeOutEffect;
     
-    NSDictionary *resizeEffect = [[NSDictionary alloc] initWithObjectsAndKeys: self, NSViewAnimationTargetKey,
-                                  [NSValue valueWithRect:fromFrame], NSViewAnimationStartFrameKey,
-                                  [NSValue valueWithRect:toFrame], NSViewAnimationEndFrameKey,
-                                  fadeEffect, NSViewAnimationEffectKey, nil];
+    NSDictionary *effectAttr = [[NSDictionary alloc] initWithObjectsAndKeys: self, NSViewAnimationTargetKey,
+                                [NSValue valueWithRect:fromFrame], NSViewAnimationStartFrameKey,
+                                [NSValue valueWithRect:toFrame], NSViewAnimationEndFrameKey,
+                                fadeEffect, NSViewAnimationEffectKey, nil];
     
-    NSArray *effects = [[NSArray alloc] initWithObjects:resizeEffect, nil];
+    NSArray *effects = [[NSArray alloc] initWithObjects:effectAttr, nil];
     NSViewAnimation *animation = [[NSViewAnimation alloc] initWithViewAnimations:effects];
     
     animation.animationBlockingMode = NSAnimationBlocking;
@@ -291,7 +287,13 @@ static CALayer *subLayer;
     animation.frameRate = 0.0;
     animation.duration = duration;
     animation.delegate = source;
+    
+    [self.layer addAnimation:fadeAnimation forKey:@"FLOExtensionsNSView.opacity"];
+    
     [animation startAnimation];
+    
+    // Change the actual data value in the layer to the final value.
+    self.layer.opacity = showing ? 1.0f : 0.0f;
 }
 
 - (void)showingAnimated:(BOOL)showing fromPosition:(NSPoint)fromPosition toPosition:(NSPoint)toPosition {

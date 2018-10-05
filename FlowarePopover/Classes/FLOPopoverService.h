@@ -10,21 +10,35 @@
 
 @protocol FLOPopoverService <NSObject>
 
-@property (nonatomic, copy) void (^popoverDidClose)(NSResponder *popover);
-@property (nonatomic, copy) void (^popoverDidShow)(NSResponder *popover);
+@property (nonatomic, copy) void (^popoverDidCloseCallback)(NSResponder *popover);
+@property (nonatomic, copy) void (^popoverDidShowCallback)(NSResponder *popover);
 
 @optional
-/*
- * @Inits
+
+#pragma mark -
+#pragma mark - Initialize
+#pragma mark -
+/**
+ * Initialize the FLOPopover with content view and type is FLOViewPopover by default.
+ *
+ * @param contentView the view needs displayed on FLOPopover
+ * @return FLOPopover instance
  */
 - (id)initWithContentView:(NSView *)contentView;
+
+/**
+ * Initialize the FLOPopover with content view controller and type is FLOViewPopover by default.
+ *
+ * @param contentViewController the view controller needs displayed on FLOPopover
+ * @return FLOPopover instance
+ */
 - (id)initWithContentViewController:(NSViewController *)contentViewController;
 
-/*
- * @Display
- */
-
 @required
+
+#pragma mark -
+#pragma mark - Utilities
+#pragma mark -
 - (IBAction)closePopover:(NSResponder *)sender;
 - (void)closePopover:(NSResponder *)sender completion:(void(^)(void))complete;
 

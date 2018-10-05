@@ -843,15 +843,39 @@
                                             <constraint firstAttribute="bottom" secondItem="95S-F2-TuG" secondAttribute="bottom" id="Lc6-hm-UvV"/>
                                         </constraints>
                                     </customView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="dAj-4e-xyd" userLabel="View Show Second Bar">
+                                        <rect key="frame" x="2552" y="5" width="129" height="40"/>
+                                        <subviews>
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="922-Oc-zMC" userLabel="Btn Show Second Bar">
+                                                <rect key="frame" x="10" y="0.0" width="109" height="40"/>
+                                                <buttonCell key="cell" type="bevel" title="Show second bar" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="KLK-IY-RUh">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="btnShowSecondBar_clicked:" target="XfG-lQ-9wD" id="syc-1T-4up"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="922-Oc-zMC" firstAttribute="leading" secondItem="dAj-4e-xyd" secondAttribute="leading" constant="10" id="MV3-8b-8gv"/>
+                                            <constraint firstAttribute="trailing" secondItem="922-Oc-zMC" secondAttribute="trailing" constant="10" id="ZKW-XF-nSi"/>
+                                            <constraint firstAttribute="bottom" secondItem="922-Oc-zMC" secondAttribute="bottom" id="nc8-wN-KJt"/>
+                                            <constraint firstItem="922-Oc-zMC" firstAttribute="top" secondItem="dAj-4e-xyd" secondAttribute="top" id="nlx-w9-bdV"/>
+                                        </constraints>
+                                    </customView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="xay-PV-jAd" secondAttribute="bottom" constant="5" id="514-Yd-B5e"/>
                                     <constraint firstItem="uUK-hZ-BLj" firstAttribute="top" secondItem="WeF-sb-hLO" secondAttribute="top" constant="5" id="5yn-l3-xFi"/>
+                                    <constraint firstAttribute="bottom" secondItem="dAj-4e-xyd" secondAttribute="bottom" constant="5" id="98a-Se-SZM"/>
+                                    <constraint firstItem="dAj-4e-xyd" firstAttribute="top" secondItem="WeF-sb-hLO" secondAttribute="top" constant="5" id="BPT-EN-DOs"/>
                                     <constraint firstItem="uQl-Vp-Bbc" firstAttribute="top" secondItem="WeF-sb-hLO" secondAttribute="top" constant="5" id="ClT-Wa-q1d"/>
                                     <constraint firstAttribute="height" constant="50" id="Ejm-YL-M96"/>
                                     <constraint firstItem="4xE-ia-sMm" firstAttribute="top" secondItem="WeF-sb-hLO" secondAttribute="top" constant="5" id="KXJ-ym-K9X"/>
                                     <constraint firstAttribute="bottom" secondItem="4xE-ia-sMm" secondAttribute="bottom" constant="5" id="LwG-a5-vap"/>
                                     <constraint firstItem="xay-PV-jAd" firstAttribute="top" secondItem="WeF-sb-hLO" secondAttribute="top" constant="5" id="MB5-E1-GBx"/>
+                                    <constraint firstItem="4xE-ia-sMm" firstAttribute="leading" secondItem="dAj-4e-xyd" secondAttribute="trailing" constant="10" id="RJN-3B-ADU"/>
                                     <constraint firstItem="xay-PV-jAd" firstAttribute="leading" secondItem="WeF-sb-hLO" secondAttribute="leading" constant="10" id="Swf-ZO-XjU"/>
                                     <constraint firstAttribute="bottom" secondItem="uQl-Vp-Bbc" secondAttribute="bottom" constant="5" id="Xac-pm-bgD"/>
                                     <constraint firstAttribute="bottom" secondItem="uUK-hZ-BLj" secondAttribute="bottom" constant="5" id="b4t-o5-0WO"/>
@@ -866,6 +890,12 @@
                                     <constraint firstItem="24A-hG-ZdQ" firstAttribute="top" secondItem="WeF-sb-hLO" secondAttribute="top" constant="5" id="rDJ-ld-SNa"/>
                                 </constraints>
                             </customView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="1S0-QQ-tGa" userLabel="View Second Bar">
+                                <rect key="frame" x="0.0" y="1709" width="2800" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="YfI-Rj-GWa"/>
+                                </constraints>
+                            </customView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="Y8i-ib-bNN" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="8wb-rS-4gh"/>
@@ -874,7 +904,10 @@
                             <constraint firstItem="WeF-sb-hLO" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="OZa-xU-FvP"/>
                             <constraint firstAttribute="trailing" secondItem="WeF-sb-hLO" secondAttribute="trailing" id="YA7-mP-j48"/>
                             <constraint firstAttribute="trailing" secondItem="Y8i-ib-bNN" secondAttribute="trailing" id="ZZI-We-B95"/>
+                            <constraint firstItem="1S0-QQ-tGa" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="j6b-yT-l8Z"/>
                             <constraint firstItem="WeF-sb-hLO" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="jUs-pM-rGd"/>
+                            <constraint firstItem="1S0-QQ-tGa" firstAttribute="top" secondItem="WeF-sb-hLO" secondAttribute="bottom" constant="1" id="r4C-lx-JQO"/>
+                            <constraint firstAttribute="trailing" secondItem="1S0-QQ-tGa" secondAttribute="trailing" id="tlX-Pg-WX7"/>
                         </constraints>
                     </view>
                     <connections>
@@ -882,13 +915,17 @@
                         <outlet property="btnOpenFinderApp" destination="diw-HF-RaI" id="MK9-YL-qC5"/>
                         <outlet property="btnOpenSafariApp" destination="vYx-ID-mZ0" id="7U8-LE-QaK"/>
                         <outlet property="btnShowDataMix" destination="95S-F2-TuG" id="gKP-su-Kjp"/>
+                        <outlet property="btnShowSecondBar" destination="922-Oc-zMC" id="S99-Z1-Hk1"/>
                         <outlet property="btnShowViewPopup" destination="QKT-rF-oHD" id="0ar-uo-Jdf"/>
                         <outlet property="btnShowWindowPopup" destination="Bii-Nb-7uf" id="SFC-h3-Raf"/>
+                        <outlet property="constraintVSecondBarHeight" destination="YfI-Rj-GWa" id="Vp1-Vd-CMU"/>
                         <outlet property="vChangeMode" destination="xay-PV-jAd" id="hlF-bq-hy0"/>
                         <outlet property="vMenu" destination="WeF-sb-hLO" id="K56-IL-buD"/>
                         <outlet property="vOpenFinderApp" destination="24A-hG-ZdQ" id="Fx1-F8-pVo"/>
                         <outlet property="vOpenSafariApp" destination="uUK-hZ-BLj" id="Sqq-t2-bnM"/>
+                        <outlet property="vSecondBar" destination="1S0-QQ-tGa" id="z5U-JJ-9cg"/>
                         <outlet property="vShowDataMix" destination="4xE-ia-sMm" id="2uO-9m-U9e"/>
+                        <outlet property="vShowSecondBar" destination="dAj-4e-xyd" id="8r0-Hv-6nm"/>
                         <outlet property="vShowViewPopup" destination="hH7-0V-lua" id="6Fh-4q-Gsj"/>
                         <outlet property="vShowWindowPopup" destination="uQl-Vp-Bbc" id="H5V-6B-AWi"/>
                     </connections>

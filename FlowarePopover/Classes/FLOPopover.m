@@ -40,13 +40,6 @@
     if (self = [super init]) {
         self.contentView = contentView;
         self.popupType = popoverType;
-        self.alwaysOnTop = NO;
-        self.shouldShowArrow = NO;
-        self.animated = NO;
-        self.closesWhenPopoverResignsKey = NO;
-        self.closesWhenApplicationBecomesInactive = NO;
-        self.popoverMovable = NO;
-        self.animatedWithContext = NO;
     }
     
     return self;
@@ -56,14 +49,6 @@
     if (self = [super init]) {
         self.contentViewController = contentViewController;
         self.popupType = popoverType;
-        self.alwaysOnTop = NO;
-        self.shouldShowArrow = NO;
-        self.animated = NO;
-        self.closesWhenPopoverResignsKey = NO;
-        self.closesWhenApplicationBecomesInactive = NO;
-        self.popoverMovable = NO;
-        self.popoverShouldDetach = NO;
-        self.animatedWithContext = NO;
     }
     
     return self;
@@ -173,28 +158,29 @@
     }
 }
 
-- (void)setAnimatedWithContext:(BOOL)animatedWithContext {
-    _animatedWithContext = animatedWithContext;
-    
-    self.viewPopup.animatedWithContext = animatedWithContext;
-    self.windowPopup.animatedWithContext = animatedWithContext;
+- (void)setCanBecomeKey:(BOOL)canBecomeKey {
+    if (self.popupType == FLOWindowPopover) {
+        _canBecomeKey = canBecomeKey;
+        
+        self.windowPopup.canBecomeKey = canBecomeKey;
+    }
 }
 
 #pragma mark -
 #pragma mark - Binding events
 #pragma mark -
 - (void)bindEventsForPopover:(NSResponder<FLOPopoverService> *)popover {
-    __weak typeof(self) weakSelf = self;
+    __weak typeof(self) wSelf = self;
     
-    popover.popoverDidShow = ^(NSResponder *popover) {
-        if ([weakSelf.delegate respondsToSelector:@selector(popoverDidShow:)]) {
-            [weakSelf.delegate popoverDidShow:popover];
+    popover.popoverDidShowCallback = ^(NSResponder *popover) {
+        if ([wSelf.delegate respondsToSelector:@selector(floPopoverDidShow:)]) {
+            [wSelf.delegate floPopoverDidShow:self];
         }
     };
     
-    popover.popoverDidClose = ^(NSResponder *popover) {
-        if([weakSelf.delegate respondsToSelector:@selector(popoverDidClose:)]) {
-            [weakSelf.delegate popoverDidClose:popover];
+    popover.popoverDidCloseCallback = ^(NSResponder *popover) {
+        if ([wSelf.delegate respondsToSelector:@selector(floPopoverDidClose:)]) {
+            [wSelf.delegate floPopoverDidClose:self];
         }
     };
 }
@@ -218,19 +204,24 @@
     [self.windowPopup setAnimationBehaviour:animationBehaviour type:animationType];
 }
 
-- (void)rearrangePopoverWithNewContentViewFrame:(NSRect)newFrame {
+/**
+ * Re-arrange the popover with new content view size.
+ *
+ * @param newSize new size of content view.
+ */
+- (void)setPopoverContentViewSize:(NSSize)newSize {
     if (self.popupType == FLOWindowPopover) {
-        [self.windowPopup rearrangePopoverWithNewContentViewFrame:newFrame];
+        [self.windowPopup setPopoverContentViewSize:newSize];
     } else {
-        [self.viewPopup rearrangePopoverWithNewContentViewFrame:newFrame];
+        [self.viewPopup setPopoverContentViewSize:newSize];
     }
 }
 
-- (void)rearrangePopoverWithNewContentViewFrame:(NSRect)newFrame positioningRect:(NSRect)rect {
+- (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect {
     if (self.popupType == FLOWindowPopover) {
-        [self.windowPopup rearrangePopoverWithNewContentViewFrame:newFrame positioningRect:rect];
+        [self.windowPopup setPopoverContentViewSize:newSize positioningRect:rect];
     } else {
-        [self.viewPopup rearrangePopoverWithNewContentViewFrame:newFrame positioningRect:rect];
+        [self.viewPopup setPopoverContentViewSize:newSize positioningRect:rect];
     }
 }
 

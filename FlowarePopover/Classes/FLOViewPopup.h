@@ -22,10 +22,9 @@
 @property (nonatomic, assign) BOOL closesWhenPopoverResignsKey;
 @property (nonatomic, assign) BOOL closesWhenApplicationBecomesInactive;
 
-@property (nonatomic, assign) BOOL animatedWithContext;
-
-// Make the popover movable.
-//
+/**
+ * Make the popover movable.
+ */
 @property (nonatomic, assign) BOOL popoverMovable;
 
 #pragma mark -
@@ -33,8 +32,13 @@
 #pragma mark -
 - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationTransition)animationType;
 
-- (void)rearrangePopoverWithNewContentViewFrame:(NSRect)newFrame;
-- (void)rearrangePopoverWithNewContentViewFrame:(NSRect)newFrame positioningRect:(NSRect)rect;
+/**
+ * Re-arrange the popover with new content view size.
+ *
+ * @param newSize new size of content view.
+ */
+- (void)setPopoverContentViewSize:(NSSize)newSize;
+- (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;
 
 /**
  * Display the popover relative to the rect of positioning view

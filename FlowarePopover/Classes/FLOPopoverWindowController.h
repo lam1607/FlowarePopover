@@ -13,6 +13,8 @@
 #pragma mark -
 @interface FLOPopoverWindow : NSWindow
 
+@property (nonatomic, assign) BOOL canBecomeKey;
+
 @end
 
 #pragma mark -

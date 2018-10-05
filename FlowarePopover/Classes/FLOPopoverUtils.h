@@ -17,7 +17,7 @@
 @property (nonatomic, strong, readonly) NSWindow *topWindow;
 @property (nonatomic, strong, readonly) NSView *topView;
 
-@property (nonatomic, strong, readonly) NSWindow *animatedWindow;
+@property (nonatomic, assign, readonly) BOOL appMainWindowResized;
 
 + (FLOPopoverUtils *)sharedInstance;
 
@@ -27,6 +27,6 @@
 #pragma mark -
 #pragma mark - Utilities
 #pragma mark -
-+ (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame withAnimationType:(FLOPopoverAnimationTransition)animationType showing:(BOOL)showing;
+- (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame withAnimationType:(FLOPopoverAnimationTransition)animationType showing:(BOOL)showing;
 
 @end
