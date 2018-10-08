@@ -23,6 +23,7 @@
 
 - (void)setTopmostWindow:(NSWindow *)topmostWindow;
 - (void)setTopmostView:(NSView *)topmostView;
+- (void)setAppMainWindowResized:(BOOL)appMainWindowResized;
 
 #pragma mark -
 #pragma mark - Utilities

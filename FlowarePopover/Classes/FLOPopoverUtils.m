@@ -24,6 +24,7 @@
 @synthesize appMainWindow = _appMainWindow;
 @synthesize topWindow = _topWindow;
 @synthesize topView = _topView;
+@synthesize appMainWindowResized = _appMainWindowResized;
 
 #pragma mark -
 #pragma mark - Singleton
@@ -35,7 +36,6 @@
     dispatch_once(&onceToken, ^{
         _sharedInstance = [[FLOPopoverUtils alloc] init];
         _sharedInstance.appMainWindow = [NSApp mainWindow];
-        _sharedInstance.appMainWindow.delegate = _sharedInstance;
         
         [[NSNotificationCenter defaultCenter] addObserver:_sharedInstance selector:@selector(windowDidResize:) name:NSWindowDidResizeNotification object:nil];
     });
@@ -68,6 +68,10 @@
 
 - (void)setTopmostView:(NSView *)topmostView {
     _topView = topmostView;
+}
+
+- (void)setAppMainWindowResized:(BOOL)appMainWindowResized {
+    _appMainWindowResized = appMainWindowResized;
 }
 
 #pragma mark -
@@ -120,14 +124,6 @@
 #pragma mark -
 #pragma mark - NSWindowDelegate
 #pragma mark -
-- (NSSize)windowWillResize:(NSWindow *)sender toSize:(NSSize)frameSize {
-    if (sender == self.appMainWindow) {
-        _appMainWindowResized = YES;
-    }
-    
-    return frameSize;
-}
-
 - (void)windowDidResize:(NSNotification *)notification {
     if ([notification.name isEqualToString:NSWindowDidResizeNotification] && [notification.object isKindOfClass:[NSWindow class]]) {
         NSWindow *resizedWindow = (NSWindow *) notification.object;

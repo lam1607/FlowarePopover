@@ -779,15 +779,29 @@
             [anchorSuperview addObserver:self forKeyPath:@"frame"
                                  options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
                                  context:NULL];
+            [anchorSuperview addObserver:self forKeyPath:@"superview"
+                                 options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
+                                 context:NULL];
         }
         
         anchorSuperview = [anchorSuperview superview];
+    }
+    
+    if (self.anchorSuperviews.count > 0) {
+        [_appMainWindow.contentView addObserver:self forKeyPath:@"frame"
+                                        options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
+                                        context:NULL];
     }
 }
 
 - (void)unregisterObserverForPositioningSuperviewsFrameChanged {
     for (NSView *anchorSuperview in self.anchorSuperviews) {
         [anchorSuperview removeObserver:self forKeyPath:@"frame"];
+        [anchorSuperview removeObserver:self forKeyPath:@"superview"];
+    }
+    
+    if (self.anchorSuperviews.count > 0) {
+        [_appMainWindow.contentView removeObserver:self forKeyPath:@"frame"];
     }
     
     self.anchorSuperviews = nil;
@@ -849,8 +863,22 @@
         return;
     }
     
+    if ([keyPath isEqualToString:@"superview"] && [object isKindOfClass:[NSView class]]) {
+        NSView *view = (NSView *) object;
+        
+        if ([self shouldClosePopoverByCheckingChangedView:view]) {
+            [self close];
+            return;
+        }
+    }
+    
     if ([keyPath isEqualToString:@"frame"] && [object isKindOfClass:[NSView class]]) {
         NSView *view = (NSView *) object;
+        
+        if (view == _appMainWindow.contentView) {
+            [[FLOPopoverUtils sharedInstance] setAppMainWindowResized:YES];
+            return;
+        }
         
         if ([self shouldClosePopoverByCheckingChangedView:view]) {
             [self close];
@@ -900,7 +928,7 @@
         }
         
         NSWindow *resizedWindow = (NSWindow *) notification.object;
-        NSRect popoverRect = [self popoverRectForEdge:self.preferredEdge];
+        NSRect popoverRect = [self popoverRect];
         
         if (resizedWindow == _appMainWindow) {
             CGFloat newHeight = resizedWindow.contentView.visibleRect.size.height - self.popoverVerticalMargins;
