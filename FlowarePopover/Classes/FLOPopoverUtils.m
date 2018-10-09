@@ -35,7 +35,12 @@
     
     dispatch_once(&onceToken, ^{
         _sharedInstance = [[FLOPopoverUtils alloc] init];
-        _sharedInstance.appMainWindow = [NSApp mainWindow];
+        
+        if ([NSApp mainWindow] != nil) {
+            _sharedInstance.appMainWindow = [NSApp mainWindow];
+        } else {
+            _sharedInstance.appMainWindow = [[[NSApplication sharedApplication] windows] firstObject];
+        }
         
         [[NSNotificationCenter defaultCenter] addObserver:_sharedInstance selector:@selector(windowDidResize:) name:NSWindowDidResizeNotification object:nil];
     });

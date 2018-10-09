@@ -194,7 +194,6 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
         self.layer.shadowOpacity    = 0.5f;
         self.layer.shadowOffset     = CGSizeMake(0, -3);
         self.layer.shadowRadius     = 5.0f;
-        self.layer.shouldRasterize  = YES;
     }
 }
 
