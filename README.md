@@ -122,13 +122,13 @@ The default initialization of FLOPopover type is `FLOViewPopover`
 
 **`Closing`**
   ```
-  - (IBAction)closePopover:(FLOPopover *)sender;
+  - (void)close;
   ```
 
 `Examples`:
   ```
   if ([popover isShown]) {
-      [popover closePopover:popover];
+      [popover close];
   }
   ```
 

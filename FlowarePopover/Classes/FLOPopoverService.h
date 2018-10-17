@@ -39,6 +39,36 @@
 #pragma mark -
 #pragma mark - Utilities
 #pragma mark -
+- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationTransition)animationType;
+
+/**
+ * Re-arrange the popover with new content view size.
+ *
+ * @param newSize new size of content view.
+ */
+- (void)setPopoverContentViewSize:(NSSize)newSize;
+- (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;
+
+/**
+ * Display the popover relative to the rect of positioning view
+ *
+ * @param rect is the rect that popover will be displayed relatively to.
+ * @param positioningView is the view that popover will be displayed relatively to.
+ * @param edgeType 'position' that the popover should be displayed.
+ */
+- (void)showRelativeToRect:(NSRect)rect ofView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType;
+
+/**
+ * Dipslay the popover at the given rect with selected view.
+ *
+ * @param positioningView the selected view that popover should be displayed at.
+ * @param rect the given rect that popover should be displayed at.
+ * @param edgeType 'position' that the popover should be displayed.
+ */
+- (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect edgeType:(FLOPopoverEdgeType)edgeType;
+
+- (void)close;
+
 - (IBAction)closePopover:(NSResponder *)sender;
 - (void)closePopover:(NSResponder *)sender completion:(void(^)(void))complete;
 

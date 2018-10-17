@@ -254,19 +254,12 @@
     }
 }
 
-#pragma mark -
-#pragma mark - Utilities
-#pragma mark -
-- (IBAction)closePopover:(FLOPopover *)sender {
+- (void)close {
     if (self.popupType == FLOWindowPopover) {
-        [self.windowPopup closePopover:sender];
+        [self.windowPopup close];
     } else {
-        [self.viewPopup closePopover:sender];
+        [self.viewPopup close];
     }
-}
-
-- (void)closePopover:(FLOPopover *)sender completion:(void(^)(void))complete {
-    // code ...
 }
 
 @end

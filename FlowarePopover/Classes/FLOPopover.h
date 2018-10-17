@@ -113,10 +113,6 @@
  */
 - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect;
 
-#pragma mark -
-#pragma mark - Utilities
-#pragma mark -
-- (IBAction)closePopover:(FLOPopover *)sender;
-- (void)closePopover:(FLOPopover *)sender completion:(void(^)(void))complete;
+- (void)close;
 
 @end

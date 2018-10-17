@@ -237,7 +237,7 @@
     [self setWindowLevelForPopover:popover];
     
     if ([popover isShown]) {
-        [popover closePopover:popover];
+        [popover close];
     } else {
         [popover showRelativeToRect:positioningRect ofView:positioningView edgeType:edgeType];
     }
@@ -251,7 +251,7 @@
     [self setWindowLevelForPopover:popover];
     
     if ([popover isShown]) {
-        [popover closePopover:popover];
+        [popover close];
     } else {
         [popover showRelativeToView:positioningView withRect:rect];
     }

@@ -795,10 +795,7 @@
 #pragma mark - Utilities
 #pragma mark -
 - (void)closePopover:(NSResponder *)sender {
-    if (self.shown) {
-        [self close];
-        return;
-    }
+    [self close];
 }
 
 - (void)closePopover:(NSResponder *)sender completion:(void (^)(void))complete {
