@@ -109,8 +109,8 @@
 - (void)dealloc {
     _appMainWindow = nil;
     _appEvent = nil;
-    _contentViewController = nil;
-    _contentView = nil;
+    self.contentViewController = nil;
+    self.contentView = nil;
     
     [self.positioningAnchorView removeFromSuperview];
     self.positioningAnchorView = nil;
@@ -379,12 +379,10 @@
     NSRect positionOnScreenRect = [self.positioningAnchorView.window convertRectToScreen:windowRelativeRect];
     
     self.backgroundView.popoverOrigin = positionOnScreenRect;
-    
     self.originalViewSize = NSEqualSizes(self.originalViewSize, NSZeroSize) ? self.contentView.frame.size : self.originalViewSize;
     
     NSSize contentViewSize = NSEqualSizes(self.contentSize, NSZeroSize) ? self.originalViewSize : self.contentSize;
     NSRectEdge popoverEdge = self.preferredEdge;
-    NSRect popoverScreenRect = [self popoverRect];
     
     [self.backgroundView setViewMovable:self.popoverMovable];
     
@@ -410,6 +408,10 @@
     if (![self.contentView isDescendantOf:self.backgroundView]) {
         [self.backgroundView addSubview:self.contentView positioned:NSWindowAbove relativeTo:nil];
     }
+    
+    NSRect popoverScreenRect = [self popoverRect];
+    
+    self.originalViewSize = size;
     
     [self.backgroundView setFrame:[_appMainWindow convertRectFromScreen:popoverScreenRect]];
     
@@ -803,6 +805,10 @@
 }
 
 - (BOOL)shouldClosePopoverByCheckingChangedView:(NSView *)changedView {
+    if ([changedView.window isVisible] == NO) {
+        return YES;
+    }
+    
     if ([self.anchorSuperviews containsObject:changedView]) {
         if (![self.positioningAnchorView isDescendantOf:changedView]) {
             return YES;
@@ -855,7 +861,9 @@
             
             if (NSEqualPoints(self.positioningInWindowRect.origin, positioningInWindowRect.origin) == NO) {
                 NSRect popoverRect = [self popoverRectForEdge:self.preferredEdge];
+                
                 popoverRect = [self.positioningAnchorView.window convertRectFromScreen:popoverRect];
+                popoverRect = (NSRect) { .origin = popoverRect.origin, .size = self.popoverView.frame.size };
                 
                 if (NSContainsRect(_appMainWindow.contentView.visibleRect, popoverRect) == NO) {
                     [self close];
@@ -888,27 +896,25 @@
 }
 
 - (void)windowDidResize:(NSNotification *)notification {
-    if ([notification.name isEqualToString:NSWindowDidResizeNotification] && [notification.object isKindOfClass:[NSWindow class]]) {
+    if ([notification.name isEqualToString:NSWindowDidResizeNotification] && (notification.object == _appMainWindow)) {
         NSWindow *resizedWindow = (NSWindow *) notification.object;
+        NSRect popoverRect = [self popoverRectForEdge:self.preferredEdge];
         
-        if (resizedWindow == _appMainWindow) {
-            NSRect popoverRect = [self popoverRect];
-            popoverRect = [resizedWindow convertRectFromScreen:popoverRect];
-            
-            CGFloat newHeight = resizedWindow.contentView.visibleRect.size.height - self.popoverVerticalMargins;
-            CGFloat deltaHeight = popoverRect.size.height - newHeight;
-            CGFloat popoverOriginX = popoverRect.origin.x;
-            CGFloat popoverOriginY = popoverRect.origin.y + ((newHeight < self.originalViewSize.height) ? deltaHeight : 0.0f);
-            CGFloat popoverHeight = (newHeight < self.originalViewSize.height) ? newHeight : self.originalViewSize.height;
-            
-            popoverRect = NSMakeRect(popoverOriginX, popoverOriginY, popoverRect.size.width, popoverHeight);
-            
-            [self.popoverView setFrame:popoverRect];
-            
-            self.appWindowDidChange = YES;
-            self.contentSize = self.popoverView.frame.size;
-            self.positioningInWindowRect = [self.positioningView convertRect:self.positioningView.bounds toView:self.positioningView.window.contentView];
-        }
+        popoverRect = [resizedWindow convertRectFromScreen:popoverRect];
+        
+        CGFloat newHeight = resizedWindow.contentView.visibleRect.size.height - self.popoverVerticalMargins;
+        CGFloat deltaHeight = popoverRect.size.height - newHeight;
+        CGFloat popoverOriginX = popoverRect.origin.x;
+        CGFloat popoverOriginY = popoverRect.origin.y + ((newHeight < self.originalViewSize.height) ? deltaHeight : 0.0f);
+        CGFloat popoverHeight = (newHeight < self.originalViewSize.height) ? newHeight : self.originalViewSize.height;
+        
+        popoverRect = NSMakeRect(popoverOriginX, popoverOriginY, self.popoverView.frame.size.width, popoverHeight);
+        
+        [self.popoverView setFrame:popoverRect];
+        
+        self.appWindowDidChange = YES;
+        self.contentSize = self.popoverView.frame.size;
+        self.positioningInWindowRect = [self.positioningView convertRect:self.positioningView.bounds toView:self.positioningView.window.contentView];
     }
 }
 

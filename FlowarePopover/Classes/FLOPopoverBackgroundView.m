@@ -244,15 +244,15 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
 }
 
 - (NSSize)sizeForBackgroundViewWithContentSize:(NSSize)contentSize popoverEdge:(NSRectEdge)popoverEdge {
-    CGSize returnSize = contentSize;
-    //    if (popoverEdge == NSRectEdgeMaxX || popoverEdge == NSRectEdgeMinX) {
-    //        returnSize.width += self.arrowSize.height;
-    //    } else {
-    //        returnSize.height += self.arrowSize.height;
-    //    }
-    //
-    //    returnSize.width += 2.0;
-    //    returnSize.height += 2.0;
+    NSSize returnSize = contentSize;
+    
+    if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
+        if (popoverEdge == NSRectEdgeMaxX || popoverEdge == NSRectEdgeMinX) {
+            returnSize.width += self.arrowSize.height;
+        } else {
+            returnSize.height += self.arrowSize.height;
+        }
+    }
     
     return returnSize;
 }
