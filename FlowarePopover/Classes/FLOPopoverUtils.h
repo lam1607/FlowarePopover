@@ -29,5 +29,10 @@
 #pragma mark - Utilities
 #pragma mark -
 - (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame withAnimationType:(FLOPopoverAnimationTransition)animationType showing:(BOOL)showing;
+- (BOOL)didTheTreeOfView:(NSView *)view containPosition:(NSPoint)position;
+- (BOOL)didView:(NSView *)parent contain:(NSView *)child;
+- (BOOL)didViews:(NSArray *)views contain:(NSView *)view;
+- (BOOL)didWindow:(NSWindow *)parent contain:(NSWindow *)child;
+- (BOOL)didWindows:(NSArray *)windows contain:(NSWindow *)window;
 
 @end

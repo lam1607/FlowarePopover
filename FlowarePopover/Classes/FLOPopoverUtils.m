@@ -126,6 +126,59 @@
     }
 }
 
+- (BOOL)didTheTreeOfView:(NSView *)view containPosition:(NSPoint)position {
+    NSRect relativeRect = [view convertRect:[view alignmentRectForFrame:[view bounds]] toView:nil];
+    NSRect viewRect = [view.window convertRectToScreen:relativeRect];
+    
+    if (NSPointInRect(position, viewRect)) {
+        return YES;
+    } else {
+        for (NSView *item in [view subviews]) {
+            if ([self didTheTreeOfView:item containPosition:position]) {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
+- (BOOL)didView:(NSView *)parent contain:(NSView *)child {
+    return [self didViews:[parent subviews] contain:child];
+}
+
+- (BOOL)didViews:(NSArray *)views contain:(NSView *)view {
+    if ([views containsObject:view]) {
+        return YES;
+    } else {
+        for (NSView *item in views) {
+            if ([self didViews:[item subviews] contain:view]) {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
+- (BOOL)didWindow:(NSWindow *)parent contain:(NSWindow *)child {
+    return [self didWindows:parent.childWindows contain:child];
+}
+
+- (BOOL)didWindows:(NSArray *)windows contain:(NSWindow *)window {
+    if ([windows containsObject:window]) {
+        return YES;
+    } else {
+        for (NSWindow *item in windows) {
+            if ([self didWindows:item.childWindows contain:window]) {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
 #pragma mark -
 #pragma mark - NSWindowDelegate
 #pragma mark -

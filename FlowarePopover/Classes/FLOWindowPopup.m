@@ -436,12 +436,12 @@
         [self.backgroundView addSubview:self.contentView positioned:NSWindowAbove relativeTo:nil];
     }
     
-    NSRect popoverScreenRect = [self popoverRect];
+    NSRect popoverRect = [self popoverRect];
     
     self.originalViewSize = size;
     
     if (self.popoverWindow == nil) {
-        self.popoverWindow = [[FLOPopoverWindow alloc] initWithContentRect:popoverScreenRect styleMask:NSWindowStyleMaskBorderless backing:NSBackingStoreBuffered defer:YES];
+        self.popoverWindow = [[FLOPopoverWindow alloc] initWithContentRect:popoverRect styleMask:NSWindowStyleMaskBorderless backing:NSBackingStoreBuffered defer:YES];
         self.popoverWindow.hasShadow = YES;
         self.popoverWindow.releasedWhenClosed = NO;
         self.popoverWindow.opaque = NO;
@@ -450,7 +450,7 @@
     }
     
     self.popoverWindow.canBecomeKey = self.canBecomeKey;
-    [self.popoverWindow setFrame:popoverScreenRect display:NO];
+    [self.popoverWindow setFrame:popoverRect display:NO];
     
     if (![self.positioningAnchorView.window.childWindows containsObject:self.popoverWindow]) {
         [self.positioningAnchorView.window addChildWindow:self.popoverWindow ordered:NSWindowAbove];
@@ -458,7 +458,7 @@
     
     self.popoverWindow.level = self.popoverWindowLevel;
     
-    self.popoverVerticalMargins = _appMainWindow.contentView.visibleRect.size.height + FLO_CONST_POPOVER_BOTTOM_OFFSET - NSMaxY([_appMainWindow convertRectFromScreen:popoverScreenRect]);
+    self.popoverVerticalMargins = _appMainWindow.contentView.visibleRect.size.height + FLO_CONST_POPOVER_BOTTOM_OFFSET - NSMaxY([_appMainWindow convertRectFromScreen:popoverRect]);
     self.positioningInWindowRect = [self.positioningView convertRect:self.positioningView.bounds toView:self.positioningView.window.contentView];
     
     if (needed) {
@@ -745,12 +745,16 @@
     if (!_appEvent) {
         _appEvent = [NSEvent addLocalMonitorForEventsMatchingMask:(NSEventMaskLeftMouseDown | NSEventMaskRightMouseDown) handler:^(NSEvent* event) {
             if (self.closesWhenPopoverResignsKey) {
-                if (self.popoverWindow != event.window) {
-                    [self performSelector:@selector(close) withObject:nil afterDelay:0.1f];
-                } else {
+                if (self.popoverWindow == event.window) {
                     NSPoint eventPoint = [self.popoverWindow.contentView convertPoint:event.locationInWindow fromView:nil];
                     
                     if (NSPointInRect(eventPoint, self.popoverWindow.contentView.bounds) == NO) {
+                        [self performSelector:@selector(close) withObject:nil afterDelay:0.1f];
+                    }
+                } else {
+                    BOOL contained = [[FLOPopoverUtils sharedInstance] didWindow:self.popoverWindow contain:event.window];
+                    
+                    if (contained == NO) {
                         [self performSelector:@selector(close) withObject:nil afterDelay:0.1f];
                     }
                 }
@@ -771,6 +775,15 @@
 
 - (void)registerObserverForPositioningSuperviewsFrameChanged {
     self.anchorSuperviews = [[NSMutableArray alloc] init];
+    
+    [self.anchorSuperviews addObject:self.positioningAnchorView];
+    
+    [self.positioningAnchorView addObserver:self forKeyPath:@"frame"
+                                    options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
+                                    context:NULL];
+    [self.positioningAnchorView addObserver:self forKeyPath:@"superview"
+                                    options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
+                                    context:NULL];
     
     NSView *anchorSuperview = [self.positioningAnchorView superview];
     
@@ -842,7 +855,7 @@
     }
     
     if ([self.anchorSuperviews containsObject:changedView]) {
-        if (![self.positioningAnchorView isDescendantOf:changedView]) {
+        if ((changedView != self.positioningAnchorView) && ![self.positioningAnchorView isDescendantOf:changedView]) {
             return YES;
         }
         
@@ -903,7 +916,6 @@
                 
                 [self.popoverWindow setFrame:popoverRect display:YES];
                 
-                self.contentSize = self.popoverWindow.frame.size;
                 self.positioningInWindowRect = [self.positioningView convertRect:self.positioningView.bounds toView:self.positioningView.window.contentView];
             }
         }
@@ -942,7 +954,17 @@
         [self.popoverWindow setFrame:popoverRect display:YES];
         
         self.appWindowDidChange = YES;
-        self.contentSize = self.popoverWindow.frame.size;
+        
+        if (NSEqualSizes(self.backgroundView.arrowSize, NSZeroSize) == NO) {
+            if ((self.preferredEdge == NSRectEdgeMinY) || (self.preferredEdge == NSRectEdgeMaxY)) {
+                self.contentSize = NSMakeSize(self.popoverWindow.frame.size.width, self.popoverWindow.frame.size.height - self.backgroundView.arrowSize.height);
+            } else {
+                self.contentSize = NSMakeSize(self.popoverWindow.frame.size.width - self.backgroundView.arrowSize.height, self.popoverWindow.frame.size.height);
+            }
+        } else {
+            self.contentSize = self.popoverWindow.frame.size;
+        }
+        
         self.positioningInWindowRect = [self.positioningView convertRect:self.positioningView.bounds toView:self.positioningView.window.contentView];
     }
 }
