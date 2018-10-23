@@ -26,13 +26,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FlowarePopover/Classes/FLOWindowPopup.m"
-            timestampString = "561900521.094613"
+            timestampString = "561988218.520198"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "494"
-            endingLineNumber = "494"
-            landmarkName = "FLOWindowPopup"
-            landmarkType = "3">
+            startingLineNumber = "502"
+            endingLineNumber = "502"
+            landmarkName = "-close"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FlowarePopover/Classes/FLOWindowPopup.m"
-            timestampString = "561900521.0950021"
+            timestampString = "561988218.520322"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "453"
-            endingLineNumber = "453"
+            startingLineNumber = "459"
+            endingLineNumber = "459"
             landmarkName = "-showIfNeeded:"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,7 +58,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FlowarePopover-Sample/UI/Scenes/HomeViewController/HomeViewController.m"
-            timestampString = "561900521.095253"
+            timestampString = "561988218.5204099"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "256"

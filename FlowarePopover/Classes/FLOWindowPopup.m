@@ -29,7 +29,7 @@
 
 @property (nonatomic, strong) FLOPopoverWindow *popoverWindow;
 @property (nonatomic, assign) NSWindowLevel popoverWindowLevel;
-@property (nonatomic, assign) CGFloat popoverVerticalMargins;
+@property (nonatomic, assign) CGFloat verticalMarginOutOfPopover;
 @property (nonatomic, assign) BOOL popoverDidMove;
 
 @property (nonatomic, strong) NSView *positioningAnchorView;
@@ -216,7 +216,7 @@
     }
 }
 
-- (void)setupPositioningAnchorViewWithView:(NSView *)positioningView positioningRect:(NSRect)positioningRect shouldUpdatePosition:(BOOL)shouldUpdatePosition {
+- (void)setupPositioningAnchorWithView:(NSView *)positioningView positioningRect:(NSRect)positioningRect shouldUpdatePosition:(BOOL)shouldUpdatePosition {
     NSRect positioningInWindowRect = [positioningView convertRect:positioningView.bounds toView:positioningView.window.contentView];
     CGFloat posX = positioningInWindowRect.origin.x - NSMinX(positioningRect);
     CGFloat posY = positioningInWindowRect.origin.y - NSMaxY(positioningRect);
@@ -297,6 +297,11 @@
     [self.positioningAnchorView setHidden:NO];
 }
 
+- (void)addSuperviewObserversForView:(NSView *)view {
+    [view addObserver:self forKeyPath:@"frame" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
+    [view addObserver:self forKeyPath:@"superview" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
+}
+
 #pragma mark -
 #pragma mark - Display
 #pragma mark -
@@ -332,7 +337,7 @@
     self.originalViewSize = newSize;
     self.contentSize = newSize;
 
-    [self setupPositioningAnchorViewWithView:self.positioningView positioningRect:rect shouldUpdatePosition:YES];
+    [self setupPositioningAnchorWithView:self.positioningView positioningRect:rect shouldUpdatePosition:YES];
     
     if (self.shown) {
         [self showIfNeeded:NO];
@@ -381,7 +386,7 @@
         return;
     }
     
-    [self setupPositioningAnchorViewWithView:positioningView positioningRect:rect shouldUpdatePosition:NO];
+    [self setupPositioningAnchorWithView:positioningView positioningRect:rect shouldUpdatePosition:NO];
     
     self.positioningRect = [self.positioningAnchorView bounds];
     self.positioningView = positioningView;
@@ -408,6 +413,7 @@
     
     self.backgroundView.popoverOrigin = positionOnScreenRect;
     self.originalViewSize = NSEqualSizes(self.originalViewSize, NSZeroSize) ? self.contentView.frame.size : self.originalViewSize;
+    self.contentSize = NSEqualSizes(self.contentSize, NSZeroSize) ? self.contentView.frame.size : self.contentSize;
     
     NSSize contentViewSize = NSEqualSizes(self.contentSize, NSZeroSize) ? self.originalViewSize : self.contentSize;
     NSRectEdge popoverEdge = self.preferredEdge;
@@ -436,7 +442,7 @@
         [self.backgroundView addSubview:self.contentView positioned:NSWindowAbove relativeTo:nil];
     }
     
-    NSRect popoverRect = [self popoverRect];
+    NSRect popoverRect = [self popoverRectForEdge:self.preferredEdge];
     
     self.originalViewSize = size;
     
@@ -458,7 +464,9 @@
     
     self.popoverWindow.level = self.popoverWindowLevel;
     
-    self.popoverVerticalMargins = _appMainWindow.contentView.visibleRect.size.height + FLO_CONST_POPOVER_BOTTOM_OFFSET - NSMaxY([_appMainWindow convertRectFromScreen:popoverRect]);
+    popoverRect = [_appMainWindow convertRectFromScreen:popoverRect];
+    
+    self.verticalMarginOutOfPopover = _appMainWindow.contentView.visibleRect.size.height + FLO_CONST_POPOVER_BOTTOM_OFFSET - NSMaxY(popoverRect);
     self.positioningInWindowRect = [self.positioningView convertRect:self.positioningView.bounds toView:self.positioningView.window.contentView];
     
     if (needed) {
@@ -469,7 +477,6 @@
         }
         
         [self setTopMostWindowIfNecessary];
-        
         [self popoverShowing:YES animated:self.animated];
     }
 }
@@ -484,6 +491,7 @@
     
     [self.positioningAnchorView.window removeChildWindow:self.popoverWindow];
     [self.popoverWindow close];
+    [self.contentView removeFromSuperview];
     
     if ((self.positioningAnchorView != self.positioningView) && [self.positioningAnchorView isDescendantOf:self.positioningView]) {
         [self.positioningAnchorView setHidden:YES];
@@ -712,7 +720,7 @@
         [self registerApplicationActiveNotification];
     }
     
-    [self registerObserverForPositioningSuperviewsFrameChanged];
+    [self registerSuperviewObserversForPositioningAnchor];
     
     [self removeWindowDidMoveEvent];
     [self registerWindowDidMoveEvent];
@@ -724,7 +732,7 @@
 - (void)removeAllApplicationEvents {
     [self removeApplicationEventsMonitor];
     [self removeApplicationActiveNotification];
-    [self unregisterObserverForPositioningSuperviewsFrameChanged];
+    [self unregisterSuperviewObserversForPositioningAnchor];
 }
 
 - (void)registerApplicationActiveNotification {
@@ -773,17 +781,12 @@
     }
 }
 
-- (void)registerObserverForPositioningSuperviewsFrameChanged {
+- (void)registerSuperviewObserversForPositioningAnchor {
     self.anchorSuperviews = [[NSMutableArray alloc] init];
     
     [self.anchorSuperviews addObject:self.positioningAnchorView];
     
-    [self.positioningAnchorView addObserver:self forKeyPath:@"frame"
-                                    options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
-                                    context:NULL];
-    [self.positioningAnchorView addObserver:self forKeyPath:@"superview"
-                                    options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
-                                    context:NULL];
+    [self addSuperviewObserversForView:self.positioningAnchorView];
     
     NSView *anchorSuperview = [self.positioningAnchorView superview];
     
@@ -791,12 +794,7 @@
         if ([anchorSuperview isKindOfClass:[NSView class]]) {
             [self.anchorSuperviews addObject:anchorSuperview];
             
-            [anchorSuperview addObserver:self forKeyPath:@"frame"
-                                 options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
-                                 context:NULL];
-            [anchorSuperview addObserver:self forKeyPath:@"superview"
-                                 options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
-                                 context:NULL];
+            [self addSuperviewObserversForView:anchorSuperview];
         }
         
         anchorSuperview = [anchorSuperview superview];
@@ -809,7 +807,7 @@
     }
 }
 
-- (void)unregisterObserverForPositioningSuperviewsFrameChanged {
+- (void)unregisterSuperviewObserversForPositioningAnchor {
     for (NSView *anchorSuperview in self.anchorSuperviews) {
         [anchorSuperview removeObserver:self forKeyPath:@"frame"];
         [anchorSuperview removeObserver:self forKeyPath:@"superview"];
@@ -875,10 +873,6 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([[FLOPopoverUtils sharedInstance] appMainWindowResized]) {
-        return;
-    }
-    
     if ([keyPath isEqualToString:@"superview"] && [object isKindOfClass:[NSView class]]) {
         NSView *view = (NSView *) object;
         
@@ -886,6 +880,10 @@
             [self close];
             return;
         }
+    }
+    
+    if ([[FLOPopoverUtils sharedInstance] appMainWindowResized]) {
+        return;
     }
     
     if ([keyPath isEqualToString:@"frame"] && [object isKindOfClass:[NSView class]]) {
@@ -943,7 +941,7 @@
         NSWindow *resizedWindow = (NSWindow *) notification.object;
         NSRect popoverRect = [self popoverRectForEdge:self.preferredEdge];
         
-        CGFloat newHeight = resizedWindow.contentView.visibleRect.size.height - self.popoverVerticalMargins;
+        CGFloat newHeight = resizedWindow.contentView.visibleRect.size.height - self.verticalMarginOutOfPopover;
         CGFloat deltaHeight = popoverRect.size.height - newHeight;
         CGFloat popoverOriginX = popoverRect.origin.x;
         CGFloat popoverOriginY = popoverRect.origin.y + ((newHeight < self.originalViewSize.height) ? deltaHeight : 0.0f);

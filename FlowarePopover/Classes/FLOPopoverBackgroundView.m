@@ -93,25 +93,25 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
 @property (nonatomic, assign) NSPoint originalMouseOffset;
 @property (nonatomic, assign) BOOL dragging;
 
-- (NSRectEdge)arrowEdgeForPopoverEdge:(NSRectEdge)popoverEdge;
+@property (nonatomic, assign) BOOL clippingViewUpdated;
 
 @end
 
 @implementation FLOPopoverBackgroundView
 
 - (instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self == nil) return nil;
-    
-    _arrowSize = NSZeroSize;
-    _fillColor = NSColor.clearColor;
-    
-    _clippingView = [[FLOPopoverClippingView alloc] initWithFrame:self.bounds];
-    
-    self.clippingView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-    self.clippingView.translatesAutoresizingMaskIntoConstraints = YES;
-    
-    [self addSubview:self.clippingView];
+    if (self = [super initWithFrame:frame]) {
+        _arrowSize = NSZeroSize;
+        _fillColor = NSColor.clearColor;
+        _clippingViewUpdated = NO;
+        
+        _clippingView = [[FLOPopoverClippingView alloc] initWithFrame:self.bounds];
+        
+        _clippingView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+        _clippingView.translatesAutoresizingMaskIntoConstraints = YES;
+        
+        [self addSubview:_clippingView];
+    }
     
     return self;
 }
@@ -124,7 +124,12 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
 
 - (void)viewWillDraw {
     [super viewWillDraw];
-    [self updateClippingView];
+    
+    if (self.clippingViewUpdated == NO) {
+        self.clippingViewUpdated = YES;
+        
+        [self updateClippingView];
+    }
 }
 
 #pragma mark -
