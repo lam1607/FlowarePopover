@@ -31,6 +31,12 @@
     [self setupUI];
 }
 
+- (void)viewWillLayout {
+    [super viewWillLayout];
+    
+    [self refreshUIColors];
+}
+
 #pragma mark -
 #pragma mark - Initialize
 #pragma mark -
@@ -44,19 +50,24 @@
 #pragma mark - Setup UI
 #pragma mark -
 - (void)setupUI {
-    self.vContainer.wantsLayer = YES;
-    self.vContainer.layer.cornerRadius = [CORNER_RADIUSES[0] doubleValue];
-    self.vContainer.layer.backgroundColor = [[NSColor whiteColor] CGColor];
+    self.imgView.imageScaling = NSImageScaleProportionallyUpOrDown;
+    self.lblName.maximumNumberOfLines = 0;
+}
+
+- (void)refreshUIColors {
     [Utils setShadowForView:self.vContainer];
     
-    self.imgView.wantsLayer = YES;
-    self.imgView.layer.backgroundColor = [[NSColor colorUltraLightGray] CGColor];
-    self.imgView.imageScaling = NSImageScaleProportionallyUpOrDown;
-    self.imgView.layer.cornerRadius = [CORNER_RADIUSES[0] doubleValue];
+#ifdef SHOULD_USE_ASSET_COLORS
+    [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+    [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
     
-    self.lblName.font = [NSFont systemFontOfSize:18.0f weight:NSFontWeightMedium];
-    self.lblName.textColor = [NSColor colorBlue];
-    self.lblName.maximumNumberOfLines = 0;
+    [Utils setTitle:self.lblName.stringValue color:[NSColor _textBlackColor] fontSize:16.0 forControl:self.lblName];
+#else
+    [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+    [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
+    
+    [Utils setTitle:self.lblName.stringValue color:[NSColor textBlackColor] fontSize:16.0 forControl:self.lblName];
+#endif
 }
 
 #pragma mark -
@@ -65,7 +76,7 @@
 - (CGFloat)getViewItemHeight {
     CGFloat imageHeight = self.imgView.frame.size.height;
     CGFloat nameHeight = [Utils sizeOfControl:self.lblName].height;
-    CGFloat verticalMargins = 65.0f; // Take a look at FilmCellView.xib file
+    CGFloat verticalMargins = 65.0; // Take a look at FilmCellView.xib file
     
     return imageHeight + nameHeight + verticalMargins;
 }

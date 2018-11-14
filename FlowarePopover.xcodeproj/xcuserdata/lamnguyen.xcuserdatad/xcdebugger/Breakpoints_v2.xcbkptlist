@@ -22,48 +22,64 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FlowarePopover/Classes/FLOWindowPopup.m"
-            timestampString = "561988218.520198"
+            filePath = "FlowarePopover-Sample/Common/Colors/NSColor+Custom.m"
+            timestampString = "563885198.21398"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "502"
-            endingLineNumber = "502"
-            landmarkName = "-close"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "+backgroundColor"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FlowarePopover/Classes/FLOWindowPopup.m"
-            timestampString = "561988218.520322"
+            filePath = "FlowarePopover-Sample/Common/Colors/NSColor+Custom.m"
+            timestampString = "563885198.214133"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "459"
-            endingLineNumber = "459"
-            landmarkName = "-showIfNeeded:"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "+backgroundWhiteColor"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FlowarePopover-Sample/UI/Scenes/HomeViewController/HomeViewController.m"
-            timestampString = "561988218.5204099"
+            filePath = "FlowarePopover-Sample/Common/Colors/NSColor+Custom.m"
+            timestampString = "563885198.214214"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
-            landmarkName = "-showRelativeToViewWithRect:byPopover:atView:"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "+blueColor"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FlowarePopover-Sample/Common/Colors/NSColor+Custom.m"
+            timestampString = "563885198.21429"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "+dustColor"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

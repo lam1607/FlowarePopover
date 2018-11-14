@@ -62,14 +62,12 @@
 #pragma mark - Setup UI
 #pragma mark -
 - (void)setupUI {
-    [self setBackgroundColor:[NSColor clearColor] forView:self.view];
-    
     NSSize screenSize = [Utils screenSize];
     NSTableColumn *column = [self.outlineViewData tableColumnWithIdentifier:@"DataCellViewColumn"];
     column.maxWidth = screenSize.width;
     
     self.outlineViewData.backgroundColor = [NSColor clearColor];
-    self.outlineViewData.rowHeight = 269.0f;
+    self.outlineViewData.rowHeight = 269.0;
     [self.outlineViewData registerNib:[[NSNib alloc] initWithNibNamed:NSStringFromClass([DataCellView class]) bundle:nil] forIdentifier:NSStringFromClass([DataCellView class])];
     self.outlineViewData.pdelegate = self;
     self.outlineViewData.delegate = self;
@@ -126,7 +124,7 @@
         return [((NSNumber *) [self._heights objectForKey:@(row)]) doubleValue];
     }
     
-    return 269.0f;
+    return 269.0;
 }
 
 - (void)outlineView:(NSOutlineView *)outlineView didAddRowView:(NSTableRowView *)rowView forRow:(NSInteger)row {

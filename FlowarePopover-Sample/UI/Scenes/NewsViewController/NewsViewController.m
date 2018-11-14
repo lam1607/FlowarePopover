@@ -57,14 +57,12 @@
 #pragma mark - Setup UI
 #pragma mark -
 - (void)setupUI {
-    [self setBackgroundColor:[NSColor clearColor] forView:self.view];
-    
     NSSize screenSize = [Utils screenSize];
     NSTableColumn *column = [self.tableViewData tableColumnWithIdentifier:@"NewsCellViewColumn"];
     column.maxWidth = screenSize.width;
     
     self.tableViewData.backgroundColor = [NSColor clearColor];
-    self.tableViewData.rowHeight = 254.0f;
+    self.tableViewData.rowHeight = 254.0;
     [self.tableViewData registerNib:[[NSNib alloc] initWithNibNamed:NSStringFromClass([NewsCellView class]) bundle:nil] forIdentifier:NSStringFromClass([NewsCellView class])];
     self.tableViewData.delegate = self;
     self.tableViewData.dataSource = self;
@@ -100,7 +98,7 @@
         return [((NSNumber *) [self._heights objectForKey:@(row)]) doubleValue];
     }
     
-    return 254.0f;
+    return 254.0;
 }
 
 - (void)tableView:(NSTableView *)tableView didAddRowView:(NSTableRowView *)rowView forRow:(NSInteger)row {

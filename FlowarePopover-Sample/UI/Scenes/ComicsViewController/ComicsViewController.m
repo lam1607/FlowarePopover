@@ -58,8 +58,6 @@
 #pragma mark - Setup UI
 #pragma mark -
 - (void)setupUI {
-    [self setBackgroundColor:[NSColor clearColor] forView:self.view];
-    
     NSSize screenSize = [Utils screenSize];
     NSTableColumn *column = [self.outlineViewData tableColumnWithIdentifier:@"ComicCellViewColumn"];
     column.maxWidth = screenSize.width;
@@ -87,7 +85,7 @@
 - (CGFloat)getContentSizeHeight {
     NSInteger rows = self.outlineViewData.numberOfRows;
     
-    return rows * 46.0f;
+    return rows * 46.0;
 }
 
 #pragma mark -
@@ -133,7 +131,7 @@
 }
 
 - (CGFloat)outlineView:(NSOutlineView *)outlineView heightOfRowByItem:(id)item {
-    return 44.0f;
+    return 44.0;
 }
 
 - (void)outlineView:(NSOutlineView *)outlineView didAddRowView:(NSTableRowView *)rowView forRow:(NSInteger)row {
@@ -188,6 +186,10 @@
 #pragma mark -
 - (void)reloadDataOutlineView {
     [self.outlineViewData reloadData];
+    
+    if (self.didContentSizeChange) {
+        self.didContentSizeChange();
+    }
 }
 
 @end

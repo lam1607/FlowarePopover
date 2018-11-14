@@ -22,7 +22,8 @@
     translationX.toValue = @(toTransX);
     
     CABasicAnimation *shrinkAnimation = nil;
-    if ( scaleFactor != 1.0f ) {
+    
+    if (scaleFactor != 1.0) {
         shrinkAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
         shrinkAnimation.toValue = [NSNumber numberWithFloat:scaleFactor];
         
@@ -57,7 +58,8 @@
     translationY.toValue = @(toTransY);
     
     CABasicAnimation *shrinkAnimation = nil;
-    if ( scaleFactor != 1.0f ) {
+    
+    if (scaleFactor != 1.0) {
         shrinkAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
         shrinkAnimation.toValue = [NSNumber numberWithFloat:scaleFactor];
         
@@ -100,7 +102,8 @@
     translationY.toValue = @(transY);
     
     CABasicAnimation *shrinkAnimation = nil;
-    if ( scaleFactor != 1.0f ) {
+    
+    if (scaleFactor != 1.0) {
         shrinkAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
         shrinkAnimation.toValue = [NSNumber numberWithFloat:scaleFactor];
         
@@ -134,7 +137,8 @@
     translationX.toValue = @(transX);
     
     CABasicAnimation *shrinkAnimation = nil;
-    if ( scaleFactor != 1.0f ) {
+    
+    if (scaleFactor != 1.0) {
         shrinkAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
         shrinkAnimation.toValue = [NSNumber numberWithFloat:scaleFactor];
         
@@ -169,13 +173,14 @@
     // gives the appearance of flipping
     CABasicAnimation *flipAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.y"];
     
-    CGFloat startValue = beginsOnTop ? 0.0f : M_PI;
-    CGFloat endValue = beginsOnTop ? -M_PI : 0.0f;
+    CGFloat startValue = beginsOnTop ? 0.0 : M_PI;
+    CGFloat endValue = beginsOnTop ? -M_PI : 0.0;
     flipAnimation.fromValue = [NSNumber numberWithDouble:startValue];
     flipAnimation.toValue = [NSNumber numberWithDouble:endValue];
     
     CABasicAnimation *shrinkAnimation = nil;
-    if ( scaleFactor != 1.0f ) {
+    
+    if (scaleFactor != 1.0) {
         shrinkAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
         shrinkAnimation.toValue = [NSNumber numberWithFloat:scaleFactor];
         shrinkAnimation.duration = aDuration * 0.5;

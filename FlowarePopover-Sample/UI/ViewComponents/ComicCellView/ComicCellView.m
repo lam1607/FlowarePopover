@@ -25,16 +25,31 @@
     [self setupUI];
 }
 
+- (void)layout {
+    [super layout];
+    
+    [self refreshUIColors];
+}
+
 #pragma mark -
 #pragma mark - Setup UI
 #pragma mark -
 - (void)setupUI {
-    self.vContainer.wantsLayer = YES;
-    self.vContainer.layer.backgroundColor = [[NSColor clearColor] CGColor];
-    
-    self.lblTitle.font = [NSFont systemFontOfSize:16.0f weight:NSFontWeightMedium];
-    self.lblTitle.textColor = [NSColor whiteColor];
     self.lblTitle.maximumNumberOfLines = 0;
+}
+
+- (void)refreshUIColors {
+    [Utils setShadowForView:self.vContainer];
+    
+#ifdef SHOULD_USE_ASSET_COLORS
+    [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+    
+    [Utils setTitle:self.lblTitle.stringValue color:[NSColor _textGrayColor] fontSize:16.0 forControl:self.lblTitle];
+#else
+    [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+    
+    [Utils setTitle:self.lblTitle.stringValue color:[NSColor textGrayColor] fontSize:16.0 forControl:self.lblTitle];
+#endif
 }
 
 #pragma mark -

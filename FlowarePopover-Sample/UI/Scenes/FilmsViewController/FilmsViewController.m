@@ -45,7 +45,7 @@
     self._filmsPresenter = [[FilmsPresenter alloc] init];
     [self._filmsPresenter attachView:self repository:self._filmRepository];
     
-    self._estimatedItemSize = NSMakeSize(self.view.frame.size.width / 3, 230.0f);
+    self._estimatedItemSize = NSMakeSize(self.view.frame.size.width / 3, 230.0);
     self._itemSizes = [[NSCache alloc] init];
 }
 
@@ -53,11 +53,9 @@
 #pragma mark - Setup UI
 #pragma mark -
 - (void)setupUI {
-    [self setBackgroundColor:[NSColor clearColor] forView:self.view];
-    
     NSCollectionViewFlowLayout *flowLayout = [[NSCollectionViewFlowLayout alloc] init];
-    flowLayout.minimumInteritemSpacing = 10.0f;
-    flowLayout.sectionInset = NSEdgeInsetsMake(10.0f, 10.0f, 10.0f, 10.0f);
+    flowLayout.minimumInteritemSpacing = 10.0;
+    flowLayout.sectionInset = NSEdgeInsetsMake(10.0, 10.0, 10.0, 10.0);
     self.collectionViewData.collectionViewLayout = flowLayout;
     
     self.collectionViewData.backgroundColors = @[[NSColor clearColor]];
@@ -74,23 +72,22 @@
 }
 
 - (void)calculateSizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat horizontalMargin = 30.0f;
+    CGFloat horizontalMargin = 30.0;
     CGFloat itemWidth = self.view.frame.size.width / 2 - horizontalMargin;
-    CGFloat itemHeight = 230.0f;
+    CGFloat itemHeight = 230.0;
     NSSize itemSize = NSMakeSize(itemWidth, itemHeight);
     
     Film *film = [[self._filmsPresenter films] objectAtIndex:indexPath.item];
-    CGFloat nameHorizontalMargin = 50.0f;
-    NSTextField *lblName = [[NSTextField alloc] initWithFrame:NSMakeRect(0.0f, 0.0f, itemWidth - nameHorizontalMargin, 17.0f)];
+    CGFloat nameHorizontalMargin = 50.0;
+    NSTextField *lblName = [[NSTextField alloc] initWithFrame:NSMakeRect(0.0, 0.0, itemWidth - nameHorizontalMargin, 17.0)];
     
-    lblName.font = [NSFont systemFontOfSize:18.0f weight:NSFontWeightMedium];
-    lblName.textColor = [NSColor colorBlue];
+    lblName.font = [NSFont systemFontOfSize:18.0 weight:NSFontWeightMedium];
     lblName.maximumNumberOfLines = 0;
     lblName.stringValue = film.name;
     
-    CGFloat imageHeight = 150.0f;
+    CGFloat imageHeight = 150.0;
     CGFloat nameHeight = [Utils sizeOfControl:lblName].height;
-    CGFloat verticalMargins = 65.0f; // Take a look at FilmCellView.xib file
+    CGFloat verticalMargins = 65.0; // Take a look at FilmCellView.xib file
     
     itemHeight = imageHeight + nameHeight + verticalMargins;
     itemSize = NSMakeSize(itemWidth, itemHeight);

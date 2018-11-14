@@ -188,7 +188,7 @@
         
         if (resizedWindow == self.appMainWindow) {
             [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(windowDidEndResize) object:nil];
-            [self performSelector:@selector(windowDidEndResize) withObject:nil afterDelay:0.5f];
+            [self performSelector:@selector(windowDidEndResize) withObject:nil afterDelay:0.5];
         }
     }
 }

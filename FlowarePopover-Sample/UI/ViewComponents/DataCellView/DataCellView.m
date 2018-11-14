@@ -31,6 +31,12 @@
     [self setupUI];
 }
 
+- (void)layout {
+    [super layout];
+    
+    [self refreshUIColors];
+}
+
 #pragma mark -
 #pragma mark - Initialize
 #pragma mark -
@@ -44,23 +50,27 @@
 #pragma mark - Setup UI
 #pragma mark -
 - (void)setupUI {
-    self.vContainer.wantsLayer = YES;
-    self.vContainer.layer.cornerRadius = [CORNER_RADIUSES[0] doubleValue];
-    self.vContainer.layer.backgroundColor = [[NSColor whiteColor] CGColor];
+    self.imgView.imageScaling = NSImageScaleProportionallyDown;
+    self.lblTitle.maximumNumberOfLines = 0;
+    self.lblShortDesc.maximumNumberOfLines = 0;
+}
+
+- (void)refreshUIColors {
     [Utils setShadowForView:self.vContainer];
     
-    self.imgView.wantsLayer = YES;
-    self.imgView.layer.backgroundColor = [[NSColor colorUltraLightGray] CGColor];
-    self.imgView.imageScaling = NSImageScaleProportionallyDown;
-    self.imgView.layer.cornerRadius = [CORNER_RADIUSES[0] doubleValue];
+#ifdef SHOULD_USE_ASSET_COLORS
+    [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+    [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
     
-    self.lblTitle.font = [NSFont systemFontOfSize:18.0f weight:NSFontWeightMedium];
-    self.lblTitle.textColor = [NSColor colorBlue];
-    self.lblTitle.maximumNumberOfLines = 0;
+    [Utils setTitle:self.lblTitle.stringValue color:[NSColor _textBlackColor] fontSize:16.0 forControl:self.lblTitle];
+    [Utils setTitle:self.lblShortDesc.stringValue color:[NSColor _textGrayColor] fontSize:14.0 forControl:self.lblShortDesc];
+#else
+    [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+    [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
     
-    self.lblShortDesc.font = [NSFont systemFontOfSize:14.0f weight:NSFontWeightRegular];
-    self.lblShortDesc.textColor = [NSColor colorViolet];
-    self.lblShortDesc.maximumNumberOfLines = 0;
+    [Utils setTitle:self.lblTitle.stringValue color:[NSColor textBlackColor] fontSize:16.0 forControl:self.lblTitle];
+    [Utils setTitle:self.lblShortDesc.stringValue color:[NSColor textGrayColor] fontSize:14.0 forControl:self.lblShortDesc];
+#endif
 }
 
 #pragma mark -
@@ -70,7 +80,7 @@
     CGFloat imageHeight = self.imgView.frame.size.height;
     CGFloat titleHeight = [Utils sizeOfControl:self.lblTitle].height;
     CGFloat descHeight = [Utils sizeOfControl:self.lblShortDesc].height;
-    CGFloat verticalMargins = 75.0f; // Take a look at DataCellView.xib file
+    CGFloat verticalMargins = 75.0; // Take a look at DataCellView.xib file
     
     return imageHeight + titleHeight + descHeight + verticalMargins;
 }

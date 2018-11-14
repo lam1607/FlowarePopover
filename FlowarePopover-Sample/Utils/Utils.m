@@ -93,7 +93,7 @@
 }
 
 #pragma mark -
-#pragma mark - Format view
+#pragma mark - Formats
 #pragma mark -
 + (void)setViewTransparent:(NSView *)view withBackgroundColor:(NSColor *)color {
     view.layer.backgroundColor = [[color colorWithAlphaComponent:COLOR_ALPHA] CGColor];
@@ -101,12 +101,51 @@
 
 + (void)setShadowForView:(NSView *)view {
     NSShadow *dropShadow = [[NSShadow alloc] init];
-    [dropShadow setShadowColor:[NSColor lightGrayColor]];
-    [dropShadow setShadowOffset:NSMakeSize(-1.0f, 1.0f)];
-    [dropShadow setShadowBlurRadius:[CORNER_RADIUSES[0] doubleValue]];
+    
+#ifdef SHOULD_USE_ASSET_COLORS
+    [dropShadow setShadowColor:[NSColor _shadowColor]];
+#else
+    [dropShadow setShadowColor:[NSColor shadowColor]];
+#endif
+    
+    [dropShadow setShadowOffset:NSMakeSize(-0.1, 0.1)];
+    [dropShadow setShadowBlurRadius:1.0];
     
     [view setWantsLayer:YES];
     [view setShadow:dropShadow];
+}
+
++ (void)setBackgroundColor:(NSColor *)color forView:(NSView *)view {
+    view.wantsLayer = YES;
+    view.layer.backgroundColor = [color CGColor];
+}
+
++ (void)setBackgroundColor:(NSColor *)color cornerRadius:(CGFloat)radius forView:(NSView *)view {
+    [self setBackgroundColor:color forView:view];
+    view.layer.cornerRadius = radius;
+}
+
++ (void)setTitle:(NSString *)title attributes:(NSDictionary *)attributes forControl:(NSControl *)control {
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:title attributes:attributes];
+    control.attributedStringValue = attributedString;
+    
+    if ([control isKindOfClass:[NSButton class]]) {
+        ((NSButton *) control).attributedTitle = attributedString;
+    }
+}
+
++ (void)setTitle:(NSString *)title color:(NSColor *)color fontSize:(CGFloat)fontSize forControl:(NSControl *)control {
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys: [NSFont systemFontOfSize:fontSize weight:NSFontWeightRegular], NSFontAttributeName, color, NSForegroundColorAttributeName, nil];
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:title attributes:attributes];
+    control.attributedStringValue = attributedString;
+    
+    if ([control isKindOfClass:[NSButton class]]) {
+        ((NSButton *) control).attributedTitle = attributedString;
+    }
+}
+
++ (void)setTitle:(NSString *)title color:(NSColor *)color forControl:(NSControl *)control {
+    [self setTitle:title color:color fontSize:14.0 forControl:control];
 }
 
 #pragma mark -
@@ -158,7 +197,7 @@
 
         [layoutManager addTextContainer:textContainer];
         [textStorage addLayoutManager:layoutManager];
-        [layoutManager setHyphenationFactor:0.0f];
+        [layoutManager setHyphenationFactor:0.0];
 
         if (typesetterBehavior != NSTypesetterLatestBehavior) {
             [layoutManager setTypesetterBehavior:typesetterBehavior];
@@ -189,6 +228,16 @@
 #pragma mark -
 + (NSSize)screenSize {
     return [[NSScreen mainScreen] frame].size;
+}
+
++ (BOOL)isDarkMode {
+    NSAppearance *appearance = NSAppearance.currentAppearance;
+    
+    if (@available(*, macOS 10.14)) {
+        return appearance.name == NSAppearanceNameDarkAqua;
+    }
+    
+    return NO;
 }
 
 #pragma mark -

@@ -84,11 +84,11 @@ typedef NS_ENUM(NSInteger, AXIS_XY) {
 #pragma mark -
 #pragma mark - View animated
 #pragma mark -
-static const CGFloat JNWAnimatableWindowShadowOpacity = 0.58f;
-static const CGSize JNWAnimatableWindowShadowOffset = (CGSize){ 0, -30.f };
-static const CGFloat JNWAnimatableWindowShadowRadius = 19.f;
-static const CGFloat JNWAnimatableWindowShadowHorizontalOutset = 7.f;
-static const CGFloat JNWAnimatableWindowShadowTopOffset = 14.f;
+static const CGFloat JNWAnimatableWindowShadowOpacity = 0.58;
+static const CGSize JNWAnimatableWindowShadowOffset = (CGSize){ 0, -30.0 };
+static const CGFloat JNWAnimatableWindowShadowRadius = 19.0;
+static const CGFloat JNWAnimatableWindowShadowHorizontalOutset = 7.0;
+static const CGFloat JNWAnimatableWindowShadowTopOffset = 14.0;
 
 static CALayer *subLayer;
 
@@ -100,7 +100,7 @@ static CALayer *subLayer;
     subLayer.shadowColor = shadowColor;
     subLayer.shadowOffset = JNWAnimatableWindowShadowOffset;
     subLayer.shadowRadius = JNWAnimatableWindowShadowRadius;
-    subLayer.shadowOpacity = 1.f;
+    subLayer.shadowOpacity = 1.0;
     CGColorRelease(shadowColor);
     
     CGPathRef shadowPath = CGPathCreateWithRect(self.shadowRect, NULL);
@@ -154,9 +154,9 @@ static CALayer *subLayer;
     
     CAAnimation  *animator;
     if(axis == axis_x) {
-        animator = [CABasicAnimation transformAxisXAnimationWithDuration:duration forLayerBeginningOnTop:YES scaleFactor:1.f fromTransX:startPoint toTransX:endPoint fromOpacity:0.f toOpacity:1.f];
+        animator = [CABasicAnimation transformAxisXAnimationWithDuration:duration forLayerBeginningOnTop:YES scaleFactor:1.0 fromTransX:startPoint toTransX:endPoint fromOpacity:0.0 toOpacity:1.0];
     } else if(axis == axis_y) {
-        animator = [CABasicAnimation transformAxisYAnimationWithDuration:duration forLayerBeginningOnTop:YES scaleFactor:1.f fromTransY:startPoint toTransY:endPoint fromOpacity:0.f toOpacity:1.f];
+        animator = [CABasicAnimation transformAxisYAnimationWithDuration:duration forLayerBeginningOnTop:YES scaleFactor:1.0 fromTransY:startPoint toTransY:endPoint fromOpacity:0.0 toOpacity:1.0];
     }
     
     [CATransaction begin];
@@ -164,7 +164,7 @@ static CALayer *subLayer;
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
     
     [CATransaction setCompletionBlock:^{
-        self.alphaValue = 1.f;
+        self.alphaValue = 1.0;
         [self.layer removeAllAnimations];
     }];
     
@@ -239,12 +239,12 @@ static CALayer *subLayer;
     animation.toValue = [NSValue valueWithPoint:endedPoint];
     animation.fromValue = [NSValue valueWithPoint:beginPoint];
     
-    self.alphaValue = 0.f;
+    self.alphaValue = 0.0;
     [CATransaction begin];
     [CATransaction setAnimationDuration:0.3];
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
     [CATransaction setCompletionBlock:^{
-        self.alphaValue = 1.f;
+        self.alphaValue = 1.0;
         [self .layer removeAllAnimations];
         if(handler != nil) {
             handler();
@@ -268,8 +268,8 @@ static CALayer *subLayer;
     [self setFrame:fromFrame];
     
     CABasicAnimation *fadeAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-    fadeAnimation.fromValue = [NSNumber numberWithFloat:showing ? 0.0f : 1.0f];
-    fadeAnimation.toValue = [NSNumber numberWithFloat:showing ? 1.0f : 0.0f];
+    fadeAnimation.fromValue = [NSNumber numberWithFloat:showing ? 0.0 : 1.0];
+    fadeAnimation.toValue = [NSNumber numberWithFloat:showing ? 1.0 : 0.0];
     fadeAnimation.duration = duration;
     
     NSString *fadeEffect = showing ? NSViewAnimationFadeInEffect : NSViewAnimationFadeOutEffect;
@@ -293,7 +293,7 @@ static CALayer *subLayer;
     [animation startAnimation];
     
     // Change the actual data value in the layer to the final value.
-    self.layer.opacity = showing ? 1.0f : 0.0f;
+    self.layer.opacity = showing ? 1.0 : 0.0;
 }
 
 - (void)showingAnimated:(BOOL)showing fromPosition:(NSPoint)fromPosition toPosition:(NSPoint)toPosition {
@@ -306,7 +306,7 @@ static CALayer *subLayer;
 
 - (void)showingAnimated:(BOOL)showing fromPosition:(NSPoint)fromPosition toPosition:(NSPoint)toPosition duration:(NSTimeInterval)duration completionHandler:(void(^)(void))complete {
     [[self animator] setFrameOrigin:fromPosition];
-    [[self animator] setAlphaValue:showing ? 0.0f : 1.0f];
+    [[self animator] setAlphaValue:showing ? 0.0 : 1.0];
     
     [NSAnimationContext beginGrouping];
     [[NSAnimationContext currentContext] setDuration:duration];
@@ -319,7 +319,7 @@ static CALayer *subLayer;
     }];
     
     [[self animator] setFrameOrigin:toPosition];
-    [[self animator] setAlphaValue:showing ? 1.0f : 0.0f];
+    [[self animator] setAlphaValue:showing ? 1.0 : 0.0];
     [NSAnimationContext endGrouping];
 }
 

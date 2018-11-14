@@ -9,6 +9,8 @@
 #ifndef Constants_h
 #define Constants_h
 
+#define SHOULD_USE_ASSET_COLORS
+
 #define FLO_NOTIFICATION_WINDOW_WILL_CHANGE_MODE                                            @"FLO_Notification_WindowWillChangeMode"
 #define FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE                                             @"FLO_Notification_WindowDidChangeMode"
 
@@ -33,8 +35,7 @@ typedef NS_ENUM(NSInteger, FLOWindowMode) {
 // Convert between RGB and HEX from
 // https://www.webpagefx.com/web-design/hex-to-rgb/
 //
-
-#define COLOR_ALPHA                                             0.75f
+#define COLOR_ALPHA                                             0.75
 
 //
 // Files
@@ -57,6 +58,6 @@ typedef NS_ENUM(NSInteger, FLOWindowMode) {
 #define DOUBLE_QUOTATION_MARK                                   @"\""
 #define DASH                                                    @"-"
 
-#define CORNER_RADIUSES                                         @[@(5.0f), @(10.0f)]
+#define CORNER_RADIUSES                                         @[@(5.0), @(10.0)]
 
 #endif /* Constants_h */

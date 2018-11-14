@@ -183,12 +183,12 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
 #pragma mark -
 - (void)setViewMovable:(BOOL)movable {
     self.shouldMovable = movable;
-    _fillColor = (self.shouldMovable || self.shouldDetach) ? [NSColor.whiteColor colorWithAlphaComponent:0.86f] : NSColor.clearColor;
+    _fillColor = (self.shouldMovable || self.shouldDetach) ? [NSColor.whiteColor colorWithAlphaComponent:0.86] : NSColor.clearColor;
 }
 
 - (void)setWindowDetachable:(BOOL)detachable {
     self.shouldDetach = detachable;
-    _fillColor = (self.shouldMovable || self.shouldDetach) ? [NSColor.whiteColor colorWithAlphaComponent:0.86f] : NSColor.clearColor;
+    _fillColor = (self.shouldMovable || self.shouldDetach) ? [NSColor.whiteColor colorWithAlphaComponent:0.86] : NSColor.clearColor;
 }
 
 - (void)setShouldShowShadow:(BOOL)needed {
@@ -196,9 +196,9 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
         self.wantsLayer             = YES;
         self.layer.masksToBounds    = NO;
         self.layer.shadowColor      = [NSColor shadowColor].CGColor;
-        self.layer.shadowOpacity    = 0.5f;
+        self.layer.shadowOpacity    = 0.5;
         self.layer.shadowOffset     = CGSizeMake(0, -3);
-        self.layer.shadowRadius     = 5.0f;
+        self.layer.shadowRadius     = 5.0;
     }
 }
 
@@ -263,7 +263,7 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
 }
 
 - (NSRect)contentViewFrameForBackgroundFrame:(NSRect)backgroundFrame popoverEdge:(NSRectEdge)popoverEdge {
-    NSRect returnFrame = NSInsetRect(backgroundFrame, 0.0f, 0.0f);
+    NSRect returnFrame = NSInsetRect(backgroundFrame, 0.0, 0.0);
     
     if (NSEqualSizes(self.arrowSize, NSZeroSize) && (self.shouldMovable || self.shouldDetach)) {
         returnFrame.size.height -= PopoverBackgroundViewArrowHeight;

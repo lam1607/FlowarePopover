@@ -9,8 +9,8 @@
 #ifndef FLOPopoverConstants_h
 #define FLOPopoverConstants_h
 
-#define FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD                                          0.2f
-#define FLO_CONST_POPOVER_BOTTOM_OFFSET                                                     5.0f
+#define FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD                                          0.2
+#define FLO_CONST_POPOVER_BOTTOM_OFFSET                                                     5.0
 
 typedef NS_ENUM(NSInteger, FLOPopoverType) {
     FLOWindowPopover,

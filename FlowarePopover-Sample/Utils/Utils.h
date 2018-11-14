@@ -52,10 +52,15 @@
 + (void)copy:(NSObject *)copy from:(NSObject *)object withZone:(NSZone *)zone;
 
 #pragma mark -
-#pragma mark - Format view
+#pragma mark - Formats
 #pragma mark -
 + (void)setViewTransparent:(NSView *)view withBackgroundColor:(NSColor *)color;
 + (void)setShadowForView:(NSView *)view;
++ (void)setBackgroundColor:(NSColor *)color forView:(NSView *)view;
++ (void)setBackgroundColor:(NSColor *)color cornerRadius:(CGFloat)radius forView:(NSView *)view;
++ (void)setTitle:(NSString *)title attributes:(NSDictionary *)attributes forControl:(NSControl *)control;
++ (void)setTitle:(NSString *)title color:(NSColor *)color fontSize:(CGFloat)fontSize forControl:(NSControl *)control;
++ (void)setTitle:(NSString *)title color:(NSColor *)color forControl:(NSControl *)control;
 
 #pragma mark -
 #pragma mark - Checking
@@ -74,6 +79,7 @@
 #pragma mark - Device
 #pragma mark -
 + (NSSize)screenSize;
++ (BOOL)isDarkMode;
 
 #pragma mark -
 #pragma mark - Application utilities

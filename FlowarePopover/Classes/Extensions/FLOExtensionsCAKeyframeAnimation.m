@@ -10,11 +10,11 @@
 
 #import "FLOExtensionsNSValue.h"
 
-static const CGFloat FLOAnimationDefaultMass = 5.f;
-static const CGFloat FLOAnimationDefaultDamping = 30.f;
-static const CGFloat FLOAnimationDefaultStiffness = 300.f;
-static const CGFloat FLOAnimationKeyframeStep = 0.001f;
-static const CGFloat FLOAnimationMinimumThreshold = 0.0001f;
+static const CGFloat FLOAnimationDefaultMass = 5.0;
+static const CGFloat FLOAnimationDefaultDamping = 30.0;
+static const CGFloat FLOAnimationDefaultStiffness = 300.0;
+static const CGFloat FLOAnimationKeyframeStep = 0.001;
+static const CGFloat FLOAnimationMinimumThreshold = 0.0001;
 
 @interface FLOExtensionsCAKeyframeAnimation()
 
@@ -89,8 +89,8 @@ static const CGFloat FLOAnimationMinimumThreshold = 0.0001f;
 
 - (void)setDamping:(CGFloat)damping {
     if (damping <= 0) {
-        NSLog(@"[%@] LOGIC ERROR. `damping` should be > 0.0f to avoid an infinite spring calculation", NSStringFromClass([self class]));
-        damping = 1.0f;
+        NSLog(@"[%@] LOGIC ERROR. `damping` should be > 0.0 to avoid an infinite spring calculation", NSStringFromClass([self class]));
+        damping = 1.0;
     }
     
     _damping = damping;
@@ -102,7 +102,7 @@ static const CGFloat FLOAnimationMinimumThreshold = 0.0001f;
         return self.interpolatedValues.count * FLOAnimationKeyframeStep;
     }
     
-    return 0.f;
+    return 0.0;
 }
 
 - (NSArray *)interpolatedValues {

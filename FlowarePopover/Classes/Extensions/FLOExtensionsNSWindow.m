@@ -26,7 +26,7 @@
     
     if (showing) {
         [self setFrame:toFrame display:NO];
-        self.alphaValue = 0.0f;
+        self.alphaValue = 0.0;
     }
     
     NSString *fadeEffect = showing ? NSViewAnimationFadeInEffect : NSViewAnimationFadeOutEffect;
@@ -57,7 +57,7 @@
 
 - (void)showingAnimated:(BOOL)showing fromPosition:(NSPoint)fromPosition toPosition:(NSPoint)toPosition duration:(NSTimeInterval)duration completionHandler:(void(^)(void))complete {
     [[self animator] setFrameOrigin:fromPosition];
-    [[self animator] setAlphaValue:showing ? 0.0f : 1.0f];
+    [[self animator] setAlphaValue:showing ? 0.0 : 1.0];
     
     [NSAnimationContext beginGrouping];
     [[NSAnimationContext currentContext] setDuration:duration];
@@ -70,7 +70,7 @@
     }];
     
     [[self animator] setFrameOrigin:toPosition];
-    [[self animator] setAlphaValue:showing ? 1.0f : 0.0f];
+    [[self animator] setAlphaValue:showing ? 1.0 : 0.0];
     [NSAnimationContext endGrouping];
 }
 

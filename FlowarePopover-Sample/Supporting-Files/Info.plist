@@ -28,5 +28,7 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>$(PRODUCT_NAME) needs to send Apple Events to control this application.</string>
 </dict>
 </plist>

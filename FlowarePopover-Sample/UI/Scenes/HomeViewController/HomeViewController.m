@@ -32,14 +32,14 @@
 @property (weak) IBOutlet NSView *vOpenSafariApp;
 @property (weak) IBOutlet NSButton *btnOpenSafariApp;
 
-@property (weak) IBOutlet NSView *vShowWindowPopup;
-@property (weak) IBOutlet NSButton *btnShowWindowPopup;
-@property (weak) IBOutlet NSView *vShowViewPopup;
-@property (weak) IBOutlet NSButton *btnShowViewPopup;
+@property (weak) IBOutlet NSView *vOpenFilmsPopup;
+@property (weak) IBOutlet NSButton *btnOpenFilmsPopup;
+@property (weak) IBOutlet NSView *vOpenNewsPopup;
+@property (weak) IBOutlet NSButton *btnOpenNewsPopup;
 @property (weak) IBOutlet NSView *vShowSecondBar;
 @property (weak) IBOutlet NSButton *btnShowSecondBar;
-@property (weak) IBOutlet NSView *vShowDataMix;
-@property (weak) IBOutlet NSButton *btnShowDataMix;
+@property (weak) IBOutlet NSView *vOpenComicsPopup;
+@property (weak) IBOutlet NSButton *btnOpenComicsPopup;
 
 @property (weak) IBOutlet NSView *vSecondBar;
 @property (weak) IBOutlet NSLayoutConstraint *constraintVSecondBarHeight;
@@ -82,48 +82,53 @@
     [self._homePresenter attachView:self];
     
     self.entitlementAppBundles = [[NSArray alloc] initWithObjects: FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER, FLO_ENTITLEMENT_APP_IDENTIFIER_SAFARI, nil];
-    
-    self.filmsViewController = [[FilmsViewController alloc] initWithNibName:NSStringFromClass([FilmsViewController class]) bundle:nil];
-    self.newsViewController = [[NewsViewController alloc] initWithNibName:NSStringFromClass([NewsViewController class]) bundle:nil];
-    self.dataViewController = [[DataViewController alloc] initWithNibName:NSStringFromClass([DataViewController class]) bundle:nil];
-    
-    self.comicsViewController = [[ComicsViewController alloc] initWithNibName:NSStringFromClass([ComicsViewController class]) bundle:nil];
-    [self.comicsViewController.view setFrame:NSZeroRect];
 }
 
 #pragma mark -
 #pragma mark - Setup UI
 #pragma mark -
 - (void)setupUI {
-    [self setBackgroundColor:[NSColor colorGray] forView:self.vMenu];
+    self.constraintVSecondBarHeight.constant = 0.0;
+}
+
+- (void)refreshUIColors {
+    [super refreshUIColors];
     
-    NSDictionary *titleAttributes = [NSDictionary dictionaryWithObjectsAndKeys: [NSFont systemFontOfSize:14.0f weight:NSFontWeightRegular], NSFontAttributeName,
-                                     [NSColor whiteColor], NSForegroundColorAttributeName, nil];
+#ifdef SHOULD_USE_ASSET_COLORS
+    [Utils setBackgroundColor:[NSColor _backgroundColor] forView:self.vMenu];
     
-    [self setBackgroundColor:[NSColor colorDust] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vChangeMode];
-    [self setTitle:@"Change window mode" attributes:titleAttributes forControl:self.btnChangeMode];
+    [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vChangeMode];
+    [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFinderApp];
+    [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenSafariApp];
+    [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFilmsPopup];
+    [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenNewsPopup];
+    [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vShowSecondBar];
+    [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenComicsPopup];
     
-    [self setBackgroundColor:[NSColor colorMoss] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFinderApp];
-    [self setTitle:@"Open Finder" attributes:titleAttributes forControl:self.btnOpenFinderApp];
+    [Utils setTitle:@"Films popup" color:[NSColor _textWhiteColor] forControl:self.btnOpenFilmsPopup];
+    [Utils setTitle:@"News popup" color:[NSColor _textWhiteColor] forControl:self.btnOpenNewsPopup];
+    [Utils setTitle:@"Show second bar" color:[NSColor _textWhiteColor] forControl:self.btnShowSecondBar];
+    [Utils setTitle:@"Comics popup" color:[NSColor _textWhiteColor] forControl:self.btnOpenComicsPopup];
     
-    [self setBackgroundColor:[NSColor colorOrange] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenSafariApp];
-    [self setTitle:@"Open Safari" attributes:titleAttributes forControl:self.btnOpenSafariApp];
+    [Utils setBackgroundColor:[NSColor _backgroundColor] forView:self.vSecondBar];
+#else
+    [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.vMenu];
     
-    [self setBackgroundColor:[NSColor colorTeal] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vShowWindowPopup];
-    [self setTitle:@"Window popover" attributes:titleAttributes forControl:self.btnShowWindowPopup];
+    [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vChangeMode];
+    [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFinderApp];
+    [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenSafariApp];
+    [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFilmsPopup];
+    [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenNewsPopup];
+    [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vShowSecondBar];
+    [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenComicsPopup];
     
-    [self setBackgroundColor:[NSColor colorLavender] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vShowViewPopup];
-    [self setTitle:@"View popover" attributes:titleAttributes forControl:self.btnShowViewPopup];
+    [Utils setTitle:@"Films popup" color:[NSColor textWhiteColor] forControl:self.btnOpenFilmsPopup];
+    [Utils setTitle:@"News popup" color:[NSColor textWhiteColor] forControl:self.btnOpenNewsPopup];
+    [Utils setTitle:@"Show second bar" color:[NSColor textWhiteColor] forControl:self.btnShowSecondBar];
+    [Utils setTitle:@"Comics popup" color:[NSColor textWhiteColor] forControl:self.btnOpenComicsPopup];
     
-    [self setBackgroundColor:[NSColor colorBlue] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vShowSecondBar];
-    [self setTitle:@"Show second bar" attributes:titleAttributes forControl:self.btnShowSecondBar];
-    
-    [self setBackgroundColor:[NSColor colorViolet] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vShowDataMix];
-    [self setTitle:@"Mix popover" attributes:titleAttributes forControl:self.btnShowDataMix];
-    
-    [self setBackgroundColor:[NSColor colorBackground] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vSecondBar];
-    
-    self.constraintVSecondBarHeight.constant = 0.0f;
+    [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.vSecondBar];
+#endif
 }
 
 #pragma mark -
@@ -158,58 +163,64 @@
 }
 
 - (void)observePopoverMixRelativeToViewContentSizeChange {
-    __weak typeof(self) wself = self;
-    
-    self.comicsViewController.didContentSizeChange = ^{
-        [wself handlePopoverMixRelativeToViewContentSizeChange];
-    };
+    if (self.comicsViewController) {
+        __weak typeof(self) wself = self;
+        
+        self.comicsViewController.didContentSizeChange = ^{
+            [wself handlePopoverMixRelativeToViewContentSizeChange];
+        };
+    }
 }
 
 - (void)handlePopoverMixRelativeToViewContentSizeChange {
-    NSRect visibleRect = [self.view visibleRect];
-    CGFloat menuHeight = self.vMenu.frame.size.height;
-    CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
-    CGFloat verticalMargin = 10.0f;
-    CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
-    CGFloat contentHeight = [self.comicsViewController getContentSizeHeight];
-    CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : contentHeight;
-    NSRect contentViewRect = self.comicsViewController.view.frame;
-    
-    contentViewRect = NSMakeRect(contentViewRect.origin.x, contentViewRect.origin.y, contentViewRect.size.width, contentViewHeight);
-    
-    [self._popoverMix setPopoverContentViewSize:contentViewRect.size];
+    if (self.comicsViewController) {
+        NSRect visibleRect = [self.view visibleRect];
+        CGFloat menuHeight = self.vMenu.frame.size.height;
+        CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
+        CGFloat verticalMargin = 10.0;
+        CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
+        CGFloat contentHeight = [self.comicsViewController getContentSizeHeight];
+        CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : contentHeight;
+        NSRect contentViewRect = self.comicsViewController.view.frame;
+        
+        contentViewRect = NSMakeRect(contentViewRect.origin.x, contentViewRect.origin.y, contentViewRect.size.width, contentViewHeight);
+        
+        [self._popoverMix setPopoverContentViewSize:contentViewRect.size];
+    }
 }
 
 - (void)handleShowSecondBar {
-    CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
-    
-    if (secondBarHeight < 40.0f) {
-        secondBarHeight = 40.0f;
-    } else {
-        secondBarHeight = 0.0f;
+    if (self.comicsViewController) {
+        CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
+        
+        if (secondBarHeight < 40.0) {
+            secondBarHeight = 40.0;
+        } else {
+            secondBarHeight = 0.0;
+        }
+        
+        self.constraintVSecondBarHeight.constant = secondBarHeight;
+        
+        [self.vSecondBar setNeedsUpdateConstraints:YES];
+        [self.vSecondBar updateConstraints];
+        [self.vSecondBar updateConstraintsForSubtreeIfNeeded];
+        [self.vSecondBar layoutSubtreeIfNeeded];
+        
+        NSRect visibleRect = [self.view visibleRect];
+        CGFloat menuHeight = self.vMenu.frame.size.height;
+        CGFloat verticalMargin = 10.0;
+        CGFloat contentViewWidth = 350.0;
+        CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
+        CGFloat contentHeight = [self.comicsViewController getContentSizeHeight];
+        CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : contentHeight;
+        NSRect contentViewRect = NSMakeRect(0.0, 0.0, contentViewWidth, contentViewHeight);
+        
+        CGFloat positioningRectX = visibleRect.size.width - contentViewRect.size.width - verticalMargin / 2;
+        CGFloat positioningRectY = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin / 2 - contentViewHeight;
+        NSRect contentRect = NSMakeRect(positioningRectX, positioningRectY, contentViewRect.size.width, contentViewRect.size.height);
+        
+        [self._popoverMix setPopoverContentViewSize:contentViewRect.size positioningRect:contentRect];
     }
-    
-    self.constraintVSecondBarHeight.constant = secondBarHeight;
-    
-    [self.vSecondBar setNeedsUpdateConstraints:YES];
-    [self.vSecondBar updateConstraints];
-    [self.vSecondBar updateConstraintsForSubtreeIfNeeded];
-    [self.vSecondBar layoutSubtreeIfNeeded];
-    
-    NSRect visibleRect = [self.view visibleRect];
-    CGFloat menuHeight = self.vMenu.frame.size.height;
-    CGFloat verticalMargin = 10.0f;
-    CGFloat contentViewWidth = 350.0f;
-    CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
-    CGFloat contentHeight = [self.comicsViewController getContentSizeHeight];
-    CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : contentHeight;
-    NSRect contentViewRect = NSMakeRect(0.0f, 0.0f, contentViewWidth, contentViewHeight);
-    
-    CGFloat positioningRectX = visibleRect.size.width - contentViewRect.size.width - verticalMargin / 2;
-    CGFloat positioningRectY = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin / 2 - contentViewHeight;
-    NSRect contentRect = NSMakeRect(positioningRectX, positioningRectY, contentViewRect.size.width, contentViewRect.size.height);
-    
-    [self._popoverMix setPopoverContentViewSize:contentViewRect.size positioningRect:contentRect];
 }
 
 - (void)setWindowLevelForPopover:(FLOPopover *)popover {
@@ -257,15 +268,16 @@
     }
 }
 
-- (void)showPopoverWindowRelativeToRectOfView:(NSView *)sender {
+- (void)showFilmsPopupAtView:(NSView *)sender {
     NSRect visibleRect = [self.view visibleRect];
     CGFloat menuHeight = self.vMenu.frame.size.height;
-    CGFloat verticalMargin = 10.0f;
-    CGFloat width = 400.0f;
+    CGFloat verticalMargin = 10.0;
+    CGFloat width = 0.5 * visibleRect.size.width;
     CGFloat height = visibleRect.size.height - menuHeight - verticalMargin;
-    NSRect contentViewRect = NSMakeRect(0.0f, 0.0f, width, height);
+    NSRect contentViewRect = NSMakeRect(0.0, 0.0, width, height);
     
     if (self._popoverWindow == nil) {
+        self.filmsViewController = [[FilmsViewController alloc] initWithNibName:NSStringFromClass([FilmsViewController class]) bundle:nil];
         [self.filmsViewController.view setFrame:contentViewRect];
         
         self._popoverWindow = [[FLOPopover alloc] initWithContentViewController:self.filmsViewController popoverType:FLOWindowPopover];
@@ -283,15 +295,16 @@
     [self showRelativeToRectOfViewWithPopover:self._popoverWindow edgeType:FLOPopoverEdgeTypeBelowLeftEdge atView:sender];
 }
 
-- (void)showPopoverViewRelativeToRectOfView:(NSView *)sender {
+- (void)showNewsPopupAtView:(NSView *)sender {
     NSRect visibleRect = [self.view visibleRect];
     CGFloat menuHeight = self.vMenu.frame.size.height;
-    CGFloat verticalMargin = 10.0f;
-    CGFloat width = 350.0f;
+    CGFloat verticalMargin = 10.0;
+    CGFloat width = 0.5 * visibleRect.size.width;
     CGFloat height = visibleRect.size.height - menuHeight - verticalMargin;
-    NSRect contentViewRect = NSMakeRect(0.0f, 0.0f, width, height);
+    NSRect contentViewRect = NSMakeRect(0.0, 0.0, width, height);
     
     if (self._popoverView == nil) {
+        self.newsViewController = [[NewsViewController alloc] initWithNibName:NSStringFromClass([NewsViewController class]) bundle:nil];
         [self.newsViewController.view setFrame:contentViewRect];
         
         self._popoverView = [[FLOPopover alloc] initWithContentViewController:self.newsViewController popoverType:FLOWindowPopover];
@@ -309,65 +322,68 @@
     [self showRelativeToRectOfViewWithPopover:self._popoverView edgeType:FLOPopoverEdgeTypeBelowLeftEdge atView:sender];
 }
 
-- (void)showPopoverMixRelativeToRectOfView:(NSView *)sender {
-    NSRect visibleRect = [self.view visibleRect];
-    CGFloat menuHeight = self.vMenu.frame.size.height;
-    CGFloat verticalMargin = 10.0f;
-    CGFloat width = 350.0f;
-    CGFloat height = visibleRect.size.height - menuHeight - verticalMargin;
-    NSRect contentViewRect = NSMakeRect(0.0f, 0.0f, width, height);
-    
-    if (self._popoverMix == nil) {
-        [self.dataViewController.view setFrame:contentViewRect];
+- (void)showComicsPopupAtView:(NSView *)sender option:(NSInteger)option {
+    if (option == 1) {
+        NSRect visibleRect = [self.view visibleRect];
+        CGFloat menuHeight = self.vMenu.frame.size.height;
+        CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
+        CGFloat verticalMargin = 10.0;
+        CGFloat contentViewWidth = 350.0;
+        CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
+        CGFloat contentHeight = [self.comicsViewController getContentSizeHeight];
+        CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : contentHeight;
+        NSRect contentViewRect = NSMakeRect(0.0, 0.0, contentViewWidth, contentViewHeight);
         
-        self._popoverMix = [[FLOPopover alloc] initWithContentViewController:self.dataViewController popoverType:FLOWindowPopover];
+        if (self._popoverMix == nil) {
+            self.comicsViewController = [[ComicsViewController alloc] initWithNibName:NSStringFromClass([ComicsViewController class]) bundle:nil];
+            [self.comicsViewController.view setFrame:contentViewRect];
+            
+            self._popoverMix = [[FLOPopover alloc] initWithContentViewController:self.comicsViewController popoverType:FLOWindowPopover];
+        }
+        
+        self._popoverMix.alwaysOnTop = YES;
+        self._popoverMix.shouldShowArrow = YES;
+        self._popoverMix.animated = YES;
+        //    self._popoverMix.closesWhenPopoverResignsKey = YES;
+        //    self._popoverMix.closesWhenApplicationBecomesInactive = YES;
+        //    self._popoverMix.popoverMovable = YES;
+        //    self._popoverMix.popoverShouldDetach = YES;
+        
+        CGFloat positioningRectX = visibleRect.size.width - contentViewRect.size.width - verticalMargin / 2;
+        CGFloat positioningRectY = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin / 2 - contentViewHeight;
+        NSRect contentRect = NSMakeRect(positioningRectX, positioningRectY, contentViewRect.size.width, contentViewRect.size.height);
+        
+        [self._popoverMix setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft];
+        
+        [self showRelativeToViewWithRect:contentRect byPopover:self._popoverMix atView:sender];
+    } else {
+        NSRect visibleRect = [self.view visibleRect];
+        CGFloat menuHeight = self.vMenu.frame.size.height;
+        CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
+        CGFloat verticalMargin = 10.0;
+        CGFloat width = 350.0;
+        CGFloat height = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
+        NSRect contentViewRect = NSMakeRect(0.0, 0.0, width, height);
+        
+        if (self._popoverMix == nil) {
+            self.dataViewController = [[DataViewController alloc] initWithNibName:NSStringFromClass([DataViewController class]) bundle:nil];
+            [self.dataViewController.view setFrame:contentViewRect];
+            self._popoverMix = [[FLOPopover alloc] initWithContentViewController:self.dataViewController popoverType:FLOWindowPopover];
+        }
+        
+        self._popoverMix.alwaysOnTop = YES;
+        self._popoverMix.shouldShowArrow = YES;
+        self._popoverMix.animated = YES;
+        //    self._popoverMix.closesWhenPopoverResignsKey = YES;
+        //    self._popoverMix.closesWhenApplicationBecomesInactive = YES;
+        //    self._popoverMix.popoverMovable = YES;
+        //    self._popoverMix.popoverShouldDetach = YES;
+        
+        [self._popoverMix setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft];
+        
+        [self showRelativeToRectOfViewWithPopover:self._popoverMix edgeType:FLOPopoverEdgeTypeBelowRightEdge atView:sender];
     }
     
-    self._popoverMix.alwaysOnTop = YES;
-    self._popoverMix.shouldShowArrow = YES;
-    self._popoverMix.animated = YES;
-    //    self._popoverMix.closesWhenPopoverResignsKey = YES;
-    //    self._popoverMix.closesWhenApplicationBecomesInactive = YES;
-    //    self._popoverMix.popoverMovable = YES;
-    //    self._popoverMix.popoverShouldDetach = YES;
-    
-    [self._popoverMix setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft];
-    
-    [self showRelativeToRectOfViewWithPopover:self._popoverMix edgeType:FLOPopoverEdgeTypeBelowRightEdge atView:sender];
-}
-
-- (void)showPopoverMixRelativeToView:(NSView *)sender {
-    NSRect visibleRect = [self.view visibleRect];
-    CGFloat menuHeight = self.vMenu.frame.size.height;
-    CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
-    CGFloat verticalMargin = 10.0f;
-    CGFloat contentViewWidth = 350.0f;
-    CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
-    CGFloat contentHeight = [self.comicsViewController getContentSizeHeight];
-    CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : contentHeight;
-    NSRect contentViewRect = NSMakeRect(0.0f, 0.0f, contentViewWidth, contentViewHeight);
-    
-    if (self._popoverMix == nil) {
-        [self.comicsViewController.view setFrame:contentViewRect];
-        
-        self._popoverMix = [[FLOPopover alloc] initWithContentViewController:self.comicsViewController popoverType:FLOWindowPopover];
-    }
-    
-    self._popoverMix.alwaysOnTop = YES;
-    self._popoverMix.shouldShowArrow = YES;
-    self._popoverMix.animated = YES;
-    //    self._popoverMix.closesWhenPopoverResignsKey = YES;
-    //    self._popoverMix.closesWhenApplicationBecomesInactive = YES;
-    //    self._popoverMix.popoverMovable = YES;
-    //    self._popoverMix.popoverShouldDetach = YES;
-    
-    CGFloat positioningRectX = visibleRect.size.width - contentViewRect.size.width - verticalMargin / 2;
-    CGFloat positioningRectY = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin / 2 - contentViewHeight;
-    NSRect contentRect = NSMakeRect(positioningRectX, positioningRectY, contentViewRect.size.width, contentViewRect.size.height);
-    
-    [self._popoverMix setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft];
-    
-    [self showRelativeToViewWithRect:contentRect byPopover:self._popoverMix atView:sender];
     [self observePopoverMixRelativeToViewContentSizeChange];
 }
 
@@ -386,20 +402,20 @@
     [self._homePresenter doSelectSender:@{@"type": @"openSafari", @"object": sender}];
 }
 
-- (IBAction)btnShowWindowPopup_clicked:(NSButton *)sender {
-    [self._homePresenter doSelectSender:@{@"type": @"popoverWindow", @"object": sender}];
+- (IBAction)btnOpenFilmsPopup_clicked:(NSButton *)sender {
+    [self._homePresenter doSelectSender:@{@"type": @"filmsPopup", @"object": sender}];
 }
 
-- (IBAction)btnShowViewPopup_clicked:(NSButton *)sender {
-    [self._homePresenter doSelectSender:@{@"type": @"popoverView", @"object": sender}];
+- (IBAction)btnOpenNewsPopup_clicked:(NSButton *)sender {
+    [self._homePresenter doSelectSender:@{@"type": @"newsPopup", @"object": sender}];
 }
 
 - (IBAction)btnShowSecondBar_clicked:(NSButton *)sender {
     [self._homePresenter doSelectSender:@{@"type": @"showSecondBar", @"object": sender}];
 }
 
-- (IBAction)btnShowDataMix_clicked:(NSButton *)sender {
-    [self._homePresenter doSelectSender:@{@"type": @"popoverMix", @"object": sender}];
+- (IBAction)btnOpenComicsPopup_clicked:(NSButton *)sender {
+    [self._homePresenter doSelectSender:@{@"type": @"comicsPopup", @"object": sender}];
 }
 
 #pragma mark -
@@ -418,15 +434,14 @@
             [self openEntitlementApplicationWithIdentifier:FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER];
         } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"openSafari"]) {
             [self openEntitlementApplicationWithIdentifier:FLO_ENTITLEMENT_APP_IDENTIFIER_SAFARI];
-        } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"popoverWindow"]) {
-            [self showPopoverWindowRelativeToRectOfView:sender];
-        } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"popoverView"]) {
-            [self showPopoverViewRelativeToRectOfView:sender];
+        } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"filmsPopup"]) {
+            [self showFilmsPopupAtView:sender];
+        } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"newsPopup"]) {
+            [self showNewsPopupAtView:sender];
         } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"showSecondBar"]) {
             [self handleShowSecondBar];
-        } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"popoverMix"]) {
-//            [self showPopoverMixRelativeToRectOfView:sender];
-            [self showPopoverMixRelativeToView:sender];
+        } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"comicsPopup"]) {
+            [self showComicsPopupAtView:sender option:1];
         }
     }
 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE0BF080219BB9E800FF3AD6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE0BF07F219BB9E800FF3AD6 /* Colors.xcassets */; };
+		DE0BF084219BC98000FF3AD6 /* NSColor+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0BF083219BC98000FF3AD6 /* NSColor+Custom.m */; };
 		DE8E5C7121534233002AE872 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE8E5C7021534233002AE872 /* AppleScriptObjC.framework */; };
 		DE8E5C7A21534821002AE872 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5C7921534821002AE872 /* AppDelegate.m */; };
 		DE8E5C7C21534822002AE872 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE8E5C7B21534822002AE872 /* Assets.xcassets */; };
@@ -80,11 +82,8 @@
 		DE8E5E922153B8C1002AE872 /* FLOExtensionsNSValue.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E902153B8C1002AE872 /* FLOExtensionsNSValue.m */; };
 		DE8E5E952153BAAC002AE872 /* FLOExtensionsGraphicsContext.h in Headers */ = {isa = PBXBuildFile; fileRef = DE8E5E932153BAAC002AE872 /* FLOExtensionsGraphicsContext.h */; };
 		DE8E5E962153BAAC002AE872 /* FLOExtensionsGraphicsContext.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E942153BAAC002AE872 /* FLOExtensionsGraphicsContext.m */; };
-		DE8E5E992153BC4E002AE872 /* FLOExtensionsNSColor.h in Headers */ = {isa = PBXBuildFile; fileRef = DE8E5E972153BC4E002AE872 /* FLOExtensionsNSColor.h */; };
-		DE8E5E9A2153BC4E002AE872 /* FLOExtensionsNSColor.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E982153BC4E002AE872 /* FLOExtensionsNSColor.m */; };
 		DE8E5E9B2153BD29002AE872 /* FLOExtensionsCABasicAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E882153B7AF002AE872 /* FLOExtensionsCABasicAnimation.m */; };
 		DE8E5E9C2153BD2E002AE872 /* FLOExtensionsCAKeyframeAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E8C2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.m */; };
-		DE8E5E9D2153BD32002AE872 /* FLOExtensionsNSColor.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E982153BC4E002AE872 /* FLOExtensionsNSColor.m */; };
 		DE8E5E9E2153BD36002AE872 /* FLOExtensionsGraphicsContext.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E942153BAAC002AE872 /* FLOExtensionsGraphicsContext.m */; };
 		DE8E5E9F2153BD3A002AE872 /* FLOExtensionsNSValue.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E902153B8C1002AE872 /* FLOExtensionsNSValue.m */; };
 		DE8E5EA02153BD3E002AE872 /* FLOExtensionsNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E842153B69E002AE872 /* FLOExtensionsNSView.m */; };
@@ -112,6 +111,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DE0BF07F219BB9E800FF3AD6 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		DE0BF082219BC98000FF3AD6 /* NSColor+Custom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSColor+Custom.h"; sourceTree = "<group>"; };
+		DE0BF083219BC98000FF3AD6 /* NSColor+Custom.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Custom.m"; sourceTree = "<group>"; };
 		DE8E5C7021534233002AE872 /* AppleScriptObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptObjC.framework; path = System/Library/Frameworks/AppleScriptObjC.framework; sourceTree = SDKROOT; };
 		DE8E5C7621534821002AE872 /* FlowarePopover-Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FlowarePopover-Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE8E5C7821534821002AE872 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -239,8 +241,6 @@
 		DE8E5E902153B8C1002AE872 /* FLOExtensionsNSValue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOExtensionsNSValue.m; sourceTree = "<group>"; };
 		DE8E5E932153BAAC002AE872 /* FLOExtensionsGraphicsContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOExtensionsGraphicsContext.h; sourceTree = "<group>"; };
 		DE8E5E942153BAAC002AE872 /* FLOExtensionsGraphicsContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOExtensionsGraphicsContext.m; sourceTree = "<group>"; };
-		DE8E5E972153BC4E002AE872 /* FLOExtensionsNSColor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOExtensionsNSColor.h; sourceTree = "<group>"; };
-		DE8E5E982153BC4E002AE872 /* FLOExtensionsNSColor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOExtensionsNSColor.m; sourceTree = "<group>"; };
 		DEDE45F021533F86004E8DEF /* FlowarePopover.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FlowarePopover.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEDE45F321533F86004E8DEF /* FlowarePopover.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlowarePopover.h; sourceTree = "<group>"; };
 		DEDE45F421533F86004E8DEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -293,6 +293,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DE0BF081219BC95000FF3AD6 /* Colors */ = {
+			isa = PBXGroup;
+			children = (
+				DE0BF082219BC98000FF3AD6 /* NSColor+Custom.h */,
+				DE0BF083219BC98000FF3AD6 /* NSColor+Custom.m */,
+			);
+			path = Colors;
+			sourceTree = "<group>";
+		};
 		DE8E5C7721534821002AE872 /* FlowarePopover-Sample */ = {
 			isa = PBXGroup;
 			children = (
@@ -313,6 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				DE8E5C7B21534822002AE872 /* Assets.xcassets */,
+				DE0BF07F219BB9E800FF3AD6 /* Colors.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -320,6 +330,7 @@
 		DE8E5D64215348EE002AE872 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				DE0BF081219BC95000FF3AD6 /* Colors */,
 				DE8E5D84215348EE002AE872 /* Scripts */,
 			);
 			path = Common;
@@ -912,8 +923,6 @@
 				DE8E5E882153B7AF002AE872 /* FLOExtensionsCABasicAnimation.m */,
 				DE8E5E8B2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.h */,
 				DE8E5E8C2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.m */,
-				DE8E5E972153BC4E002AE872 /* FLOExtensionsNSColor.h */,
-				DE8E5E982153BC4E002AE872 /* FLOExtensionsNSColor.m */,
 				DE8E5E932153BAAC002AE872 /* FLOExtensionsGraphicsContext.h */,
 				DE8E5E942153BAAC002AE872 /* FLOExtensionsGraphicsContext.m */,
 				DE8E5E8F2153B8C1002AE872 /* FLOExtensionsNSValue.h */,
@@ -950,7 +959,6 @@
 				DE8E5E892153B7AF002AE872 /* FLOExtensionsCABasicAnimation.h in Headers */,
 				DEDE466F21534005004E8DEF /* FLOPopoverWindowController.h in Headers */,
 				DE8E5E912153B8C1002AE872 /* FLOExtensionsNSValue.h in Headers */,
-				DE8E5E992153BC4E002AE872 /* FLOExtensionsNSColor.h in Headers */,
 				DEDE465621534005004E8DEF /* FLOViewPopup.h in Headers */,
 				DEDE467221534005004E8DEF /* FLOPopoverUtils.h in Headers */,
 				DEDE465A21534005004E8DEF /* FLOPopover.h in Headers */,
@@ -1052,6 +1060,7 @@
 				DE8E5E56215348EF002AE872 /* FilmsViewController.xib in Resources */,
 				DE8E5E52215348EF002AE872 /* NewsViewController.xib in Resources */,
 				DE8E5E4E215348EF002AE872 /* ComicsViewController.xib in Resources */,
+				DE0BF080219BB9E800FF3AD6 /* Colors.xcassets in Resources */,
 				DE8E5E3C215348EF002AE872 /* MockData.plist in Resources */,
 				DE8E5E65215348EF002AE872 /* FilmCellView.xib in Resources */,
 			);
@@ -1076,7 +1085,6 @@
 				DE8E5EA02153BD3E002AE872 /* FLOExtensionsNSView.m in Sources */,
 				DE8E5E9F2153BD3A002AE872 /* FLOExtensionsNSValue.m in Sources */,
 				DE8E5E9E2153BD36002AE872 /* FLOExtensionsGraphicsContext.m in Sources */,
-				DE8E5E9D2153BD32002AE872 /* FLOExtensionsNSColor.m in Sources */,
 				DE8E5E9C2153BD2E002AE872 /* FLOExtensionsCAKeyframeAnimation.m in Sources */,
 				DE8E5E9B2153BD29002AE872 /* FLOExtensionsCABasicAnimation.m in Sources */,
 				DE8E5E772153515C002AE872 /* FLOPopoverBackgroundView.m in Sources */,
@@ -1101,6 +1109,7 @@
 				DE8E5E40215348EF002AE872 /* Comic.m in Sources */,
 				DE8E5E60215348EF002AE872 /* NewsCellPresenter.m in Sources */,
 				DE8E5E42215348EF002AE872 /* AbstractData.m in Sources */,
+				DE0BF084219BC98000FF3AD6 /* NSColor+Custom.m in Sources */,
 				DE8E5E4A215348EF002AE872 /* BaseService.m in Sources */,
 				DE8E5C8221534822002AE872 /* main.m in Sources */,
 				DE8E5E5A215348EF002AE872 /* HomeViewController.m in Sources */,
@@ -1132,7 +1141,6 @@
 			files = (
 				DEDE465921534005004E8DEF /* FLOPopoverUtils.m in Sources */,
 				DE8E5E8A2153B7AF002AE872 /* FLOExtensionsCABasicAnimation.m in Sources */,
-				DE8E5E9A2153BC4E002AE872 /* FLOExtensionsNSColor.m in Sources */,
 				DE8E5E922153B8C1002AE872 /* FLOExtensionsNSValue.m in Sources */,
 				DEDE465821534005004E8DEF /* FLOPopoverBackgroundView.m in Sources */,
 				DEDE467021534005004E8DEF /* FLOPopover.m in Sources */,
@@ -1163,7 +1171,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.floware.FlowarePopover-Sample";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/FlowarePopover/Classes";
@@ -1184,7 +1192,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.floware.FlowarePopover-Sample";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/FlowarePopover/Classes";

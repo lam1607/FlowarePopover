@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -11,7 +11,6 @@
                 <outlet property="scrollView" destination="7lu-CP-cFj" id="XGv-Bq-TtC"/>
                 <outlet property="tableViewData" destination="ZTi-NY-wyo" id="vnC-ed-7co"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
-                <outlet property="visualEVBackground" destination="eeG-qe-eUm" id="OCq-VJ-3wL"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -20,9 +19,6 @@
             <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <visualEffectView appearanceType="vibrantDark" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="249" verticalCompressionResistancePriority="249" blendingMode="behindWindow" material="dark" state="active" translatesAutoresizingMaskIntoConstraints="NO" id="eeG-qe-eUm">
-                    <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
-                </visualEffectView>
                 <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7lu-CP-cFj">
                     <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="uBY-Zc-afI">
@@ -52,6 +48,7 @@
                                 </tableColumns>
                             </tableView>
                         </subviews>
+                        <nil key="backgroundColor"/>
                     </clipView>
                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="NgB-Nb-RmQ">
                         <rect key="frame" x="1" y="119" width="223" height="15"/>
@@ -66,12 +63,8 @@
             <constraints>
                 <constraint firstItem="7lu-CP-cFj" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="0fo-a2-EwA"/>
                 <constraint firstAttribute="bottom" secondItem="7lu-CP-cFj" secondAttribute="bottom" id="4SY-Zp-lVO"/>
-                <constraint firstItem="eeG-qe-eUm" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="6PX-qN-Uxx"/>
                 <constraint firstAttribute="trailing" secondItem="7lu-CP-cFj" secondAttribute="trailing" id="Bia-eB-e3m"/>
-                <constraint firstAttribute="bottom" secondItem="eeG-qe-eUm" secondAttribute="bottom" id="Jwr-7f-PEy"/>
-                <constraint firstItem="eeG-qe-eUm" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="Voh-mf-gv6"/>
                 <constraint firstItem="7lu-CP-cFj" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="lcd-ih-e4y"/>
-                <constraint firstAttribute="trailing" secondItem="eeG-qe-eUm" secondAttribute="trailing" id="qEC-8A-pJE"/>
             </constraints>
         </customView>
     </objects>

@@ -18,10 +18,17 @@
 
 - (void)drawSelectionInRect:(NSRect)dirtyRect {
     if (self.selectionHighlightStyle != NSTableViewSelectionHighlightStyleNone) {
-        NSRect selectionRect = NSInsetRect(self.bounds, 2.5f, 2.5f);
-        [[NSColor colorTeal] setStroke];
-        [[NSColor colorBackground] setFill];
-        NSBezierPath *selectionPath = [NSBezierPath bezierPathWithRoundedRect:selectionRect xRadius:5.0f yRadius:5.0f];
+        NSRect selectionRect = NSInsetRect(self.bounds, 2.5, 2.5);
+        
+#ifdef SHOULD_USE_ASSET_COLORS
+        [[NSColor _tealColor] setStroke];
+        [[NSColor _backgroundColor] setFill];
+#else
+        [[NSColor tealColor] setStroke];
+        [[NSColor backgroundColor] setFill];
+#endif
+        
+        NSBezierPath *selectionPath = [NSBezierPath bezierPathWithRoundedRect:selectionRect xRadius:5.0 yRadius:5.0];
         [selectionPath fill];
         [selectionPath stroke];
     }

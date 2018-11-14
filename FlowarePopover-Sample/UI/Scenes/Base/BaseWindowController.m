@@ -50,7 +50,7 @@ static BaseWindowController *_sharedInstance = nil;
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
     [self setupUI];
-    [self registerWindowChangeModeEvent];
+    [self registerEventMonitor];
 }
 
 - (void)dealloc {
@@ -94,14 +94,14 @@ static BaseWindowController *_sharedInstance = nil;
 #pragma mark -
 - (void)setupUI {
     NSRect visibleFrame = [self.window.screen visibleFrame];
-    CGFloat width = 0.6f * visibleFrame.size.width;
-    CGFloat height = 0.7f * visibleFrame.size.height;
+    CGFloat width = 0.6 * visibleFrame.size.width;
+    CGFloat height = 0.7 * visibleFrame.size.height;
     CGFloat x = (visibleFrame.size.width - width) / 2;
     CGFloat y = (visibleFrame.size.height + visibleFrame.origin.y - height) / 2;
     NSRect viewFrame = NSMakeRect(x, y, width, height);
     
     [self.window setFrame:viewFrame display:YES];
-    [self.window setMinSize:NSMakeSize(0.5f * visibleFrame.size.width, 0.5f * visibleFrame.size.height)];
+    [self.window setMinSize:NSMakeSize(0.6 * visibleFrame.size.width, 0.7 * visibleFrame.size.height)];
 }
 
 #pragma mark -
@@ -113,7 +113,7 @@ static BaseWindowController *_sharedInstance = nil;
 
 - (void)changeWindowToDesktopMode {
     self.window.titleVisibility = NSWindowTitleHidden;
-    self.window.styleMask = NSBorderlessWindowMask;
+    self.window.styleMask = NSWindowStyleMaskBorderless;
     [self.window makeKeyAndOrderFront:nil];
     self.window.level = kCGDesktopIconWindowLevel + 1;
     
@@ -122,7 +122,7 @@ static BaseWindowController *_sharedInstance = nil;
 
 - (void)changeWindowToNormalMode {
     self.window.titleVisibility = NSWindowTitleVisible;
-    self.window.styleMask = (NSWindowStyleMaskTitled | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask);
+    self.window.styleMask = (NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable);
     self.window.level = NSNormalWindowLevel;
     
     [self.window setFrame:self.windowNormalFrame display:YES animate:YES];
@@ -161,16 +161,8 @@ static BaseWindowController *_sharedInstance = nil;
 }
 
 #pragma mark -
-#pragma mark - Notification
+#pragma mark - Event handles
 #pragma mark -
-- (void)registerWindowChangeModeEvent {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidChangeMode:) name:FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE object:nil];
-}
-
-- (void)removeWindowChangeModeEvent {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE object:nil];
-}
-
 - (void)windowDidChangeMode:(NSNotification *)notification {
     if ([notification.name isEqualToString:FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE]) {
         if (self.windowMode == FLOWindowModeDesktop) {
@@ -180,6 +172,38 @@ static BaseWindowController *_sharedInstance = nil;
             [self changeWindowToNormalMode];
         }
     }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"effectiveAppearance"] && [[change objectForKey:@"new"] isKindOfClass:[NSAppearance class]]) {
+        [NSAppearance setCurrentAppearance:[change objectForKey:@"new"]];
+    }
+}
+
+#pragma mark -
+#pragma mark - Event monitor
+#pragma mark -
+- (void)registerEventMonitor {
+    [self registerWindowChangeModeEvent];
+    [self registerApplicationAppearanceNotification];
+}
+
+- (void)registerWindowChangeModeEvent {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidChangeMode:) name:FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE object:nil];
+}
+
+- (void)removeWindowChangeModeEvent {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE object:nil];
+}
+
+- (void)registerApplicationAppearanceNotification {
+    [self.window.contentView addObserver:self forKeyPath:@"effectiveAppearance"
+                                 options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
+                                 context:NULL];
+}
+
+- (void)unregisterApplicationAppearanceNotification {
+    [self.window.contentView removeObserver:self forKeyPath:@"effectiveAppearance"];
 }
 
 @end

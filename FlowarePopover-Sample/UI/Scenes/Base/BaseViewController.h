@@ -10,11 +10,6 @@
 
 @interface BaseViewController : NSViewController
 
-#pragma mark -
-#pragma mark - Formats
-#pragma mark -
-- (void)setBackgroundColor:(NSColor *)color forView:(NSView *)view;
-- (void)setBackgroundColor:(NSColor *)color cornerRadius:(CGFloat)radius forView:(NSView *)view;
-- (void)setTitle:(NSString *)title attributes:(NSDictionary *)attributes forControl:(NSControl *)control;
+- (void)refreshUIColors;
 
 @end
