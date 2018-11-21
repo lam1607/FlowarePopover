@@ -10,9 +10,8 @@
 
 @implementation CABasicAnimation (FLOExtensionsCABasicAnimation)
 
-#pragma mark -
 #pragma mark - Transformation animation
-#pragma mark -
+
 + (CAAnimation *)transformAxisXAnimationWithDuration:(NSTimeInterval)aDuration forLayerBeginningOnTop:(BOOL)beginsOnTop scaleFactor:(CGFloat)scaleFactor
                                           fromTransX:(CGFloat)fromTransX toTransX:(CGFloat)toTransX
                                          fromOpacity:(CGFloat)fromOpacity toOpacity:(CGFloat)toOpacity {
@@ -92,9 +91,8 @@
     return groupAnimation;
 }
 
-#pragma mark -
 #pragma mark - Animation to disappear a view
-#pragma mark -
+
 + (CAAnimation *)disappearAxisYAnimationWithDuration:(NSTimeInterval)aDuration forLayerBeginningOnTop:(BOOL)beginsOnTop scaleFactor:(CGFloat)scaleFactor
                                         translationY:(CGFloat)transY {
     // move Y-axis
@@ -165,9 +163,8 @@
     return animationGroup;
 }
 
-#pragma mark -
 #pragma mark - Flip Rotation animation
-#pragma mark -
+
 + (CAAnimation *)flipAnimationWithDuration:(NSTimeInterval)aDuration forLayerBeginningOnTop:(BOOL)beginsOnTop scaleFactor:(CGFloat)scaleFactor {
     // Rotating halfway (pi radians) around the Y axis
     // gives the appearance of flipping
@@ -201,9 +198,8 @@
     return animationGroup;
 }
 
-#pragma mark -
 #pragma mark - Rotation animation
-#pragma mark -
+
 + (void)rotateAnimationForKey:(NSString *)animKey withDuration:(NSTimeInterval)aDuration forButton:(NSButton *)rotateBtn  {
     CABasicAnimation *ani = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
     ani.fromValue = [NSNumber numberWithFloat:0];

@@ -10,9 +10,8 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
-#pragma mark -
 #pragma mark - BundleIdentifier from entitlement apps
-#pragma mark -
+
 - (void)addEntitlementBundleId:(NSString *)bundleId;
 - (void)removeEntitlementBundleId:(NSString *)bundleId;
 - (void)activateEntitlementForBundleId:(NSString *)bundleId;

@@ -25,9 +25,7 @@ static const CGFloat FLOAnimationMinimumThreshold = 0.0001;
 
 @implementation FLOExtensionsCAKeyframeAnimation
 
-#pragma mark -
 #pragma mark - Initialization
-#pragma mark -
 
 + (instancetype)animationWithKeyPath:(NSString *)path {
     return [super animationWithKeyPath:path];
@@ -60,9 +58,8 @@ static const CGFloat FLOAnimationMinimumThreshold = 0.0001;
     return copy;
 }
 
-#pragma mark -
 #pragma mark - API
-#pragma mark -
+
 - (void)setToValue:(id)toValue {
     _toValue = toValue;
     self.needsRecalculation = YES;
@@ -113,9 +110,8 @@ static const CGFloat FLOAnimationMinimumThreshold = 0.0001;
     return _interpolatedValues;
 }
 
-#pragma mark -
 #pragma mark - Interpolation
-#pragma mark -
+
 - (void)calculateInterpolatedValues {
     NSAssert(self.fromValue != nil && self.toValue != nil, @"fromValue and or toValue must not be nil.");
     
@@ -226,6 +222,7 @@ static const CGFloat FLOAnimationMinimumThreshold = 0.0001;
     CGFloat *stepProposedValues = calloc(count, sizeof(CGFloat));
     
     NSMutableArray *valuesMapped = [NSMutableArray array];
+    
     while (YES) {
         BOOL thresholdReached = YES;
         
@@ -272,9 +269,8 @@ BOOL FLOExtensionsCAKeyframeCalculationsAreComplete(CGFloat value1, CGFloat prop
             && (fabs(proposedValue3 - value3) < FLOAnimationKeyframeStep) && (fabs(value3 - to3) < FLOAnimationKeyframeStep));
 }
 
-#pragma mark -
 #pragma mark - Damped Harmonic Oscillation
-#pragma mark -
+
 CGFloat FLOExtensionsCAKeyframeAngularFrequency(CGFloat k, CGFloat m, CGFloat b) {
     CGFloat w0 = sqrt(k / m);
     CGFloat frequency = sqrt(pow(w0, 2) - (pow(b, 2) / (4 * pow(m, 2))));
@@ -300,7 +296,7 @@ CGFloat FLOExtensionsCAKeyframeAnimationThreshold(CGFloat magnitude) {
     return FLOAnimationMinimumThreshold * magnitude;
 }
 
-#pragma mark Description
+#pragma mark - Description
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@: %p> mass: %f, damping: %f, stiffness: %f, keyPath: %@, toValue: %@, fromValue %@", self.class, self, self.mass, self.damping, self.stiffness, self.keyPath, self.toValue, self.fromValue];

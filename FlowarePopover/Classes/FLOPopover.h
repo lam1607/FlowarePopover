@@ -10,11 +10,23 @@
 
 #import "FLOPopoverConstants.h"
 
+@class FLOPopover;
+
+#pragma mark - FLOPopoverWindow
+
+@interface FLOPopoverWindow : NSWindow
+
+@property (nonatomic, assign) BOOL canBecomeKey;
+
+@end
+
+#pragma mark - FLOPopover
+
 @protocol FLOPopoverDelegate <NSObject>
 
 @optional
-- (void)floPopoverDidShow:(NSResponder *)popover;
-- (void)floPopoverDidClose:(NSResponder *)popover;
+- (void)floPopoverDidShow:(FLOPopover *)popover;
+- (void)floPopoverDidClose:(FLOPopover *)popover;
 
 @end
 
@@ -24,9 +36,8 @@
 
 @property (weak, readwrite) id<FLOPopoverDelegate> delegate;
 
-#pragma mark -
 #pragma mark - Properties
-#pragma mark -
+
 @property (nonatomic, strong, readonly) NSView *contentView;
 @property (nonatomic, strong, readonly) NSViewController *contentViewController;
 @property (nonatomic, assign, readonly) FLOPopoverType popupType;
@@ -36,8 +47,11 @@
 @property (nonatomic, assign) BOOL alwaysOnTop;
 @property (nonatomic, assign) BOOL shouldShowArrow;
 @property (nonatomic, assign) BOOL animated;
+@property (nonatomic, assign) BOOL animatedForwarding;
+@property (nonatomic, assign) BOOL shouldChangeFrameWhenApplicationResizes;
 @property (nonatomic, assign) BOOL closesWhenPopoverResignsKey;
 @property (nonatomic, assign) BOOL closesWhenApplicationBecomesInactive;
+@property (nonatomic, assign) BOOL closesWhenApplicationResizes;
 
 /**
  * Make the popover movable.
@@ -54,9 +68,8 @@
  */
 @property (nonatomic, assign) BOOL canBecomeKey;
 
-#pragma mark -
 #pragma mark - Initialize
-#pragma mark -
+
 /**
  * Initialize the FLOPopover with content view and type is FLOViewPopover by default.
  *
@@ -75,9 +88,8 @@
 - (id)initWithContentViewController:(NSViewController *)contentViewController;
 - (id)initWithContentViewController:(NSViewController *)contentViewController popoverType:(FLOPopoverType)popoverType;
 
-#pragma mark -
 #pragma mark - Display
-#pragma mark -
+
 /**
  * Set level for popover. Only used for FLOWindowPopover type.
  *

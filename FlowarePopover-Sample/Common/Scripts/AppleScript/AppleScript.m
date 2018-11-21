@@ -683,9 +683,8 @@ void AppleScriptOpenAccessibilityPreference() {
     }
 }
 
-#pragma mark -
 #pragma mark - Updated scripts
-#pragma mark -
+
 int AppleScriptPresentApp(NSString *appName, NSString *bundle, float x, float y, float maxWidth, float maxHeight, BOOL needResize) {
     /* get frontmost process:  */
     // set myFrontMost to name of first item of (processes whose frontmost is true)

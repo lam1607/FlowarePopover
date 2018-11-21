@@ -37,18 +37,16 @@
     [self refreshUIColors];
 }
 
-#pragma mark -
 #pragma mark - Initialize
-#pragma mark -
+
 - (void)initialize {
     self._newsRepository = [[NewsRepository alloc] init];
     self._newsCellPresenter = [[NewsCellPresenter alloc] init];
     [self._newsCellPresenter attachView:self repository:self._newsRepository];
 }
 
-#pragma mark -
 #pragma mark - Setup UI
-#pragma mark -
+
 - (void)setupUI {
     self.imgView.imageScaling = NSImageScaleProportionallyDown;
     self.lblTitle.maximumNumberOfLines = 0;
@@ -56,26 +54,27 @@
 }
 
 - (void)refreshUIColors {
-    [Utils setShadowForView:self.vContainer];
-    
+    if ([self.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name]) {
+        [Utils setShadowForView:self.vContainer];
+        
 #ifdef SHOULD_USE_ASSET_COLORS
-    [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
-    [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
-    
-    [Utils setTitle:self.lblTitle.stringValue color:[NSColor _textBlackColor] fontSize:16.0 forControl:self.lblTitle];
-    [Utils setTitle:self.lblContent.stringValue color:[NSColor _textGrayColor] fontSize:14.0 forControl:self.lblContent];
+        [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+        [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
+        
+        [Utils setTitle:self.lblTitle.stringValue color:[NSColor _textBlackColor] fontSize:16.0 forControl:self.lblTitle];
+        [Utils setTitle:self.lblContent.stringValue color:[NSColor _textGrayColor] fontSize:14.0 forControl:self.lblContent];
 #else
-    [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
-    [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
-    
-    [Utils setTitle:self.lblTitle.stringValue color:[NSColor textBlackColor] fontSize:16.0 forControl:self.lblTitle];
-    [Utils setTitle:self.lblContent.stringValue color:[NSColor textGrayColor] fontSize:14.0 forControl:self.lblContent];
+        [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+        [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
+        
+        [Utils setTitle:self.lblTitle.stringValue color:[NSColor textBlackColor] fontSize:16.0 forControl:self.lblTitle];
+        [Utils setTitle:self.lblContent.stringValue color:[NSColor textGrayColor] fontSize:14.0 forControl:self.lblContent];
 #endif
+    }
 }
 
-#pragma mark -
 #pragma mark - Processes
-#pragma mark -
+
 - (CGFloat)getCellHeight {
     CGFloat imageHeight = self.imgView.frame.size.height;
     CGFloat titleHeight = [Utils sizeOfControl:self.lblTitle].height;
@@ -92,9 +91,8 @@
     self.lblContent.stringValue = news.content;
 }
 
-#pragma mark -
 #pragma mark - NewsCellViewProtocols implementation
-#pragma mark -
+
 - (void)updateCellViewImage {
     if ([self._newsCellPresenter getNewsImage]) {
         self.imgView.image = [self._newsCellPresenter getNewsImage];

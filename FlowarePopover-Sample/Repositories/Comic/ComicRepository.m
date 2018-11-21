@@ -27,9 +27,8 @@
     return self;
 }
 
-#pragma mark -
 #pragma mark - ComicRepositoryProtocols implementation
-#pragma mark -
+
 - (NSArray<Comic *> *)fetchComics {
     NSMutableArray *comics = [[NSMutableArray alloc] init];
     NSArray<NSDictionary *> *comicDicts = [self._service getMockupDataType:@"comics"];

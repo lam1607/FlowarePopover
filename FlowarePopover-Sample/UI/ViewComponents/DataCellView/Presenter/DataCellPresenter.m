@@ -21,9 +21,8 @@
 @synthesize view;
 @synthesize repository;
 
-#pragma mark -
 #pragma mark - DataCellPresenterProtocols implementation
-#pragma mark -
+
 - (void)attachView:(id<DataCellViewProtocols>)view repository:(id<ComicRepositoryProtocols>)repository {
     self.view = view;
     self.repository = repository;

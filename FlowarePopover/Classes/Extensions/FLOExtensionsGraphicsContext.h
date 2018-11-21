@@ -8,9 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#pragma mark -
 #pragma mark - Graphics context creation
-#pragma mark -
+
 extern CGContextRef FLOExtensionsGraphicsContextCreate(CGSize size, CGColorSpaceRef colorSpace);
 
 @interface FLOExtensionsGraphicsContext : NSObject

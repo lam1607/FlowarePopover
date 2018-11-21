@@ -27,9 +27,8 @@
     return self;
 }
 
-#pragma mark -
 #pragma mark - NewsRepositoryProtocols implementation
-#pragma mark -
+
 - (NSArray<News *> *)fetchNews {
     NSMutableArray *news = [[NSMutableArray alloc] init];
     NSArray<NSDictionary *> *newsDicts = [self._service getMockupDataType:@"news"];

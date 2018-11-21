@@ -10,9 +10,8 @@
 
 @implementation BaseService
 
-#pragma mark -
 #pragma mark - BaseServiceProtocols implementation
-#pragma mark -
+
 - (void)fetchDataFromUrl:(NSURL *)url completion:(void (^)(NSData *data))complete {
     NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (complete) {

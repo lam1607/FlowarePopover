@@ -10,9 +10,8 @@
 
 @implementation News
 
-#pragma mark -
 #pragma mark - Initialize
-#pragma mark -
+
 - (instancetype)initWithContent:(NSDictionary *)contentDict {
     if (self = [super init]) {
         if (![Utils isEmptyObject:contentDict]) {

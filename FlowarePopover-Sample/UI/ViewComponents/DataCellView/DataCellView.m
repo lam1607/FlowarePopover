@@ -37,18 +37,16 @@
     [self refreshUIColors];
 }
 
-#pragma mark -
 #pragma mark - Initialize
-#pragma mark -
+
 - (void)initialize {
     self._comicRepository = [[ComicRepository alloc] init];
     self._dataCellPresenter = [[DataCellPresenter alloc] init];
     [self._dataCellPresenter attachView:self repository:self._comicRepository];
 }
 
-#pragma mark -
 #pragma mark - Setup UI
-#pragma mark -
+
 - (void)setupUI {
     self.imgView.imageScaling = NSImageScaleProportionallyDown;
     self.lblTitle.maximumNumberOfLines = 0;
@@ -56,26 +54,27 @@
 }
 
 - (void)refreshUIColors {
-    [Utils setShadowForView:self.vContainer];
-    
+    if ([self.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name]) {
+        [Utils setShadowForView:self.vContainer];
+        
 #ifdef SHOULD_USE_ASSET_COLORS
-    [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
-    [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
-    
-    [Utils setTitle:self.lblTitle.stringValue color:[NSColor _textBlackColor] fontSize:16.0 forControl:self.lblTitle];
-    [Utils setTitle:self.lblShortDesc.stringValue color:[NSColor _textGrayColor] fontSize:14.0 forControl:self.lblShortDesc];
+        [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+        [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
+        
+        [Utils setTitle:self.lblTitle.stringValue color:[NSColor _textBlackColor] fontSize:16.0 forControl:self.lblTitle];
+        [Utils setTitle:self.lblShortDesc.stringValue color:[NSColor _textGrayColor] fontSize:14.0 forControl:self.lblShortDesc];
 #else
-    [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
-    [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
-    
-    [Utils setTitle:self.lblTitle.stringValue color:[NSColor textBlackColor] fontSize:16.0 forControl:self.lblTitle];
-    [Utils setTitle:self.lblShortDesc.stringValue color:[NSColor textGrayColor] fontSize:14.0 forControl:self.lblShortDesc];
+        [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+        [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
+        
+        [Utils setTitle:self.lblTitle.stringValue color:[NSColor textBlackColor] fontSize:16.0 forControl:self.lblTitle];
+        [Utils setTitle:self.lblShortDesc.stringValue color:[NSColor textGrayColor] fontSize:14.0 forControl:self.lblShortDesc];
 #endif
+    }
 }
 
-#pragma mark -
 #pragma mark - Processes
-#pragma mark -
+
 - (CGFloat)getCellHeight {
     CGFloat imageHeight = self.imgView.frame.size.height;
     CGFloat titleHeight = [Utils sizeOfControl:self.lblTitle].height;
@@ -92,9 +91,8 @@
     self.lblShortDesc.stringValue = comic.shortDesc;
 }
 
-#pragma mark -
 #pragma mark - ComicDataCellViewProtocols implementation
-#pragma mark -
+
 - (void)updateCellViewImage {
     if ([self._dataCellPresenter getComicImage]) {
         self.imgView.image = [self._dataCellPresenter getComicImage];

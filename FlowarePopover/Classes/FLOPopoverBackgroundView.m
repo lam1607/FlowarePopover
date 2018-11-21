@@ -25,9 +25,8 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
     return (minY + maxY) / 2;
 }
 
-#pragma mark -
 #pragma mark - FLOPopoverClippingView
-#pragma mark -
+
 @implementation FLOPopoverClippingView
 - (void)dealloc {
     self.clippingPath = NULL;
@@ -75,9 +74,8 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
 
 @end
 
-#pragma mark -
 #pragma mark - FLOPopoverBackgroundView
-#pragma mark -
+
 @interface FLOPopoverBackgroundView ()
 
 // The clipping view that's used to shape the popover to the correct path. This
@@ -132,9 +130,8 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
     }
 }
 
-#pragma mark -
 #pragma mark - Getter/Setter
-#pragma mark -
+
 - (void)setFillColor:(NSColor *)fillColor {
     _fillColor = fillColor;
     [self.fillColor set];
@@ -145,9 +142,8 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
     self.layer.cornerRadius = borderRadius;
 }
 
-#pragma mark -
 #pragma mark - Others
-#pragma mark -
+
 - (NSRectEdge)arrowEdgeForPopoverEdge:(NSRectEdge)popoverEdge {
     NSRectEdge arrowEdge = NSRectEdgeMinY;
     switch (popoverEdge) {
@@ -178,9 +174,8 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
     }
 }
 
-#pragma mark -
 #pragma mark - Processes
-#pragma mark -
+
 - (void)setViewMovable:(BOOL)movable {
     self.shouldMovable = movable;
     _fillColor = (self.shouldMovable || self.shouldDetach) ? [NSColor.whiteColor colorWithAlphaComponent:0.86] : NSColor.clearColor;
@@ -402,9 +397,8 @@ static CGFloat getMedianYFromRects(CGRect r1, CGRect r2) {
     return path;
 }
 
-#pragma mark -
 #pragma mark - Mouse events
-#pragma mark -
+
 - (void)mouseDown:(NSEvent *)event {
     BOOL isFLOWindowPopover = self.window != [[FLOPopoverUtils sharedInstance] appMainWindow];
     self.originalMouseOffset = isFLOWindowPopover ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:self.window.contentView];

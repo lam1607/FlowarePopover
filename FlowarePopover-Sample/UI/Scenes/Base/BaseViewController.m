@@ -31,18 +31,19 @@
     [self refreshUIColors];
 }
 
-#pragma mark -
 #pragma mark - Setup UI
-#pragma mark -
+
 - (void)setupUI {
 }
 
 - (void)refreshUIColors {
+    if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name]) {
 #ifdef SHOULD_USE_ASSET_COLORS
-    [Utils setBackgroundColor:[NSColor _backgroundColor] forView:self.view];
+        [Utils setBackgroundColor:[NSColor _backgroundColor] forView:self.view];
 #else
-    [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.view];
+        [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.view];
 #endif
+    }
 }
 
 @end

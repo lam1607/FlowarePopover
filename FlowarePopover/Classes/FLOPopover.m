@@ -7,8 +7,21 @@
 //
 
 #import "FLOPopover.h"
+
 #import "FLOViewPopup.h"
 #import "FLOWindowPopup.h"
+
+#pragma mark - FLOPopoverWindow
+
+@implementation FLOPopoverWindow
+
+- (BOOL)canBecomeKeyWindow {
+    return self.canBecomeKey;
+}
+
+@end
+
+#pragma mark - FLOPopover
 
 @interface FLOPopover ()
 
@@ -25,9 +38,8 @@
 
 @synthesize popupType = _popupType;
 
-#pragma mark -
 #pragma mark - Inits
-#pragma mark -
+
 - (instancetype)initWithContentView:(NSView *)contentView {
     return [self initWithContentView:contentView popoverType:FLOViewPopover];
 }
@@ -68,9 +80,8 @@
     }
 }
 
-#pragma mark -
 #pragma mark - Getter/Setter
-#pragma mark -
+
 - (BOOL)isShown {
     if (self.popupType == FLOWindowPopover) {
         return [self.windowPopup isShown];
@@ -128,6 +139,20 @@
     self.windowPopup.animated = animated;
 }
 
+- (void)setAnimatedForwarding:(BOOL)animatedForwarding {
+    _animatedForwarding = animatedForwarding;
+    
+    self.viewPopup.animatedForwarding = animatedForwarding;
+    self.windowPopup.animatedForwarding = animatedForwarding;
+}
+
+- (void)setShouldChangeFrameWhenApplicationResizes:(BOOL)shouldChangeFrameWhenApplicationResizes {
+    _shouldChangeFrameWhenApplicationResizes = shouldChangeFrameWhenApplicationResizes;
+    
+    self.viewPopup.shouldChangeFrameWhenApplicationResizes = shouldChangeFrameWhenApplicationResizes;
+    self.windowPopup.shouldChangeFrameWhenApplicationResizes = shouldChangeFrameWhenApplicationResizes;
+}
+
 - (void)setClosesWhenPopoverResignsKey:(BOOL)closeWhenResign {
     _closesWhenPopoverResignsKey = closeWhenResign;
     
@@ -140,6 +165,13 @@
     
     self.viewPopup.closesWhenApplicationBecomesInactive = closeWhenInactive;
     self.windowPopup.closesWhenApplicationBecomesInactive = closeWhenInactive;
+}
+
+- (void)setClosesWhenApplicationResizes:(BOOL)closesWhenApplicationResizes {
+    _closesWhenApplicationResizes = closesWhenApplicationResizes;
+    
+    self.viewPopup.closesWhenApplicationResizes = closesWhenApplicationResizes;
+    self.windowPopup.closesWhenApplicationResizes = closesWhenApplicationResizes;
 }
 
 - (void)setPopoverMovable:(BOOL)popoverMovable {
@@ -166,9 +198,8 @@
     }
 }
 
-#pragma mark -
 #pragma mark - Binding events
-#pragma mark -
+
 - (void)bindEventsForPopover:(NSResponder<FLOPopoverService> *)popover {
     __weak typeof(self) wSelf = self;
     
@@ -185,9 +216,8 @@
     };
 }
 
-#pragma mark -
 #pragma mark - Display
-#pragma mark -
+
 /**
  * Set level for popover. Only used for FLOWindowPopover type.
  *

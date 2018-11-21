@@ -12,9 +12,8 @@ static CGFloat const PopoverBackgroundViewBorderRadius = 5.0;
 static CGFloat const PopoverBackgroundViewArrowWidth = 21.0;
 static CGFloat const PopoverBackgroundViewArrowHeight = 14.0;
 
-#pragma mark -
 #pragma mark - FLOPopoverClippingView
-#pragma mark -
+
 // A class which forcably draws `NSClearColor.clearColor` around a given path,
 // effectively clipping any views to the path. You can think of it like a
 // `maskLayer` on a `CALayer`.
@@ -31,9 +30,8 @@ static CGFloat const PopoverBackgroundViewArrowHeight = 14.0;
 
 @end
 
-#pragma mark -
 #pragma mark - FLOPopoverBackgroundView
-#pragma mark -
+
 @protocol FLOPopoverBackgroundViewDelegate <NSObject>
 
 @optional

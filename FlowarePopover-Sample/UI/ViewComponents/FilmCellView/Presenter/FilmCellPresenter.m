@@ -21,9 +21,8 @@
 @synthesize view;
 @synthesize repository;
 
-#pragma mark -
 #pragma mark - FilmCellPresenterProtocols implementation
-#pragma mark -
+
 - (void)attachView:(id<FilmCellViewProtocols>)view repository:(id<FilmRepositoryProtocols>)repository {
     self.view = view;
     self.repository = repository;

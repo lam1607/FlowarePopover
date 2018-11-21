@@ -25,10 +25,9 @@
 - (void)setTopmostView:(NSView *)topmostView;
 - (void)setAppMainWindowResized:(BOOL)appMainWindowResized;
 
-#pragma mark -
 #pragma mark - Utilities
-#pragma mark -
-- (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame withAnimationType:(FLOPopoverAnimationTransition)animationType showing:(BOOL)showing;
+
+- (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame animationType:(FLOPopoverAnimationTransition)animationType forwarding:(BOOL)forwarding showing:(BOOL)showing;
 - (BOOL)didTheTreeOfView:(NSView *)view containPosition:(NSPoint)position;
 - (BOOL)didView:(NSView *)parent contain:(NSView *)child;
 - (BOOL)didViews:(NSArray *)views contain:(NSView *)view;

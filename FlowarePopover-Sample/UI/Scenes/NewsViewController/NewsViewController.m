@@ -42,9 +42,8 @@
     [self deSelectRowIfSelected];
 }
 
-#pragma mark -
 #pragma mark - Initialize
-#pragma mark -
+
 - (void)initialize {
     self._newsRepository = [[NewsRepository alloc] init];
     self._newsPresenter = [[NewsPresenter alloc] init];
@@ -53,9 +52,8 @@
     self._heights = [[NSCache alloc] init];
 }
 
-#pragma mark -
 #pragma mark - Setup UI
-#pragma mark -
+
 - (void)setupUI {
     NSSize screenSize = [Utils screenSize];
     NSTableColumn *column = [self.tableViewData tableColumnWithIdentifier:@"NewsCellViewColumn"];
@@ -68,9 +66,8 @@
     self.tableViewData.dataSource = self;
 }
 
-#pragma mark -
 #pragma mark - Processes
-#pragma mark -
+
 - (void)loadData {
     [self._newsPresenter fetchData];
 }
@@ -81,9 +78,7 @@
     }
 }
 
-#pragma mark -
 #pragma mark - NSTableViewDelegate, NSTableViewDataSource
-#pragma mark -
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
     return [self._newsPresenter news].count;
@@ -95,7 +90,7 @@
 
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
     if ([self._heights objectForKey:@(row)] && [[self._heights objectForKey:@(row)] isKindOfClass:[NSNumber class]]) {
-        return [((NSNumber *) [self._heights objectForKey:@(row)]) doubleValue];
+        return [((NSNumber *)[self._heights objectForKey:@(row)]) doubleValue];
     }
     
     return 254.0;
@@ -105,7 +100,7 @@
     NSView *view = [tableView viewAtColumn:0 row:row makeIfNecessary:NO];
     
     if ([view isKindOfClass:[NewsCellView class]]) {
-        NewsCellView *cellView = (NewsCellView *) view;
+        NewsCellView *cellView = (NewsCellView *)view;
         
         if (![self._heights objectForKey:@(row)]) {
             CGFloat cellHeight = [cellView getCellHeight];
@@ -127,15 +122,14 @@
 }
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
-    NewsCellView *cellView = (NewsCellView *) [tableView makeViewWithIdentifier:NSStringFromClass([NewsCellView class]) owner:self];
+    NewsCellView *cellView = (NewsCellView *)[tableView makeViewWithIdentifier:NSStringFromClass([NewsCellView class]) owner:self];
     [cellView updateUIWithData:[[self._newsPresenter news] objectAtIndex:row]];
     
     return cellView;
 }
 
-#pragma mark -
 #pragma mark - NewsViewProtocols implementation
-#pragma mark -
+
 - (void)reloadDataTableView {
     [self.tableViewData reloadData];
 }

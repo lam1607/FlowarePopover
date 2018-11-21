@@ -26,9 +26,8 @@
     return self;
 }
 
-#pragma mark -
 #pragma mark - BaseRepositoryProtocols implementation
-#pragma mark -
+
 - (void)fetchImageFromUrl:(NSURL *)url completion:(void (^)(NSImage *image))complete {
     [self._service fetchDataFromUrl:url completion:^(NSData *data) {
         if (complete) {

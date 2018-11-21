@@ -47,9 +47,8 @@
     [self deSelectRowIfSelected];
 }
 
-#pragma mark -
 #pragma mark - Initialize
-#pragma mark -
+
 - (void)initialize {
     self._comicRepository = [[ComicRepository alloc] init];
     self._dataPresenter = [[DataPresenter alloc] init];
@@ -58,9 +57,8 @@
     self._heights = [[NSCache alloc] init];
 }
 
-#pragma mark -
 #pragma mark - Setup UI
-#pragma mark -
+
 - (void)setupUI {
     NSSize screenSize = [Utils screenSize];
     NSTableColumn *column = [self.outlineViewData tableColumnWithIdentifier:@"DataCellViewColumn"];
@@ -74,9 +72,8 @@
     self.outlineViewData.dataSource = self;
 }
 
-#pragma mark -
 #pragma mark - Processes
-#pragma mark -
+
 - (void)loadData {
     [self._dataPresenter fetchData];
 }
@@ -87,9 +84,8 @@
     }
 }
 
-#pragma mark -
 #pragma mark - CustomNSOutlineViewDelegate
-#pragma mark -
+
 - (void)outlineView:(CustomNSOutlineView *)outlineView didSelectRow:(NSInteger)row {
     if (row < [self._dataPresenter comics].count) {
         Comic *selected = [[self._dataPresenter comics] objectAtIndex:row];
@@ -98,9 +94,8 @@
     }
 }
 
-#pragma mark -
 #pragma mark - NSOutlineViewDelegate, NSOutlineViewDataSource
-#pragma mark -
+
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item {
     return [self._dataPresenter comics].count;
 }
@@ -121,7 +116,7 @@
     NSInteger row = [outlineView rowForItem:item];
     
     if ([self._heights objectForKey:@(row)] && [[self._heights objectForKey:@(row)] isKindOfClass:[NSNumber class]]) {
-        return [((NSNumber *) [self._heights objectForKey:@(row)]) doubleValue];
+        return [((NSNumber *)[self._heights objectForKey:@(row)]) doubleValue];
     }
     
     return 269.0;
@@ -131,7 +126,7 @@
     NSView *view = [outlineView viewAtColumn:0 row:row makeIfNecessary:NO];
     
     if ([view isKindOfClass:[DataCellView class]]) {
-        DataCellView *cellView = (DataCellView *) view;
+        DataCellView *cellView = (DataCellView *)view;
         
         if (![self._heights objectForKey:@(row)]) {
             CGFloat cellHeight = [cellView getCellHeight];
@@ -169,15 +164,14 @@
 }
 
 - (NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn:(nullable NSTableColumn *)tableColumn item:(id)item {
-    DataCellView *cellView = (DataCellView *) [outlineView makeViewWithIdentifier:NSStringFromClass([DataCellView class]) owner:self];
-    [cellView updateUIWithData:(Comic *) item];
+    DataCellView *cellView = (DataCellView *)[outlineView makeViewWithIdentifier:NSStringFromClass([DataCellView class]) owner:self];
+    [cellView updateUIWithData:(Comic *)item];
     
     return cellView;
 }
 
-#pragma mark -
 #pragma mark - DataViewProtocols implementation
-#pragma mark -
+
 - (void)reloadDataOutlineView {
     [self.outlineViewData reloadData];
 }

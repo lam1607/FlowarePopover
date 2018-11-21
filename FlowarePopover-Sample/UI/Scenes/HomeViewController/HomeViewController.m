@@ -74,9 +74,8 @@
     [super viewWillAppear];
 }
 
-#pragma mark -
 #pragma mark - Initialize
-#pragma mark -
+
 - (void)initialize {
     self._homePresenter = [[HomePresenter alloc] init];
     [self._homePresenter attachView:self];
@@ -84,58 +83,58 @@
     self.entitlementAppBundles = [[NSArray alloc] initWithObjects: FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER, FLO_ENTITLEMENT_APP_IDENTIFIER_SAFARI, nil];
 }
 
-#pragma mark -
 #pragma mark - Setup UI
-#pragma mark -
+
 - (void)setupUI {
     self.constraintVSecondBarHeight.constant = 0.0;
 }
 
 - (void)refreshUIColors {
-    [super refreshUIColors];
-    
+    if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name]) {
+        [super refreshUIColors];
+        
 #ifdef SHOULD_USE_ASSET_COLORS
-    [Utils setBackgroundColor:[NSColor _backgroundColor] forView:self.vMenu];
-    
-    [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vChangeMode];
-    [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFinderApp];
-    [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenSafariApp];
-    [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFilmsPopup];
-    [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenNewsPopup];
-    [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vShowSecondBar];
-    [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenComicsPopup];
-    
-    [Utils setTitle:@"Films popup" color:[NSColor _textWhiteColor] forControl:self.btnOpenFilmsPopup];
-    [Utils setTitle:@"News popup" color:[NSColor _textWhiteColor] forControl:self.btnOpenNewsPopup];
-    [Utils setTitle:@"Show second bar" color:[NSColor _textWhiteColor] forControl:self.btnShowSecondBar];
-    [Utils setTitle:@"Comics popup" color:[NSColor _textWhiteColor] forControl:self.btnOpenComicsPopup];
-    
-    [Utils setBackgroundColor:[NSColor _backgroundColor] forView:self.vSecondBar];
+        [Utils setBackgroundColor:[NSColor _backgroundColor] forView:self.vMenu];
+        
+        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vChangeMode];
+        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFinderApp];
+        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenSafariApp];
+        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFilmsPopup];
+        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenNewsPopup];
+        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vShowSecondBar];
+        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenComicsPopup];
+        
+        [Utils setTitle:@"Films popup" color:[NSColor _textWhiteColor] forControl:self.btnOpenFilmsPopup];
+        [Utils setTitle:@"News popup" color:[NSColor _textWhiteColor] forControl:self.btnOpenNewsPopup];
+        [Utils setTitle:@"Show second bar" color:[NSColor _textWhiteColor] forControl:self.btnShowSecondBar];
+        [Utils setTitle:@"Comics popup" color:[NSColor _textWhiteColor] forControl:self.btnOpenComicsPopup];
+        
+        [Utils setBackgroundColor:[NSColor _backgroundColor] forView:self.vSecondBar];
 #else
-    [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.vMenu];
-    
-    [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vChangeMode];
-    [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFinderApp];
-    [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenSafariApp];
-    [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFilmsPopup];
-    [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenNewsPopup];
-    [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vShowSecondBar];
-    [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenComicsPopup];
-    
-    [Utils setTitle:@"Films popup" color:[NSColor textWhiteColor] forControl:self.btnOpenFilmsPopup];
-    [Utils setTitle:@"News popup" color:[NSColor textWhiteColor] forControl:self.btnOpenNewsPopup];
-    [Utils setTitle:@"Show second bar" color:[NSColor textWhiteColor] forControl:self.btnShowSecondBar];
-    [Utils setTitle:@"Comics popup" color:[NSColor textWhiteColor] forControl:self.btnOpenComicsPopup];
-    
-    [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.vSecondBar];
+        [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.vMenu];
+        
+        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vChangeMode];
+        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFinderApp];
+        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenSafariApp];
+        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFilmsPopup];
+        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenNewsPopup];
+        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vShowSecondBar];
+        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenComicsPopup];
+        
+        [Utils setTitle:@"Films popup" color:[NSColor textWhiteColor] forControl:self.btnOpenFilmsPopup];
+        [Utils setTitle:@"News popup" color:[NSColor textWhiteColor] forControl:self.btnOpenNewsPopup];
+        [Utils setTitle:@"Show second bar" color:[NSColor textWhiteColor] forControl:self.btnShowSecondBar];
+        [Utils setTitle:@"Comics popup" color:[NSColor textWhiteColor] forControl:self.btnOpenComicsPopup];
+        
+        [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.vSecondBar];
 #endif
+    }
 }
 
-#pragma mark -
 #pragma mark - Processes
-#pragma mark -
+
 - (void)setupEntitlementAppBundles {
-    AppDelegate *appDelegate = (AppDelegate *) [[NSApplication sharedApplication] delegate];
+    AppDelegate *appDelegate = (AppDelegate *)[[NSApplication sharedApplication] delegate];
     
     [self.entitlementAppBundles enumerateObjectsUsingBlock:^(NSString *bundle, NSUInteger idx, BOOL *stop) {
         [appDelegate addEntitlementBundleId:bundle];
@@ -148,7 +147,7 @@
 }
 
 - (void)openEntitlementApplicationWithIdentifier:(NSString *)appIdentifier {
-    AppDelegate *appDelegate = (AppDelegate *) [[NSApplication sharedApplication] delegate];
+    AppDelegate *appDelegate = (AppDelegate *)[[NSApplication sharedApplication] delegate];
     NSURL *appUrl = [NSURL fileURLWithPath:[Utils getAppPathWithIdentifier:appIdentifier]];
     
     if (![[NSWorkspace sharedWorkspace] launchApplicationAtURL:appUrl options:NSWorkspaceLaunchDefault configuration:[NSDictionary dictionary] error:NULL]) {
@@ -387,9 +386,8 @@
     [self observePopoverMixRelativeToViewContentSizeChange];
 }
 
-#pragma mark -
 #pragma mark - Actions
-#pragma mark -
+
 - (IBAction)btnChangeMode_clicked:(NSButton *)sender {
     [self._homePresenter doSelectSender:@{@"type": @"changeMode", @"object": sender}];
 }
@@ -418,15 +416,14 @@
     [self._homePresenter doSelectSender:@{@"type": @"comicsPopup", @"object": sender}];
 }
 
-#pragma mark -
 #pragma mark - HomeViewProtocols implementation
-#pragma mark -
+
 - (void)showPopoverAtSender:(NSDictionary *)senderInfo {
     NSString *keyType = @"type";
     NSString *keyObject = @"object";
     
     if ([senderInfo objectForKey:keyObject] && [[senderInfo objectForKey:keyObject] isKindOfClass:[NSView class]]) {
-        NSView *sender = (NSView *) [senderInfo objectForKey:keyObject];
+        NSView *sender = (NSView *)[senderInfo objectForKey:keyObject];
         
         if ([[senderInfo objectForKey:keyType] isEqualToString:@"changeMode"]) {
             [self changeWindowMode];
@@ -446,13 +443,12 @@
     }
 }
 
-#pragma mark -
 #pragma mark - FLOPopoverDelegate
-#pragma mark -
-- (void)floPopoverDidShow:(NSResponder *)popover {
+
+- (void)floPopoverDidShow:(FLOPopover *)popover {
 }
 
-- (void)floPopoverDidClose:(NSResponder *)popover {
+- (void)floPopoverDidClose:(FLOPopover *)popover {
 }
 
 @end

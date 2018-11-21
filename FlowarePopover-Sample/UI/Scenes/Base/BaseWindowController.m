@@ -30,16 +30,14 @@ static BaseWindowController *_sharedInstance = nil;
 @synthesize windowMode = _windowMode;
 @synthesize windowTitleBarHeight = _windowTitleBarHeight;
 
-#pragma mark -
 #pragma mark - Singleton
-#pragma mark -
+
 + (BaseWindowController *)sharedInstance {
     return _sharedInstance;
 }
 
-#pragma mark -
 #pragma mark - Window lifecycle
-#pragma mark -
+
 - (void)awakeFromNib {
     _sharedInstance = self;
     _windowMode = FLOWindowModeNormal;
@@ -57,9 +55,8 @@ static BaseWindowController *_sharedInstance = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark -
 #pragma mark - Getter/Setter
-#pragma mark -
+
 - (FLOWindowMode)windowMode {
     return _windowMode;
 }
@@ -89,9 +86,8 @@ static BaseWindowController *_sharedInstance = nil;
     _windowTitleBarHeight = self.window.frame.size.height - self.window.contentView.frame.size.height;
 }
 
-#pragma mark -
 #pragma mark - Setup UI
-#pragma mark -
+
 - (void)setupUI {
     NSRect visibleFrame = [self.window.screen visibleFrame];
     CGFloat width = 0.6 * visibleFrame.size.width;
@@ -104,9 +100,8 @@ static BaseWindowController *_sharedInstance = nil;
     [self.window setMinSize:NSMakeSize(0.6 * visibleFrame.size.width, 0.7 * visibleFrame.size.height)];
 }
 
-#pragma mark -
 #pragma mark - Processes
-#pragma mark -
+
 - (void)activate {
     [self.window makeKeyAndOrderFront:nil];
 }
@@ -141,7 +136,7 @@ static BaseWindowController *_sharedInstance = nil;
 }
 
 - (void)hideChildenWindowsOnDeactivate {
-    AppDelegate *appDelegate = (AppDelegate *) [[NSApplication sharedApplication] delegate];
+    AppDelegate *appDelegate = (AppDelegate *)[[NSApplication sharedApplication] delegate];
     
     for (NSWindow *childWindow in self.window.childWindows) {
         if (![appDelegate isEntitlementAppFocused]) {
@@ -160,9 +155,8 @@ static BaseWindowController *_sharedInstance = nil;
     AppleScriptHideAllAppsExcept(FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER, FLO_ENTITLEMENT_APP_IDENTIFIER_SAFARI);
 }
 
-#pragma mark -
 #pragma mark - Event handles
-#pragma mark -
+
 - (void)windowDidChangeMode:(NSNotification *)notification {
     if ([notification.name isEqualToString:FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE]) {
         if (self.windowMode == FLOWindowModeDesktop) {
@@ -180,9 +174,8 @@ static BaseWindowController *_sharedInstance = nil;
     }
 }
 
-#pragma mark -
 #pragma mark - Event monitor
-#pragma mark -
+
 - (void)registerEventMonitor {
     [self registerWindowChangeModeEvent];
     [self registerApplicationAppearanceNotification];

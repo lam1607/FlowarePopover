@@ -12,9 +12,8 @@
 
 @synthesize view;
 
-#pragma mark -
 #pragma mark - HomePresenterProtocols implementation
-#pragma mark -
+
 - (void)attachView:(id<HomeViewProtocols>)view {
     self.view = view;
 }

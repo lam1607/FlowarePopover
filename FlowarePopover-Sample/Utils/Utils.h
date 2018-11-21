@@ -11,9 +11,8 @@
 
 @interface Utils : NSObject
 
-#pragma mark -
 #pragma mark - Model object parsing
-#pragma mark -
+
 /**
  * Return an array of property names of given class.
  *
@@ -51,9 +50,8 @@
  */
 + (void)copy:(NSObject *)copy from:(NSObject *)object withZone:(NSZone *)zone;
 
-#pragma mark -
 #pragma mark - Formats
-#pragma mark -
+
 + (void)setViewTransparent:(NSView *)view withBackgroundColor:(NSColor *)color;
 + (void)setShadowForView:(NSView *)view;
 + (void)setBackgroundColor:(NSColor *)color forView:(NSView *)view;
@@ -62,28 +60,24 @@
 + (void)setTitle:(NSString *)title color:(NSColor *)color fontSize:(CGFloat)fontSize forControl:(NSControl *)control;
 + (void)setTitle:(NSString *)title color:(NSColor *)color forControl:(NSControl *)control;
 
-#pragma mark -
 #pragma mark - Checking
-#pragma mark -
+
 + (BOOL)isEmptyObject:(id)obj;
 
-#pragma mark -
 #pragma mark - String
-#pragma mark -
+
 + (NSSize)sizeOfControl:(NSControl *)control;
 + (NSSize)sizeOfControl:(NSControl *)control withWidth:(CGFloat)width;
 + (CGFloat)heightForWidth:(CGFloat)width string:(NSAttributedString*)string;
 + (NSSize)sizeForWidth:(CGFloat)width height:(CGFloat)height string:(NSAttributedString*)string;
 
-#pragma mark -
 #pragma mark - Device
-#pragma mark -
+
 + (NSSize)screenSize;
 + (BOOL)isDarkMode;
 
-#pragma mark -
 #pragma mark - Application utilities
-#pragma mark -
+
 + (NSString *)getAppPathWithIdentifier:(NSString *)bundleIdentifier;
 + (NSString *)getAppNameWithIdentifier:(NSString *)bundleIdentifier;
 

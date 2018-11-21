@@ -8,9 +8,8 @@
 
 #import "FLOExtensionsGraphicsContext.h"
 
-#pragma mark -
 #pragma mark - Graphics context creation
-#pragma mark -
+
 CGContextRef FLOExtensionsGraphicsContextCreate(CGSize size, CGColorSpaceRef colorSpace) {
     size_t width = size.width;
     size_t height = size.height;

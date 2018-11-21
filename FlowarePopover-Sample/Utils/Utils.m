@@ -12,9 +12,8 @@
 
 @implementation Utils
 
-#pragma mark -
 #pragma mark - Model object parsing
-#pragma mark -
+
 + (NSArray *)propertyNamesOfClass:(Class)class {
     NSMutableArray *propertyNames = [[NSMutableArray alloc] init];
     unsigned int propertyCount = 0;
@@ -37,7 +36,7 @@
     }
     
     NSArray *propertyNames = [self propertyNamesOfClass:[object class]];
-    NSObject *_object = (NSObject *) object;
+    NSObject *_object = (NSObject *)object;
     
     for (NSString *property in propertyNames) {
         if (![self isEmptyObject:[info valueForKey:property]]) {
@@ -56,7 +55,7 @@
     }
     
     NSArray *propertyNames = [self propertyNamesOfClass:[object class]];
-    NSObject *_object = (NSObject *) object;
+    NSObject *_object = (NSObject *)object;
     
     for (NSString *property in propertyNames) {
         [_object setValue:[decoder decodeObjectForKey:property] forKey:property];
@@ -69,7 +68,7 @@
     }
     
     NSArray *propertyNames = [self propertyNamesOfClass:[object class]];
-    NSObject *_object = (NSObject *) object;
+    NSObject *_object = (NSObject *)object;
     
     for (NSString *property in propertyNames) {
         [encoder encodeObject:[_object valueForKey:property] forKey:property];
@@ -92,9 +91,8 @@
     }
 }
 
-#pragma mark -
 #pragma mark - Formats
-#pragma mark -
+
 + (void)setViewTransparent:(NSView *)view withBackgroundColor:(NSColor *)color {
     view.layer.backgroundColor = [[color colorWithAlphaComponent:COLOR_ALPHA] CGColor];
 }
@@ -130,7 +128,7 @@
     control.attributedStringValue = attributedString;
     
     if ([control isKindOfClass:[NSButton class]]) {
-        ((NSButton *) control).attributedTitle = attributedString;
+        ((NSButton *)control).attributedTitle = attributedString;
     }
 }
 
@@ -140,7 +138,7 @@
     control.attributedStringValue = attributedString;
     
     if ([control isKindOfClass:[NSButton class]]) {
-        ((NSButton *) control).attributedTitle = attributedString;
+        ((NSButton *)control).attributedTitle = attributedString;
     }
 }
 
@@ -148,14 +146,13 @@
     [self setTitle:title color:color fontSize:14.0 forControl:control];
 }
 
-#pragma mark -
 #pragma mark - Checking
-#pragma mark -
+
 + (BOOL)isEmptyObject:(id)obj {
     if (([obj isKindOfClass:[NSNull class]]) || ([obj isEqual:[NSNull null]]) || (obj == nil)) {
         return YES;
     } else if ([obj isKindOfClass:[NSString class]]) {
-        NSString *string = (NSString *) obj;
+        NSString *string = (NSString *)obj;
         
         if (string.length == 0 || [string isKindOfClass:[NSNull class]] || (string == nil) ||
             [string isEqualToString:@"(null)"] || [string isEqualToString:@"<null>" ] || [string isEqualToString:@"null"] ||
@@ -168,9 +165,8 @@
     return NO;
 }
 
-#pragma mark -
 #pragma mark - String
-#pragma mark -
+
 + (NSSize)sizeOfControl:(NSControl *)control {
     return [self sizeOfControl:control withWidth:control.frame.size.width];
 }
@@ -223,9 +219,8 @@
     return size;
 }
 
-#pragma mark -
 #pragma mark - Device
-#pragma mark -
+
 + (NSSize)screenSize {
     return [[NSScreen mainScreen] frame].size;
 }
@@ -240,9 +235,8 @@
     return NO;
 }
 
-#pragma mark -
 #pragma mark - Application utilities
-#pragma mark -
+
 + (NSString *)getAppPathWithIdentifier:(NSString *)bundleIdentifier {
     NSString *path = nil;
     NSArray *urls = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationDirectory inDomains:NSLocalDomainMask];

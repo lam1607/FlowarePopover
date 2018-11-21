@@ -45,18 +45,16 @@
     [self deSelectRowIfSelected];
 }
 
-#pragma mark -
 #pragma mark - Initialize
-#pragma mark -
+
 - (void)initialize {
     self._comicRepository = [[ComicRepository alloc] init];
     self._comicsPresenter = [[ComicsPresenter alloc] init];
     [self._comicsPresenter attachView:self repository:self._comicRepository];
 }
 
-#pragma mark -
 #pragma mark - Setup UI
-#pragma mark -
+
 - (void)setupUI {
     NSSize screenSize = [Utils screenSize];
     NSTableColumn *column = [self.outlineViewData tableColumnWithIdentifier:@"ComicCellViewColumn"];
@@ -69,9 +67,8 @@
     self.outlineViewData.dataSource = self;
 }
 
-#pragma mark -
 #pragma mark - Processes
-#pragma mark -
+
 - (void)loadData {
     [self._comicsPresenter fetchData];
 }
@@ -88,9 +85,8 @@
     return rows * 46.0;
 }
 
-#pragma mark -
 #pragma mark - CustomNSOutlineViewDelegate
-#pragma mark -
+
 - (void)outlineView:(CustomNSOutlineView *)outlineView didSelectRow:(NSInteger)row {
     if (row < [self._comicsPresenter comics].count) {
         Comic *selected = [[self._comicsPresenter comics] objectAtIndex:row];
@@ -99,12 +95,11 @@
     }
 }
 
-#pragma mark -
 #pragma mark - NSOutlineViewDelegate, NSOutlineViewDataSource
-#pragma mark -
+
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item {
     if ([item isKindOfClass:[Comic class]]) {
-        return ((Comic *) item).subComics.count;
+        return ((Comic *)item).subComics.count;
     }
     
     return [self._comicsPresenter comics].count;
@@ -112,7 +107,7 @@
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item {
     if ([item isKindOfClass:[Comic class]]) {
-        return [((Comic *) item).subComics objectAtIndex:index];
+        return [((Comic *)item).subComics objectAtIndex:index];
     }
     
     return [[self._comicsPresenter comics] objectAtIndex:index];
@@ -120,7 +115,7 @@
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item {
     if ([item isKindOfClass:[Comic class]]) {
-        return ((Comic *) item).subComics.count > 0;
+        return ((Comic *)item).subComics.count > 0;
     }
     
     return YES;
@@ -163,8 +158,8 @@
 }
 
 - (NSView *)outlineView:(NSOutlineView *)outlineView viewForTableColumn:(nullable NSTableColumn *)tableColumn item:(id)item {
-    ComicCellView *cellView = (ComicCellView *) [outlineView makeViewWithIdentifier:NSStringFromClass([ComicCellView class]) owner:self];
-    [cellView updateUIWithData:(Comic *) item];
+    ComicCellView *cellView = (ComicCellView *)[outlineView makeViewWithIdentifier:NSStringFromClass([ComicCellView class]) owner:self];
+    [cellView updateUIWithData:(Comic *)item];
     
     return cellView;
 }
@@ -181,9 +176,8 @@
     }
 }
 
-#pragma mark -
 #pragma mark - ComicsViewProtocols implementation
-#pragma mark -
+
 - (void)reloadDataOutlineView {
     [self.outlineViewData reloadData];
     

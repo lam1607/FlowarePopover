@@ -10,9 +10,8 @@
 
 @implementation CustomNSOutlineView
 
-#pragma mark -
 #pragma mark - Mouse events
-#pragma mark -
+
 - (void)mouseEntered:(NSEvent *)event {
     [super mouseEntered:event];
 }

@@ -34,9 +34,8 @@ extern void AppleScriptOpenApp(NSString *appName);
 extern void AppleScriptOpenMSAppWithNewDocument(NSString *appName);
 extern void AppleScriptOpenAccessibilityPreference();
 
-#pragma mark -
 #pragma mark - Updated scripts
-#pragma mark -
+
 extern int AppleScriptPresentDocument(NSString *appName, NSString *title, NSString *siblingTitle, float x, float y, float w, float h, BOOL needResize);
 extern int AppleScriptPresentApp(NSString *appName, NSString *bundle, float x, float y, float maxWidth, float maxHeight, BOOL needResize);
 extern void AppleScriptActivateApplication(NSString *appName);

@@ -37,9 +37,8 @@
     [self loadData];
 }
 
-#pragma mark -
 #pragma mark - Initialize
-#pragma mark -
+
 - (void)initialize {
     self._filmRepository = [[FilmRepository alloc] init];
     self._filmsPresenter = [[FilmsPresenter alloc] init];
@@ -49,9 +48,8 @@
     self._itemSizes = [[NSCache alloc] init];
 }
 
-#pragma mark -
 #pragma mark - Setup UI
-#pragma mark -
+
 - (void)setupUI {
     NSCollectionViewFlowLayout *flowLayout = [[NSCollectionViewFlowLayout alloc] init];
     flowLayout.minimumInteritemSpacing = 10.0;
@@ -64,9 +62,8 @@
     self.collectionViewData.dataSource = self;
 }
 
-#pragma mark -
 #pragma mark - Processes
-#pragma mark -
+
 - (void)loadData {
     [self._filmsPresenter fetchData];
 }
@@ -95,9 +92,8 @@
     [self._itemSizes setObject:[NSValue valueWithSize:itemSize] forKey:@(indexPath.item)];
 }
 
-#pragma mark -
 #pragma mark - NSCollectionViewDataSource, NSCollectionViewDelegate
-#pragma mark -
+
 - (NSInteger)numberOfSectionsInCollectionView:(NSCollectionView *)collectionView {
     return 1;
 }
@@ -129,9 +125,8 @@
     DLog(@"");
 }
 
-#pragma mark -
 #pragma mark - FilmsViewProtocols implementation
-#pragma mark -
+
 - (void)reloadDataCollectionView {
     [self.collectionViewData reloadData];
 }

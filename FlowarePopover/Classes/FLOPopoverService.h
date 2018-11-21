@@ -13,11 +13,8 @@
 @property (nonatomic, copy) void (^popoverDidCloseCallback)(NSResponder *popover);
 @property (nonatomic, copy) void (^popoverDidShowCallback)(NSResponder *popover);
 
-@optional
-
-#pragma mark -
 #pragma mark - Initialize
-#pragma mark -
+
 /**
  * Initialize the FLOPopover with content view and type is FLOViewPopover by default.
  *
@@ -34,11 +31,8 @@
  */
 - (id)initWithContentViewController:(NSViewController *)contentViewController;
 
-@required
-
-#pragma mark -
 #pragma mark - Utilities
-#pragma mark -
+
 - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationTransition)animationType;
 
 /**

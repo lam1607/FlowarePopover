@@ -26,9 +26,8 @@
 @synthesize topView = _topView;
 @synthesize appMainWindowResized = _appMainWindowResized;
 
-#pragma mark -
 #pragma mark - Singleton
-#pragma mark -
+
 + (FLOPopoverUtils *)sharedInstance {
     static FLOPopoverUtils *_sharedInstance = nil;
     static dispatch_once_t onceToken;
@@ -48,9 +47,8 @@
     return _sharedInstance;
 }
 
-#pragma mark -
 #pragma mark - Getter/Setter
-#pragma mark -
+
 - (NSWindow *)appMainWindow {
     return _appMainWindow;
 }
@@ -79,44 +77,58 @@
     _appMainWindowResized = appMainWindowResized;
 }
 
-#pragma mark -
 #pragma mark - Local implementations
-#pragma mark -
+
 - (void)windowDidEndResize {
     _appMainWindowResized = NO;
 }
 
-#pragma mark -
 #pragma mark - Utilities
-#pragma mark -
-- (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame withAnimationType:(FLOPopoverAnimationTransition)animationType showing:(BOOL)showing {
+
+- (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame animationType:(FLOPopoverAnimationTransition)animationType forwarding:(BOOL)forwarding showing:(BOOL)showing {
     switch (animationType) {
         case FLOPopoverAnimationLeftToRight:
             if (showing) {
                 (*fromFrame).origin.x -= (*toFrame).size.width / 2;
             } else {
-                (*toFrame).origin.x -= (*fromFrame).size.width / 2;
+                if (forwarding) {
+                    (*toFrame).origin.x += (*fromFrame).size.width / 2;
+                } else {
+                    (*toFrame).origin.x -= (*fromFrame).size.width / 2;
+                }
             }
             break;
         case FLOPopoverAnimationRightToLeft:
             if (showing) {
                 (*fromFrame).origin.x += (*toFrame).size.width / 2;
             } else {
-                (*toFrame).origin.x += (*fromFrame).size.width / 2;
+                if (forwarding) {
+                    (*toFrame).origin.x -= (*fromFrame).size.width / 2;
+                } else {
+                    (*toFrame).origin.x += (*fromFrame).size.width / 2;
+                }
             }
             break;
         case FLOPopoverAnimationTopToBottom:
             if (showing) {
                 (*fromFrame).origin.y += (*toFrame).size.height / 2;
             } else {
-                (*toFrame).origin.y += (*fromFrame).size.height / 2;
+                if (forwarding) {
+                    (*toFrame).origin.y -= (*fromFrame).size.height / 2;
+                } else {
+                    (*toFrame).origin.y += (*fromFrame).size.height / 2;
+                }
             }
             break;
         case FLOPopoverAnimationBottomToTop:
             if (showing) {
                 (*fromFrame).origin.y -= (*toFrame).size.height / 2;
             } else {
-                (*toFrame).origin.y -= (*fromFrame).size.height / 2;
+                if (forwarding) {
+                    (*toFrame).origin.y += (*fromFrame).size.height / 2;
+                } else {
+                    (*toFrame).origin.y -= (*fromFrame).size.height / 2;
+                }
             }
             break;
         case FLOPopoverAnimationFromMiddle:
@@ -179,12 +191,11 @@
     return NO;
 }
 
-#pragma mark -
 #pragma mark - NSWindowDelegate
-#pragma mark -
+
 - (void)windowDidResize:(NSNotification *)notification {
     if ([notification.name isEqualToString:NSWindowDidResizeNotification] && [notification.object isKindOfClass:[NSWindow class]]) {
-        NSWindow *resizedWindow = (NSWindow *) notification.object;
+        NSWindow *resizedWindow = (NSWindow *)notification.object;
         
         if (resizedWindow == self.appMainWindow) {
             [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(windowDidEndResize) object:nil];

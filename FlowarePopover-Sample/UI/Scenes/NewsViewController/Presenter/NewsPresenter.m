@@ -21,9 +21,8 @@
 @synthesize view;
 @synthesize repository;
 
-#pragma mark -
 #pragma mark - DataPresenterProtocols implementation
-#pragma mark -
+
 - (void)attachView:(id<NewsViewProtocols>)view repository:(id<NewsRepositoryProtocols>)repository {
     self.view = view;
     self.repository = repository;

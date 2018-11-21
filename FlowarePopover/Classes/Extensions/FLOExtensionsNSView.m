@@ -62,9 +62,8 @@ typedef NS_ENUM(NSInteger, AXIS_XY) {
     return newLayer;
 }
 
-#pragma mark -
 #pragma mark - Internals
-#pragma mark -
+
 - (CGRect)shadowRect {
     CGRect windowBounds = (CGRect){ .size = self.frame.size };
     CGRect rect = CGRectInset(windowBounds, -JNWAnimatableWindowShadowHorizontalOutset, 0);
@@ -81,9 +80,8 @@ typedef NS_ENUM(NSInteger, AXIS_XY) {
     };
 }
 
-#pragma mark -
 #pragma mark - View animated
-#pragma mark -
+
 static const CGFloat JNWAnimatableWindowShadowOpacity = 0.58;
 static const CGSize JNWAnimatableWindowShadowOffset = (CGSize){ 0, -30.0 };
 static const CGFloat JNWAnimatableWindowShadowRadius = 19.0;
@@ -201,9 +199,8 @@ static CALayer *subLayer;
     [CATransaction commit];
 }
 
-#pragma mark -
 #pragma mark - Utilities
-#pragma mark -
+
 - (void)animatedDisplayWillBeginAtPoint:(NSPoint)beginPoint endedAtPoint:(NSPoint)endedPoint handler:(void(^)(void))handler {
     [self.layer removeAllAnimations];
     // along x-axis / this is

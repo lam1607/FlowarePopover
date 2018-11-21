@@ -37,42 +37,41 @@
     [self refreshUIColors];
 }
 
-#pragma mark -
 #pragma mark - Initialize
-#pragma mark -
+
 - (void)initialize {
     self._filmRepository = [[FilmRepository alloc] init];
     self._filmCellPresenter = [[FilmCellPresenter alloc] init];
     [self._filmCellPresenter attachView:self repository:self._filmRepository];
 }
 
-#pragma mark -
 #pragma mark - Setup UI
-#pragma mark -
+
 - (void)setupUI {
     self.imgView.imageScaling = NSImageScaleProportionallyUpOrDown;
     self.lblName.maximumNumberOfLines = 0;
 }
 
 - (void)refreshUIColors {
-    [Utils setShadowForView:self.vContainer];
-    
+    if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name]) {
+        [Utils setShadowForView:self.vContainer];
+        
 #ifdef SHOULD_USE_ASSET_COLORS
-    [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
-    [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
-    
-    [Utils setTitle:self.lblName.stringValue color:[NSColor _textBlackColor] fontSize:16.0 forControl:self.lblName];
+        [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+        [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
+        
+        [Utils setTitle:self.lblName.stringValue color:[NSColor _textBlackColor] fontSize:16.0 forControl:self.lblName];
 #else
-    [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
-    [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
-    
-    [Utils setTitle:self.lblName.stringValue color:[NSColor textBlackColor] fontSize:16.0 forControl:self.lblName];
+        [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+        [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
+        
+        [Utils setTitle:self.lblName.stringValue color:[NSColor textBlackColor] fontSize:16.0 forControl:self.lblName];
 #endif
+    }
 }
 
-#pragma mark -
 #pragma mark - Processes
-#pragma mark -
+
 - (CGFloat)getViewItemHeight {
     CGFloat imageHeight = self.imgView.frame.size.height;
     CGFloat nameHeight = [Utils sizeOfControl:self.lblName].height;
@@ -87,9 +86,8 @@
     self.lblName.stringValue = film.name;
 }
 
-#pragma mark -
 #pragma mark - FilmCellViewProtocols implementation
-#pragma mark -
+
 - (void)updateCellViewImage {
     if ([self._filmCellPresenter getFilmImage]) {
         self.imgView.image = [self._filmCellPresenter getFilmImage];

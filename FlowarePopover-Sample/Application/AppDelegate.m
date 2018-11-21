@@ -32,8 +32,6 @@
         
         if (![app.bundleIdentifier isEqualToString:[[NSBundle mainBundle] bundleIdentifier]]) {
             if ([[BaseWindowController sharedInstance] windowInDesktopMode]) {
-                DLog(@"NSWorkspaceDidActivateApplicationNotification name: %@ - bundle: %@", app.localizedName, app.bundleIdentifier);
-                
                 self._lastBundleIdentifier = app.bundleIdentifier;
                 
                 [[BaseWindowController sharedInstance] hideChildenWindowsOnDeactivate];
@@ -69,9 +67,8 @@
     }
 }
 
-#pragma mark -
 #pragma mark - BundleIdentifier from entitlement apps
-#pragma mark -
+
 - (void)addEntitlementBundleId:(NSString *)bundleId {
     if (!bundleId.length) return;
     // Yes: entitlement app has been activated

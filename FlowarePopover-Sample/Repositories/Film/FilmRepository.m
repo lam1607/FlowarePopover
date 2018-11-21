@@ -27,9 +27,8 @@
     return self;
 }
 
-#pragma mark -
 #pragma mark - FilmRepositoryProtocols implementation
-#pragma mark -
+
 - (NSArray<Film *> *)fetchFilms {
     NSMutableArray *films = [[NSMutableArray alloc] init];
     NSArray<NSDictionary *> *filmDicts = [self._service getMockupDataType:@"films"];

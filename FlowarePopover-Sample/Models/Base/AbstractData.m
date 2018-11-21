@@ -16,9 +16,8 @@
 
 @implementation AbstractData
 
-#pragma mark -
 #pragma mark - Initialize
-#pragma mark -
+
 - (instancetype)initWithContent:(NSDictionary *)contentDict {
     if (self = [super init]) {
         if (![Utils isEmptyObject:contentDict]) {
@@ -58,9 +57,8 @@
     return self;
 }
 
-#pragma mark -
 #pragma mark - Processes
-#pragma mark -
+
 - (void)setImage:(NSImage *)image {
     self._dataImage = image;
 }

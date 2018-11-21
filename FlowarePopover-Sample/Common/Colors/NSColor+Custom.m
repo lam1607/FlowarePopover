@@ -10,9 +10,8 @@
 
 @implementation NSColor (Custom)
 
-#pragma mark -
 #pragma mark - Initialize
-#pragma mark -
+
 - (instancetype)initWithHex:(NSString *)hex {
     if (self = [self init]) {
         unsigned colorCode = 0;
@@ -37,9 +36,8 @@
     return self;
 }
 
-#pragma mark -
 #pragma mark - Normal additional colors
-#pragma mark -
+
 + (NSColor *)backgroundColor {
     return [Utils isDarkMode] ? [[NSColor alloc] initWithHex:@"#323232"] : [[NSColor alloc] initWithHex:@"#E1E1E1"];
 }
@@ -100,9 +98,8 @@
     return [Utils isDarkMode] ? [[NSColor alloc] initWithHex:@"#A90D91"] : [[NSColor alloc] initWithHex:@"#D70D91"];
 }
 
-#pragma mark -
 #pragma mark - Asset additional colors
-#pragma mark -
+
 + (NSColor *)_backgroundColor {
     return [NSColor colorNamed:@"_backgroundColor"];
 }

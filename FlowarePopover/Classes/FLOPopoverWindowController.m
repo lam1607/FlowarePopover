@@ -8,20 +8,8 @@
 
 #import "FLOPopoverWindowController.h"
 
-#pragma mark -
-#pragma mark - FLOPopoverWindow
-#pragma mark -
-@implementation FLOPopoverWindow
-
-- (BOOL)canBecomeKeyWindow {
-    return self.canBecomeKey;
-}
-
-@end
-
-#pragma mark -
 #pragma mark - FLOPopoverWindowController
-#pragma mark -
+
 @interface FLOPopoverWindowController ()
 
 @end

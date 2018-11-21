@@ -87,8 +87,10 @@ The default initialization of FLOPopover type is `FLOViewPopover`
 - **alwaysOnTop** : `Make the popover always on top. If there is more than one popover is set as top, only the last one is top most`
 - **shouldShowArrow** : `Show arrow at popover`
 - **animated** : `Show popover with animation`
+- **animatedForwarding** : `Animation with forwarding direction`
 - **closesWhenPopoverResignsKey** : `Close the popover automatically when resigned`
 - **closesWhenApplicationBecomesInactive** : `Close the popover automatically when the application becomes inactive`
+- **closesWhenApplicationResizes** : `Close the popover automatically when the application resizes`
 - **popoverMovable** : `Make the popover draggable`
 - **popoverShouldDetach** : `Make the popover draggable and detachable (only works with` **`FLOWindowPopover`** `type`
 
@@ -194,8 +196,8 @@ Currently only the **`FLOPopoverAnimationBehaviorTransition`** type is supported
 The popover have two delegations with protocol `FLOPopoverDelegate`:
 
 ```
-- (void)floPopoverDidShow:(NSResponder *)popover;
-- (void)floPopoverDidClose:(NSResponder *)popover;
+- (void)floPopoverDidShow:(FLOPopover *)popover;
+- (void)floPopoverDidClose:(FLOPopover *)popover;
 ```
 
 

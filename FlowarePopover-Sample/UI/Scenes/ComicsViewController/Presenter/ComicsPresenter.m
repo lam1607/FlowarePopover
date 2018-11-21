@@ -21,9 +21,8 @@
 @synthesize view;
 @synthesize repository;
 
-#pragma mark -
 #pragma mark - ComicsPresenterProtocols implementation
-#pragma mark -
+
 - (void)attachView:(id<ComicsViewProtocols>)view repository:(id<ComicRepositoryProtocols>)repository {
     self.view = view;
     self.repository = repository;

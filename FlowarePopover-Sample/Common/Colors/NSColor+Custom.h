@@ -14,9 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithHex:(NSString *)hex;
 
-#pragma mark -
 #pragma mark - Normal additional colors
-#pragma mark -
+
 + (NSColor *)backgroundColor;
 + (NSColor *)backgroundWhiteColor;
 + (NSColor *)blueColor;
@@ -33,9 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSColor *)textWhiteColor;
 + (NSColor *)violetColor;
 
-#pragma mark -
 #pragma mark - Asset additional colors
-#pragma mark -
+
 + (NSColor *)_backgroundColor;
 + (NSColor *)_backgroundWhiteColor;
 + (NSColor *)_blueColor;

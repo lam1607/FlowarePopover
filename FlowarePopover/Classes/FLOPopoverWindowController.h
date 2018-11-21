@@ -8,18 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-#pragma mark -
-#pragma mark - FLOPopoverWindow
-#pragma mark -
-@interface FLOPopoverWindow : NSWindow
-
-@property (nonatomic, assign) BOOL canBecomeKey;
-
-@end
-
-#pragma mark -
 #pragma mark - FLOPopoverWindowController
-#pragma mark -
+
 @interface FLOPopoverWindowController : NSWindowController
 
 @end
