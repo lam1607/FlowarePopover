@@ -24,7 +24,7 @@ To integrate FlowarePopover into your Xcode project using CocoaPods, specify it 
 platform :osx, '10.11'
 
 target '<Your Target Name>' do
-pod 'FlowarePopover'
+  pod 'FlowarePopover'
 end
 ```
 
@@ -48,32 +48,32 @@ Popover have two main types:
 ### Initialize
 
 - **NSView**
-- **Default**
-```
-- (id)initWithContentView:(NSView *)contentView;
-```
+  - **Default**
+  ```
+    - (id)initWithContentView:(NSView *)contentView;
+  ```
 
-- **Detail**
-```
-- (id)initWithContentView:(NSView *)contentView type:(FLOPopoverType)type;
-```
+  - **Detail**
+  ```
+    - (id)initWithContentView:(NSView *)contentView type:(FLOPopoverType)type;
+  ```
 
 - **NSViewController**
-- **Default**
-```
-- (id)initWithContentViewController:(NSViewController *)contentViewController;
-```
+  - **Default**
+  ```
+    - (id)initWithContentViewController:(NSViewController *)contentViewController;
+  ```
 
-- **Detail**
-```
-- (id)initWithContentViewController:(NSViewController *)contentViewController type:(FLOPopoverType)type;
-```
+  - **Detail**
+  ```
+    - (id)initWithContentViewController:(NSViewController *)contentViewController type:(FLOPopoverType)type;
+  ```
 
 The default initialization of FLOPopover type is `FLOViewPopover`
 
 `Examples`:
 ```
-popover = [[FLOPopover alloc] initWithContentViewController:self.dataViewController type:FLOWindowPopover];
+  popover = [[FLOPopover alloc] initWithContentViewController:self.dataViewController type:FLOWindowPopover];
 ```
 
 
@@ -99,40 +99,40 @@ popover = [[FLOPopover alloc] initWithContentViewController:self.dataViewControl
 
 **`Showing`**
 
-The popover is displayed with two methods:
+The popover is displayed with follwing methods:
 
 - Display the popover at selected view **`positioningView`** with frame as selected view bounds **`rect`**. It means that the popover will stick to selected view.
-```
-- (void)showRelativeToRect:(NSRect)rect ofView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType;
-```
+  ```
+    - (void)showRelativeToRect:(NSRect)rect ofView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType;
+  ```
 
 - Display the popover at given frame **`rect`** relatively to the selected view **`positioningView`** with anchorType **`FLOPopoverAnchorTopPositiveLeadingPositive`** by default
-```
-- (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect;
-```
+  ```
+    - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect;
+  ```
 
 - Display the popover at given frame **`rect`** relatively to the selected view **`positioningView`** with specific anchor type of the anchor view with the **`positioningView`** as ((top, leading) | (top, trailing), (bottom, leading), (bottom, trailing))
-```
-- (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect anchorType:(FLOPopoverAnchorType)anchorType;
-```
+  ```
+    - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect anchorType:(FLOPopoverAnchorType)anchorType;
+  ```
 
 Examples:
 - Stick
-```
-[popover showRelativeToRect:[sender bounds] ofView:sender edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
-```
+  ```
+    [popover showRelativeToRect:[sender bounds] ofView:sender edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
+  ```
 - Given frame
-```
-NSRect positioningRect = NSMakeRect(100.0f, 200.0f, 0.0f, 0.0f);
+  ```
+    NSRect positioningRect = NSMakeRect(100.0f, 200.0f, 0.0f, 0.0f);
 
-[popover showRelativeToView:sender withRect:positioningRect];
-```
-- Given frame with anchor type
-```
-NSRect positioningRect = NSMakeRect(100.0f, 200.0f, 0.0f, 0.0f);
+    [popover showRelativeToView:sender withRect:positioningRect];
+  ```
+  - Given frame with anchor type
+  ```
+    NSRect positioningRect = NSMakeRect(100.0f, 200.0f, 0.0f, 0.0f);
 
-[popover showRelativeToView:sender withRect:positioningRect anchorType:FLOPopoverAnchorTopPositiveLeadingPositive];
-```
+    [popover showRelativeToView:sender withRect:positioningRect anchorType:FLOPopoverAnchorTopPositiveLeadingPositive];
+  ```
 
 The anchor type **`FLOPopoverAnchorType`** has the following types (anchor view that is the view the popover should display at):
 - **FLOPopoverAnchorTopPositiveLeadingPositive** : The anchor view has positive top and positive leading contraints to the **positioningView**
@@ -159,14 +159,14 @@ For more detail about **`[showRelativeToView:withRect:]`** and **`[showRelativeT
 
 **`Closing`**
 ```
-- (void)close;
+  - (void)close;
 ```
 
 `Examples`:
 ```
-if ([popover isShown]) {
-[popover close];
-}
+  if ([popover isShown]) {
+    [popover close];
+  }
 ```
 
 ### Popover edge type
@@ -203,7 +203,7 @@ When showing the sticking popover, you must provide the edge type. Edge type of 
 After setting the property **`animated`** is **`YES`**, we must use this method to apply the animation when displaying.
 
 ```
-- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationTransition)animationType;
+  - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationTransition)animationType;
 ```
 
 - **`FLOPopoverAnimationBehaviour`**
@@ -222,7 +222,7 @@ Currently only the **`FLOPopoverAnimationBehaviorTransition`** type is supported
 
 `Examples`:
 ```
-[popover setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft];
+  [popover setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft];
 ```
 
 
@@ -231,10 +231,10 @@ Currently only the **`FLOPopoverAnimationBehaviorTransition`** type is supported
 The popover have following delegations with protocol `FLOPopoverDelegate`:
 
 ```
-- (void)floPopoverWillShow:(FLOPopover *)popover;
-- (void)floPopoverDidShow:(FLOPopover *)popover;
-- (void)floPopoverWillClose:(FLOPopover *)popover;
-- (void)floPopoverDidClose:(FLOPopover *)popover;
+  - (void)floPopoverWillShow:(FLOPopover *)popover;
+  - (void)floPopoverDidShow:(FLOPopover *)popover;
+  - (void)floPopoverWillClose:(FLOPopover *)popover;
+  - (void)floPopoverDidClose:(FLOPopover *)popover;
 ```
 
 
