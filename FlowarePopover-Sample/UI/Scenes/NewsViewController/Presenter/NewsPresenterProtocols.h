@@ -22,6 +22,6 @@
 - (void)detachView;
 
 - (void)fetchData;
-- (NSArray<News *> *)news;
+- (NSArray<News *> *)data;
 
 @end

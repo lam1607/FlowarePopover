@@ -12,7 +12,7 @@
 
 @interface NewsPresenter ()
 
-@property (nonatomic, strong) NSArray<News *> *_news;
+@property (nonatomic, strong) NSArray<News *> *news;
 
 @end
 
@@ -30,12 +30,13 @@
 
 - (void)detachView {
     self.view = nil;
+    self.repository = nil;
 }
 
 - (void)fetchData {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSArray<News *> *news = [self.repository fetchNews];
-        self._news = [[NSArray alloc] initWithArray:news];
+        self.news = [[NSArray alloc] initWithArray:news];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.view reloadDataTableView];
@@ -43,8 +44,8 @@
     });
 }
 
-- (NSArray<News *> *)news {
-    return self._news;
+- (NSArray<News *> *)data {
+    return self.news;
 }
 
 @end

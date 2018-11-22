@@ -19,10 +19,10 @@
 @property (weak) IBOutlet NSScrollView *scrollView;
 @property (weak) IBOutlet CustomNSOutlineView *outlineViewData;
 
-@property (nonatomic, strong) ComicRepository *_comicRepository;
-@property (nonatomic, strong) DataPresenter *_dataPresenter;
+@property (nonatomic, strong) ComicRepository *comicRepository;
+@property (nonatomic, strong) DataPresenter *dataPresenter;
 
-@property (nonatomic, strong) NSCache *_heights;
+@property (nonatomic, strong) NSCache *heights;
 
 @end
 
@@ -50,11 +50,11 @@
 #pragma mark - Initialize
 
 - (void)initialize {
-    self._comicRepository = [[ComicRepository alloc] init];
-    self._dataPresenter = [[DataPresenter alloc] init];
-    [self._dataPresenter attachView:self repository:self._comicRepository];
+    self.comicRepository = [[ComicRepository alloc] init];
+    self.dataPresenter = [[DataPresenter alloc] init];
+    [self.dataPresenter attachView:self repository:self.comicRepository];
     
-    self._heights = [[NSCache alloc] init];
+    self.heights = [[NSCache alloc] init];
 }
 
 #pragma mark - Setup UI
@@ -75,7 +75,7 @@
 #pragma mark - Processes
 
 - (void)loadData {
-    [self._dataPresenter fetchData];
+    [self.dataPresenter fetchData];
 }
 
 - (void)deSelectRowIfSelected {
@@ -87,8 +87,8 @@
 #pragma mark - CustomNSOutlineViewDelegate
 
 - (void)outlineView:(CustomNSOutlineView *)outlineView didSelectRow:(NSInteger)row {
-    if (row < [self._dataPresenter comics].count) {
-        Comic *selected = [[self._dataPresenter comics] objectAtIndex:row];
+    if (row < [self.dataPresenter data].count) {
+        Comic *selected = [[self.dataPresenter data] objectAtIndex:row];
         
         [[NSWorkspace sharedWorkspace] openURL:selected.pageUrl];
     }
@@ -97,11 +97,11 @@
 #pragma mark - NSOutlineViewDelegate, NSOutlineViewDataSource
 
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item {
-    return [self._dataPresenter comics].count;
+    return [self.dataPresenter data].count;
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item {
-    return (item == nil) ? [[self._dataPresenter comics] objectAtIndex:index] : nil;
+    return (item == nil) ? [[self.dataPresenter data] objectAtIndex:index] : nil;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item {
@@ -115,8 +115,8 @@
 - (CGFloat)outlineView:(NSOutlineView *)outlineView heightOfRowByItem:(id)item {
     NSInteger row = [outlineView rowForItem:item];
     
-    if ([self._heights objectForKey:@(row)] && [[self._heights objectForKey:@(row)] isKindOfClass:[NSNumber class]]) {
-        return [((NSNumber *)[self._heights objectForKey:@(row)]) doubleValue];
+    if ([self.heights objectForKey:@(row)] && [[self.heights objectForKey:@(row)] isKindOfClass:[NSNumber class]]) {
+        return [((NSNumber *)[self.heights objectForKey:@(row)]) doubleValue];
     }
     
     return 269.0;
@@ -128,9 +128,9 @@
     if ([view isKindOfClass:[DataCellView class]]) {
         DataCellView *cellView = (DataCellView *)view;
         
-        if (![self._heights objectForKey:@(row)]) {
+        if (![self.heights objectForKey:@(row)]) {
             CGFloat cellHeight = [cellView getCellHeight];
-            [self._heights setObject:@(cellHeight) forKey:@(row)];
+            [self.heights setObject:@(cellHeight) forKey:@(row)];
             
             // Notify to the NSOutlineView reloads cell height
             [outlineView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:row]];

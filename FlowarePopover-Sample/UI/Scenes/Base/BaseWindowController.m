@@ -123,7 +123,7 @@ static BaseWindowController *_sharedInstance = nil;
     [self.window setFrame:self.windowNormalFrame display:YES animate:YES];
 }
 
-- (void)showChildenWindowsOnActivate {
+- (void)showChildWindowsOnActivate {
     for (NSWindow *childWindow in self.window.childWindows) {
         if (childWindow.level >= self.window.level) {
             if (childWindow == [FLOPopoverUtils sharedInstance].topWindow) {
@@ -135,7 +135,7 @@ static BaseWindowController *_sharedInstance = nil;
     }
 }
 
-- (void)hideChildenWindowsOnDeactivate {
+- (void)hideChildWindowsOnDeactivate {
     AppDelegate *appDelegate = (AppDelegate *)[[NSApplication sharedApplication] delegate];
     
     for (NSWindow *childWindow in self.window.childWindows) {

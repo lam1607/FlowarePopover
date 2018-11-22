@@ -19,8 +19,8 @@
 @property (weak) IBOutlet NSScrollView *scrollView;
 @property (weak) IBOutlet CustomNSOutlineView *outlineViewData;
 
-@property (nonatomic, strong) ComicRepository *_comicRepository;
-@property (nonatomic, strong) ComicsPresenter *_comicsPresenter;
+@property (nonatomic, strong) ComicRepository *comicRepository;
+@property (nonatomic, strong) ComicsPresenter *comicsPresenter;
 
 @end
 
@@ -48,9 +48,9 @@
 #pragma mark - Initialize
 
 - (void)initialize {
-    self._comicRepository = [[ComicRepository alloc] init];
-    self._comicsPresenter = [[ComicsPresenter alloc] init];
-    [self._comicsPresenter attachView:self repository:self._comicRepository];
+    self.comicRepository = [[ComicRepository alloc] init];
+    self.comicsPresenter = [[ComicsPresenter alloc] init];
+    [self.comicsPresenter attachView:self repository:self.comicRepository];
 }
 
 #pragma mark - Setup UI
@@ -70,7 +70,7 @@
 #pragma mark - Processes
 
 - (void)loadData {
-    [self._comicsPresenter fetchData];
+    [self.comicsPresenter fetchData];
 }
 
 - (void)deSelectRowIfSelected {
@@ -88,8 +88,8 @@
 #pragma mark - CustomNSOutlineViewDelegate
 
 - (void)outlineView:(CustomNSOutlineView *)outlineView didSelectRow:(NSInteger)row {
-    if (row < [self._comicsPresenter comics].count) {
-        Comic *selected = [[self._comicsPresenter comics] objectAtIndex:row];
+    if (row < [self.comicsPresenter data].count) {
+        Comic *selected = [[self.comicsPresenter data] objectAtIndex:row];
         
         [[NSWorkspace sharedWorkspace] openURL:selected.pageUrl];
     }
@@ -102,7 +102,7 @@
         return ((Comic *)item).subComics.count;
     }
     
-    return [self._comicsPresenter comics].count;
+    return [self.comicsPresenter data].count;
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item {
@@ -110,7 +110,7 @@
         return [((Comic *)item).subComics objectAtIndex:index];
     }
     
-    return [[self._comicsPresenter comics] objectAtIndex:index];
+    return [[self.comicsPresenter data] objectAtIndex:index];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item {
@@ -166,13 +166,19 @@
 
 - (void)outlineViewItemDidExpand:(NSNotification *)notification {
     if (self.didContentSizeChange) {
-        self.didContentSizeChange();
+        CGFloat height = [self getContentSizeHeight];
+        NSSize newSize = NSMakeSize(self.view.superview.frame.size.width, height);
+        
+        self.didContentSizeChange(newSize);
     }
 }
 
 - (void)outlineViewItemDidCollapse:(NSNotification *)notification {
     if (self.didContentSizeChange) {
-        self.didContentSizeChange();
+        CGFloat height = [self getContentSizeHeight];
+        NSSize newSize = NSMakeSize(self.view.superview.frame.size.width, height);
+        
+        self.didContentSizeChange(newSize);
     }
 }
 
@@ -182,7 +188,10 @@
     [self.outlineViewData reloadData];
     
     if (self.didContentSizeChange) {
-        self.didContentSizeChange();
+        CGFloat height = [self getContentSizeHeight];
+        NSSize newSize = NSMakeSize(self.view.superview.frame.size.width, height);
+        
+        self.didContentSizeChange(newSize);
     }
 }
 

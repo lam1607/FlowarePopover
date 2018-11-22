@@ -12,7 +12,7 @@
 
 @interface ComicsPresenter ()
 
-@property (nonatomic, strong) NSMutableArray<Comic *> *_comics;
+@property (nonatomic, strong) NSMutableArray<Comic *> *comics;
 
 @end
 
@@ -30,19 +30,20 @@
 
 - (void)detachView {
     self.view = nil;
+    self.repository = nil;
 }
 
 - (void)fetchData {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        self._comics = [[NSMutableArray alloc] init];
+        self.comics = [[NSMutableArray alloc] init];
         NSArray<Comic *> *comics = [self.repository fetchComics];
         
         [comics enumerateObjectsUsingBlock:^(Comic *obj, NSUInteger idx, BOOL * _Nonnull stop) {
             if (idx % 5 == 0) {
                 obj.subComics = [[NSMutableArray alloc] init];
-                [self._comics addObject:obj];
+                [self.comics addObject:obj];
             } else {
-                Comic *comic = [self._comics lastObject];
+                Comic *comic = [self.comics lastObject];
                 [comic.subComics addObject:obj];
             }
         }];
@@ -53,8 +54,8 @@
     });
 }
 
-- (NSArray<Comic *> *)comics {
-    return self._comics;
+- (NSArray<Comic *> *)data {
+    return self.comics;
 }
 
 @end

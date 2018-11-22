@@ -18,10 +18,10 @@
 @property (weak) IBOutlet NSScrollView *scrollView;
 @property (weak) IBOutlet NSTableView *tableViewData;
 
-@property (nonatomic, strong) NewsRepository *_newsRepository;
-@property (nonatomic, strong) NewsPresenter *_newsPresenter;
+@property (nonatomic, strong) NewsRepository *newsRepository;
+@property (nonatomic, strong) NewsPresenter *newsPresenter;
 
-@property (nonatomic, strong) NSCache *_heights;
+@property (nonatomic, strong) NSCache *heights;
 
 @end
 
@@ -45,11 +45,11 @@
 #pragma mark - Initialize
 
 - (void)initialize {
-    self._newsRepository = [[NewsRepository alloc] init];
-    self._newsPresenter = [[NewsPresenter alloc] init];
-    [self._newsPresenter attachView:self repository:self._newsRepository];
+    self.newsRepository = [[NewsRepository alloc] init];
+    self.newsPresenter = [[NewsPresenter alloc] init];
+    [self.newsPresenter attachView:self repository:self.newsRepository];
     
-    self._heights = [[NSCache alloc] init];
+    self.heights = [[NSCache alloc] init];
 }
 
 #pragma mark - Setup UI
@@ -69,7 +69,7 @@
 #pragma mark - Processes
 
 - (void)loadData {
-    [self._newsPresenter fetchData];
+    [self.newsPresenter fetchData];
 }
 
 - (void)deSelectRowIfSelected {
@@ -81,7 +81,7 @@
 #pragma mark - NSTableViewDelegate, NSTableViewDataSource
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-    return [self._newsPresenter news].count;
+    return [self.newsPresenter data].count;
 }
 
 - (BOOL)tableView:(NSTableView *)tableView isGroupRow:(NSInteger)row {
@@ -89,8 +89,8 @@
 }
 
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
-    if ([self._heights objectForKey:@(row)] && [[self._heights objectForKey:@(row)] isKindOfClass:[NSNumber class]]) {
-        return [((NSNumber *)[self._heights objectForKey:@(row)]) doubleValue];
+    if ([self.heights objectForKey:@(row)] && [[self.heights objectForKey:@(row)] isKindOfClass:[NSNumber class]]) {
+        return [((NSNumber *)[self.heights objectForKey:@(row)]) doubleValue];
     }
     
     return 254.0;
@@ -102,9 +102,9 @@
     if ([view isKindOfClass:[NewsCellView class]]) {
         NewsCellView *cellView = (NewsCellView *)view;
         
-        if (![self._heights objectForKey:@(row)]) {
+        if (![self.heights objectForKey:@(row)]) {
             CGFloat cellHeight = [cellView getCellHeight];
-            [self._heights setObject:@(cellHeight) forKey:@(row)];
+            [self.heights setObject:@(cellHeight) forKey:@(row)];
             
             // Notify to the NSTableView reloads cell height
             [tableView noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndex:row]];
@@ -123,7 +123,7 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     NewsCellView *cellView = (NewsCellView *)[tableView makeViewWithIdentifier:NSStringFromClass([NewsCellView class]) owner:self];
-    [cellView updateUIWithData:[[self._newsPresenter news] objectAtIndex:row]];
+    [cellView updateUIWithData:[[self.newsPresenter data] objectAtIndex:row]];
     
     return cellView;
 }

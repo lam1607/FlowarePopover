@@ -17,6 +17,44 @@ typedef NS_ENUM(NSInteger, FLOPopoverType) {
     FLOViewPopover
 };
 
+typedef NS_ENUM(NSInteger, FLOPopoverAnchorType) {
+    // The anchor view has positive top and positive leading contraints to the positioningView
+    FLOPopoverAnchorTopPositiveLeadingPositive,
+    // The anchor view has positive top and negative leading contraints to the positioningView
+    FLOPopoverAnchorTopPositiveLeadingNegative,
+    // The anchor view has negative top and positive leading contraints to the positioningView
+    FLOPopoverAnchorTopNegativeLeadingPositive,
+    // The anchor view has negative top and negative leading contraints to the positioningView
+    FLOPopoverAnchorTopNegativeLeadingNegative,
+    
+    // The anchor view has positive top and positive trailing contraints to the positioningView
+    FLOPopoverAnchorTopPositiveTrailingPositive,
+    // The anchor view has positive top and negative trailing contraints to the positioningView
+    FLOPopoverAnchorTopPositiveTrailingNegative,
+    // The anchor view has negative top and positive trailing contraints to the positioningView
+    FLOPopoverAnchorTopNegativeTrailingPositive,
+    // The anchor view has negative top and negative trailing contraints to the positioningView
+    FLOPopoverAnchorTopNegativeTrailingNegative,
+    
+    // The anchor view has positive bottom and positive leading contraints to the positioningView
+    FLOPopoverAnchorBottomPositiveLeadingPositive,
+    // The anchor view has positive bottom and negative leading contraints to the positioningView
+    FLOPopoverAnchorBottomPositiveLeadingNegative,
+    // The anchor view has negative bottom and positive leading contraints to the positioningView
+    FLOPopoverAnchorBottomNegativeLeadingPositive,
+    // The anchor view has negative bottom and negative leading contraints to the positioningView
+    FLOPopoverAnchorBottomNegativeLeadingNegative,
+    
+    // The anchor view has positive bottom and positive trailing contraints to the positioningView
+    FLOPopoverAnchorBottomPositiveTrailingPositive,
+    // The anchor view has positive bottom and negative trailing contraints to the positioningView
+    FLOPopoverAnchorBottomPositiveTrailingNegative,
+    // The anchor view has negative bottom and positive trailing contraints to the positioningView
+    FLOPopoverAnchorBottomNegativeTrailingPositive,
+    // The anchor view has negative bottom and negative trailing contraints to the positioningView
+    FLOPopoverAnchorBottomNegativeTrailingNegative
+};
+
 typedef NS_ENUM(NSInteger, FLOPopoverEdgeType) {
     // Popover will be displayed ABOVE of the selected view,
     // with the LEFT EDGE of popover stays at the LEFT EDGE of positioning rect (rect of selected view)

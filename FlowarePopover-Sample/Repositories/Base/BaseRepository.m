@@ -12,7 +12,7 @@
 
 @interface BaseRepository ()
 
-@property (nonatomic, strong) BaseService *_service;
+@property (nonatomic, strong) BaseService *service;
 
 @end
 
@@ -20,7 +20,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        self._service = [[BaseService alloc] init];
+        self.service = [[BaseService alloc] init];
     }
     
     return self;
@@ -29,7 +29,7 @@
 #pragma mark - BaseRepositoryProtocols implementation
 
 - (void)fetchImageFromUrl:(NSURL *)url completion:(void (^)(NSImage *image))complete {
-    [self._service fetchDataFromUrl:url completion:^(NSData *data) {
+    [self.service fetchDataFromUrl:url completion:^(NSData *data) {
         if (complete) {
             complete((data != nil) ? [[NSImage alloc] initWithData:data] : nil);
         }

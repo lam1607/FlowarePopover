@@ -10,8 +10,10 @@
 
 @protocol FLOPopoverService <NSObject>
 
-@property (nonatomic, copy) void (^popoverDidCloseCallback)(NSResponder *popover);
-@property (nonatomic, copy) void (^popoverDidShowCallback)(NSResponder *popover);
+@property (nonatomic, copy) void (^willShowBlock)(NSResponder *popover);
+@property (nonatomic, copy) void (^didShowBlock)(NSResponder *popover);
+@property (nonatomic, copy) void (^willCloseBlock)(NSResponder *popover);
+@property (nonatomic, copy) void (^didCloseBlock)(NSResponder *popover);
 
 #pragma mark - Initialize
 
@@ -55,11 +57,21 @@
 /**
  * Dipslay the popover at the given rect with selected view.
  *
- * @param positioningView the selected view that popover should be displayed at.
+ * @param positioningView the selected view that popover should be displayed relatively at.
  * @param rect the given rect that popover should be displayed at.
  * @param edgeType 'position' that the popover should be displayed.
  */
 - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect edgeType:(FLOPopoverEdgeType)edgeType;
+
+/**
+ * Given rect: Dipslay the popover at the given rect with selected view.
+ *
+ * @param positioningView the selected view that popover should be displayed relatively at.
+ * @param rect the given rect that popover should be displayed at.
+ * @param anchorType type of anchor that the anchor view will stick to the positioningView ((top, leading) | (top, trailing), (bottom, leading), (bottom, trailing)).
+ * @param edgeType 'position' that the popover should be displayed.
+ */
+- (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect anchorType:(FLOPopoverAnchorType)anchorType edgeType:(FLOPopoverEdgeType)edgeType;
 
 - (void)close;
 

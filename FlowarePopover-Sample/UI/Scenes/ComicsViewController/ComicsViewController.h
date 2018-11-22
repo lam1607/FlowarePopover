@@ -14,7 +14,7 @@
 
 @interface ComicsViewController : BaseViewController <ComicsViewProtocols>
 
-@property (nonatomic, copy) void (^didContentSizeChange)(void);
+@property (nonatomic, copy) void (^didContentSizeChange)(NSSize newSize);
 
 - (CGFloat)getContentSizeHeight;
 

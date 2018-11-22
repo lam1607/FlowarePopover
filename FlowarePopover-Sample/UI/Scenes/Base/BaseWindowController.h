@@ -21,8 +21,8 @@
 - (void)setWindowTitleBarHeight;
 
 - (void)activate;
-- (void)hideChildenWindowsOnDeactivate;
-- (void)showChildenWindowsOnActivate;
+- (void)hideChildWindowsOnDeactivate;
+- (void)showChildWindowsOnActivate;
 - (void)hideOtherAppsExceptThoseInside;
 
 @end

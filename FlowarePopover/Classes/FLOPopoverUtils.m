@@ -8,6 +8,8 @@
 
 #import "FLOPopoverUtils.h"
 
+#import "FLOPopoverBackgroundView.h"
+
 @interface FLOPopoverUtils () <NSWindowDelegate>
 
 @property (nonatomic, strong, readwrite) NSWindow *appMainWindow;
@@ -34,17 +36,45 @@
     
     dispatch_once(&onceToken, ^{
         _sharedInstance = [[FLOPopoverUtils alloc] init];
-        
-        if ([NSApp mainWindow] != nil) {
-            _sharedInstance.appMainWindow = [NSApp mainWindow];
-        } else {
-            _sharedInstance.appMainWindow = [[[NSApplication sharedApplication] windows] firstObject];
-        }
-        
-        [[NSNotificationCenter defaultCenter] addObserver:_sharedInstance selector:@selector(windowDidResize:) name:NSWindowDidResizeNotification object:nil];
     });
     
     return _sharedInstance;
+}
+
+#pragma mark - Initialize
+
+- (instancetype)init {
+    if (self = [super init]) {
+        if ([NSApp mainWindow] != nil) {
+            _appMainWindow = [NSApp mainWindow];
+        } else {
+            _appMainWindow = [[[NSApplication sharedApplication] windows] firstObject];
+        }
+        
+        _anchorPoint = NSMakePoint(0.0, 0.0);
+        _animationBehaviour = FLOPopoverAnimationBehaviorTransition;
+        _animationType = FLOPopoverAnimationLeftToRight;
+        _positioningAnchorType = NSNotFound;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidResize:) name:NSWindowDidResizeNotification object:nil];
+    }
+    
+    return self;
+}
+
+- (void)dealloc {
+    _appMainWindow = nil;
+    
+    self.contentViewController = nil;
+    self.contentView = nil;
+    
+    [self.positioningAnchorView removeFromSuperview];
+    self.positioningAnchorView = nil;
+    
+    [self.backgroundView removeFromSuperview];
+    self.backgroundView = nil;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Getter/Setter
@@ -66,11 +96,11 @@
 }
 
 - (void)setTopmostWindow:(NSWindow *)topmostWindow {
-    _topWindow = topmostWindow;
+    [FLOPopoverUtils sharedInstance].topWindow = topmostWindow;
 }
 
 - (void)setTopmostView:(NSView *)topmostView {
-    _topView = topmostView;
+    [FLOPopoverUtils sharedInstance].topView = topmostView;
 }
 
 - (void)setAppMainWindowResized:(BOOL)appMainWindowResized {
@@ -189,6 +219,440 @@
     }
     
     return NO;
+}
+
+#pragma mark - Display utilities
+
+- (void)setPopoverEdgeType:(FLOPopoverEdgeType)edgeType {
+    switch (edgeType) {
+        case FLOPopoverEdgeTypeAboveLeftEdge:
+            self.preferredEdge = NSRectEdgeMaxY;
+            self.anchorPoint = NSMakePoint(0.0, 0.0);
+            break;
+        case FLOPopoverEdgeTypeAboveRightEdge:
+            self.preferredEdge = NSRectEdgeMaxY;
+            self.anchorPoint = NSMakePoint(1.0, 1.0);
+            break;
+        case FLOPopoverEdgeTypeBelowLeftEdge:
+            self.preferredEdge = NSRectEdgeMinY;
+            self.anchorPoint = NSMakePoint(0.0, 0.0);
+            break;
+        case FLOPopoverEdgeTypeBelowRightEdge:
+            self.preferredEdge = NSRectEdgeMinY;
+            self.anchorPoint = NSMakePoint(1.0, 1.0);
+            break;
+        case FLOPopoverEdgeTypeBackwardBottomEdge:
+            self.preferredEdge = NSRectEdgeMinX;
+            self.anchorPoint = NSMakePoint(0.0, 0.0);
+            break;
+        case FLOPopoverEdgeTypeBackwardTopEdge:
+            self.preferredEdge = NSRectEdgeMinX;
+            self.anchorPoint = NSMakePoint(1.0, 1.0);
+            break;
+        case FLOPopoverEdgeTypeForwardBottomEdge:
+            self.preferredEdge = NSRectEdgeMaxX;
+            self.anchorPoint = NSMakePoint(0.0, 0.0);
+            break;
+        case FLOPopoverEdgeTypeForwardTopEdge:
+            self.preferredEdge = NSRectEdgeMaxX;
+            self.anchorPoint = NSMakePoint(1.0, 1.0);
+            break;
+        case FLOPopoverEdgeTypeAboveCenter:
+            self.preferredEdge = NSRectEdgeMaxY;
+            self.anchorPoint = NSMakePoint(0.5, 0.5);
+            break;
+        case FLOPopoverEdgeTypeBelowCenter:
+            self.preferredEdge = NSRectEdgeMinY;
+            self.anchorPoint = NSMakePoint(0.5, 0.5);
+            break;
+        case FLOPopoverEdgeTypeBackwardCenter:
+            self.preferredEdge = NSRectEdgeMinX;
+            self.anchorPoint = NSMakePoint(0.5, 0.5);
+            break;
+        case FLOPopoverEdgeTypeForwardCenter:
+            self.preferredEdge = NSRectEdgeMaxX;
+            self.anchorPoint = NSMakePoint(0.5, 0.5);
+            break;
+        default:
+            self.preferredEdge = NSRectEdgeMinY;
+            self.anchorPoint = NSMakePoint(1.0, 1.0);
+            break;
+    }
+}
+
+- (void)setupPositioningAnchorWithView:(NSView *)positioningView positioningRect:(NSRect)positioningRect shouldUpdatePosition:(BOOL)shouldUpdatePosition {
+    if (self.positioningAnchorType == NSNotFound) return;
+    
+    NSRect positioningInWindowRect = [positioningView convertRect:positioningView.bounds toView:positioningView.window.contentView];
+    
+    CGFloat posX = positioningInWindowRect.origin.x;
+    CGFloat posY = positioningInWindowRect.origin.y;
+    
+    if ((self.positioningAnchorType == FLOPopoverAnchorTopPositiveLeadingPositive) ||
+        (self.positioningAnchorType == FLOPopoverAnchorTopPositiveLeadingNegative) ||
+        (self.positioningAnchorType == FLOPopoverAnchorTopNegativeLeadingPositive) ||
+        (self.positioningAnchorType == FLOPopoverAnchorTopNegativeLeadingNegative)) {
+        posX = fabs(positioningInWindowRect.origin.x - NSMinX(positioningRect));
+        posY = fabs(NSMaxY(positioningInWindowRect) - NSMaxY(positioningRect));
+        
+        if (self.positioningAnchorType == FLOPopoverAnchorTopPositiveLeadingNegative) {
+            posX = -posX;
+        } else if (self.positioningAnchorType == FLOPopoverAnchorTopNegativeLeadingPositive) {
+            posY = -posY;
+        } else if (self.positioningAnchorType == FLOPopoverAnchorTopNegativeLeadingNegative) {
+            posX = -posX;
+            posY = -posY;
+        }
+    } else if ((self.positioningAnchorType == FLOPopoverAnchorTopPositiveTrailingPositive) ||
+               (self.positioningAnchorType == FLOPopoverAnchorTopPositiveTrailingNegative) ||
+               (self.positioningAnchorType == FLOPopoverAnchorTopNegativeTrailingPositive) ||
+               (self.positioningAnchorType == FLOPopoverAnchorTopNegativeTrailingNegative)) {
+        posX = fabs(NSMaxX(positioningInWindowRect) - NSMinX(positioningRect));
+        posY = fabs(NSMaxY(positioningInWindowRect) - NSMaxY(positioningRect));
+        
+        if (self.positioningAnchorType == FLOPopoverAnchorTopPositiveTrailingNegative) {
+            posX = -posX;
+        } else if (self.positioningAnchorType == FLOPopoverAnchorTopNegativeTrailingPositive) {
+            posY = -posY;
+        } else if (self.positioningAnchorType == FLOPopoverAnchorTopNegativeTrailingNegative) {
+            posX = -posX;
+            posY = -posY;
+        }
+    } else if ((self.positioningAnchorType == FLOPopoverAnchorBottomPositiveTrailingPositive) ||
+               (self.positioningAnchorType == FLOPopoverAnchorBottomPositiveTrailingNegative) ||
+               (self.positioningAnchorType == FLOPopoverAnchorBottomNegativeTrailingPositive) ||
+               (self.positioningAnchorType == FLOPopoverAnchorBottomNegativeTrailingNegative)) {
+        posX = fabs(NSMaxX(positioningInWindowRect) - NSMinX(positioningRect));
+        posY = fabs(positioningInWindowRect.origin.y - NSMaxY(positioningRect));
+        
+        if (self.positioningAnchorType == FLOPopoverAnchorBottomPositiveTrailingNegative) {
+            posX = -posX;
+        } else if (self.positioningAnchorType == FLOPopoverAnchorBottomNegativeTrailingPositive) {
+            posY = -posY;
+        } else if (self.positioningAnchorType == FLOPopoverAnchorBottomNegativeTrailingNegative) {
+            posX = -posX;
+            posY = -posY;
+        }
+    } else {
+        posX = fabs(positioningInWindowRect.origin.x - NSMinX(positioningRect));
+        posY = fabs(positioningInWindowRect.origin.y - NSMaxY(positioningRect));
+        
+        if (self.positioningAnchorType == FLOPopoverAnchorBottomPositiveLeadingNegative) {
+            posX = -posX;
+        } else if (self.positioningAnchorType == FLOPopoverAnchorBottomNegativeLeadingPositive) {
+            posY = -posY;
+        } else if (self.positioningAnchorType == FLOPopoverAnchorBottomNegativeLeadingNegative) {
+            posX = -posX;
+            posY = -posY;
+        }
+    }
+    
+    if (self.positioningAnchorView == nil) {
+        self.positioningAnchorView = [[NSView alloc] initWithFrame:NSZeroRect];
+        
+        self.positioningAnchorView.wantsLayer = YES;
+        self.positioningAnchorView.layer.backgroundColor = [NSColor.clearColor CGColor];
+        self.positioningAnchorView.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        [positioningView addSubview:self.positioningAnchorView];
+        
+        if ((self.positioningAnchorType == FLOPopoverAnchorTopPositiveLeadingPositive) ||
+            (self.positioningAnchorType == FLOPopoverAnchorTopPositiveLeadingNegative) ||
+            (self.positioningAnchorType == FLOPopoverAnchorTopNegativeLeadingPositive) ||
+            (self.positioningAnchorType == FLOPopoverAnchorTopNegativeLeadingNegative)) {
+            NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.positioningAnchorView
+                                                                   attribute:NSLayoutAttributeTop
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:positioningView
+                                                                   attribute:NSLayoutAttributeTop
+                                                                  multiplier:1
+                                                                    constant:posY];
+            
+            NSLayoutConstraint *leading = [NSLayoutConstraint constraintWithItem:self.positioningAnchorView
+                                                                       attribute:NSLayoutAttributeLeading
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:positioningView
+                                                                       attribute:NSLayoutAttributeLeading
+                                                                      multiplier:1
+                                                                        constant:posX];
+            
+            [top setActive:YES];
+            [leading setActive:YES];
+            
+            [positioningView addConstraints:@[top, leading]];
+        } else if ((self.positioningAnchorType == FLOPopoverAnchorTopPositiveTrailingPositive) ||
+                   (self.positioningAnchorType == FLOPopoverAnchorTopPositiveTrailingNegative) ||
+                   (self.positioningAnchorType == FLOPopoverAnchorTopNegativeTrailingPositive) ||
+                   (self.positioningAnchorType == FLOPopoverAnchorTopNegativeTrailingNegative)) {
+            NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.positioningAnchorView
+                                                                   attribute:NSLayoutAttributeTop
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:positioningView
+                                                                   attribute:NSLayoutAttributeTop
+                                                                  multiplier:1
+                                                                    constant:posY];
+            
+            NSLayoutConstraint *trailing = [NSLayoutConstraint constraintWithItem:positioningView
+                                                                        attribute:NSLayoutAttributeTrailing
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self.positioningAnchorView
+                                                                        attribute:NSLayoutAttributeTrailing
+                                                                       multiplier:1
+                                                                         constant:posX];
+            
+            [top setActive:YES];
+            [trailing setActive:YES];
+            
+            [positioningView addConstraints:@[top, trailing]];
+        } else if ((self.positioningAnchorType == FLOPopoverAnchorBottomPositiveTrailingPositive) ||
+                   (self.positioningAnchorType == FLOPopoverAnchorBottomPositiveTrailingNegative) ||
+                   (self.positioningAnchorType == FLOPopoverAnchorBottomNegativeTrailingPositive) ||
+                   (self.positioningAnchorType == FLOPopoverAnchorBottomNegativeTrailingNegative)) {
+            NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:positioningView
+                                                                      attribute:NSLayoutAttributeBottom
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.positioningAnchorView
+                                                                      attribute:NSLayoutAttributeBottom
+                                                                     multiplier:1
+                                                                       constant:posY];
+            
+            NSLayoutConstraint *trailing = [NSLayoutConstraint constraintWithItem:positioningView
+                                                                        attribute:NSLayoutAttributeTrailing
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:self.positioningAnchorView
+                                                                        attribute:NSLayoutAttributeTrailing
+                                                                       multiplier:1
+                                                                         constant:posX];
+            
+            [bottom setActive:YES];
+            [trailing setActive:YES];
+            
+            [positioningView addConstraints:@[bottom, trailing]];
+        } else {
+            NSLayoutConstraint *leading = [NSLayoutConstraint constraintWithItem:self.positioningAnchorView
+                                                                       attribute:NSLayoutAttributeLeading
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:positioningView
+                                                                       attribute:NSLayoutAttributeLeading
+                                                                      multiplier:1
+                                                                        constant:posX];
+            
+            NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:positioningView
+                                                                      attribute:NSLayoutAttributeBottom
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.positioningAnchorView
+                                                                      attribute:NSLayoutAttributeBottom
+                                                                     multiplier:1
+                                                                       constant:posY];
+            
+            [leading setActive:YES];
+            [bottom setActive:YES];
+            
+            [positioningView addConstraints:@[leading, bottom]];
+        }
+        
+        CGFloat anchorViewWidth = 1.0;
+        
+        NSLayoutConstraint *width = [NSLayoutConstraint constraintWithItem:self.positioningAnchorView
+                                                                 attribute:NSLayoutAttributeWidth
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:nil
+                                                                 attribute:NSLayoutAttributeWidth
+                                                                multiplier:1
+                                                                  constant:anchorViewWidth];
+        NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:self.positioningAnchorView
+                                                                  attribute:NSLayoutAttributeHeight
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:nil
+                                                                  attribute:NSLayoutAttributeHeight
+                                                                 multiplier:1
+                                                                   constant:anchorViewWidth];
+        
+        [width setActive:YES];
+        [height setActive:YES];
+        
+        [self.positioningAnchorView addConstraints:@[width, height]];
+        [self.positioningAnchorView setHidden:NO];
+    }
+    
+    if (shouldUpdatePosition && (self.positioningAnchorView != nil) && [self.positioningAnchorView isDescendantOf:positioningView]) {
+        for (NSLayoutConstraint *constraint in positioningView.constraints) {
+            if ((constraint.firstItem == self.positioningAnchorView) || (constraint.secondItem == self.positioningAnchorView)) {
+                if ((self.positioningAnchorType == FLOPopoverAnchorTopPositiveLeadingPositive) ||
+                    (self.positioningAnchorType == FLOPopoverAnchorTopPositiveLeadingNegative) ||
+                    (self.positioningAnchorType == FLOPopoverAnchorTopNegativeLeadingPositive) ||
+                    (self.positioningAnchorType == FLOPopoverAnchorTopNegativeLeadingNegative)) {
+                    if (constraint.firstAttribute == NSLayoutAttributeLeading) {
+                        constraint.constant = posX;
+                    }
+                    
+                    if (constraint.firstAttribute == NSLayoutAttributeTop) {
+                        constraint.constant = posY;
+                    }
+                } else if ((self.positioningAnchorType == FLOPopoverAnchorTopPositiveTrailingPositive) ||
+                           (self.positioningAnchorType == FLOPopoverAnchorTopPositiveTrailingNegative) ||
+                           (self.positioningAnchorType == FLOPopoverAnchorTopNegativeTrailingPositive) ||
+                           (self.positioningAnchorType == FLOPopoverAnchorTopNegativeTrailingNegative)) {
+                    if (constraint.firstAttribute == NSLayoutAttributeTrailing) {
+                        constraint.constant = posX;
+                    }
+                    
+                    if (constraint.firstAttribute == NSLayoutAttributeTop) {
+                        constraint.constant = posY;
+                    }
+                } else if ((self.positioningAnchorType == FLOPopoverAnchorBottomPositiveTrailingPositive) ||
+                           (self.positioningAnchorType == FLOPopoverAnchorBottomPositiveTrailingNegative) ||
+                           (self.positioningAnchorType == FLOPopoverAnchorBottomNegativeTrailingPositive) ||
+                           (self.positioningAnchorType == FLOPopoverAnchorBottomNegativeTrailingNegative)) {
+                    if (constraint.firstAttribute == NSLayoutAttributeTrailing) {
+                        constraint.constant = posX;
+                    }
+                    
+                    if (constraint.firstAttribute == NSLayoutAttributeBottom) {
+                        constraint.constant = posY;
+                    }
+                } else {
+                    if (constraint.firstAttribute == NSLayoutAttributeLeading) {
+                        constraint.constant = posX;
+                    }
+                    
+                    if (constraint.firstAttribute == NSLayoutAttributeBottom) {
+                        constraint.constant = posY;
+                    }
+                }
+            }
+        }
+        
+        [positioningView setNeedsUpdateConstraints:YES];
+        [positioningView updateConstraints];
+        [positioningView updateConstraintsForSubtreeIfNeeded];
+        [positioningView layoutSubtreeIfNeeded];
+    }
+    
+    [self.positioningAnchorView setHidden:NO];
+}
+
+- (NSRect)popoverRectForEdge:(NSRectEdge)popoverEdge {
+    NSRect windowRelativeRect = [self.positioningAnchorView convertRect:[self.positioningAnchorView alignmentRectForFrame:self.positioningRect] toView:nil];
+    NSRect positionOnScreenRect = [self.positioningAnchorView.window convertRectToScreen:windowRelativeRect];
+    
+    NSSize contentViewSize = NSEqualSizes(self.contentSize, NSZeroSize) ? self.originalViewSize : self.contentSize;
+    NSPoint anchorPoint = self.anchorPoint;
+    
+    NSSize popoverSize = [self.backgroundView sizeForBackgroundViewWithContentSize:contentViewSize popoverEdge:popoverEdge];
+    NSRect returnRect = NSMakeRect(0.0, 0.0, popoverSize.width, popoverSize.height);
+    
+    // In all the cases below, find the minimum and maximum position of the
+    // popover and then use the anchor point to determine where the popover
+    // should be between these two locations.
+    //
+    // `x0` indicates the x origin of the popover if `self.anchorPoint.x` is
+    // 0 and aligns the left edge of the popover to the left edge of the
+    // origin view. `x1` is the x origin if `self.anchorPoint.x` is 1 and
+    // aligns the right edge of the popover to the right edge of the origin
+    // view. The anchor point determines where the popover should be between
+    // these extremes.
+    if (popoverEdge == NSRectEdgeMinY) {
+        CGFloat x0 = NSMinX(positionOnScreenRect);
+        CGFloat x1 = NSMaxX(positionOnScreenRect) - contentViewSize.width;
+        
+        returnRect.origin.x = x0 + floor((x1 - x0) * anchorPoint.x);
+        returnRect.origin.y = NSMinY(positionOnScreenRect) - popoverSize.height;
+    } else if (popoverEdge == NSRectEdgeMaxY) {
+        CGFloat x0 = NSMinX(positionOnScreenRect);
+        CGFloat x1 = NSMaxX(positionOnScreenRect) - contentViewSize.width;
+        
+        returnRect.origin.x = x0 + floor((x1 - x0) * anchorPoint.x);
+        returnRect.origin.y = NSMaxY(positionOnScreenRect);
+    } else if (popoverEdge == NSRectEdgeMinX) {
+        CGFloat y0 = NSMinY(positionOnScreenRect);
+        CGFloat y1 = NSMaxY(positionOnScreenRect) - contentViewSize.height;
+        
+        returnRect.origin.x = NSMinX(positionOnScreenRect) - popoverSize.width;
+        returnRect.origin.y = y0 + floor((y1 - y0) * anchorPoint.y);
+    } else if (popoverEdge == NSRectEdgeMaxX) {
+        CGFloat y0 = NSMinY(positionOnScreenRect);
+        CGFloat y1 = NSMaxY(positionOnScreenRect) - contentViewSize.height;
+        
+        returnRect.origin.x = NSMaxX(positionOnScreenRect);
+        returnRect.origin.y = y0 + floor((y1 - y0) * anchorPoint.y);
+    } else {
+        returnRect = NSZeroRect;
+    }
+    
+    return returnRect;
+}
+
+- (BOOL)checkPopoverSizeForScreenWithPopoverEdge:(NSRectEdge)popoverEdge {
+    NSRect appScreenRect = [_appMainWindow convertRectToScreen:_appMainWindow.contentView.bounds];
+    NSRect popoverRect = [self popoverRectForEdge:popoverEdge];
+    
+    return NSContainsRect(appScreenRect, popoverRect);
+}
+
+- (NSRectEdge)nextEdgeForEdge:(NSRectEdge)currentEdge {
+    if (currentEdge == NSRectEdgeMaxX) {
+        return (self.preferredEdge == NSRectEdgeMinX) ? NSRectEdgeMaxY : NSRectEdgeMinX;
+    } else if (currentEdge == NSRectEdgeMinX) {
+        return (self.preferredEdge == NSRectEdgeMaxX) ? NSRectEdgeMaxY : NSRectEdgeMaxX;
+    } else if (currentEdge == NSRectEdgeMaxY) {
+        return (self.preferredEdge == NSRectEdgeMinY) ? NSRectEdgeMaxX : NSRectEdgeMinY;
+    } else if (currentEdge == NSRectEdgeMinY) {
+        return (self.preferredEdge == NSRectEdgeMaxY) ? NSRectEdgeMaxX : NSRectEdgeMaxY;
+    }
+    
+    return currentEdge;
+}
+
+- (NSRect)fitRectToScreen:(NSRect)proposedRect {
+    NSRect appScreenRect = [_appMainWindow convertRectToScreen:_appMainWindow.contentView.bounds];
+    
+    if (proposedRect.origin.y < NSMinY(appScreenRect)) {
+        proposedRect.origin.y = NSMinY(appScreenRect);
+    }
+    if (proposedRect.origin.x < NSMinX(appScreenRect)) {
+        proposedRect.origin.x = NSMinX(appScreenRect);
+    }
+    
+    if (NSMaxY(proposedRect) > NSMaxY(appScreenRect)) {
+        proposedRect.origin.y = NSMaxY(appScreenRect) - NSHeight(proposedRect);
+    }
+    if (NSMaxX(proposedRect) > NSMaxX(appScreenRect)) {
+        proposedRect.origin.x = NSMaxX(appScreenRect) - NSWidth(proposedRect);
+    }
+    
+    return proposedRect;
+}
+
+- (BOOL)screenRectContainsRectEdge:(NSRectEdge)edge {
+    NSRect proposedRect = [self popoverRectForEdge:edge];
+    NSRect appScreenRect = [_appMainWindow convertRectToScreen:_appMainWindow.contentView.bounds];
+    
+    BOOL minYInBounds = (edge == NSRectEdgeMinY) && (NSMinY(proposedRect) >= NSMinY(appScreenRect));
+    BOOL maxYInBounds = (edge == NSRectEdgeMaxY) && (NSMaxY(proposedRect) <= NSMaxY(appScreenRect));
+    BOOL minXInBounds = (edge == NSRectEdgeMinX) && (NSMinX(proposedRect) >= NSMinX(appScreenRect));
+    BOOL maxXInBounds = (edge == NSRectEdgeMaxX) && (NSMaxX(proposedRect) <= NSMaxX(appScreenRect));
+    
+    return minYInBounds || maxYInBounds || minXInBounds || maxXInBounds;
+}
+
+- (NSRect)popoverRect {
+    NSRectEdge popoverEdge = self.preferredEdge;
+    NSUInteger attemptCount = 0;
+    
+    while (![self checkPopoverSizeForScreenWithPopoverEdge:popoverEdge]) {
+        if (attemptCount >= 4) {
+            popoverEdge = [self screenRectContainsRectEdge:self.preferredEdge] ? self.preferredEdge : [self nextEdgeForEdge:self.preferredEdge];
+            
+            return [self fitRectToScreen:[self popoverRectForEdge:popoverEdge]];
+            break;
+        }
+        
+        popoverEdge = [self nextEdgeForEdge:popoverEdge];
+        ++attemptCount;
+    }
+    
+    return [self popoverRectForEdge:popoverEdge];
 }
 
 #pragma mark - NSWindowDelegate

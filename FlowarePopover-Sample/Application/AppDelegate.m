@@ -14,8 +14,8 @@
 
 @property (weak) IBOutlet NSWindow *window;
 
-@property (nonatomic, strong) NSMutableDictionary *_entitlementAppStatuses;
-@property (nonatomic, strong) NSString *_lastBundleIdentifier;
+@property (nonatomic, strong) NSMutableDictionary *entitlementAppStatuses;
+@property (nonatomic, strong) NSString *lastBundleIdentifier;
 
 @end
 
@@ -23,8 +23,8 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
-    if (self._entitlementAppStatuses == nil) {
-        self._entitlementAppStatuses = [[NSMutableDictionary alloc] init];
+    if (self.entitlementAppStatuses == nil) {
+        self.entitlementAppStatuses = [[NSMutableDictionary alloc] init];
     }
     
     [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidActivateApplicationNotification object:nil queue:nil usingBlock:^(NSNotification *notif) {
@@ -32,9 +32,9 @@
         
         if (![app.bundleIdentifier isEqualToString:[[NSBundle mainBundle] bundleIdentifier]]) {
             if ([[BaseWindowController sharedInstance] windowInDesktopMode]) {
-                self._lastBundleIdentifier = app.bundleIdentifier;
+                self.lastBundleIdentifier = app.bundleIdentifier;
                 
-                [[BaseWindowController sharedInstance] hideChildenWindowsOnDeactivate];
+                [[BaseWindowController sharedInstance] hideChildWindowsOnDeactivate];
                 
                 if ([self isEntitlementAppFocused]) {
                     [[BaseWindowController sharedInstance] hideOtherAppsExceptThoseInside];
@@ -51,13 +51,13 @@
 
 - (void)applicationDidResignActive:(NSNotification *)notification {
     if ([[BaseWindowController sharedInstance] windowInDesktopMode]) {
-        [[BaseWindowController sharedInstance] hideChildenWindowsOnDeactivate];
+        [[BaseWindowController sharedInstance] hideChildWindowsOnDeactivate];
     }
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
     if ([[BaseWindowController sharedInstance] windowInDesktopMode]) {
-        [[BaseWindowController sharedInstance] showChildenWindowsOnActivate];
+        [[BaseWindowController sharedInstance] showChildWindowsOnActivate];
     }
     
     [[BaseWindowController sharedInstance] activate];
@@ -73,29 +73,29 @@
     if (!bundleId.length) return;
     // Yes: entitlement app has been activated
     // NO: entitlemnt app has been inactivated
-    if (self._entitlementAppStatuses == nil) {
-        self._entitlementAppStatuses = [[NSMutableDictionary alloc] init];
+    if (self.entitlementAppStatuses == nil) {
+        self.entitlementAppStatuses = [[NSMutableDictionary alloc] init];
     }
     
-    [self._entitlementAppStatuses setObject:[NSNumber numberWithBool:NO] forKey:bundleId];
+    [self.entitlementAppStatuses setObject:[NSNumber numberWithBool:NO] forKey:bundleId];
 }
 
 - (void)removeEntitlementBundleId:(NSString *)bundleId {
     if (!bundleId.length) return;
     
-    [self._entitlementAppStatuses removeObjectForKey:bundleId];
+    [self.entitlementAppStatuses removeObjectForKey:bundleId];
 }
 
 - (void)activateEntitlementForBundleId:(NSString *)bundleId {
     if (!bundleId.length) return;
     
-    NSNumber *obj = [self._entitlementAppStatuses objectForKey:bundleId];
+    NSNumber *obj = [self.entitlementAppStatuses objectForKey:bundleId];
     
     if (obj != nil) {
         BOOL status = [obj boolValue];
         
         if (status == NO) {
-            [self._entitlementAppStatuses setObject:[NSNumber numberWithBool:YES] forKey:bundleId];
+            [self.entitlementAppStatuses setObject:[NSNumber numberWithBool:YES] forKey:bundleId];
         }
     }
 }
@@ -103,13 +103,13 @@
 - (void)inactivateEntitlementForBundleId:(NSString *)bundleId {
     if (!bundleId.length) return;
     
-    NSNumber *obj = [self._entitlementAppStatuses objectForKey:bundleId];
+    NSNumber *obj = [self.entitlementAppStatuses objectForKey:bundleId];
     
     if (obj != nil) {
         BOOL status = [obj boolValue];
         
         if (status == YES) {
-            [self._entitlementAppStatuses setObject:[NSNumber numberWithBool:NO] forKey:bundleId];
+            [self.entitlementAppStatuses setObject:[NSNumber numberWithBool:NO] forKey:bundleId];
         }
     }
 }
@@ -117,7 +117,7 @@
 - (BOOL)isEntitlementAppForBundleId:(NSString *)bundleId {
     if (!bundleId.length) return NO;
     
-    return ([self._entitlementAppStatuses objectForKey:bundleId] != nil) ? YES : NO;
+    return ([self.entitlementAppStatuses objectForKey:bundleId] != nil) ? YES : NO;
 }
 
 - (BOOL)isEntitlementAppFocusedForBundleId:(NSString *)bundleId {
@@ -125,7 +125,7 @@
     
     if (!result) return NO;
     
-    NSNumber *obj = [self._entitlementAppStatuses objectForKey:bundleId];
+    NSNumber *obj = [self.entitlementAppStatuses objectForKey:bundleId];
     
     if (obj != nil) {
         result = [obj boolValue];
@@ -135,11 +135,11 @@
 }
 
 - (BOOL)isEntitlementAppFocused {
-    return [self isEntitlementAppFocusedForBundleId:self._lastBundleIdentifier];
+    return [self isEntitlementAppFocusedForBundleId:self.lastBundleIdentifier];
 }
 
 - (BOOL)isFinderAppFocused {
-    return [self._lastBundleIdentifier isEqualToString:FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER];
+    return [self.lastBundleIdentifier isEqualToString:FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER];
 }
 
 @end

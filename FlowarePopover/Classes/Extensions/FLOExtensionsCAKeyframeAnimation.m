@@ -129,7 +129,7 @@ static const CGFloat FLOAnimationMinimumThreshold = 0.0001;
         values = [self valuesFromNumbers:@[@(f.x), @(f.y)]
                                toNumbers:@[@(t.x), @(t.y)]
                                      map:^id(CGFloat *values, NSUInteger count) {
-                                         return [NSValue flo_valueWithPoint:CGPointMake(values[0], values[1])];
+                                         return [NSValue flo_valueWithPoint:NSMakePoint(values[0], values[1])];
                                      }];
     } else if (fromType == FLOValueTypeSize) {
         CGSize f = [self.fromValue flo_sizeValue];

@@ -12,7 +12,7 @@
 
 @interface DataPresenter ()
 
-@property (nonatomic, strong) NSArray<Comic *> *_comics;
+@property (nonatomic, strong) NSArray<Comic *> *comics;
 
 @end
 
@@ -30,12 +30,13 @@
 
 - (void)detachView {
     self.view = nil;
+    self.repository = nil;
 }
 
 - (void)fetchData {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSArray<Comic *> *comics = [self.repository fetchComics];
-        self._comics = [[NSArray alloc] initWithArray:comics];
+        self.comics = [[NSArray alloc] initWithArray:comics];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.view reloadDataOutlineView];
@@ -43,8 +44,8 @@
     });
 }
 
-- (NSArray<Comic *> *)comics {
-    return self._comics;
+- (NSArray<Comic *> *)data {
+    return self.comics;
 }
 
 @end

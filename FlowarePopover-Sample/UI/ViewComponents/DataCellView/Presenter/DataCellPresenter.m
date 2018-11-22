@@ -12,7 +12,7 @@
 
 @interface DataCellPresenter ()
 
-@property (nonatomic, strong) NSImage *_image;
+@property (nonatomic, strong) NSImage *image;
 
 @end
 
@@ -30,17 +30,18 @@
 
 - (void)detachView {
     self.view = nil;
+    self.repository = nil;
 }
 
 - (NSImage *)getComicImage {
-    return self._image;
+    return self.image;
 }
 
 - (void)fetchImageFromDataObject:(Comic *)obj {
     if ([obj getImage] == nil) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             [self.repository fetchImageFromUrl:obj.imageUrl completion:^(NSImage *image) {
-                self._image = image;
+                self.image = image;
                 [obj setImage:image];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -49,7 +50,7 @@
             }];
         });
     } else {
-        self._image = [obj getImage];
+        self.image = [obj getImage];
         [self.view updateCellViewImage];
     }
 }

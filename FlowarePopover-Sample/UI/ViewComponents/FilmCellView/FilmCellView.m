@@ -16,8 +16,8 @@
 @property (weak) IBOutlet NSImageView *imgView;
 @property (weak) IBOutlet NSTextField *lblName;
 
-@property (nonatomic, strong) FilmRepository *_filmRepository;
-@property (nonatomic, strong) FilmCellPresenter *_filmCellPresenter;
+@property (nonatomic, strong) FilmRepository *filmRepository;
+@property (nonatomic, strong) FilmCellPresenter *filmCellPresenter;
 
 @end
 
@@ -40,9 +40,9 @@
 #pragma mark - Initialize
 
 - (void)initialize {
-    self._filmRepository = [[FilmRepository alloc] init];
-    self._filmCellPresenter = [[FilmCellPresenter alloc] init];
-    [self._filmCellPresenter attachView:self repository:self._filmRepository];
+    self.filmRepository = [[FilmRepository alloc] init];
+    self.filmCellPresenter = [[FilmCellPresenter alloc] init];
+    [self.filmCellPresenter attachView:self repository:self.filmRepository];
 }
 
 #pragma mark - Setup UI
@@ -81,7 +81,7 @@
 }
 
 - (void)updateUIWithData:(Film *)film {
-    [self._filmCellPresenter fetchImageFromDataObject:film];
+    [self.filmCellPresenter fetchImageFromDataObject:film];
     
     self.lblName.stringValue = film.name;
 }
@@ -89,8 +89,8 @@
 #pragma mark - FilmCellViewProtocols implementation
 
 - (void)updateCellViewImage {
-    if ([self._filmCellPresenter getFilmImage]) {
-        self.imgView.image = [self._filmCellPresenter getFilmImage];
+    if ([self.filmCellPresenter getFilmImage]) {
+        self.imgView.image = [self.filmCellPresenter getFilmImage];
     }
 }
 

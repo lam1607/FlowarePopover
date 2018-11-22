@@ -13,7 +13,7 @@
 
 @interface ComicRepository ()
 
-@property (nonatomic, strong) ComicService *_service;
+@property (nonatomic, strong) ComicService *service;
 
 @end
 
@@ -21,7 +21,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        self._service = [[ComicService alloc] init];
+        self.service = [[ComicService alloc] init];
     }
     
     return self;
@@ -31,7 +31,7 @@
 
 - (NSArray<Comic *> *)fetchComics {
     NSMutableArray *comics = [[NSMutableArray alloc] init];
-    NSArray<NSDictionary *> *comicDicts = [self._service getMockupDataType:@"comics"];
+    NSArray<NSDictionary *> *comicDicts = [self.service getMockupDataType:@"comics"];
     
     [comicDicts enumerateObjectsUsingBlock:^(NSDictionary *contentDict, NSUInteger idx, BOOL *stop) {
         Comic *item = [[Comic alloc] initWithContent:contentDict];

@@ -17,8 +17,8 @@
 @property (weak) IBOutlet NSTextField *lblTitle;
 @property (weak) IBOutlet NSTextField *lblShortDesc;
 
-@property (nonatomic, strong) ComicRepository *_comicRepository;
-@property (nonatomic, strong) DataCellPresenter *_dataCellPresenter;
+@property (nonatomic, strong) ComicRepository *comicRepository;
+@property (nonatomic, strong) DataCellPresenter *dataCellPresenter;
 
 @end
 
@@ -40,9 +40,9 @@
 #pragma mark - Initialize
 
 - (void)initialize {
-    self._comicRepository = [[ComicRepository alloc] init];
-    self._dataCellPresenter = [[DataCellPresenter alloc] init];
-    [self._dataCellPresenter attachView:self repository:self._comicRepository];
+    self.comicRepository = [[ComicRepository alloc] init];
+    self.dataCellPresenter = [[DataCellPresenter alloc] init];
+    [self.dataCellPresenter attachView:self repository:self.comicRepository];
 }
 
 #pragma mark - Setup UI
@@ -85,7 +85,7 @@
 }
 
 - (void)updateUIWithData:(Comic *)comic {
-    [self._dataCellPresenter fetchImageFromDataObject:comic];
+    [self.dataCellPresenter fetchImageFromDataObject:comic];
     
     self.lblTitle.stringValue = comic.name;
     self.lblShortDesc.stringValue = comic.shortDesc;
@@ -94,8 +94,8 @@
 #pragma mark - ComicDataCellViewProtocols implementation
 
 - (void)updateCellViewImage {
-    if ([self._dataCellPresenter getComicImage]) {
-        self.imgView.image = [self._dataCellPresenter getComicImage];
+    if ([self.dataCellPresenter getComicImage]) {
+        self.imgView.image = [self.dataCellPresenter getComicImage];
     }
 }
 

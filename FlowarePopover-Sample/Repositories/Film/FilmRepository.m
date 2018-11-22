@@ -13,7 +13,7 @@
 
 @interface FilmRepository ()
 
-@property (nonatomic, strong) FilmService *_service;
+@property (nonatomic, strong) FilmService *service;
 
 @end
 
@@ -21,7 +21,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        self._service = [[FilmService alloc] init];
+        self.service = [[FilmService alloc] init];
     }
     
     return self;
@@ -31,7 +31,7 @@
 
 - (NSArray<Film *> *)fetchFilms {
     NSMutableArray *films = [[NSMutableArray alloc] init];
-    NSArray<NSDictionary *> *filmDicts = [self._service getMockupDataType:@"films"];
+    NSArray<NSDictionary *> *filmDicts = [self.service getMockupDataType:@"films"];
     
     [filmDicts enumerateObjectsUsingBlock:^(NSDictionary *contentDict, NSUInteger idx, BOOL *stop) {
         Film *item = [[Film alloc] initWithContent:contentDict];

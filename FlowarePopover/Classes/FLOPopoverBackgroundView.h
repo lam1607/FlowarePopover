@@ -36,7 +36,7 @@ static CGFloat const PopoverBackgroundViewArrowHeight = 14.0;
 
 @optional
 - (void)didPopoverMakeMovement;
-- (void)didPopoverBecomeDetachableWindow:(NSWindow *)detachedWindow;
+- (void)didPopoverBecomeDetachable:(NSWindow *)targetWindow;
 
 @end
 
@@ -62,7 +62,7 @@ static CGFloat const PopoverBackgroundViewArrowHeight = 14.0;
 // popoverEdge      - The edge that is adjacent to the `positioningRect`.
 //
 // Returns the frame of the content relative to the given background view frame
-// as a `CGRect`.
+// as a `NSRect`.
 - (NSRect)contentViewFrameForBackgroundFrame:(NSRect)frame popoverEdge:(NSRectEdge)popoverEdge;
 
 // The outline shape of a popover.
@@ -94,8 +94,8 @@ static CGFloat const PopoverBackgroundViewArrowHeight = 14.0;
 
 @property (nonatomic, assign) CGFloat borderRadius;
 
-- (void)setViewMovable:(BOOL)movable;
-- (void)setWindowDetachable:(BOOL)detachable;
+- (void)setMovable:(BOOL)movable;
+- (void)setDetachable:(BOOL)detachable;
 - (void)setShouldShowShadow:(BOOL)needed;
 - (void)setShouldShowArrow:(BOOL)needed;
 - (void)setArrowColor:(CGColorRef)color;

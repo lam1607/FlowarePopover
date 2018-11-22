@@ -22,6 +22,6 @@
 - (void)detachView;
 
 - (void)fetchData;
-- (NSArray<Comic *> *)comics;
+- (NSArray<Comic *> *)data;
 
 @end

@@ -17,8 +17,8 @@
 @property (weak) IBOutlet NSTextField *lblTitle;
 @property (weak) IBOutlet NSTextField *lblContent;
 
-@property (nonatomic, strong) NewsRepository *_newsRepository;
-@property (nonatomic, strong) NewsCellPresenter *_newsCellPresenter;
+@property (nonatomic, strong) NewsRepository *newsRepository;
+@property (nonatomic, strong) NewsCellPresenter *newsCellPresenter;
 
 @end
 
@@ -40,9 +40,9 @@
 #pragma mark - Initialize
 
 - (void)initialize {
-    self._newsRepository = [[NewsRepository alloc] init];
-    self._newsCellPresenter = [[NewsCellPresenter alloc] init];
-    [self._newsCellPresenter attachView:self repository:self._newsRepository];
+    self.newsRepository = [[NewsRepository alloc] init];
+    self.newsCellPresenter = [[NewsCellPresenter alloc] init];
+    [self.newsCellPresenter attachView:self repository:self.newsRepository];
 }
 
 #pragma mark - Setup UI
@@ -85,7 +85,7 @@
 }
 
 - (void)updateUIWithData:(News *)news {
-    [self._newsCellPresenter fetchImageFromDataObject:news];
+    [self.newsCellPresenter fetchImageFromDataObject:news];
     
     self.lblTitle.stringValue = news.title;
     self.lblContent.stringValue = news.content;
@@ -94,8 +94,8 @@
 #pragma mark - NewsCellViewProtocols implementation
 
 - (void)updateCellViewImage {
-    if ([self._newsCellPresenter getNewsImage]) {
-        self.imgView.image = [self._newsCellPresenter getNewsImage];
+    if ([self.newsCellPresenter getNewsImage]) {
+        self.imgView.image = [self.newsCellPresenter getNewsImage];
     }
 }
 

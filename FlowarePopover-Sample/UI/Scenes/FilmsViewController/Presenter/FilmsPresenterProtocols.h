@@ -22,6 +22,6 @@
 - (void)detachView;
 
 - (void)fetchData;
-- (NSArray<Film *> *)films;
+- (NSArray<Film *> *)data;
 
 @end

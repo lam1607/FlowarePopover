@@ -13,7 +13,7 @@
 
 @interface NewsRepository ()
 
-@property (nonatomic, strong) NewsService *_service;
+@property (nonatomic, strong) NewsService *service;
 
 @end
 
@@ -21,7 +21,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        self._service = [[NewsService alloc] init];
+        self.service = [[NewsService alloc] init];
     }
     
     return self;
@@ -31,7 +31,7 @@
 
 - (NSArray<News *> *)fetchNews {
     NSMutableArray *news = [[NSMutableArray alloc] init];
-    NSArray<NSDictionary *> *newsDicts = [self._service getMockupDataType:@"news"];
+    NSArray<NSDictionary *> *newsDicts = [self.service getMockupDataType:@"news"];
     
     [newsDicts enumerateObjectsUsingBlock:^(NSDictionary *contentDict, NSUInteger idx, BOOL *stop) {
         News *item = [[News alloc] initWithContent:contentDict];

@@ -12,7 +12,7 @@
 
 @interface FilmsPresenter ()
 
-@property (nonatomic, strong) NSArray<Film *> *_films;
+@property (nonatomic, strong) NSArray<Film *> *films;
 
 @end
 
@@ -30,12 +30,13 @@
 
 - (void)detachView {
     self.view = nil;
+    self.repository = nil;
 }
 
 - (void)fetchData {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSArray<Film *> *film = [self.repository fetchFilms];
-        self._films = [[NSArray alloc] initWithArray:film];
+        self.films = [[NSArray alloc] initWithArray:film];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.view reloadDataCollectionView];
@@ -43,8 +44,8 @@
     });
 }
 
-- (NSArray<Film *> *)films {
-    return self._films;
+- (NSArray<Film *> *)data {
+    return self.films;
 }
 
 @end

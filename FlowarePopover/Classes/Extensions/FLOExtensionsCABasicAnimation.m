@@ -204,7 +204,7 @@
     CABasicAnimation *ani = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
     ani.fromValue = [NSNumber numberWithFloat:0];
     ani.toValue = [NSNumber numberWithFloat:-M_PI*2];
-    [rotateBtn.layer setAnchorPoint:CGPointMake(0.5, 0.5)];
+    [rotateBtn.layer setAnchorPoint:NSMakePoint(0.5, 0.5)];
     ani.duration = aDuration; // seconds
     ani.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
     ani.repeatCount = HUGE_VAL;

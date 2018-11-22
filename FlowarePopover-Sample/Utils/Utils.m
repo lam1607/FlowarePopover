@@ -36,14 +36,14 @@
     }
     
     NSArray *propertyNames = [self propertyNamesOfClass:[object class]];
-    NSObject *_object = (NSObject *)object;
+    NSObject *obj = (NSObject *)object;
     
     for (NSString *property in propertyNames) {
         if (![self isEmptyObject:[info valueForKey:property]]) {
             id value = [info valueForKey:property];
             
             if (![self isEmptyObject:value]) {
-                [_object setValue:value forKey:property];
+                [obj setValue:value forKey:property];
             }
         }
     }
@@ -55,10 +55,10 @@
     }
     
     NSArray *propertyNames = [self propertyNamesOfClass:[object class]];
-    NSObject *_object = (NSObject *)object;
+    NSObject *obj = (NSObject *)object;
     
     for (NSString *property in propertyNames) {
-        [_object setValue:[decoder decodeObjectForKey:property] forKey:property];
+        [obj setValue:[decoder decodeObjectForKey:property] forKey:property];
     }
 }
 
@@ -68,10 +68,10 @@
     }
     
     NSArray *propertyNames = [self propertyNamesOfClass:[object class]];
-    NSObject *_object = (NSObject *)object;
+    NSObject *obj = (NSObject *)object;
     
     for (NSString *property in propertyNames) {
-        [encoder encodeObject:[_object valueForKey:property] forKey:property];
+        [encoder encodeObject:[obj valueForKey:property] forKey:property];
     }
 }
 

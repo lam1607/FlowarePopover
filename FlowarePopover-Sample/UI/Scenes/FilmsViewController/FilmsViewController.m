@@ -18,11 +18,11 @@
 @property (weak) IBOutlet NSScrollView *scrollView;
 @property (weak) IBOutlet NSCollectionView *collectionViewData;
 
-@property (nonatomic, strong) FilmRepository *_filmRepository;
-@property (nonatomic, strong) FilmsPresenter *_filmsPresenter;
+@property (nonatomic, strong) FilmRepository *filmRepository;
+@property (nonatomic, strong) FilmsPresenter *filmsPresenter;
 
-@property (nonatomic, assign) NSSize _estimatedItemSize;
-@property (nonatomic, strong) NSCache *_itemSizes;
+@property (nonatomic, assign) NSSize estimatedItemSize;
+@property (nonatomic, strong) NSCache *itemSizes;
 
 @end
 
@@ -40,12 +40,12 @@
 #pragma mark - Initialize
 
 - (void)initialize {
-    self._filmRepository = [[FilmRepository alloc] init];
-    self._filmsPresenter = [[FilmsPresenter alloc] init];
-    [self._filmsPresenter attachView:self repository:self._filmRepository];
+    self.filmRepository = [[FilmRepository alloc] init];
+    self.filmsPresenter = [[FilmsPresenter alloc] init];
+    [self.filmsPresenter attachView:self repository:self.filmRepository];
     
-    self._estimatedItemSize = NSMakeSize(self.view.frame.size.width / 3, 230.0);
-    self._itemSizes = [[NSCache alloc] init];
+    self.estimatedItemSize = NSMakeSize(self.view.frame.size.width / 3, 230.0);
+    self.itemSizes = [[NSCache alloc] init];
 }
 
 #pragma mark - Setup UI
@@ -65,7 +65,7 @@
 #pragma mark - Processes
 
 - (void)loadData {
-    [self._filmsPresenter fetchData];
+    [self.filmsPresenter fetchData];
 }
 
 - (void)calculateSizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -74,7 +74,7 @@
     CGFloat itemHeight = 230.0;
     NSSize itemSize = NSMakeSize(itemWidth, itemHeight);
     
-    Film *film = [[self._filmsPresenter films] objectAtIndex:indexPath.item];
+    Film *film = [[self.filmsPresenter data] objectAtIndex:indexPath.item];
     CGFloat nameHorizontalMargin = 50.0;
     NSTextField *lblName = [[NSTextField alloc] initWithFrame:NSMakeRect(0.0, 0.0, itemWidth - nameHorizontalMargin, 17.0)];
     
@@ -89,7 +89,7 @@
     itemHeight = imageHeight + nameHeight + verticalMargins;
     itemSize = NSMakeSize(itemWidth, itemHeight);
     
-    [self._itemSizes setObject:[NSValue valueWithSize:itemSize] forKey:@(indexPath.item)];
+    [self.itemSizes setObject:[NSValue valueWithSize:itemSize] forKey:@(indexPath.item)];
 }
 
 #pragma mark - NSCollectionViewDataSource, NSCollectionViewDelegate
@@ -99,24 +99,24 @@
 }
 
 - (NSInteger)collectionView:(NSCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return [self._filmsPresenter films].count;
+    return [self.filmsPresenter data].count;
 }
 
 - (NSSize)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([[self._filmsPresenter films] count] > 0) {
-        if ([self._itemSizes objectForKey:@(indexPath.item)] == nil) {
+    if ([[self.filmsPresenter data] count] > 0) {
+        if ([self.itemSizes objectForKey:@(indexPath.item)] == nil) {
             [self calculateSizeForItemAtIndexPath:indexPath];
         }
         
-        return [[self._itemSizes objectForKey:@(indexPath.item)] sizeValue];
+        return [[self.itemSizes objectForKey:@(indexPath.item)] sizeValue];
     }
     
-    return self._estimatedItemSize;
+    return self.estimatedItemSize;
 }
 
 - (NSCollectionViewItem *)collectionView:(NSCollectionView *)collectionView itemForRepresentedObjectAtIndexPath:(NSIndexPath *)indexPath {
     FilmCellView *viewItem = [collectionView makeItemWithIdentifier:NSStringFromClass([FilmCellView class]) forIndexPath:indexPath];
-    [viewItem updateUIWithData:[[self._filmsPresenter films] objectAtIndex:indexPath.item]];
+    [viewItem updateUIWithData:[[self.filmsPresenter data] objectAtIndex:indexPath.item]];
     
     return viewItem;
 }

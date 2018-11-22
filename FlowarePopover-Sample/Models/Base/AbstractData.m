@@ -10,7 +10,7 @@
 
 @interface AbstractData ()
 
-@property (nonatomic, strong) NSImage *_dataImage;
+@property (nonatomic, strong) NSImage *dataImage;
 
 @end
 
@@ -60,11 +60,11 @@
 #pragma mark - Processes
 
 - (void)setImage:(NSImage *)image {
-    self._dataImage = image;
+    self.dataImage = image;
 }
 
 - (NSImage *)getImage {
-    return self._dataImage;
+    return self.dataImage;
 }
 
 @end
