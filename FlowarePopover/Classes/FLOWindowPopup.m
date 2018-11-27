@@ -497,20 +497,29 @@
  - FLOPopoverAnimationBehaviorDefault
  */
 - (void)popoverDefaultAnimationShowing:(BOOL)showing {
-    self.popoverWindow.alphaValue = showing ? 0.0 : 1.0;
-    
-    [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration:0.17];
-    [[NSAnimationContext currentContext] setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
-    [[NSAnimationContext currentContext] setCompletionHandler:^{
-        self.popoverWindow.alphaValue = showing ? 1.0 : 0.0;
+    if (showing) {
+        self.popoverWindow.alphaValue = 0.0;
         
-        [self popoverDidStopAnimation];
-    }];
-    
-    self.popoverWindow.animator.alphaValue = showing ? 1.0 : 0.0;
-    
-    [NSAnimationContext endGrouping];
+        [NSAnimationContext beginGrouping];
+        [[NSAnimationContext currentContext] setDuration:0.17];
+        [[NSAnimationContext currentContext] setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+        [[NSAnimationContext currentContext] setCompletionHandler:^{
+            self.popoverWindow.alphaValue = 1.0;
+            
+            [self popoverDidStopAnimation];
+        }];
+        
+        self.popoverWindow.animator.alphaValue = 1.0;
+        
+        [NSAnimationContext endGrouping];
+    } else {
+        [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
+            context.duration = 0.095;
+            self.popoverWindow.alphaValue = 0.0;
+        } completionHandler:^{
+            [self popoverDidStopAnimation];
+        }];
+    }
 }
 
 - (void)popoverDidStopAnimation {
