@@ -271,7 +271,7 @@
     }
 }
 
-- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationTransition)animationType {
+- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType {
     if (self.type == FLOWindowPopover) {
         [self.windowPopup setAnimationBehaviour:animationBehaviour type:animationType];
     } else {
@@ -313,6 +313,8 @@
     } else {
         [self.viewPopup showRelativeToRect:rect ofView:positioningView edgeType:edgeType];
     }
+    
+    [self closeAfterTimeInterval];
 }
 
 /**
@@ -327,6 +329,8 @@
     } else {
         [self.viewPopup showRelativeToView:positioningView withRect:rect anchorType:FLOPopoverAnchorTopPositiveLeadingPositive edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
     }
+    
+    [self closeAfterTimeInterval];
 }
 
 /**
@@ -341,6 +345,15 @@
         [self.windowPopup showRelativeToView:positioningView withRect:rect anchorType:anchorType edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
     } else {
         [self.viewPopup showRelativeToView:positioningView withRect:rect anchorType:anchorType edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
+    }
+    
+    [self closeAfterTimeInterval];
+}
+
+- (void)closeAfterTimeInterval {
+    if (self.closesAfterTimeInterval > 0) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(close) object:nil];
+        [self performSelector:@selector(close) withObject:nil afterDelay:self.closesAfterTimeInterval];
     }
 }
 

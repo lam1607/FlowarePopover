@@ -149,7 +149,7 @@
     self.popoverWindowLevel = level;
 }
 
-- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationTransition)animationType {
+- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType {
     self.utils.animationBehaviour = animationBehaviour;
     self.utils.animationType = animationType;
 }
@@ -343,16 +343,6 @@
     
     [self removeAllApplicationEvents];
     [self popoverShowing:NO animated:self.animated];
-    
-    [self.utils.positioningAnchorView.window removeChildWindow:self.popoverWindow];
-    [self.popoverWindow close];
-    [self.utils.contentView removeFromSuperview];
-    
-    if ((self.utils.positioningAnchorView != self.utils.positioningView) && [self.utils.positioningAnchorView isDescendantOf:self.utils.positioningView]) {
-        [self.utils.positioningAnchorView setHidden:YES];
-    }
-    
-    [self resetContentViewRect:nil];
 }
 
 - (void)popoverDidFinishShowing:(BOOL)showing {
@@ -362,6 +352,17 @@
         
         if (didShowBlock) didShowBlock(self);
     } else {
+        [self.utils.positioningAnchorView.window removeChildWindow:self.popoverWindow];
+        [self.popoverWindow close];
+        [self.utils.contentView removeFromSuperview];
+        
+        if ((self.utils.positioningAnchorView != self.utils.positioningView) && [self.utils.positioningAnchorView isDescendantOf:self.utils.positioningView]) {
+            [self.utils.positioningAnchorView removeFromSuperview];
+            self.utils.positioningAnchorView = nil;
+        }
+        
+        [self resetContentViewRect:nil];
+        
         if (didCloseBlock) didCloseBlock(self);
     }
 }
@@ -372,12 +373,13 @@
     if (animated) {
         switch (self.utils.animationBehaviour) {
             case FLOPopoverAnimationBehaviorTransform:
+                [self popoverTransformAnimationShowing:showing];
                 return;
             case FLOPopoverAnimationBehaviorTransition:
                 [self popoverTransitionAnimationShowing:showing];
                 return;
             default:
-                [self popoverZoomAnimationShowing:showing];
+                [self popoverDefaultAnimationShowing:showing];
                 return;
         }
     }
@@ -385,6 +387,97 @@
     [self popoverDidFinishShowing:showing];
 }
 
+/*
+ - FLOPopoverAnimationBehaviorTransform
+ */
+- (void)popoverTransformAnimationShowing:(BOOL)showing {
+    if (self.utils.animationBehaviour == FLOPopoverAnimationBehaviorTransform) {
+        switch (self.utils.animationType) {
+            case FLOPopoverAnimationRotate:
+                break;
+            case FLOPopoverAnimationFlip:
+                break;
+            default:
+                [self popoverScalingAnimationShowing:showing];
+                break;
+        }
+    }
+}
+
+- (void)popoverScalingAnimationShowing:(BOOL)showing {
+    [self.utils.positioningView.window setIgnoresMouseEvents:YES];
+    
+    CGFloat scaleFactor = showing ? 1.25 : 1.2;
+    NSRect frame = self.popoverWindow.frame;
+    CGFloat width = scaleFactor * frame.size.width;
+    CGFloat height = scaleFactor * frame.size.height;
+    CGFloat x = frame.origin.x - (width - frame.size.width) / 2;
+    CGFloat y = frame.origin.y - (height - frame.size.height) / 2;
+    NSRect scalingFrame = NSMakeRect(x, y, width, height);
+    
+    usleep(100000);
+    
+    [self.utils.backgroundView setAlphaValue:1.0];
+    [self.popoverWindow setAlphaValue:1.0];
+    
+    NSImage *snapshotImage = [FLOExtensionsGraphicsContext snapshotImageFromView:self.utils.backgroundView];
+    
+    [self.utils.backgroundView setAlphaValue:0.0];
+    
+    CGFloat layerX = (scalingFrame.size.width - frame.size.width) / 2;
+    CGFloat layerY = (scalingFrame.size.height - frame.size.height) / 2;
+    NSRect layerFrame = NSMakeRect(layerX, layerY, frame.size.width, frame.size.height);
+    CALayer *animatedLayer = [CALayer layer];
+    animatedLayer.contents = snapshotImage;
+    animatedLayer.frame = layerFrame;
+    
+    NSView *contentView = [[NSView alloc] initWithFrame:(NSRect){ .size = scalingFrame.size }];
+    contentView.wantsLayer = YES;
+    [contentView.layer addSublayer:animatedLayer];
+    
+    self.popoverWindow.contentView = contentView;
+    [self.popoverWindow setFrame:scalingFrame display:showing];
+    
+    CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:nil];
+    opacityAnimation.fillMode = kCAFillModeForwards;
+    opacityAnimation.removedOnCompletion = NO;
+    opacityAnimation.fromValue = @(showing ? 0.0 : 1.0);
+    opacityAnimation.toValue = @(showing ? 1.0 : 0.0);
+    
+    CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:nil];
+    transformAnimation.fillMode = kCAFillModeForwards;
+    transformAnimation.removedOnCompletion = NO;
+    transformAnimation.fromValue = showing ? [NSValue valueWithCATransform3D:CATransform3DMakeScale(scaleFactor, scaleFactor, 1.0)] : [NSValue valueWithCATransform3D:CATransform3DIdentity];
+    transformAnimation.toValue = showing ? [NSValue valueWithCATransform3D:CATransform3DIdentity] : [NSValue valueWithCATransform3D:CATransform3DMakeScale(scaleFactor, scaleFactor, 1.0)];
+    
+    NSTimeInterval duration = showing ? FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD : 0.15;
+    
+    [NSAnimationContext beginGrouping];
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:duration];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+    [CATransaction setCompletionBlock:^{
+        if (showing) {
+            [self.utils.backgroundView setAlphaValue:1.0];
+            self.popoverWindow.contentView = self.utils.backgroundView;
+            [self.popoverWindow setFrame:frame display:showing];
+        }
+        
+        [self popoverDidStopAnimation];
+        
+        [self.utils.positioningView.window setIgnoresMouseEvents:NO];
+    }];
+    
+    [animatedLayer addAnimation:opacityAnimation forKey:@"opacity"];
+    [animatedLayer addAnimation:transformAnimation forKey:@"transform"];
+    
+    [CATransaction commit];
+    [NSAnimationContext endGrouping];
+}
+
+/*
+ - FLOPopoverAnimationBehaviorTransition
+ */
 - (void)popoverTransitionAnimationShowing:(BOOL)showing {
     [self popoverTransitionAnimationFrameShowing:showing];
 }
@@ -400,23 +493,27 @@
     }
 }
 
-- (void)popoverZoomAnimationShowing:(BOOL)showing {
-    NSString *scaleAnimationKey = (showing) ? @"transform.scale.show" : @"transform.scale.hide";
-    CFTimeInterval duration = FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD;
+/*
+ - FLOPopoverAnimationBehaviorDefault
+ */
+- (void)popoverDefaultAnimationShowing:(BOOL)showing {
+    self.popoverWindow.alphaValue = showing ? 0.0 : 1.0;
     
-    CABasicAnimation *scaleAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-    scaleAnimation.duration = duration;
-    scaleAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    scaleAnimation.fromValue = [NSNumber numberWithDouble:0.3];
-    scaleAnimation.toValue = [NSNumber numberWithDouble:1.0];
-    scaleAnimation.fillMode = kCAFillModeForwards;
-    scaleAnimation.delegate = self;
+    [NSAnimationContext beginGrouping];
+    [[NSAnimationContext currentContext] setDuration:0.17];
+    [[NSAnimationContext currentContext] setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+    [[NSAnimationContext currentContext] setCompletionHandler:^{
+        self.popoverWindow.alphaValue = showing ? 1.0 : 0.0;
+        
+        [self popoverDidStopAnimation];
+    }];
     
-    [self.popoverWindow.contentView setWantsLayer:YES];
-    [self.popoverWindow.contentView.layer addAnimation:scaleAnimation forKey:scaleAnimationKey];
+    self.popoverWindow.animator.alphaValue = showing ? 1.0 : 0.0;
+    
+    [NSAnimationContext endGrouping];
 }
 
-- (void)popoverAnimationDidStop {
+- (void)popoverDidStopAnimation {
     BOOL showing = self.popoverTempWindow != nil;
     
     [self popoverDidFinishShowing:showing];
@@ -425,13 +522,13 @@
 #pragma mark - NSAnimationDelegate
 
 - (void)animationDidEnd:(NSAnimation *)animation {
-    [self popoverAnimationDidStop];
+    [self popoverDidStopAnimation];
 }
 
 #pragma mark - CAAnimationDelegate
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
-    [self popoverAnimationDidStop];
+    [self popoverDidStopAnimation];
 }
 
 #pragma mark - Event monitor

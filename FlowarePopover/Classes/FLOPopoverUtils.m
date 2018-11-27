@@ -52,8 +52,8 @@
         }
         
         _anchorPoint = NSMakePoint(0.0, 0.0);
-        _animationBehaviour = FLOPopoverAnimationBehaviorTransition;
-        _animationType = FLOPopoverAnimationLeftToRight;
+        _animationBehaviour = FLOPopoverAnimationBehaviorDefault;
+        _animationType = FLOPopoverAnimationDefault;
         _positioningAnchorType = NSNotFound;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidResize:) name:NSWindowDidResizeNotification object:nil];
@@ -115,7 +115,7 @@
 
 #pragma mark - Utilities
 
-- (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame animationType:(FLOPopoverAnimationTransition)animationType forwarding:(BOOL)forwarding showing:(BOOL)showing {
+- (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame animationType:(FLOPopoverAnimationType)animationType forwarding:(BOOL)forwarding showing:(BOOL)showing {
     switch (animationType) {
         case FLOPopoverAnimationLeftToRight:
             if (showing) {
@@ -164,6 +164,15 @@
         case FLOPopoverAnimationFromMiddle:
             break;
         default:
+            if (showing) {
+                (*fromFrame).origin.x += (*toFrame).size.width / 2;
+            } else {
+                if (forwarding) {
+                    (*toFrame).origin.x -= (*fromFrame).size.width / 2;
+                } else {
+                    (*toFrame).origin.x += (*fromFrame).size.width / 2;
+                }
+            }
             break;
     }
 }

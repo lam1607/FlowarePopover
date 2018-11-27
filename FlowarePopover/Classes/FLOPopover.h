@@ -54,6 +54,7 @@
 @property (nonatomic, assign) BOOL closesWhenPopoverResignsKey;
 @property (nonatomic, assign) BOOL closesWhenApplicationBecomesInactive;
 @property (nonatomic, assign) BOOL closesWhenApplicationResizes;
+@property (nonatomic, assign) NSTimeInterval closesAfterTimeInterval;
 
 /**
  * Make the popover movable.
@@ -99,7 +100,7 @@
  */
 - (void)setPopoverLevel:(NSWindowLevel)level;
 
-- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationTransition)animationType;
+- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType;
 
 
 /**

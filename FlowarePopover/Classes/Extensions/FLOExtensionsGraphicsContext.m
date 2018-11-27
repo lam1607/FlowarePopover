@@ -58,7 +58,6 @@ CGContextRef FLOExtensionsGraphicsContextCreate(CGSize size, CGColorSpaceRef col
     
     NSRect shotRect = NSMakeRect(x, y, width, height);
     
-    
     CGImageRef cgImage = CGWindowListCreateImage(shotRect, kCGWindowListOptionOnScreenOnly, kCGNullWindowID, kCGWindowImageDefault);
     NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithCGImage:cgImage];
     CGImageRelease(cgImage);
@@ -90,9 +89,7 @@ CGContextRef FLOExtensionsGraphicsContextCreate(CGSize size, CGColorSpaceRef col
 + (NSImage *)snapshotImageFromView:(NSView *)view {
     // Must display the target view before capturing.
     [view display]; // Draw to the backing buffer
-    [view lockFocus];
     NSBitmapImageRep *bitmapRep = [view bitmapImageRepForCachingDisplayInRect:view.bounds];
-    [view unlockFocus];
     
     [bitmapRep setSize:view.bounds.size];
     [view cacheDisplayInRect:view.bounds toBitmapImageRep:bitmapRep];

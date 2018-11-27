@@ -296,7 +296,8 @@
     self.popoverFilms.isMovable = YES;
     self.popoverFilms.isDetachable = YES;
     
-    [self.popoverFilms setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationLeftToRight];
+    //    [self.popoverFilms setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationLeftToRight];
+    [self.popoverFilms setAnimationBehaviour:FLOPopoverAnimationBehaviorTransform type:FLOPopoverAnimationScale];
     
     [self showRelativeToRectOfViewWithPopover:self.popoverFilms edgeType:FLOPopoverEdgeTypeBelowLeftEdge atView:sender];
 }
@@ -321,6 +322,7 @@
     self.popoverNews.animated = YES;
     //    self.popoverNews.closesWhenPopoverResignsKey = YES;
     //    self.popoverNews.closesWhenApplicationBecomesInactive = YES;
+    self.popoverNews.closesAfterTimeInterval = 3.0;
     self.popoverNews.isMovable = YES;
     self.popoverNews.isDetachable = YES;
     
@@ -349,7 +351,7 @@
         }
         
         self.popoverComics.alwaysOnTop = YES;
-        self.popoverComics.shouldShowArrow = YES;
+        //        self.popoverComics.shouldShowArrow = YES;
         self.popoverComics.animated = YES;
         self.popoverComics.shouldChangeSizeWhenApplicationResizes = NO;
         //        self.popoverComics.closesWhenPopoverResignsKey = YES;

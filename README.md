@@ -42,8 +42,8 @@ The popover has some main apis listed as follow:
 
 Popover have two main types:
 
-- FLOViewPopover
-- FLOWindowPopover
+- **`FLOViewPopover`**
+- **`FLOWindowPopover`**
 
 ### Initialize
 
@@ -69,7 +69,7 @@ Popover have two main types:
     - (id)initWithContentViewController:(NSViewController *)contentViewController type:(FLOPopoverType)type;
   ```
 
-The default initialization of FLOPopover type is `FLOViewPopover`
+The default initialization of FLOPopover type is **`FLOViewPopover`**
 
 `Examples`:
 ```
@@ -92,6 +92,7 @@ The default initialization of FLOPopover type is `FLOViewPopover`
 - **closesWhenPopoverResignsKey** : Close the popover automatically when resigned
 - **closesWhenApplicationBecomesInactive** : Close the popover automatically when the application becomes inactive
 - **closesWhenApplicationResizes** : Close the popover automatically when the application resizes
+- **closesAfterTimeInterval** : Close the popover automatically after some time intervals
 - **isMovable** : Make the popover draggable
 - **isDetachable** : Make the popover draggable and detachable
 
@@ -116,7 +117,7 @@ The popover is displayed with follwing methods:
     - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect anchorType:(FLOPopoverAnchorType)anchorType;
   ```
 
-Examples:
+`Examples`:
 - Stick
   ```
     [popover showRelativeToRect:[sender bounds] ofView:sender edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
@@ -127,7 +128,7 @@ Examples:
 
     [popover showRelativeToView:sender withRect:positioningRect];
   ```
-  - Given frame with anchor type
+- Given frame with anchor type
   ```
     NSRect positioningRect = NSMakeRect(100.0f, 200.0f, 0.0f, 0.0f);
 
@@ -155,18 +156,18 @@ The anchor type **`FLOPopoverAnchorType`** has the following types (anchor view 
 - **FLOPopoverAnchorBottomNegativeTrailingPositive** : The anchor view has negative bottom and positive trailing contraints to the **positioningView**
 - **FLOPopoverAnchorBottomNegativeTrailingNegative** : The anchor view has negative bottom and negative trailing contraints to the **positioningView**
 
-For more detail about **`[showRelativeToView:withRect:]`** and **`[showRelativeToView:withRect:anchorType:]`**, please take a look at sample in github repository.
+For more detail about **`[showRelativeToView:withRect:]`**, and **`[showRelativeToView:withRect:anchorType:]`** methods, please take a look at sample in github repository.
 
 **`Closing`**
 ```
   - (void)close;
 ```
 
-`Examples`:
+`Example`:
 ```
-  if ([popover isShown]) {
-    [popover close];
-  }
+    if ([popover isShown]) {
+        [popover close];
+    }
 ```
 
 ### Popover edge type
@@ -200,30 +201,39 @@ When showing the sticking popover, you must provide the edge type. Edge type of 
 
 ### Animation
 
-After setting the property **`animated`** is **`YES`**, we must use this method to apply the animation when displaying.
+After setting the property **`animated`** is **`YES`**, we should use this method to apply the animation when displaying.
 
 ```
-  - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationTransition)animationType;
+  - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType;
 ```
 
-- **`FLOPopoverAnimationBehaviour`**
-- **`FLOPopoverAnimationBehaviorNone`**
+The **`FLOPopoverAnimationBehaviour`** that is animation behaviour has following types:
+- **`FLOPopoverAnimationBehaviorDefault`** (popover will display with slightly default fade in/out animation)
 - **`FLOPopoverAnimationBehaviorTransform`**
 - **`FLOPopoverAnimationBehaviorTransition`**
 
-- **`FLOPopoverAnimationTransition`**
-- **`FLOPopoverAnimationLeftToRight`**
-- **`FLOPopoverAnimationRightToLeft`**
-- **`FLOPopoverAnimationTopToBottom`**
-- **`FLOPopoverAnimationBottomToTop`**
-- **`FLOPopoverAnimationFromMiddle`**
+And animation type **`FLOPopoverAnimationType`** of **`FLOPopoverAnimationBehaviour`** has types as follow:
+- `Default:`
+  - **`FLOPopoverAnimationDefault`**
 
-Currently only the **`FLOPopoverAnimationBehaviorTransition`** type is supported.
+- `Transform:`
+  - **`FLOPopoverAnimationScale`**
+  - **`FLOPopoverAnimationRotate`**
+  - **`FLOPopoverAnimationFlip`**
 
-`Examples`:
+- `Transition:`
+  - **`FLOPopoverAnimationLeftToRight`**
+  - **`FLOPopoverAnimationRightToLeft`**
+  - **`FLOPopoverAnimationTopToBottom`**
+  - **`FLOPopoverAnimationBottomToTop`**
+  - **`FLOPopoverAnimationFromMiddle`**
+
+`Example`:
 ```
   [popover setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft];
 ```
+
+If we don't call the method **`[setAnimationBehaviour:type:]`**, default animation behaviour and type will be performed by default.
 
 
 ### Delegation

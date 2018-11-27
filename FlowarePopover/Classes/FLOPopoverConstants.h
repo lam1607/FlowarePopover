@@ -121,9 +121,9 @@ typedef NS_ENUM(NSInteger, FLOPopoverAppearance) {
 
 typedef NS_ENUM(NSInteger, FLOPopoverAnimationBehaviour) {
     /*
-     - popover will display with the utility effect
+     - popover will display with default slightly fade in/out animation
      */
-    FLOPopoverAnimationBehaviorNone = 0,
+    FLOPopoverAnimationBehaviorDefault = 0,
     
     /*
      - popover will display with the transform effect (scale, rotate, ...)
@@ -141,8 +141,23 @@ typedef NS_ENUM(NSInteger, FLOPopoverAnimationBehaviour) {
 };
 
 
-typedef NS_ENUM(NSInteger, FLOPopoverAnimationTransition) {
-    FLOPopoverAnimationLeftToRight = 0,
+typedef NS_ENUM(NSInteger, FLOPopoverAnimationType) {
+    /*
+     - FLOPopoverAnimationBehaviorDefault
+     */
+    FLOPopoverAnimationDefault = 0,
+    
+    /*
+     - FLOPopoverAnimationBehaviorTransform
+     */
+    FLOPopoverAnimationScale,
+    FLOPopoverAnimationRotate,
+    FLOPopoverAnimationFlip,
+    
+    /*
+     - FLOPopoverAnimationBehaviorTransition
+     */
+    FLOPopoverAnimationLeftToRight,
     FLOPopoverAnimationRightToLeft,
     FLOPopoverAnimationTopToBottom,
     FLOPopoverAnimationBottomToTop,

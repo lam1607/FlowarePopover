@@ -27,7 +27,7 @@
 @property (nonatomic, strong) NSViewController *contentViewController;
 
 @property (nonatomic, assign) FLOPopoverAnimationBehaviour animationBehaviour;
-@property (nonatomic, assign) FLOPopoverAnimationTransition animationType;
+@property (nonatomic, assign) FLOPopoverAnimationType animationType;
 
 @property (nonatomic, strong) NSView *positioningAnchorView;
 @property (nonatomic, assign) FLOPopoverAnchorType positioningAnchorType;
@@ -52,7 +52,7 @@
 
 #pragma mark - Utilities
 
-- (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame animationType:(FLOPopoverAnimationTransition)animationType forwarding:(BOOL)forwarding showing:(BOOL)showing;
+- (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame animationType:(FLOPopoverAnimationType)animationType forwarding:(BOOL)forwarding showing:(BOOL)showing;
 - (BOOL)didTheTreeOfView:(NSView *)view containPosition:(NSPoint)position;
 - (BOOL)didView:(NSView *)parent contain:(NSView *)child;
 - (BOOL)didViews:(NSArray *)views contain:(NSView *)view;
