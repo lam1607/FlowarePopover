@@ -17,6 +17,7 @@
 @interface FLOPopoverWindow : NSWindow
 
 @property (nonatomic, assign) BOOL canBecomeKey;
+@property (nonatomic, assign) NSInteger tag;
 
 @end
 
@@ -43,8 +44,9 @@
 @property (nonatomic, strong, readonly) NSView *contentView;
 @property (nonatomic, strong, readonly) NSViewController *contentViewController;
 @property (nonatomic, assign, readonly) FLOPopoverType type;
+@property (nonatomic, assign, readonly) NSRect frame;
+@property (nonatomic, assign, readonly, getter = isShown) BOOL shown;
 
-@property (nonatomic, readonly, getter = isShown) BOOL shown;
 
 @property (nonatomic, assign) BOOL alwaysOnTop;
 @property (nonatomic, assign) BOOL shouldShowArrow;
@@ -70,6 +72,11 @@
  * Make the popover become key window. Only apply for FLOWindowPopover type.
  */
 @property (nonatomic, assign) BOOL canBecomeKey;
+
+/**
+ * Set tag for the popover window. Only apply for FLOWindowPopover type.
+ */
+@property (nonatomic, assign) NSInteger tag;
 
 #pragma mark - Initialize
 
@@ -101,7 +108,16 @@
 - (void)setPopoverLevel:(NSWindowLevel)level;
 
 - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType;
+- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType animatedInDisplayRect:(BOOL)animatedInDisplayRect;
 
+
+/**
+ * Update the popover to new contentView while it's displaying.
+ *
+ * @param contentView the new content view needs displayed on the popover.
+ */
+- (void)setPopoverContentView:(NSView *)contentView;
+- (void)setPopoverContentViewController:(NSViewController *)contentViewController;
 
 /**
  * Re-arrange the popover with new content view size.
@@ -111,12 +127,16 @@
 - (void)setPopoverContentViewSize:(NSSize)newSize;
 - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;
 
+
 /**
- * Sticker rect: Display the popover relative to the rect of positioning view
+ * Sticking rect: Display the popover relative to the rect of positioning view
  *
  * @param rect is the rect that popover will be displayed relatively to.
  * @param positioningView is the view that popover will be displayed relatively to.
  * @param edgeType 'position' that the popover should be displayed.
+ *
+ * @note rect is bounds of positioningView.
+ * @note positioningView is also a sender that sends event for showing the popover (positioningView ≡ sender).
  */
 - (void)showRelativeToRect:(NSRect)rect ofView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType;
 
@@ -125,17 +145,54 @@
  *
  * @param positioningView the selected view that popover should be displayed relatively at.
  * @param rect the given rect that popover should be displayed at.
+ *
+ * @note positioningView is also a sender that sends event for showing the popover (positioningView ≡ sender).
+ * @note rect MUST be a value on screen rect (MUST convert to screen rect by [convertRectToScreen:] method).
+ * @warning If you provide the wrong positioningView (sender) view, or rect, it will lead the strange behaviour on showing.
  */
 - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect;
 
 /**
  * Given rect: Dipslay the popover at the given rect with selected view.
  *
- * @param positioningView the selected view that popover should be displayed relatively at.
+ * @param positioningView the view that popover should be displayed relatively at.
  * @param rect the given rect that popover should be displayed at.
- * @param anchorType type of anchor that the anchor view will stick to the positioningView ((top, leading) | (top, trailing), (bottom, leading), (bottom, trailing)).
+ * @param relativePositionType the specific position that the popover should be displayed relatively to positioningView.
+ *
+ * @note positioningView is also a sender that sends event for showing the popover (positioningView ≡ sender).
+ * @note rect MUST be a value on screen rect (MUST convert to screen rect by [convertRectToScreen:] method).
+ * @note If relativePositionType is FLOPopoverRelativePositionAutomatic. It means that the anchor view constraints will be calculated automatically based on the given frame.
+ * @warning If you provide the wrong positioningView, or rect, it will lead the strange behaviour on showing.
  */
-- (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect anchorType:(FLOPopoverAnchorType)anchorType;
+- (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect relativePositionType:(FLOPopoverRelativePositionType)relativePositionType;
+
+/**
+ * Given rect: Dipslay the popover at the given rect with selected view.
+ *
+ * @param positioningView the view that popover should be displayed relatively at.
+ * @param rect the given rect that popover should be displayed at.
+ * @param sender view that sends event for showing the popover.
+ *
+ * @note positioningView and sender are different together.
+ * @note rect MUST be a value on screen rect (MUST convert to screen rect by [convertRectToScreen:] method).
+ * @warning If you provide the wrong positioningView, sender, or rect, it will lead the strange behaviour on showing.
+ */
+- (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect sender:(NSView *)sender;
+
+/**
+ * Given rect: Dipslay the popover at the given rect with selected view.
+ *
+ * @param positioningView the view that popover should be displayed relatively at.
+ * @param rect the given rect that popover should be displayed at.
+ * @param sender view that sends event for showing the popover.
+ * @param relativePositionType the specific position that the popover should be displayed relatively to positioningView.
+ *
+ * @note positioningView and sender are different together.
+ * @note rect MUST be a value on screen rect (MUST convert to screen rect by [convertRectToScreen:] method).
+ * @note If relativePositionType is FLOPopoverRelativePositionAutomatic. It means that the anchor view constraints will be calculated automatically based on the given frame.
+ * @warning If you provide the wrong positioningView, sender, or rect, it will lead the strange behaviour on showing.
+ */
+- (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect sender:(NSView *)sender relativePositionType:(FLOPopoverRelativePositionType)relativePositionType;
 
 - (void)close;
 

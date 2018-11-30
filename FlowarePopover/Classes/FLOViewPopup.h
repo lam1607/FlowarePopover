@@ -14,7 +14,9 @@
 
 @interface FLOViewPopup : NSResponder <FLOPopoverService>
 
-@property (nonatomic, readonly, getter = isShown) BOOL shown;
+@property (nonatomic, assign, readonly) NSRect frame;
+@property (nonatomic, assign, readonly, getter = isShown) BOOL shown;
+
 
 @property (nonatomic, assign) BOOL alwaysOnTop;
 @property (nonatomic, assign) BOOL shouldShowArrow;

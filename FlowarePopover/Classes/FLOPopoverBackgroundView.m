@@ -188,12 +188,12 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 - (void)setShouldShowShadow:(BOOL)needed {
     if (needed) {
-        self.wantsLayer             = YES;
-        self.layer.masksToBounds    = NO;
-        self.layer.shadowColor      = [NSColor shadowColor].CGColor;
-        self.layer.shadowOpacity    = 0.5;
-        self.layer.shadowOffset     = CGSizeMake(0, -3);
-        self.layer.shadowRadius     = 5.0;
+        self.wantsLayer = YES;
+        self.layer.masksToBounds = NO;
+        self.layer.shadowColor = [NSColor.shadowColor CGColor];
+        self.layer.shadowOpacity = 0.5;
+        self.layer.shadowOffset = CGSizeMake(-0.5, 0.5);
+        self.layer.shadowRadius = 5.0;
     }
 }
 

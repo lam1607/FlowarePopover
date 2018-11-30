@@ -14,7 +14,9 @@
 
 @interface FLOWindowPopup : NSResponder <FLOPopoverService>
 
-@property (nonatomic, readonly, getter = isShown) BOOL shown;
+@property (nonatomic, assign, readonly) NSRect frame;
+@property (nonatomic, assign, readonly, getter = isShown) BOOL shown;
+
 
 @property (nonatomic, assign) BOOL alwaysOnTop;
 @property (nonatomic, assign) BOOL shouldShowArrow;
@@ -39,6 +41,11 @@
  * Make the popover become key window. Only apply for FLOWindowPopover type.
  */
 @property (nonatomic, assign) BOOL canBecomeKey;
+
+/**
+ * Set tag for the popover window. Only apply for FLOWindowPopover type.
+ */
+@property (nonatomic, assign) NSInteger tag;
 
 #pragma mark - Display
 

@@ -69,21 +69,21 @@ Popover have two main types:
     - (id)initWithContentViewController:(NSViewController *)contentViewController type:(FLOPopoverType)type;
   ```
 
-The default initialization of FLOPopover type is **`FLOViewPopover`**
+The default initialization of FLOPopover type is **`FLOWindowPopover`**
 
-`Examples`:
+`Example`:
 ```
-  popover = [[FLOPopover alloc] initWithContentViewController:self.dataViewController type:FLOWindowPopover];
+  popover = [[FLOPopover alloc] initWithContentViewController:self.dataViewController];
 ```
 
 
 ### Properties
 
-- **contentView** : The initialized content view in the init.
-- **contentViewController** : The initialized content view controller in the init.
-- **type** : Type of popover.
-
-- **shown (getter = isShown)** : Check whether the popover is shown or not.
+- **contentView (readonly)** : The initialized content view in the init.
+- **contentViewController (readonly)** : The initialized content view controller in the init.
+- **type (readonly)** : Type of popover.
+- **frame (readonly)** : Frame of popover.
+- **shown (getter = isShown) (readonly)** : Check whether the popover is shown or not.
 - **alwaysOnTop** : Make the popover always on top. If there is more than one popover is set as top, only the last one is top most
 - **shouldShowArrow** : Show arrow at popover
 - **animated** : Show popover with animation
@@ -95,6 +95,8 @@ The default initialization of FLOPopover type is **`FLOViewPopover`**
 - **closesAfterTimeInterval** : Close the popover automatically after some time intervals
 - **isMovable** : Make the popover draggable
 - **isDetachable** : Make the popover draggable and detachable
+- **canBecomeKey** : Make the popover as key window (only available for **`FLOWindowPopover`**)
+- **tag** : Set the tag for popover if needed (only available for **`FLOWindowPopover`**)
 
 ### Display
 
@@ -107,56 +109,71 @@ The popover is displayed with follwing methods:
     - (void)showRelativeToRect:(NSRect)rect ofView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType;
   ```
 
-- Display the popover at given frame **`rect`** relatively to the selected view **`positioningView`** with anchorType **`FLOPopoverAnchorTopPositiveLeadingPositive`** by default
+- Display the popover relatively to the selected view **`positioningView`** by given frame **`rect`**.
   ```
     - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect;
   ```
 
-- Display the popover at given frame **`rect`** relatively to the selected view **`positioningView`** with specific anchor type of the anchor view with the **`positioningView`** as ((top, leading) | (top, trailing), (bottom, leading), (bottom, trailing))
+- Display the popover relatively to the selected view **`positioningView`** by given frame **`rect`** at specific relative position **`relativePositionType`** to **`positioningView`**.
   ```
-    - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect anchorType:(FLOPopoverAnchorType)anchorType;
+    - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect relativePositionType:(FLOPopoverRelativePositionType)relativePositionType;
   ```
 
+- Display the popover relatively to the selected view **`positioningView`** by given frame **`rect`**. **`sender`** is the view that fires an event to display the popover. It means that when we click on **`sender`** but we want to display the popover relatively to **`positioningView`**.
+  ```
+    - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect sender:(NSView *)sender;
+  ```
+
+- Display the popover relatively to the selected view **`positioningView`** by given frame **`rect`** at specific relative position **`relativePositionType`** to **`positioningView`**. **`sender`** is the view that fires an event to display the popover. It means that when we click on **`sender`** but we want to display the popover relatively to **`positioningView`**.
+  ```
+    - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect sender:(NSView *)sender relativePositionType:(FLOPopoverRelativePositionType)relativePositionType;
+  ```
+
+`Note`: **`rect`** MUST be a value on screen rect (MUST convert to screen rect by **`[convertRectToScreen:]`** method). Therefore, you must convert the given frame to screen frame before displaying.
+
+All **`[showRelativeToView:withRect:]`**, **`[showRelativeToView:withRect:relativePositionType:]`**, **`[showRelativeToView:withRect:sender:]`** methods perform the **`[showRelativeToView:withRect:sender:relativePositionType:]`** method.
+
+The **`sender`** is required. If you use both **`[showRelativeToView:withRect:]`**, **`[showRelativeToView:withRect:relativePositionType:]`** methods, it means that **`sender`** and **`positioningView`** are the same.
+
+Popover needs to know about the **`sender`** sent the displaying event for preventing display issue from **`closesWhenPopoverResignsKey`**. When you set **`closesWhenPopoverResignsKey`** to **`YES`** and click to the **`sender`** again.
+
+The relative position **`FLOPopoverRelativePositionType`** has the following types (the way that popover should display relatively to **`positioningView`**):
+- **FLOPopoverRelativePositionAutomatic** : It means that relative position (anchor view constraints) will be calculated automatically based on the given frame
+- **FLOPopoverRelativePositionTopLeading**
+- **FLOPopoverRelativePositionTopTrailing**
+- **FLOPopoverRelativePositionBottomLeading**
+- **FLOPopoverRelativePositionBottomTrailing**
+
+For more detail about **`[showRelativeToView:withRect:]`**, **`[showRelativeToView:withRect:relativePositionType:]`**, **`[showRelativeToView:withRect:sender:]`**, and **`[showRelativeToView:withRect:sender:relativePositionType:]`** methods and **`FLOPopoverRelativePositionType`**, please take a look at and try sample in github repository.
+
 `Examples`:
-- Stick
+- Sticking rect: Display the popover relative to the rect of positioning view
   ```
     [popover showRelativeToRect:[sender bounds] ofView:sender edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
   ```
-- Given frame
+- Given rect: Dipslay the popover at the given rect with selected view.
   ```
-    NSRect positioningRect = NSMakeRect(100.0f, 200.0f, 0.0f, 0.0f);
+    NSRect positioningRect = [sender.window convertRectToScreen:NSMakeRect(100.0f, 200.0f, 0.0f, 0.0f)];
 
     [popover showRelativeToView:sender withRect:positioningRect];
   ```
-- Given frame with anchor type
+- Given rect: Dipslay the popover at the given rect with selected view at specific relative position.
   ```
-    NSRect positioningRect = NSMakeRect(100.0f, 200.0f, 0.0f, 0.0f);
+    // frame here is screen rect
+    NSRect frame = [self calculateMessageBoxFrame];
 
-    [popover showRelativeToView:sender withRect:positioningRect anchorType:FLOPopoverAnchorTopPositiveLeadingPositive];
+    [popover showRelativeToView:self.view.window.contentView withRect:frame relativePositionType:FLOPopoverRelativePositionBottomTrailing];
   ```
+- Given rect: Dipslay the popover relatively to positioningView at the given rect with sender.
+  ```
+    CGFloat positioningRectX = visibleRect.size.width - contentViewRect.size.width - verticalMargin / 2;
+    NSRect viewRect = [self.view.window convertRectToScreen:[self.view convertRect:self.view.bounds toView:self.view.window.contentView]];
+    NSRect popoverRect = sortSelectionController.view.frame;
+    popoverRect.origin.x = viewRect.origin.x + viewRect.size.width + 2;
+    popoverRect.origin.y = viewRect.origin.y + 1;
 
-The anchor type **`FLOPopoverAnchorType`** has the following types (anchor view that is the view the popover should display at):
-- **FLOPopoverAnchorTopPositiveLeadingPositive** : The anchor view has positive top and positive leading contraints to the **positioningView**
-- **FLOPopoverAnchorTopPositiveLeadingNegative** : The anchor view has positive top and negative leading contraints to the **positioningView**
-- **FLOPopoverAnchorTopNegativeLeadingPositive** : The anchor view has negative top and positive leading contraints to the **positioningView**
-- **FLOPopoverAnchorTopNegativeLeadingNegative** : The anchor view has negative top and negative leading contraints to the **positioningView**
-
-- **FLOPopoverAnchorTopPositiveTrailingPositive** : The anchor view has positive top and positive trailing contraints to the **positioningView**
-- **FLOPopoverAnchorTopPositiveTrailingNegative** : The anchor view has positive top and negative trailing contraints to the **positioningView**
-- **FLOPopoverAnchorTopNegativeTrailingPositive** : The anchor view has negative top and positive trailing contraints to the **positioningView**
-- **FLOPopoverAnchorTopNegativeTrailingNegative** : The anchor view has negative top and negative trailing contraints to the **positioningView**
-
-- **FLOPopoverAnchorBottomPositiveLeadingPositive** : The anchor view has positive bottom and positive leading contraints to the **positioningView**
-- **FLOPopoverAnchorBottomPositiveLeadingNegative** : The anchor view has positive bottom and negative leading contraints to the **positioningView**
-- **FLOPopoverAnchorBottomNegativeLeadingPositive** : The anchor view has negative bottom and positive leading contraints to the **positioningView**
-- **FLOPopoverAnchorBottomNegativeLeadingNegative** : The anchor view has negative bottom and negative leading contraints to the **positioningView**
-
-- **FLOPopoverAnchorBottomPositiveTrailingPositive** : The anchor view has positive bottom and positive trailing contraints to the **positioningView**
-- **FLOPopoverAnchorBottomPositiveTrailingNegative** : The anchor view has positive bottom and negative trailing contraints to the **positioningView**
-- **FLOPopoverAnchorBottomNegativeTrailingPositive** : The anchor view has negative bottom and positive trailing contraints to the **positioningView**
-- **FLOPopoverAnchorBottomNegativeTrailingNegative** : The anchor view has negative bottom and negative trailing contraints to the **positioningView**
-
-For more detail about **`[showRelativeToView:withRect:]`**, and **`[showRelativeToView:withRect:anchorType:]`** methods, please take a look at sample in github repository.
+    [popover showRelativeToView:sortSelectionController withRect:popoverRect sender:selectedCell];
+  ```
 
 **`Closing`**
 ```
@@ -201,11 +218,17 @@ When showing the sticking popover, you must provide the edge type. Edge type of 
 
 ### Animation
 
-After setting the property **`animated`** is **`YES`**, we should use this method to apply the animation when displaying.
+After setting the property **`animated`** is **`YES`**, we should use the following methods to apply the animation when displaying.
 
 ```
   - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType;
 ```
+or
+
+```
+  - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType animatedInDisplayRect:(BOOL)animatedInDisplayRect;
+```
+**`animatedInDisplayRect`** means that the animation is only performed in the popover frame. Value of **`animatedInDisplayRect`** is set as **`NO`** by default.
 
 The **`FLOPopoverAnimationBehaviour`** that is animation behaviour has following types:
 - **`FLOPopoverAnimationBehaviorDefault`** (popover will display with slightly default fade in/out animation)
@@ -235,6 +258,39 @@ And animation type **`FLOPopoverAnimationType`** of **`FLOPopoverAnimationBehavi
 
 If we don't call the method **`[setAnimationBehaviour:type:]`**, default animation behaviour and type will be performed by default.
 
+### Other utilities
+
+When you display popover, if you want you change size, position of the view or view controller that displayed on the popover. You can use the following methods.
+
+- Update content size for view or view controller in popover.
+  ```
+    - (void)setPopoverContentViewSize:(NSSize)newSize;
+  ```
+
+- Update content size for view or view controller in popover and position of popover.
+  ```
+    - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;
+  ```
+
+If you just want to update the position of the popover, leave the **`newSize`** as **`NSZeroSize`**.
+
+When you want to change the view or view controller that displayed on popover, you can use below methods.
+
+  - **NSView**
+  ```
+    - (void)setPopoverContentView:(NSView *)contentView;
+  ```
+
+  - **NSViewController**
+  ```
+    - (void)setPopoverContentViewController:(NSViewController *)contentViewController;
+  ```
+
+When you display the popover with **`FLOWindowPopover`** type and want to change the level for window popover, you can use this methods.
+
+```
+  - (void)setPopoverLevel:(NSWindowLevel)level;
+```
 
 ### Delegation
 
@@ -255,6 +311,8 @@ Select the target screen in your project, then add the following line:
 ```
 #import <FlowarePopover/FLOPopover.h>
 ```
+
+For more detail about usages, please take a deep look at sample in github repository.
 
 ## Contributing
 

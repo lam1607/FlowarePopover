@@ -218,9 +218,9 @@
         
         CGFloat positioningRectX = visibleRect.size.width - contentViewRect.size.width - verticalMargin / 2;
         CGFloat positioningRectY = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin / 2 - contentViewHeight;
-        NSRect contentRect = NSMakeRect(positioningRectX, positioningRectY, contentViewRect.size.width, contentViewRect.size.height);
+        NSRect positioningRect = [self.view.window convertRectToScreen:NSMakeRect(positioningRectX, positioningRectY, contentViewRect.size.width, contentViewRect.size.height)];
         
-        [self.popoverComics setPopoverContentViewSize:contentViewRect.size positioningRect:contentRect];
+        [self.popoverComics setPopoverContentViewSize:contentViewRect.size positioningRect:positioningRect];
     }
 }
 
@@ -255,7 +255,7 @@
     }
 }
 
-- (void)showRelativeToViewWithRect:(NSRect)rect byPopover:(FLOPopover *)popover atView:(NSView *)positioningView {
+- (void)showRelativeToViewWithRect:(NSRect)rect byPopover:(FLOPopover *)popover sender:(NSView *)sender {
     if (popover.delegate == nil) {
         popover.delegate = self;
     }
@@ -266,14 +266,19 @@
         [popover close];
     } else {
 #ifdef SHOULD_COMICS_POPOVER_ANCHOR_TO_APPLICATION_VIEW
-        [popover showRelativeToView:positioningView withRect:rect anchorType:FLOPopoverAnchorTopPositiveLeadingPositive];
+        [popover showRelativeToView:[BaseWindowController sharedInstance].window.contentView withRect:rect sender:sender];
 #else
-        [popover showRelativeToView:positioningView withRect:rect anchorType:FLOPopoverAnchorBottomLeadingNegative];
+        [popover showRelativeToView:sender withRect:rect];
 #endif
     }
 }
 
 - (void)showFilmsPopupAtView:(NSView *)sender {
+    if ([self.popoverFilms isShown]) {
+        [self.popoverFilms close];
+        return;
+    }
+    
     NSRect visibleRect = [self.view visibleRect];
     CGFloat menuHeight = self.vMenu.frame.size.height;
     CGFloat verticalMargin = 10.0;
@@ -291,7 +296,7 @@
     //    self.popoverFilms.alwaysOnTop = YES;
     //    self.popoverFilms.shouldShowArrow = YES;
     self.popoverFilms.animated = YES;
-    //    self.popoverFilms.closesWhenPopoverResignsKey = YES;
+    self.popoverFilms.closesWhenPopoverResignsKey = YES;
     //    self.popoverFilms.closesWhenApplicationBecomesInactive = YES;
     self.popoverFilms.isMovable = YES;
     self.popoverFilms.isDetachable = YES;
@@ -303,6 +308,11 @@
 }
 
 - (void)showNewsPopupAtView:(NSView *)sender {
+    if ([self.popoverNews isShown]) {
+        [self.popoverNews close];
+        return;
+    }
+    
     NSRect visibleRect = [self.view visibleRect];
     CGFloat menuHeight = self.vMenu.frame.size.height;
     CGFloat verticalMargin = 10.0;
@@ -314,7 +324,7 @@
         self.newsViewController = [[NewsViewController alloc] initWithNibName:NSStringFromClass([NewsViewController class]) bundle:nil];
         [self.newsViewController.view setFrame:contentViewRect];
         
-        self.popoverNews = [[FLOPopover alloc] initWithContentViewController:self.newsViewController type:FLOWindowPopover];
+        self.popoverNews = [[FLOPopover alloc] initWithContentViewController:self.newsViewController];
     }
     
     //    self.popoverNews.alwaysOnTop = YES;
@@ -332,6 +342,11 @@
 }
 
 - (void)showComicsPopupAtView:(NSView *)sender option:(NSInteger)option {
+    if ([self.popoverComics isShown]) {
+        [self.popoverComics close];
+        return;
+    }
+    
     if (option == 1) {
         NSRect visibleRect = [self.view visibleRect];
         CGFloat menuHeight = self.vMenu.frame.size.height;
@@ -339,7 +354,7 @@
         CGFloat verticalMargin = 10.0;
         CGFloat contentViewWidth = 350.0;
         CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
-        CGFloat contentHeight = [self.comicsViewController getContentSizeHeight];
+        CGFloat contentHeight = ([self.comicsViewController getContentSizeHeight] > 0) ? [self.comicsViewController getContentSizeHeight] : 414.0;
         CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : contentHeight;
         NSRect contentViewRect = NSMakeRect(0.0, 0.0, contentViewWidth, contentViewHeight);
         
@@ -347,12 +362,13 @@
             self.comicsViewController = [[ComicsViewController alloc] initWithNibName:NSStringFromClass([ComicsViewController class]) bundle:nil];
             [self.comicsViewController.view setFrame:contentViewRect];
             
-            self.popoverComics = [[FLOPopover alloc] initWithContentViewController:self.comicsViewController type:FLOWindowPopover];
+            self.popoverComics = [[FLOPopover alloc] initWithContentViewController:self.comicsViewController];
         }
         
         self.popoverComics.alwaysOnTop = YES;
         //        self.popoverComics.shouldShowArrow = YES;
         self.popoverComics.animated = YES;
+        //        self.popoverComics.animatedForwarding = YES;
         self.popoverComics.shouldChangeSizeWhenApplicationResizes = NO;
         //        self.popoverComics.closesWhenPopoverResignsKey = YES;
         //        self.popoverComics.closesWhenApplicationBecomesInactive = YES;
@@ -361,15 +377,11 @@
         
         CGFloat positioningRectX = visibleRect.size.width - contentViewRect.size.width - verticalMargin / 2;
         CGFloat positioningRectY = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin / 2 - contentViewHeight;
-        NSRect contentRect = NSMakeRect(positioningRectX, positioningRectY, contentViewRect.size.width, contentViewRect.size.height);
+        NSRect positioningRect = [sender.window convertRectToScreen:NSMakeRect(positioningRectX, positioningRectY, contentViewRect.size.width, contentViewRect.size.height)];
         
-        [self.popoverComics setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft];
+        [self.popoverComics setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft animatedInDisplayRect:YES];
         
-#ifdef SHOULD_COMICS_POPOVER_ANCHOR_TO_APPLICATION_VIEW
-        [self showRelativeToViewWithRect:contentRect byPopover:self.popoverComics atView:[BaseWindowController sharedInstance].window.contentView];
-#else
-        [self showRelativeToViewWithRect:contentRect byPopover:self.popoverComics atView:sender];
-#endif
+        [self showRelativeToViewWithRect:positioningRect byPopover:self.popoverComics sender:sender];
     } else {
         NSRect visibleRect = [self.view visibleRect];
         CGFloat menuHeight = self.vMenu.frame.size.height;
@@ -382,7 +394,7 @@
         if (self.popoverComics == nil) {
             self.dataViewController = [[DataViewController alloc] initWithNibName:NSStringFromClass([DataViewController class]) bundle:nil];
             [self.dataViewController.view setFrame:contentViewRect];
-            self.popoverComics = [[FLOPopover alloc] initWithContentViewController:self.dataViewController type:FLOWindowPopover];
+            self.popoverComics = [[FLOPopover alloc] initWithContentViewController:self.dataViewController];
         }
         
         self.popoverComics.alwaysOnTop = YES;

@@ -28,9 +28,11 @@
 
 @property (nonatomic, assign) FLOPopoverAnimationBehaviour animationBehaviour;
 @property (nonatomic, assign) FLOPopoverAnimationType animationType;
+@property (nonatomic, assign) BOOL animatedInDisplayRect;
 
 @property (nonatomic, strong) NSView *positioningAnchorView;
-@property (nonatomic, assign) FLOPopoverAnchorType positioningAnchorType;
+@property (nonatomic, strong) NSView *senderView;
+@property (nonatomic, assign) FLOPopoverRelativePositionType relativePositionType;
 @property (nonatomic, assign) NSRect positioningWindowRect;
 @property (nonatomic, strong) NSMutableArray<NSView *> *anchorSuperviews;
 
@@ -53,6 +55,7 @@
 #pragma mark - Utilities
 
 - (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame animationType:(FLOPopoverAnimationType)animationType forwarding:(BOOL)forwarding showing:(BOOL)showing;
+- (void)calculateTransitionFrame:(NSRect *)transitionFrame fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame animationType:(FLOPopoverAnimationType)animationType forwarding:(BOOL)forwarding showing:(BOOL)showing;
 - (BOOL)didTheTreeOfView:(NSView *)view containPosition:(NSPoint)position;
 - (BOOL)didView:(NSView *)parent contain:(NSView *)child;
 - (BOOL)didViews:(NSArray *)views contain:(NSView *)view;

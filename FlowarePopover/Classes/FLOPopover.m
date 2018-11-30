@@ -15,6 +15,14 @@
 
 @implementation FLOPopoverWindow
 
+- (instancetype)init {
+    if (self = [super init]) {
+        _tag = -1;
+    }
+    
+    return self;
+}
+
 - (BOOL)canBecomeKeyWindow {
     return self.canBecomeKey;
 }
@@ -41,11 +49,11 @@
 #pragma mark - Inits
 
 - (instancetype)initWithContentView:(NSView *)contentView {
-    return [self initWithContentView:contentView type:FLOViewPopover];
+    return [self initWithContentView:contentView type:FLOWindowPopover];
 }
 
 - (instancetype)initWithContentViewController:(NSViewController *)contentViewController {
-    return [self initWithContentViewController:contentViewController type:FLOViewPopover];
+    return [self initWithContentViewController:contentViewController type:FLOWindowPopover];
 }
 
 - (instancetype)initWithContentView:(NSView *)contentView type:(FLOPopoverType)type {
@@ -66,6 +74,14 @@
     return self;
 }
 
+- (void)dealloc {
+    self.windowPopup = nil;
+    self.viewPopup = nil;
+    
+    self.contentView = nil;
+    self.contentViewController = nil;
+}
+
 - (void)setupPopupView {
     if (!self.viewPopup) {
         self.viewPopup = [[FLOViewPopup alloc] initWithContentView:self.contentViewController.view];
@@ -82,14 +98,6 @@
 
 #pragma mark - Getter/Setter
 
-- (BOOL)isShown {
-    if (self.type == FLOWindowPopover) {
-        return [self.windowPopup isShown];
-    }
-    
-    return [self.viewPopup isShown];
-}
-
 - (NSView *)contentView {
     return _contentView;
 }
@@ -100,6 +108,22 @@
 
 - (FLOPopoverType)type {
     return _type;
+}
+
+- (NSRect)frame {
+    if (self.type == FLOWindowPopover) {
+        return [self.windowPopup frame];
+    }
+    
+    return [self.viewPopup frame];
+}
+
+- (BOOL)isShown {
+    if (self.type == FLOWindowPopover) {
+        return [self.windowPopup isShown];
+    }
+    
+    return [self.viewPopup isShown];
 }
 
 - (void)setType:(FLOPopoverType)type {
@@ -198,6 +222,12 @@
     }
 }
 
+- (void)setClosesAfterTimeInterval:(NSTimeInterval)closesAfterTimeInterval {
+    _closesAfterTimeInterval = closesAfterTimeInterval;
+    
+    [self closeAfterTimeInterval];
+}
+
 - (void)setIsMovable:(BOOL)isMovable {
     _isMovable = isMovable;
     
@@ -225,6 +255,14 @@
         _canBecomeKey = canBecomeKey;
         
         self.windowPopup.canBecomeKey = canBecomeKey;
+    }
+}
+
+- (void)setTag:(NSInteger)tag {
+    if (self.type == FLOWindowPopover) {
+        _tag = tag;
+        
+        self.windowPopup.tag = tag;
     }
 }
 
@@ -272,10 +310,39 @@
 }
 
 - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType {
+    [self setAnimationBehaviour:animationBehaviour type:animationType animatedInDisplayRect:NO];
+}
+
+- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType animatedInDisplayRect:(BOOL)animatedInDisplayRect {
     if (self.type == FLOWindowPopover) {
-        [self.windowPopup setAnimationBehaviour:animationBehaviour type:animationType];
+        [self.windowPopup setAnimationBehaviour:animationBehaviour type:animationType animatedInDisplayRect:animatedInDisplayRect];
     } else {
-        [self.viewPopup setAnimationBehaviour:animationBehaviour type:animationType];
+        [self.viewPopup setAnimationBehaviour:animationBehaviour type:animationType animatedInDisplayRect:animatedInDisplayRect];
+    }
+}
+
+/**
+ * Update the popover to new contentView while it's displaying.
+ *
+ * @param contentView the new content view needs displayed on the popover.
+ */
+- (void)setPopoverContentView:(NSView *)contentView {
+    self.contentView = contentView;
+    
+    if (self.type == FLOWindowPopover) {
+        [self.windowPopup setPopoverContentView:contentView];
+    } else {
+        [self.viewPopup setPopoverContentView:contentView];
+    }
+}
+
+- (void)setPopoverContentViewController:(NSViewController *)contentViewController {
+    self.contentViewController = contentViewController;
+    
+    if (self.type == FLOWindowPopover) {
+        [self.windowPopup setPopoverContentViewController:contentViewController];
+    } else {
+        [self.viewPopup setPopoverContentViewController:contentViewController];
     }
 }
 
@@ -301,11 +368,14 @@
 }
 
 /**
- * Sticker rect: Display the popover relative to the rect of positioning view
+ * Sticking rect: Display the popover relative to the rect of positioning view
  *
  * @param rect is the rect that popover will be displayed relatively to.
  * @param positioningView is the view that popover will be displayed relatively to.
  * @param edgeType 'position' that the popover should be displayed.
+ *
+ * @note rect is bounds of positioningView.
+ * @note positioningView is also a sender that sends event for showing the popover (positioningView ≡ sender).
  */
 - (void)showRelativeToRect:(NSRect)rect ofView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType {
     if (self.type == FLOWindowPopover) {
@@ -322,29 +392,64 @@
  *
  * @param positioningView the selected view that popover should be displayed relatively at.
  * @param rect the given rect that popover should be displayed at.
+ *
+ * @note positioningView is also a sender that sends event for showing the popover (positioningView ≡ sender).
+ * @note rect MUST be a value on screen rect (MUST convert to screen rect by [convertRectToScreen:] method).
+ * @warning If you provide the wrong positioningView (sender) view, or rect, it will lead the strange behaviour on showing.
  */
 - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect {
-    if (self.type == FLOWindowPopover) {
-        [self.windowPopup showRelativeToView:positioningView withRect:rect anchorType:FLOPopoverAnchorTopPositiveLeadingPositive edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
-    } else {
-        [self.viewPopup showRelativeToView:positioningView withRect:rect anchorType:FLOPopoverAnchorTopPositiveLeadingPositive edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
-    }
-    
-    [self closeAfterTimeInterval];
+    [self showRelativeToView:positioningView withRect:rect sender:positioningView relativePositionType:FLOPopoverRelativePositionAutomatic];
 }
 
 /**
  * Given rect: Dipslay the popover at the given rect with selected view.
  *
- * @param positioningView the selected view that popover should be displayed relatively at.
+ * @param positioningView the view that popover should be displayed relatively at.
  * @param rect the given rect that popover should be displayed at.
- * @param anchorType type of anchor that the anchor view will stick to the positioningView ((top, leading) | (top, trailing), (bottom, leading), (bottom, trailing)).
+ * @param relativePositionType the specific position that the popover should be displayed relatively to positioningView.
+ *
+ * @note positioningView is also a sender that sends event for showing the popover (positioningView ≡ sender).
+ * @note rect MUST be a value on screen rect (MUST convert to screen rect by [convertRectToScreen:] method).
+ * @note If relativePositionType is FLOPopoverRelativePositionAutomatic. It means that the anchor view constraints will be calculated automatically based on the given frame.
+ * @warning If you provide the wrong positioningView, or rect, it will lead the strange behaviour on showing.
  */
-- (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect anchorType:(FLOPopoverAnchorType)anchorType {
+- (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect relativePositionType:(FLOPopoverRelativePositionType)relativePositionType {
+    [self showRelativeToView:positioningView withRect:rect sender:positioningView relativePositionType:relativePositionType];
+}
+
+/**
+ * Given rect: Dipslay the popover at the given rect with selected view.
+ *
+ * @param positioningView the view that popover should be displayed relatively at.
+ * @param rect the given rect that popover should be displayed at.
+ * @param sender view that sends event for showing the popover.
+ *
+ * @note positioningView and sender are different together.
+ * @note rect MUST be a value on screen rect (MUST convert to screen rect by [convertRectToScreen:] method).
+ * @warning If you provide the wrong positioningView, sender, or rect, it will lead the strange behaviour on showing.
+ */
+- (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect sender:(NSView *)sender {
+    [self showRelativeToView:positioningView withRect:rect sender:sender relativePositionType:FLOPopoverRelativePositionAutomatic];
+}
+
+/**
+ * Given rect: Dipslay the popover at the given rect with selected view.
+ *
+ * @param positioningView the view that popover should be displayed relatively at.
+ * @param rect the given rect that popover should be displayed at.
+ * @param sender view that sends event for showing the popover.
+ * @param relativePositionType the specific position that the popover should be displayed relatively to positioningView.
+ *
+ * @note positioningView and sender are different together.
+ * @note rect MUST be a value on screen rect (MUST convert to screen rect by [convertRectToScreen:] method).
+ * @note If relativePositionType is FLOPopoverRelativePositionAutomatic. It means that the anchor view constraints will be calculated automatically based on the given frame.
+ * @warning If you provide the wrong positioningView, sender, or rect, it will lead the strange behaviour on showing.
+ */
+- (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect sender:(NSView *)sender relativePositionType:(FLOPopoverRelativePositionType)relativePositionType {
     if (self.type == FLOWindowPopover) {
-        [self.windowPopup showRelativeToView:positioningView withRect:rect anchorType:anchorType edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
+        [self.windowPopup showRelativeToView:positioningView withRect:rect sender:sender relativePositionType:relativePositionType edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
     } else {
-        [self.viewPopup showRelativeToView:positioningView withRect:rect anchorType:anchorType edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
+        [self.viewPopup showRelativeToView:positioningView withRect:rect sender:sender relativePositionType:relativePositionType edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
     }
     
     [self closeAfterTimeInterval];
