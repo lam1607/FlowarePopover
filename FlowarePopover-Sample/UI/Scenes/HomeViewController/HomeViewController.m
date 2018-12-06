@@ -354,7 +354,7 @@
         CGFloat verticalMargin = 10.0;
         CGFloat contentViewWidth = 350.0;
         CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
-        CGFloat contentHeight = ([self.comicsViewController getContentSizeHeight] > 0) ? [self.comicsViewController getContentSizeHeight] : 414.0;
+        CGFloat contentHeight = ([self.comicsViewController getContentSizeHeight] > 15.0) ? [self.comicsViewController getContentSizeHeight] : 429.0;
         CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : contentHeight;
         NSRect contentViewRect = NSMakeRect(0.0, 0.0, contentViewWidth, contentViewHeight);
         
@@ -373,14 +373,14 @@
         //        self.popoverComics.closesWhenPopoverResignsKey = YES;
         //        self.popoverComics.closesWhenApplicationBecomesInactive = YES;
         self.popoverComics.isMovable = YES;
-        self.popoverComics.isDetachable = YES;
+        //        self.popoverComics.isDetachable = YES;
         
         CGFloat positioningRectX = visibleRect.size.width - contentViewRect.size.width - verticalMargin / 2;
         CGFloat positioningRectY = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin / 2 - contentViewHeight;
         NSRect positioningRect = [sender.window convertRectToScreen:NSMakeRect(positioningRectX, positioningRectY, contentViewRect.size.width, contentViewRect.size.height)];
         
-        [self.popoverComics setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft animatedInDisplayRect:YES];
-        
+        [self.popoverComics setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft animatedInApplicationRect:YES];
+
         [self showRelativeToViewWithRect:positioningRect byPopover:self.popoverComics sender:sender];
     } else {
         NSRect visibleRect = [self.view visibleRect];
@@ -406,9 +406,9 @@
         self.popoverComics.isMovable = YES;
         self.popoverComics.isDetachable = YES;
         
-        [self.popoverComics setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft];
+        [self.popoverComics setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationLeftToRight];
         
-        [self showRelativeToRectOfViewWithPopover:self.popoverComics edgeType:FLOPopoverEdgeTypeBelowRightEdge atView:sender];
+        [self showRelativeToRectOfViewWithPopover:self.popoverComics edgeType:FLOPopoverEdgeTypeForwardTopEdge atView:sender];
     }
     
     [self observeComicsViewContentSizeChange];
@@ -466,7 +466,7 @@
         } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"showSecondBar"]) {
             [self handleShowSecondBar];
         } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"comicsPopup"]) {
-            [self showComicsPopupAtView:sender option:1];
+            [self showComicsPopupAtView:sender option:0];
         }
     }
 }

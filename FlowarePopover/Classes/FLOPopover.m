@@ -82,20 +82,6 @@
     self.contentViewController = nil;
 }
 
-- (void)setupPopupView {
-    if (!self.viewPopup) {
-        self.viewPopup = [[FLOViewPopup alloc] initWithContentView:self.contentViewController.view];
-        [self bindEventsForPopover:self.viewPopup];
-    }
-}
-
-- (void)setupPopupWindow {
-    if (!self.windowPopup) {
-        self.windowPopup = [[FLOWindowPopup alloc] initWithContentViewController:self.contentViewController];
-        [self bindEventsForPopover:self.windowPopup];
-    }
-}
-
 #pragma mark - Getter/Setter
 
 - (NSView *)contentView {
@@ -143,6 +129,8 @@
 }
 
 - (void)setAlwaysOnTop:(BOOL)alwaysOnTop {
+    [self restartPopupIfNeeded];
+    
     _alwaysOnTop = alwaysOnTop;
     
     if (self.type == FLOWindowPopover) {
@@ -153,6 +141,8 @@
 }
 
 - (void)setShouldShowArrow:(BOOL)needed {
+    [self restartPopupIfNeeded];
+    
     _shouldShowArrow = needed;
     
     if (self.type == FLOWindowPopover) {
@@ -163,6 +153,8 @@
 }
 
 - (void)setAnimated:(BOOL)animated {
+    [self restartPopupIfNeeded];
+    
     _animated = animated;
     
     if (self.type == FLOWindowPopover) {
@@ -173,6 +165,8 @@
 }
 
 - (void)setAnimatedForwarding:(BOOL)animatedForwarding {
+    [self restartPopupIfNeeded];
+    
     _animatedForwarding = animatedForwarding;
     
     if (self.type == FLOWindowPopover) {
@@ -182,7 +176,41 @@
     }
 }
 
+- (void)setStaysInApplicationRect:(BOOL)staysInApplicationRect {
+    _staysInApplicationRect = staysInApplicationRect;
+    
+    if (self.type == FLOWindowPopover) {
+        self.windowPopup.staysInApplicationRect = staysInApplicationRect;
+    } else {
+        self.viewPopup.staysInApplicationRect = staysInApplicationRect;
+    }
+}
+
+- (void)setUpdatesFrameWhileShowing:(BOOL)updatesFrameWhileShowing {
+    _updatesFrameWhileShowing = updatesFrameWhileShowing;
+    
+    if (self.type == FLOWindowPopover) {
+        self.windowPopup.updatesFrameWhileShowing = updatesFrameWhileShowing;
+    } else {
+        self.viewPopup.updatesFrameWhileShowing = updatesFrameWhileShowing;
+    }
+}
+
+- (void)setShouldRegisterSuperviewObservers:(BOOL)shouldRegisterSuperviewObservers {
+    [self restartPopupIfNeeded];
+    
+    _shouldRegisterSuperviewObservers = shouldRegisterSuperviewObservers;
+    
+    if (self.type == FLOWindowPopover) {
+        self.windowPopup.shouldRegisterSuperviewObservers = shouldRegisterSuperviewObservers;
+    } else {
+        self.viewPopup.shouldRegisterSuperviewObservers = shouldRegisterSuperviewObservers;
+    }
+}
+
 - (void)setShouldChangeSizeWhenApplicationResizes:(BOOL)shouldChangeSizeWhenApplicationResizes {
+    [self restartPopupIfNeeded];
+    
     _shouldChangeSizeWhenApplicationResizes = shouldChangeSizeWhenApplicationResizes;
     
     if (self.type == FLOWindowPopover) {
@@ -193,6 +221,8 @@
 }
 
 - (void)setClosesWhenPopoverResignsKey:(BOOL)closeWhenResign {
+    [self restartPopupIfNeeded];
+    
     _closesWhenPopoverResignsKey = closeWhenResign;
     
     if (self.type == FLOWindowPopover) {
@@ -203,6 +233,8 @@
 }
 
 - (void)setClosesWhenApplicationBecomesInactive:(BOOL)closeWhenInactive {
+    [self restartPopupIfNeeded];
+    
     _closesWhenApplicationBecomesInactive = closeWhenInactive;
     
     if (self.type == FLOWindowPopover) {
@@ -213,6 +245,8 @@
 }
 
 - (void)setClosesWhenApplicationResizes:(BOOL)closesWhenApplicationResizes {
+    [self restartPopupIfNeeded];
+    
     _closesWhenApplicationResizes = closesWhenApplicationResizes;
     
     if (self.type == FLOWindowPopover) {
@@ -223,12 +257,16 @@
 }
 
 - (void)setClosesAfterTimeInterval:(NSTimeInterval)closesAfterTimeInterval {
+    [self restartPopupIfNeeded];
+    
     _closesAfterTimeInterval = closesAfterTimeInterval;
     
     [self closeAfterTimeInterval];
 }
 
 - (void)setIsMovable:(BOOL)isMovable {
+    [self restartPopupIfNeeded];
+    
     _isMovable = isMovable;
     
     if (self.type == FLOWindowPopover) {
@@ -239,6 +277,8 @@
 }
 
 - (void)setIsDetachable:(BOOL)isDetachable {
+    [self restartPopupIfNeeded];
+    
     _isDetachable = isDetachable;
     
     if (self.type == FLOWindowPopover) {
@@ -251,6 +291,8 @@
 }
 
 - (void)setCanBecomeKey:(BOOL)canBecomeKey {
+    [self restartPopupIfNeeded];
+    
     if (self.type == FLOWindowPopover) {
         _canBecomeKey = canBecomeKey;
         
@@ -259,10 +301,128 @@
 }
 
 - (void)setTag:(NSInteger)tag {
+    [self restartPopupIfNeeded];
+    
     if (self.type == FLOWindowPopover) {
         _tag = tag;
         
         self.windowPopup.tag = tag;
+    }
+}
+
+#pragma mark - Local implementations
+
+- (void)setupPopupView {
+    if (self.viewPopup == nil) {
+        self.viewPopup = [[FLOViewPopup alloc] initWithContentView:self.contentViewController.view];
+        [self bindEventsForPopover:self.viewPopup];
+    }
+}
+
+- (void)setupPopupWindow {
+    if (self.windowPopup == nil) {
+        self.windowPopup = [[FLOWindowPopup alloc] initWithContentViewController:self.contentViewController];
+        [self bindEventsForPopover:self.windowPopup];
+    }
+}
+
+- (void)restartPopupIfNeeded {
+    switch (self.type) {
+        case FLOWindowPopover:
+            if (self.windowPopup == nil) {
+                [self setupPopupWindow];
+                [self restorePopupValues:self.windowPopup];
+            }
+            break;
+        case FLOViewPopover:
+            if (self.viewPopup == nil) {
+                [self setupPopupView];
+                [self restorePopupValues:self.viewPopup];
+            }
+            break;
+        default:
+            // default is FLOViewPopover
+            break;
+    }
+}
+
+- (void)storePopupValues:(NSResponder *)popover {
+    if ([popover isKindOfClass:[FLOViewPopup class]] && (self.type == FLOViewPopover)) {
+        FLOViewPopup *viewPopup = (FLOViewPopup *)popover;
+        
+        self.alwaysOnTop = viewPopup.alwaysOnTop;
+        self.shouldShowArrow = viewPopup.shouldShowArrow;
+        self.animated = viewPopup.animated;
+        self.animatedForwarding = viewPopup.animatedForwarding;
+        self.staysInApplicationRect = viewPopup.staysInApplicationRect;
+        self.updatesFrameWhileShowing = viewPopup.updatesFrameWhileShowing;
+        self.shouldRegisterSuperviewObservers = viewPopup.shouldRegisterSuperviewObservers;
+        self.shouldChangeSizeWhenApplicationResizes = viewPopup.shouldChangeSizeWhenApplicationResizes;
+        self.closesWhenPopoverResignsKey = viewPopup.closesWhenPopoverResignsKey;
+        self.closesWhenApplicationBecomesInactive = viewPopup.closesWhenApplicationBecomesInactive;
+        self.closesWhenApplicationResizes = viewPopup.closesWhenApplicationResizes;
+        self.isMovable = viewPopup.isMovable;
+        self.isDetachable = viewPopup.isDetachable;
+        
+        self.viewPopup = nil;
+    } else if ([popover isKindOfClass:[FLOWindowPopup class]] && (self.type == FLOWindowPopover)) {
+        FLOWindowPopup *windowPopup = (FLOWindowPopup *)popover;
+        
+        self.alwaysOnTop = windowPopup.alwaysOnTop;
+        self.shouldShowArrow = windowPopup.shouldShowArrow;
+        self.animated = windowPopup.animated;
+        self.animatedForwarding = windowPopup.animatedForwarding;
+        self.staysInApplicationRect = windowPopup.staysInApplicationRect;
+        self.updatesFrameWhileShowing = windowPopup.updatesFrameWhileShowing;
+        self.shouldRegisterSuperviewObservers = windowPopup.shouldRegisterSuperviewObservers;
+        self.shouldChangeSizeWhenApplicationResizes = windowPopup.shouldChangeSizeWhenApplicationResizes;
+        self.closesWhenPopoverResignsKey = windowPopup.closesWhenPopoverResignsKey;
+        self.closesWhenApplicationBecomesInactive = windowPopup.closesWhenApplicationBecomesInactive;
+        self.closesWhenApplicationResizes = windowPopup.closesWhenApplicationResizes;
+        self.isMovable = windowPopup.isMovable;
+        self.isDetachable = windowPopup.isDetachable;
+        self.canBecomeKey = windowPopup.canBecomeKey;
+        self.tag = windowPopup.tag;
+        
+        self.windowPopup = nil;
+    }
+}
+
+- (void)restorePopupValues:(NSResponder *)popover {
+    if ([popover isKindOfClass:[FLOViewPopup class]] && (self.type == FLOViewPopover)) {
+        FLOViewPopup *viewPopup = (FLOViewPopup *)popover;
+        
+        viewPopup.alwaysOnTop = self.alwaysOnTop;
+        viewPopup.shouldShowArrow = self.shouldShowArrow;
+        viewPopup.animated = self.animated;
+        viewPopup.animatedForwarding = self.animatedForwarding;
+        viewPopup.staysInApplicationRect = self.staysInApplicationRect;
+        viewPopup.updatesFrameWhileShowing = self.updatesFrameWhileShowing;
+        viewPopup.shouldRegisterSuperviewObservers = self.shouldRegisterSuperviewObservers;
+        viewPopup.shouldChangeSizeWhenApplicationResizes = self.shouldChangeSizeWhenApplicationResizes;
+        viewPopup.closesWhenPopoverResignsKey = self.closesWhenPopoverResignsKey;
+        viewPopup.closesWhenApplicationBecomesInactive = self.closesWhenApplicationBecomesInactive;
+        viewPopup.closesWhenApplicationResizes = self.closesWhenApplicationResizes;
+        viewPopup.isMovable = self.isMovable;
+        viewPopup.isDetachable = self.isDetachable;
+    } else if ([popover isKindOfClass:[FLOWindowPopup class]] && (self.type == FLOWindowPopover)) {
+        FLOWindowPopup *windowPopup = (FLOWindowPopup *)popover;
+        
+        windowPopup.alwaysOnTop = self.alwaysOnTop;
+        windowPopup.shouldShowArrow = self.shouldShowArrow;
+        windowPopup.animated = self.animated;
+        windowPopup.animatedForwarding = self.animatedForwarding;
+        windowPopup.staysInApplicationRect = self.staysInApplicationRect;
+        windowPopup.updatesFrameWhileShowing = self.updatesFrameWhileShowing;
+        windowPopup.shouldRegisterSuperviewObservers = self.shouldRegisterSuperviewObservers;
+        windowPopup.shouldChangeSizeWhenApplicationResizes = self.shouldChangeSizeWhenApplicationResizes;
+        windowPopup.closesWhenPopoverResignsKey = self.closesWhenPopoverResignsKey;
+        windowPopup.closesWhenApplicationBecomesInactive = self.closesWhenApplicationBecomesInactive;
+        windowPopup.closesWhenApplicationResizes = self.closesWhenApplicationResizes;
+        windowPopup.isMovable = self.isMovable;
+        windowPopup.isDetachable = self.isDetachable;
+        windowPopup.canBecomeKey = self.canBecomeKey;
+        windowPopup.tag = self.tag;
     }
 }
 
@@ -291,7 +451,22 @@
     
     target.didCloseBlock = ^(NSResponder *popover) {
         if ((popover == target) && [wself.delegate respondsToSelector:@selector(floPopoverDidClose:)]) {
+            [wself storePopupValues:popover];
             [wself.delegate floPopoverDidClose:self];
+        }
+    };
+    
+    target.didMoveBlock = ^(NSResponder *popover) {
+        if ((popover == target) && (wself.closesAfterTimeInterval > 0)) {
+            wself.closesAfterTimeInterval = 0.0;
+            
+            [NSObject cancelPreviousPerformRequestsWithTarget:wself selector:@selector(close) object:nil];
+        }
+    };
+    
+    target.didDetachBlock = ^(NSResponder *popover) {
+        if (popover == target) {
+            wself.animated = NO;
         }
     };
 }
@@ -304,20 +479,24 @@
  * @param level the level of window popover.
  */
 - (void)setPopoverLevel:(NSWindowLevel)level {
+    [self restartPopupIfNeeded];
+    
     if (self.type == FLOWindowPopover) {
         [self.windowPopup setPopoverLevel:level];
     }
 }
 
 - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType {
-    [self setAnimationBehaviour:animationBehaviour type:animationType animatedInDisplayRect:NO];
+    [self setAnimationBehaviour:animationBehaviour type:animationType animatedInApplicationRect:NO];
 }
 
-- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType animatedInDisplayRect:(BOOL)animatedInDisplayRect {
+- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType animatedInApplicationRect:(BOOL)animatedInApplicationRect {
+    [self restartPopupIfNeeded];
+    
     if (self.type == FLOWindowPopover) {
-        [self.windowPopup setAnimationBehaviour:animationBehaviour type:animationType animatedInDisplayRect:animatedInDisplayRect];
+        [self.windowPopup setAnimationBehaviour:animationBehaviour type:animationType animatedInApplicationRect:animatedInApplicationRect];
     } else {
-        [self.viewPopup setAnimationBehaviour:animationBehaviour type:animationType animatedInDisplayRect:animatedInDisplayRect];
+        [self.viewPopup setAnimationBehaviour:animationBehaviour type:animationType animatedInApplicationRect:animatedInApplicationRect];
     }
 }
 
@@ -327,6 +506,8 @@
  * @param contentView the new content view needs displayed on the popover.
  */
 - (void)setPopoverContentView:(NSView *)contentView {
+    [self restartPopupIfNeeded];
+    
     self.contentView = contentView;
     
     if (self.type == FLOWindowPopover) {
@@ -337,6 +518,8 @@
 }
 
 - (void)setPopoverContentViewController:(NSViewController *)contentViewController {
+    [self restartPopupIfNeeded];
+    
     self.contentViewController = contentViewController;
     
     if (self.type == FLOWindowPopover) {
@@ -352,6 +535,8 @@
  * @param newSize new size of content view.
  */
 - (void)setPopoverContentViewSize:(NSSize)newSize {
+    [self restartPopupIfNeeded];
+    
     if (self.type == FLOWindowPopover) {
         [self.windowPopup setPopoverContentViewSize:newSize];
     } else {
@@ -359,7 +544,19 @@
     }
 }
 
+- (void)setPopoverPositioningRect:(NSRect)rect {
+    [self restartPopupIfNeeded];
+    
+    if (self.type == FLOWindowPopover) {
+        [self.windowPopup setPopoverPositioningRect:rect];
+    } else {
+        [self.viewPopup setPopoverPositioningRect:rect];
+    }
+}
+
 - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect {
+    [self restartPopupIfNeeded];
+    
     if (self.type == FLOWindowPopover) {
         [self.windowPopup setPopoverContentViewSize:newSize positioningRect:rect];
     } else {
@@ -378,6 +575,8 @@
  * @note positioningView is also a sender that sends event for showing the popover (positioningView ≡ sender).
  */
 - (void)showRelativeToRect:(NSRect)rect ofView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType {
+    [self restartPopupIfNeeded];
+    
     if (self.type == FLOWindowPopover) {
         [self.windowPopup showRelativeToRect:rect ofView:positioningView edgeType:edgeType];
     } else {
@@ -446,6 +645,8 @@
  * @warning If you provide the wrong positioningView, sender, or rect, it will lead the strange behaviour on showing.
  */
 - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect sender:(NSView *)sender relativePositionType:(FLOPopoverRelativePositionType)relativePositionType {
+    [self restartPopupIfNeeded];
+    
     if (self.type == FLOWindowPopover) {
         [self.windowPopup showRelativeToView:positioningView withRect:rect sender:sender relativePositionType:relativePositionType edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
     } else {

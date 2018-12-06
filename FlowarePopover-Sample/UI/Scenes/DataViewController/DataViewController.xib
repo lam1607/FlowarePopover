@@ -10,6 +10,7 @@
             <connections>
                 <outlet property="outlineViewData" destination="Sfw-WA-wQj" id="Eng-BZ-obo"/>
                 <outlet property="scrollView" destination="d8a-W8-Rpw" id="4Tn-Ps-Wga"/>
+                <outlet property="vHeader" destination="wqh-CU-shR" id="Rev-Ee-HUN"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -19,14 +20,20 @@
             <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="wqh-CU-shR" userLabel="View Header">
+                    <rect key="frame" x="0.0" y="585" width="800" height="15"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="1Qu-Vg-Maa"/>
+                    </constraints>
+                </customView>
                 <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d8a-W8-Rpw">
-                    <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
+                    <rect key="frame" x="0.0" y="0.0" width="800" height="585"/>
                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="6Jb-dy-LcH">
-                        <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="800" height="585"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" indentationPerLevel="16" outlineTableColumn="quQ-GL-oOY" id="Sfw-WA-wQj" customClass="CustomNSOutlineView">
-                                <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="800" height="585"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -62,9 +69,12 @@
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="d8a-W8-Rpw" secondAttribute="bottom" id="2Ah-es-MRW"/>
+                <constraint firstItem="d8a-W8-Rpw" firstAttribute="top" secondItem="wqh-CU-shR" secondAttribute="bottom" id="DcE-CW-d9v"/>
+                <constraint firstItem="wqh-CU-shR" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="aOq-f7-eUF"/>
                 <constraint firstItem="d8a-W8-Rpw" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="dBn-xn-7P0"/>
                 <constraint firstAttribute="trailing" secondItem="d8a-W8-Rpw" secondAttribute="trailing" id="fEs-7Q-dcN"/>
-                <constraint firstItem="d8a-W8-Rpw" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="jBb-pc-CVc"/>
+                <constraint firstAttribute="trailing" secondItem="wqh-CU-shR" secondAttribute="trailing" id="mFX-tj-s0E"/>
+                <constraint firstItem="wqh-CU-shR" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="yGC-OD-REw"/>
             </constraints>
         </customView>
     </objects>

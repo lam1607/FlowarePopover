@@ -9,8 +9,8 @@
 #import <Cocoa/Cocoa.h>
 
 static CGFloat const PopoverBackgroundViewBorderRadius = 5.0;
-static CGFloat const PopoverBackgroundViewArrowWidth = 21.0;
-static CGFloat const PopoverBackgroundViewArrowHeight = 14.0;
+static CGFloat const PopoverBackgroundViewArrowWidth = 17.0;
+static CGFloat const PopoverBackgroundViewArrowHeight = 12.0;
 
 #pragma mark - FLOPopoverClippingView
 
@@ -44,6 +44,26 @@ static CGFloat const PopoverBackgroundViewArrowHeight = 14.0;
 
 @property (nonatomic, weak) id<FLOPopoverBackgroundViewDelegate> delegate;
 
+
+// The edge of the target view which the popover is appearing next to. This will
+// be set by the popover.
+@property (nonatomic, assign, readonly) NSRectEdge popoverEdge;
+
+// The rectangle, in screen coordinates, where the popover originated. This will
+// be set by the popover.
+@property (nonatomic, assign, readonly) NSRect popoverOrigin;
+
+// The size of the arrow used to indicate the origin of the popover.
+//
+// Note that the height will always be the distance from the view to the tip of
+// the arrow.
+@property (nonatomic, assign) NSSize arrowSize;
+
+// The color used to fill the shape of the background view.
+@property (nonatomic, strong) NSColor *fillColor;
+
+@property (nonatomic, assign) CGFloat borderRadius;
+
 // Given a size of the content this should be overridden by subclasses to
 // describe how big the overall popover should be.
 //
@@ -52,6 +72,8 @@ static CGFloat const PopoverBackgroundViewArrowHeight = 14.0;
 //
 // Returns the overall size of the backgroundView as a `CGSize`.
 - (CGSize)sizeForBackgroundViewWithContentSize:(CGSize)contentSize popoverEdge:(NSRectEdge)popoverEdge;
+
+- (NSSize)contentViewSizeForSize:(NSSize)size;
 
 // Given a frame for the background this should be overridden by subclasses to
 // describe where the content should fit within the popover.
@@ -74,25 +96,6 @@ static CGFloat const PopoverBackgroundViewArrowHeight = 14.0;
 //
 // Returns a `CGPathRef` of the outline of the background view.
 - (CGPathRef)newPopoverPathForEdge:(NSRectEdge)popoverEdge inFrame:(NSRect)frame;
-
-// The edge of the target view which the popover is appearing next to. This will
-// be set by the popover.
-@property (nonatomic, assign, readonly) NSRectEdge popoverEdge;
-
-// The rectangle, in screen coordinates, where the popover originated. This will
-// be set by the popover.
-@property (nonatomic, assign, readonly) NSRect popoverOrigin;
-
-// The size of the arrow used to indicate the origin of the popover.
-//
-// Note that the height will always be the distance from the view to the tip of
-// the arrow.
-@property (nonatomic, assign) NSSize arrowSize;
-
-// The color used to fill the shape of the background view.
-@property (nonatomic, strong) NSColor *fillColor;
-
-@property (nonatomic, assign) CGFloat borderRadius;
 
 - (void)setMovable:(BOOL)movable;
 - (void)setDetachable:(BOOL)detachable;

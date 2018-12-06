@@ -15,6 +15,9 @@
 @property (nonatomic, copy) void (^willCloseBlock)(NSResponder *popover);
 @property (nonatomic, copy) void (^didCloseBlock)(NSResponder *popover);
 
+@property (nonatomic, copy) void (^didMoveBlock)(NSResponder *popover);
+@property (nonatomic, copy) void (^didDetachBlock)(NSResponder *popover);
+
 #pragma mark - Initialize
 
 /**
@@ -35,7 +38,7 @@
 
 #pragma mark - Utilities
 
-- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType animatedInDisplayRect:(BOOL)animatedInDisplayRect;
+- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType animatedInApplicationRect:(BOOL)animatedInApplicationRect;
 
 /**
  * Update the popover to new contentView while it's displaying.
@@ -51,6 +54,7 @@
  * @param newSize new size of content view.
  */
 - (void)setPopoverContentViewSize:(NSSize)newSize;
+- (void)setPopoverPositioningRect:(NSRect)rect;
 - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;
 
 

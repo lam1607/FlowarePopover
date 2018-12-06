@@ -16,6 +16,8 @@
 
 @interface ComicsViewController () <NSOutlineViewDelegate, NSOutlineViewDataSource, CustomNSOutlineViewDelegate>
 
+@property (weak) IBOutlet NSView *vHeader;
+
 @property (weak) IBOutlet NSScrollView *scrollView;
 @property (weak) IBOutlet CustomNSOutlineView *outlineViewData;
 
@@ -67,6 +69,18 @@
     self.outlineViewData.dataSource = self;
 }
 
+- (void)refreshUIColors {
+    [super refreshUIColors];
+    
+    if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name]) {
+#ifdef SHOULD_USE_ASSET_COLORS
+        [Utils setBackgroundColor:[NSColor _tealColor] forView:self.vHeader];
+#else
+        [Utils setBackgroundColor:[NSColor tealColor] forView:self.vHeader];
+#endif
+    }
+}
+
 #pragma mark - Processes
 
 - (void)loadData {
@@ -82,7 +96,7 @@
 - (CGFloat)getContentSizeHeight {
     NSInteger rows = self.outlineViewData.numberOfRows;
     
-    return rows * 46.0;
+    return rows * 46.0 + self.vHeader.frame.size.height;
 }
 
 #pragma mark - CustomNSOutlineViewDelegate
@@ -189,9 +203,11 @@
     
     if (self.didContentSizeChange) {
         CGFloat height = [self getContentSizeHeight];
-        NSSize newSize = NSMakeSize(self.view.superview.frame.size.width, height);
+        NSSize newSize = NSMakeSize(350.0, height);
         
-        self.didContentSizeChange(newSize);
+        if (NSEqualSizes(self.view.frame.size, newSize) == NO) {
+            self.didContentSizeChange(newSize);
+        }
     }
 }
 

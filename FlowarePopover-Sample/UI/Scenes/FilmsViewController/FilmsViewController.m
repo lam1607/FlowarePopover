@@ -15,6 +15,8 @@
 
 @interface FilmsViewController () <NSCollectionViewDataSource, NSCollectionViewDelegate, NSCollectionViewDelegateFlowLayout>
 
+@property (weak) IBOutlet NSView *vHeader;
+
 @property (weak) IBOutlet NSScrollView *scrollView;
 @property (weak) IBOutlet NSCollectionView *collectionViewData;
 
@@ -60,6 +62,18 @@
     [self.collectionViewData registerNib:[[NSNib alloc] initWithNibNamed:NSStringFromClass([FilmCellView class]) bundle:nil] forItemWithIdentifier:NSStringFromClass([FilmCellView class])];
     self.collectionViewData.delegate = self;
     self.collectionViewData.dataSource = self;
+}
+
+- (void)refreshUIColors {
+    [super refreshUIColors];
+    
+    if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name]) {
+#ifdef SHOULD_USE_ASSET_COLORS
+        [Utils setBackgroundColor:[NSColor _tealColor] forView:self.vHeader];
+#else
+        [Utils setBackgroundColor:[NSColor tealColor] forView:self.vHeader];
+#endif
+    }
 }
 
 #pragma mark - Processes

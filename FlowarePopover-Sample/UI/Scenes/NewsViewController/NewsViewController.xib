@@ -10,6 +10,7 @@
             <connections>
                 <outlet property="scrollView" destination="7lu-CP-cFj" id="XGv-Bq-TtC"/>
                 <outlet property="tableViewData" destination="ZTi-NY-wyo" id="vnC-ed-7co"/>
+                <outlet property="vHeader" destination="t8x-eC-8DK" id="EBj-9H-Ghh"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -19,14 +20,20 @@
             <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="t8x-eC-8DK" userLabel="View Header">
+                    <rect key="frame" x="0.0" y="585" width="800" height="15"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="95B-Nx-VEt"/>
+                    </constraints>
+                </customView>
                 <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7lu-CP-cFj">
-                    <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
+                    <rect key="frame" x="0.0" y="0.0" width="800" height="585"/>
                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="uBY-Zc-afI">
-                        <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="800" height="585"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" id="ZTi-NY-wyo" userLabel="Table View Data">
-                                <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="800" height="585"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -63,8 +70,11 @@
             <constraints>
                 <constraint firstItem="7lu-CP-cFj" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="0fo-a2-EwA"/>
                 <constraint firstAttribute="bottom" secondItem="7lu-CP-cFj" secondAttribute="bottom" id="4SY-Zp-lVO"/>
+                <constraint firstAttribute="trailing" secondItem="t8x-eC-8DK" secondAttribute="trailing" id="ALy-wp-SJz"/>
                 <constraint firstAttribute="trailing" secondItem="7lu-CP-cFj" secondAttribute="trailing" id="Bia-eB-e3m"/>
-                <constraint firstItem="7lu-CP-cFj" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="lcd-ih-e4y"/>
+                <constraint firstItem="t8x-eC-8DK" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="Det-VI-ASn"/>
+                <constraint firstItem="7lu-CP-cFj" firstAttribute="top" secondItem="t8x-eC-8DK" secondAttribute="bottom" id="VoO-ad-loC"/>
+                <constraint firstItem="t8x-eC-8DK" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="gsO-EY-wJA"/>
             </constraints>
         </customView>
     </objects>

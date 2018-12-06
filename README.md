@@ -85,7 +85,7 @@ The default initialization of FLOPopover type is **`FLOWindowPopover`**
 - **frame (readonly)** : Frame of popover.
 - **shown (getter = isShown) (readonly)** : Check whether the popover is shown or not.
 - **alwaysOnTop** : Make the popover always on top. If there is more than one popover is set as top, only the last one is top most
-- **shouldShowArrow** : Show arrow at popover
+- **shouldShowArrow** : Show arrow at popover (**only available when displaying popover at sender view**)
 - **animated** : Show popover with animation
 - **animatedForwarding** : Animation with forwarding direction
 - **shouldChangeSizeWhenApplicationResizes** : Change the popover size relatively the size of application window
@@ -166,7 +166,6 @@ For more detail about **`[showRelativeToView:withRect:]`**, **`[showRelativeToVi
   ```
 - Given rect: Dipslay the popover relatively to positioningView at the given rect with sender.
   ```
-    CGFloat positioningRectX = visibleRect.size.width - contentViewRect.size.width - verticalMargin / 2;
     NSRect viewRect = [self.view.window convertRectToScreen:[self.view convertRect:self.view.bounds toView:self.view.window.contentView]];
     NSRect popoverRect = sortSelectionController.view.frame;
     popoverRect.origin.x = viewRect.origin.x + viewRect.size.width + 2;
@@ -226,9 +225,10 @@ After setting the property **`animated`** is **`YES`**, we should use the follow
 or
 
 ```
-  - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType animatedInDisplayRect:(BOOL)animatedInDisplayRect;
+  - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType animatedInApplicationRect:(BOOL)animatedInApplicationRect;
 ```
-**`animatedInDisplayRect`** means that the animation is only performed in the popover frame. Value of **`animatedInDisplayRect`** is set as **`NO`** by default.
+
+**`animatedInApplicationRect`** means that the animation is only performed inside the application frame. Value of **`animatedInApplicationRect`** is set as **`NO`** by default.
 
 The **`FLOPopoverAnimationBehaviour`** that is animation behaviour has following types:
 - **`FLOPopoverAnimationBehaviorDefault`** (popover will display with slightly default fade in/out animation)
@@ -267,12 +267,15 @@ When you display popover, if you want you change size, position of the view or v
     - (void)setPopoverContentViewSize:(NSSize)newSize;
   ```
 
+- Update position of popover.
+  ```
+    - (void)setPopoverPositioningRect:(NSRect)rect;
+  ```
+
 - Update content size for view or view controller in popover and position of popover.
   ```
     - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;
   ```
-
-If you just want to update the position of the popover, leave the **`newSize`** as **`NSZeroSize`**.
 
 When you want to change the view or view controller that displayed on popover, you can use below methods.
 

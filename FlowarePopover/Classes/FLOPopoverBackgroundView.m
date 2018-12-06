@@ -43,7 +43,8 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     _clippingPath = clippingPath;
     CGPathRetain(_clippingPath);
     
-    self.needsDisplay = YES;
+    // @TODO: This line crashes on macOS 10.14
+    //    self.needsDisplay = YES;
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
@@ -53,7 +54,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 }
 
 - (void)setupArrowPath {
-    CGContextRef currentContext = NSGraphicsContext.currentContext.graphicsPort;
+    CGContextRef currentContext = NSGraphicsContext.currentContext.CGContext;
     
     if (currentContext != nil) {
         self.pathColor = ((self.pathColor != nil) && (self.pathColor != [NSColor.clearColor CGColor])) ? self.pathColor : [NSColor.lightGrayColor CGColor];
@@ -91,8 +92,6 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 @property (nonatomic, assign) NSPoint originalMouseOffset;
 @property (nonatomic, assign) BOOL dragging;
 
-@property (nonatomic, assign) BOOL clippingViewUpdated;
-
 @end
 
 @implementation FLOPopoverBackgroundView
@@ -101,7 +100,6 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     if (self = [super initWithFrame:frame]) {
         _arrowSize = NSZeroSize;
         _fillColor = NSColor.clearColor;
-        _clippingViewUpdated = NO;
         
         _clippingView = [[FLOPopoverClippingView alloc] initWithFrame:self.bounds];
         
@@ -122,12 +120,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 - (void)viewWillDraw {
     [super viewWillDraw];
-    
-    if (self.clippingViewUpdated == NO) {
-        self.clippingViewUpdated = YES;
-        
-        [self updateClippingView];
-    }
+    [self updateClippingView];
 }
 
 #pragma mark - Getter/Setter
@@ -178,12 +171,10 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 - (void)setMovable:(BOOL)movable {
     self.isMovable = movable;
-    _fillColor = (self.isMovable || self.isDetachable) ? [NSColor.whiteColor colorWithAlphaComponent:0.86] : NSColor.clearColor;
 }
 
 - (void)setDetachable:(BOOL)detachable {
     self.isDetachable = detachable;
-    _fillColor = (self.isMovable || self.isDetachable) ? [NSColor.whiteColor colorWithAlphaComponent:0.86] : NSColor.clearColor;
 }
 
 - (void)setShouldShowShadow:(BOOL)needed {
@@ -201,8 +192,6 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     self.arrowSize = needed ? CGSizeMake(PopoverBackgroundViewArrowWidth, PopoverBackgroundViewArrowHeight) : NSZeroSize;
     
     if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
-        [self setMovable:NO];
-        [self setDetachable:NO];
         [self updateClippingView];
     }
 }
@@ -257,36 +246,43 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     return returnSize;
 }
 
+- (NSSize)contentViewSizeForSize:(NSSize)size {
+    NSSize returnSize = size;
+    
+    if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
+        if ((self.popoverEdge == NSRectEdgeMinX) || (self.popoverEdge == NSRectEdgeMaxX)) {
+            returnSize.width -= self.arrowSize.height;
+        } else {
+            returnSize.height -= self.arrowSize.height;
+        }
+    }
+    
+    return returnSize;
+}
+
 - (NSRect)contentViewFrameForBackgroundFrame:(NSRect)backgroundFrame popoverEdge:(NSRectEdge)popoverEdge {
     NSRect returnFrame = NSInsetRect(backgroundFrame, 0.0, 0.0);
     
-    if (NSEqualSizes(self.arrowSize, NSZeroSize) && (self.isMovable || self.isDetachable)) {
-        returnFrame.size.height -= PopoverBackgroundViewArrowHeight;
-        returnFrame.size.width -= PopoverBackgroundViewArrowHeight;
-        returnFrame.origin.x += PopoverBackgroundViewArrowHeight / 2;
-        returnFrame.origin.y += PopoverBackgroundViewArrowHeight / 2;
-        
-        return returnFrame;
-    }
-    
-    switch (popoverEdge) {
-        case NSRectEdgeMinX:
-            returnFrame.size.width -= self.arrowSize.height;
-            break;
-        case NSRectEdgeMinY:
-            returnFrame.size.height -= self.arrowSize.height;
-            break;
-        case NSRectEdgeMaxX:
-            returnFrame.size.width -= self.arrowSize.height;
-            returnFrame.origin.x += self.arrowSize.height;
-            break;
-        case NSRectEdgeMaxY:
-            returnFrame.size.height -= self.arrowSize.height;
-            returnFrame.origin.y += self.arrowSize.height;
-            break;
-        default:
-            NSAssert(NO, @"Failed to pass in a valid NSRectEdge");
-            break;
+    if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
+        switch (popoverEdge) {
+            case NSRectEdgeMinX:
+                returnFrame.size.width -= self.arrowSize.height;
+                break;
+            case NSRectEdgeMinY:
+                returnFrame.size.height -= self.arrowSize.height;
+                break;
+            case NSRectEdgeMaxX:
+                returnFrame.size.width -= self.arrowSize.height;
+                returnFrame.origin.x += self.arrowSize.height;
+                break;
+            case NSRectEdgeMaxY:
+                returnFrame.size.height -= self.arrowSize.height;
+                returnFrame.origin.y += self.arrowSize.height;
+                break;
+            default:
+                NSAssert(NO, @"Failed to pass in a valid NSRectEdge");
+                break;
+        }
     }
     
     return returnFrame;
@@ -408,8 +404,12 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 - (void)mouseDragged:(NSEvent *)event {
     self.dragging = YES;
     
-    if (NSEqualSizes(self.arrowSize, NSZeroSize) && (self.isMovable || self.isDetachable)) {
+    if (self.isMovable || self.isDetachable) {
         if (self.dragging) {
+            if ([self.delegate respondsToSelector:@selector(didPopoverMakeMovement)]) {
+                [self.delegate didPopoverMakeMovement];
+            }
+            
             BOOL isFLOWindowPopover = self.window != [[FLOPopoverUtils sharedInstance] appMainWindow];
             
             NSPoint currentMouseOffset = isFLOWindowPopover ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:self.window.contentView];
@@ -428,11 +428,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 - (void)mouseUp:(NSEvent *)event {
     if (self.dragging) {
-        if ([self.delegate respondsToSelector:@selector(didPopoverMakeMovement)]) {
-            [self.delegate didPopoverMakeMovement];
-        }
-        
-        if (NSEqualSizes(self.arrowSize, NSZeroSize) && self.isDetachable) {
+        if (self.isDetachable) {
             self.isDetachable = NO;
             self.isMovable = NO;
             

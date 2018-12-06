@@ -15,6 +15,8 @@
 
 @interface NewsViewController () <NSTableViewDelegate, NSTableViewDataSource>
 
+@property (weak) IBOutlet NSView *vHeader;
+
 @property (weak) IBOutlet NSScrollView *scrollView;
 @property (weak) IBOutlet NSTableView *tableViewData;
 
@@ -64,6 +66,18 @@
     [self.tableViewData registerNib:[[NSNib alloc] initWithNibNamed:NSStringFromClass([NewsCellView class]) bundle:nil] forIdentifier:NSStringFromClass([NewsCellView class])];
     self.tableViewData.delegate = self;
     self.tableViewData.dataSource = self;
+}
+
+- (void)refreshUIColors {
+    [super refreshUIColors];
+    
+    if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name]) {
+#ifdef SHOULD_USE_ASSET_COLORS
+        [Utils setBackgroundColor:[NSColor _tealColor] forView:self.vHeader];
+#else
+        [Utils setBackgroundColor:[NSColor tealColor] forView:self.vHeader];
+#endif
+    }
 }
 
 #pragma mark - Processes

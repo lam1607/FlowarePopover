@@ -26,9 +26,11 @@
 @property (nonatomic, strong) NSView *contentView;
 @property (nonatomic, strong) NSViewController *contentViewController;
 
+@property (nonatomic, assign) BOOL staysInApplicationRect;
+
 @property (nonatomic, assign) FLOPopoverAnimationBehaviour animationBehaviour;
 @property (nonatomic, assign) FLOPopoverAnimationType animationType;
-@property (nonatomic, assign) BOOL animatedInDisplayRect;
+@property (nonatomic, assign) BOOL animatedInApplicationRect;
 
 @property (nonatomic, strong) NSView *positioningAnchorView;
 @property (nonatomic, strong) NSView *senderView;
@@ -68,5 +70,8 @@
 - (void)setupPositioningAnchorWithView:(NSView *)positioningView positioningRect:(NSRect)positioningRect shouldUpdatePosition:(BOOL)shouldUpdatePosition;
 - (NSRect)popoverRectForEdge:(NSRectEdge)popoverEdge;
 - (NSRect)popoverRect;
+- (NSRect)_popoverRectForEdge:(NSRectEdge *)popoverEdge;
+- (NSRect)_popoverRect;
+- (void)_backgroundViewShouldUpdate:(BOOL)updated;
 
 @end

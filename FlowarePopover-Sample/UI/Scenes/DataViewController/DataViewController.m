@@ -16,6 +16,8 @@
 
 @interface DataViewController () <NSOutlineViewDelegate, NSOutlineViewDataSource, CustomNSOutlineViewDelegate>
 
+@property (weak) IBOutlet NSView *vHeader;
+
 @property (weak) IBOutlet NSScrollView *scrollView;
 @property (weak) IBOutlet CustomNSOutlineView *outlineViewData;
 
@@ -70,6 +72,18 @@
     self.outlineViewData.pdelegate = self;
     self.outlineViewData.delegate = self;
     self.outlineViewData.dataSource = self;
+}
+
+- (void)refreshUIColors {
+    [super refreshUIColors];
+    
+    if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name]) {
+#ifdef SHOULD_USE_ASSET_COLORS
+        [Utils setBackgroundColor:[NSColor _tealColor] forView:self.vHeader];
+#else
+        [Utils setBackgroundColor:[NSColor tealColor] forView:self.vHeader];
+#endif
+    }
 }
 
 #pragma mark - Processes
