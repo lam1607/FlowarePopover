@@ -63,6 +63,7 @@
 - (BOOL)didViews:(NSArray *)views contain:(NSView *)view;
 - (BOOL)didWindow:(NSWindow *)parent contain:(NSWindow *)child;
 - (BOOL)didWindows:(NSArray *)windows contain:(NSWindow *)window;
+- (NSVisualEffectView *)contentViewDidContainVisualEffect;
 
 #pragma mark - Display utilities
 

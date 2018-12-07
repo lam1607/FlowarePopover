@@ -68,7 +68,7 @@ CGContextRef FLOExtensionsGraphicsContextCreate(CGSize size, CGColorSpaceRef col
     return imageShot;
 }
 
-+ (NSImage *)desktopScreenShotOnFrame:(NSRect)onFrame {
++ (NSImage *)screenShotImageAtFrame:(NSRect)onFrame {
     NSImage *shotImage;
     NSRect desktopScreen = [[NSScreen mainScreen] frame];
     NSRect shotRect = NSMakeRect(onFrame.origin.x, desktopScreen.size.height - (onFrame.size.height + onFrame.origin.y), onFrame.size.width, onFrame.size.height);

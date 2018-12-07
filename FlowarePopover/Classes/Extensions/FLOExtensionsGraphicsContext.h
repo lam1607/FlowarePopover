@@ -16,7 +16,7 @@ extern CGContextRef FLOExtensionsGraphicsContextCreate(CGSize size, CGColorSpace
 
 + (NSImage *)imageRepresentationOnRect:(NSRect)rect representationWindow:(NSWindow *)representationWindow;
 + (NSImage *)screenShotView:(NSView *)aView forRect:(NSRect)aRect inWindow:(NSWindow *)aWindow;
-+ (NSImage *)desktopScreenShotOnFrame:(NSRect)onFrame;
++ (NSImage *)screenShotImageAtFrame:(NSRect)onFrame;
 + (NSImage *)snapshotImageFromView:(NSView *)view;
 
 @end

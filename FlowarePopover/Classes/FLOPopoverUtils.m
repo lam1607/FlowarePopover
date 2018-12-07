@@ -290,6 +290,16 @@
     return NO;
 }
 
+- (NSVisualEffectView *)contentViewDidContainVisualEffect {
+    for (NSView *view in self.contentView.subviews) {
+        if ([view isKindOfClass:[NSVisualEffectView class]]) {
+            return (NSVisualEffectView *)view;
+        }
+    }
+    
+    return nil;
+}
+
 #pragma mark - Display utilities
 
 - (void)setPopoverEdgeType:(FLOPopoverEdgeType)edgeType {

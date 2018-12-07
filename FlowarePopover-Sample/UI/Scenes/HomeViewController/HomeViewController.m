@@ -354,14 +354,12 @@
         CGFloat verticalMargin = 10.0;
         CGFloat contentViewWidth = 350.0;
         CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
-        CGFloat contentHeight = ([self.comicsViewController getContentSizeHeight] > 15.0) ? [self.comicsViewController getContentSizeHeight] : 429.0;
+        CGFloat contentHeight = [self.comicsViewController getContentSizeHeight];
         CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : contentHeight;
         NSRect contentViewRect = NSMakeRect(0.0, 0.0, contentViewWidth, contentViewHeight);
         
         if (self.popoverComics == nil) {
             self.comicsViewController = [[ComicsViewController alloc] initWithNibName:NSStringFromClass([ComicsViewController class]) bundle:nil];
-            [self.comicsViewController.view setFrame:contentViewRect];
-            
             self.popoverComics = [[FLOPopover alloc] initWithContentViewController:self.comicsViewController];
         }
         
@@ -369,6 +367,7 @@
         //        self.popoverComics.shouldShowArrow = YES;
         self.popoverComics.animated = YES;
         //        self.popoverComics.animatedForwarding = YES;
+        self.popoverComics.makeKeyWindowOnMouseEvents = YES;
         self.popoverComics.shouldChangeSizeWhenApplicationResizes = NO;
         //        self.popoverComics.closesWhenPopoverResignsKey = YES;
         //        self.popoverComics.closesWhenApplicationBecomesInactive = YES;
@@ -380,7 +379,11 @@
         NSRect positioningRect = [sender.window convertRectToScreen:NSMakeRect(positioningRectX, positioningRectY, contentViewRect.size.width, contentViewRect.size.height)];
         
         [self.popoverComics setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft animatedInApplicationRect:YES];
-
+        
+        // MUST call the didContentSizeChange block before popover makes displaying.
+        // To update the content view frame before capturing image for animation.
+        [self observeComicsViewContentSizeChange];
+        
         [self showRelativeToViewWithRect:positioningRect byPopover:self.popoverComics sender:sender];
     } else {
         NSRect visibleRect = [self.view visibleRect];
@@ -410,8 +413,6 @@
         
         [self showRelativeToRectOfViewWithPopover:self.popoverComics edgeType:FLOPopoverEdgeTypeForwardTopEdge atView:sender];
     }
-    
-    [self observeComicsViewContentSizeChange];
 }
 
 #pragma mark - Actions
@@ -466,7 +467,7 @@
         } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"showSecondBar"]) {
             [self handleShowSecondBar];
         } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"comicsPopup"]) {
-            [self showComicsPopupAtView:sender option:0];
+            [self showComicsPopupAtView:sender option:1];
         }
     }
 }

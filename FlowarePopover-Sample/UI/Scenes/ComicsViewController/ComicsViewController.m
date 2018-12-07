@@ -205,6 +205,8 @@
         CGFloat height = [self getContentSizeHeight];
         NSSize newSize = NSMakeSize(350.0, height);
         
+        [self.view setFrameSize:newSize];
+        
         if (NSEqualSizes(self.view.frame.size, newSize) == NO) {
             self.didContentSizeChange(newSize);
         }

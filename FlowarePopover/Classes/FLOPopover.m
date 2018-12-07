@@ -264,6 +264,21 @@
     [self closeAfterTimeInterval];
 }
 
+/**
+ * Make Popover window key as possible when mouse entered to popover.
+ * @note Becareful when using this property. If you have some views also implemented the
+ * [mouseEntered:], [mouseExited:] methods. It might lead some unexpected behaviours.
+ */
+- (void)setMakeKeyWindowOnMouseEvents:(BOOL)makeKeyWindowOnMouseEvents {
+    _makeKeyWindowOnMouseEvents = makeKeyWindowOnMouseEvents;
+    
+    if (self.type == FLOWindowPopover) {
+        self.windowPopup.makeKeyWindowOnMouseEvents = makeKeyWindowOnMouseEvents;
+    } else {
+        self.viewPopup.makeKeyWindowOnMouseEvents = makeKeyWindowOnMouseEvents;
+    }
+}
+
 - (void)setIsMovable:(BOOL)isMovable {
     [self restartPopupIfNeeded];
     
@@ -356,6 +371,7 @@
         self.animatedForwarding = viewPopup.animatedForwarding;
         self.staysInApplicationRect = viewPopup.staysInApplicationRect;
         self.updatesFrameWhileShowing = viewPopup.updatesFrameWhileShowing;
+        self.makeKeyWindowOnMouseEvents = viewPopup.makeKeyWindowOnMouseEvents;
         self.shouldRegisterSuperviewObservers = viewPopup.shouldRegisterSuperviewObservers;
         self.shouldChangeSizeWhenApplicationResizes = viewPopup.shouldChangeSizeWhenApplicationResizes;
         self.closesWhenPopoverResignsKey = viewPopup.closesWhenPopoverResignsKey;
@@ -374,6 +390,7 @@
         self.animatedForwarding = windowPopup.animatedForwarding;
         self.staysInApplicationRect = windowPopup.staysInApplicationRect;
         self.updatesFrameWhileShowing = windowPopup.updatesFrameWhileShowing;
+        self.makeKeyWindowOnMouseEvents = windowPopup.makeKeyWindowOnMouseEvents;
         self.shouldRegisterSuperviewObservers = windowPopup.shouldRegisterSuperviewObservers;
         self.shouldChangeSizeWhenApplicationResizes = windowPopup.shouldChangeSizeWhenApplicationResizes;
         self.closesWhenPopoverResignsKey = windowPopup.closesWhenPopoverResignsKey;
@@ -398,6 +415,7 @@
         viewPopup.animatedForwarding = self.animatedForwarding;
         viewPopup.staysInApplicationRect = self.staysInApplicationRect;
         viewPopup.updatesFrameWhileShowing = self.updatesFrameWhileShowing;
+        viewPopup.makeKeyWindowOnMouseEvents = self.makeKeyWindowOnMouseEvents;
         viewPopup.shouldRegisterSuperviewObservers = self.shouldRegisterSuperviewObservers;
         viewPopup.shouldChangeSizeWhenApplicationResizes = self.shouldChangeSizeWhenApplicationResizes;
         viewPopup.closesWhenPopoverResignsKey = self.closesWhenPopoverResignsKey;
@@ -414,6 +432,7 @@
         windowPopup.animatedForwarding = self.animatedForwarding;
         windowPopup.staysInApplicationRect = self.staysInApplicationRect;
         windowPopup.updatesFrameWhileShowing = self.updatesFrameWhileShowing;
+        windowPopup.makeKeyWindowOnMouseEvents = self.makeKeyWindowOnMouseEvents;
         windowPopup.shouldRegisterSuperviewObservers = self.shouldRegisterSuperviewObservers;
         windowPopup.shouldChangeSizeWhenApplicationResizes = self.shouldChangeSizeWhenApplicationResizes;
         windowPopup.closesWhenPopoverResignsKey = self.closesWhenPopoverResignsKey;

@@ -62,6 +62,13 @@
 @property (nonatomic, assign) NSTimeInterval closesAfterTimeInterval;
 
 /**
+ * Make Popover window key as possible when mouse entered to popover.
+ * @note Becareful when using this property. If you have some views also implemented the
+ * [mouseEntered:], [mouseExited:] methods. It might lead some unexpected behaviours.
+ */
+@property (nonatomic, assign) BOOL makeKeyWindowOnMouseEvents;
+
+/**
  * Make the popover movable.
  */
 @property (nonatomic, assign) BOOL isMovable;

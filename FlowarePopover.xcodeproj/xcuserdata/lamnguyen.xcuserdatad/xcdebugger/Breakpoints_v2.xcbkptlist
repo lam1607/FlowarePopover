@@ -9,13 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FlowarePopover/Classes/FLOPopoverUtils.m"
-            timestampString = "565709650.624845"
+            filePath = "FlowarePopover/Classes/FLOViewPopup.m"
+            timestampString = "565861348.602203"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "866"
-            endingLineNumber = "866"
-            landmarkName = "-_popoverRect"
+            startingLineNumber = "714"
+            endingLineNumber = "714"
+            landmarkName = "-popoverTransitionAnimationShowing:animationType:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,29 +25,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FlowarePopover/Classes/FLOPopoverUtils.m"
-            timestampString = "565709650.624926"
+            filePath = "FlowarePopover/Classes/FLOViewPopup.m"
+            timestampString = "565861348.602541"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "880"
-            endingLineNumber = "880"
-            landmarkName = "-_popoverRect"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FlowarePopover/Classes/FLOWindowPopup.m"
-            timestampString = "565758026.870896"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1142"
-            endingLineNumber = "1142"
-            landmarkName = "-didPopoverBecomeDetachable:"
+            startingLineNumber = "612"
+            endingLineNumber = "612"
+            landmarkName = "-popoverScalingAnimationShowing:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -58,12 +42,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FlowarePopover/Classes/FLOWindowPopup.m"
-            timestampString = "565758026.8709691"
+            timestampString = "565861348.602604"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "527"
-            endingLineNumber = "527"
-            landmarkName = "-popoverDidFinishShowing:"
+            startingLineNumber = "633"
+            endingLineNumber = "633"
+            landmarkName = "-popoverScalingAnimationShowing:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FlowarePopover/Classes/FLOWindowPopup.m"
+            timestampString = "565861348.602824"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "744"
+            endingLineNumber = "744"
+            landmarkName = "-popoverTransitionAnimationShowing:animationType:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		DE0BF080219BB9E800FF3AD6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE0BF07F219BB9E800FF3AD6 /* Colors.xcassets */; };
 		DE0BF084219BC98000FF3AD6 /* NSColor+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0BF083219BC98000FF3AD6 /* NSColor+Custom.m */; };
+		DE7BCDF321BA1C5900EE1B33 /* WindowMainView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7BCDF221BA1C5900EE1B33 /* WindowMainView.m */; };
 		DE8E5C7121534233002AE872 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE8E5C7021534233002AE872 /* AppleScriptObjC.framework */; };
 		DE8E5C7A21534821002AE872 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5C7921534821002AE872 /* AppDelegate.m */; };
 		DE8E5C7C21534822002AE872 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE8E5C7B21534822002AE872 /* Assets.xcassets */; };
@@ -114,6 +115,8 @@
 		DE0BF07F219BB9E800FF3AD6 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		DE0BF082219BC98000FF3AD6 /* NSColor+Custom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSColor+Custom.h"; sourceTree = "<group>"; };
 		DE0BF083219BC98000FF3AD6 /* NSColor+Custom.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Custom.m"; sourceTree = "<group>"; };
+		DE7BCDF121BA1C5900EE1B33 /* WindowMainView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowMainView.h; sourceTree = "<group>"; };
+		DE7BCDF221BA1C5900EE1B33 /* WindowMainView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WindowMainView.m; sourceTree = "<group>"; };
 		DE8E5C7021534233002AE872 /* AppleScriptObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptObjC.framework; path = System/Library/Frameworks/AppleScriptObjC.framework; sourceTree = SDKROOT; };
 		DE8E5C7621534821002AE872 /* FlowarePopover-Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FlowarePopover-Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE8E5C7821534821002AE872 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -300,6 +303,15 @@
 				DE0BF083219BC98000FF3AD6 /* NSColor+Custom.m */,
 			);
 			path = Colors;
+			sourceTree = "<group>";
+		};
+		DE7BCDE121BA0CC500EE1B33 /* CustomNSView */ = {
+			isa = PBXGroup;
+			children = (
+				DE7BCDF121BA1C5900EE1B33 /* WindowMainView.h */,
+				DE7BCDF221BA1C5900EE1B33 /* WindowMainView.m */,
+			);
+			path = CustomNSView;
 			sourceTree = "<group>";
 		};
 		DE8E5C7721534821002AE872 /* FlowarePopover-Sample */ = {
@@ -720,6 +732,7 @@
 		DE8E5DFE215348EE002AE872 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				DE7BCDE121BA0CC500EE1B33 /* CustomNSView */,
 				DE8E5DFF215348EE002AE872 /* CustomNSTableRowView */,
 				DE8E5E02215348EE002AE872 /* CustomNSOutlineView */,
 			);
@@ -1112,6 +1125,7 @@
 				DE0BF084219BC98000FF3AD6 /* NSColor+Custom.m in Sources */,
 				DE8E5E4A215348EF002AE872 /* BaseService.m in Sources */,
 				DE8E5C8221534822002AE872 /* main.m in Sources */,
+				DE7BCDF321BA1C5900EE1B33 /* WindowMainView.m in Sources */,
 				DE8E5E5A215348EF002AE872 /* HomeViewController.m in Sources */,
 				DE8E5E5B215348EF002AE872 /* HomePresenter.m in Sources */,
 				DE8E5E54215348EF002AE872 /* FilmsPresenter.m in Sources */,
