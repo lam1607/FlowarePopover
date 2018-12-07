@@ -171,7 +171,7 @@ For more detail about **`[showRelativeToView:withRect:]`**, **`[showRelativeToVi
     popoverRect.origin.x = viewRect.origin.x + viewRect.size.width + 2;
     popoverRect.origin.y = viewRect.origin.y + 1;
 
-    [popover showRelativeToView:sortSelectionController withRect:popoverRect sender:selectedCell];
+    [popover showRelativeToView:self.view withRect:popoverRect sender:selectedCell];
   ```
 
 **`Closing`**

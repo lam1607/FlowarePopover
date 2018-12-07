@@ -616,14 +616,12 @@
     [self.utils.contentView display];
     
     if (visualEffectView) {
-        [visualEffectView setHidden:YES];
         [self setVisualEffectImageViewEnabled:YES];
     }
     
     NSImage *snapshotImage = [FLOExtensionsGraphicsContext snapshotImageFromView:self.utils.backgroundView];
     
     if (visualEffectView) {
-        [visualEffectView setHidden:NO];
         [self setVisualEffectImageViewEnabled:NO];
     }
     
@@ -718,14 +716,12 @@
     [self.utils.contentView display];
     
     if (visualEffectView) {
-        [visualEffectView setHidden:YES];
         [self setVisualEffectImageViewEnabled:YES];
     }
     
     NSImage *snapshotImage = [FLOExtensionsGraphicsContext snapshotImageFromView:self.utils.backgroundView];
     
     if (visualEffectView) {
-        [visualEffectView setHidden:NO];
         [self setVisualEffectImageViewEnabled:NO];
     }
     
