@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "FLOPopover.h"
+
 static CGFloat const PopoverBackgroundViewBorderRadius = 5.0;
 static CGFloat const PopoverBackgroundViewArrowWidth = 17.0;
 static CGFloat const PopoverBackgroundViewArrowHeight = 12.0;
@@ -40,7 +42,7 @@ static CGFloat const PopoverBackgroundViewArrowHeight = 12.0;
 
 @end
 
-@interface FLOPopoverBackgroundView : NSView
+@interface FLOPopoverBackgroundView : FLOPopoverView
 
 @property (nonatomic, weak) id<FLOPopoverBackgroundViewDelegate> delegate;
 

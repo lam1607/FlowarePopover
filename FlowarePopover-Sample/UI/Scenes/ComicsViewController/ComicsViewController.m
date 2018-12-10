@@ -201,13 +201,13 @@
 - (void)reloadDataOutlineView {
     [self.outlineViewData reloadData];
     
-    if (self.didContentSizeChange) {
-        CGFloat height = [self getContentSizeHeight];
-        NSSize newSize = NSMakeSize(350.0, height);
-        
-        [self.view setFrameSize:newSize];
-        
-        if (NSEqualSizes(self.view.frame.size, newSize) == NO) {
+    CGFloat height = [self getContentSizeHeight];
+    NSSize newSize = NSMakeSize(350.0, height);
+    
+    [self.view setFrameSize:newSize];
+    
+    if (NSEqualSizes(self.view.frame.size, newSize) == NO) {
+        if (self.didContentSizeChange) {
             self.didContentSizeChange(newSize);
         }
     }

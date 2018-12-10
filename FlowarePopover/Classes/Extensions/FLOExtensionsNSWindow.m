@@ -6,7 +6,11 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "FLOExtensionsNSWindow.h"
+
+#import "FLOExtensionsGraphicsContext.h"
 
 #import "FLOPopoverConstants.h"
 

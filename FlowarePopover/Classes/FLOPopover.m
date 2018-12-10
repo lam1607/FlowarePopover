@@ -11,6 +11,22 @@
 #import "FLOViewPopup.h"
 #import "FLOWindowPopup.h"
 
+#pragma mark - FLOPopoverView
+
+@implementation FLOPopoverView
+
+@synthesize tag = _tag;
+
+- (instancetype)init {
+    if (self = [super init]) {
+        _tag = -1;
+    }
+    
+    return self;
+}
+
+@end
+
 #pragma mark - FLOPopoverWindow
 
 @implementation FLOPopoverWindow
@@ -318,10 +334,39 @@
 - (void)setTag:(NSInteger)tag {
     [self restartPopupIfNeeded];
     
+    _tag = tag;
+    
     if (self.type == FLOWindowPopover) {
-        _tag = tag;
-        
         self.windowPopup.tag = tag;
+    } else {
+        self.viewPopup.tag = tag;
+    }
+}
+
+/**
+ * Make transition animation by moving frame of the popover instead of using CALayer.
+ */
+- (void)setAnimatedByMovingFrame:(BOOL)animatedByMovingFrame {
+    [self restartPopupIfNeeded];
+    
+    _animatedByMovingFrame = animatedByMovingFrame;
+    
+    if (self.type == FLOWindowPopover) {
+        self.windowPopup.animatedByMovingFrame = animatedByMovingFrame;
+    } else {
+        self.viewPopup.animatedByMovingFrame = animatedByMovingFrame;
+    }
+}
+
+- (void)setAnimationDuration:(NSTimeInterval)animationDuration {
+    [self restartPopupIfNeeded];
+    
+    _animationDuration = animationDuration;
+    
+    if (self.type == FLOWindowPopover) {
+        self.windowPopup.animationDuration = animationDuration;
+    } else {
+        self.viewPopup.animationDuration = animationDuration;
     }
 }
 
@@ -379,6 +424,9 @@
         self.closesWhenApplicationResizes = viewPopup.closesWhenApplicationResizes;
         self.isMovable = viewPopup.isMovable;
         self.isDetachable = viewPopup.isDetachable;
+        self.tag = viewPopup.tag;
+        self.animatedByMovingFrame = viewPopup.animatedByMovingFrame;
+        self.animationDuration = viewPopup.animationDuration;
         
         self.viewPopup = nil;
     } else if ([popover isKindOfClass:[FLOWindowPopup class]] && (self.type == FLOWindowPopover)) {
@@ -400,6 +448,8 @@
         self.isDetachable = windowPopup.isDetachable;
         self.canBecomeKey = windowPopup.canBecomeKey;
         self.tag = windowPopup.tag;
+        self.animatedByMovingFrame = windowPopup.animatedByMovingFrame;
+        self.animationDuration = windowPopup.animationDuration;
         
         self.windowPopup = nil;
     }
@@ -423,6 +473,9 @@
         viewPopup.closesWhenApplicationResizes = self.closesWhenApplicationResizes;
         viewPopup.isMovable = self.isMovable;
         viewPopup.isDetachable = self.isDetachable;
+        viewPopup.tag = self.tag;
+        viewPopup.animatedByMovingFrame = self.animatedByMovingFrame;
+        viewPopup.animationDuration = self.animationDuration;
     } else if ([popover isKindOfClass:[FLOWindowPopup class]] && (self.type == FLOWindowPopover)) {
         FLOWindowPopup *windowPopup = (FLOWindowPopup *)popover;
         
@@ -442,6 +495,8 @@
         windowPopup.isDetachable = self.isDetachable;
         windowPopup.canBecomeKey = self.canBecomeKey;
         windowPopup.tag = self.tag;
+        windowPopup.animatedByMovingFrame = self.animatedByMovingFrame;
+        windowPopup.animationDuration = self.animationDuration;
     }
 }
 

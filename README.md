@@ -96,7 +96,7 @@ The default initialization of FLOPopover type is **`FLOWindowPopover`**
 - **isMovable** : Make the popover draggable
 - **isDetachable** : Make the popover draggable and detachable
 - **canBecomeKey** : Make the popover as key window (only available for **`FLOWindowPopover`**)
-- **tag** : Set the tag for popover if needed (only available for **`FLOWindowPopover`**)
+- **tag** : Set the tag for popover if needed
 
 ### Display
 

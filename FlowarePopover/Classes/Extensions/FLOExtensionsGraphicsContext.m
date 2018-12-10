@@ -6,6 +6,8 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "FLOExtensionsGraphicsContext.h"
 
 #pragma mark - Graphics context creation
@@ -96,6 +98,8 @@ CGContextRef FLOExtensionsGraphicsContextCreate(CGSize size, CGColorSpaceRef col
     
     NSImage *image = [[NSImage alloc] initWithSize:view.bounds.size];
     [image addRepresentation:bitmapRep];
+    
+    bitmapRep = nil;
     
     return image;
 }

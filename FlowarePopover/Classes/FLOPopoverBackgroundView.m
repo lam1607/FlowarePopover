@@ -8,8 +8,6 @@
 
 #import "FLOPopoverBackgroundView.h"
 
-#import "FLOPopover.h"
-
 #import "FLOPopoverUtils.h"
 
 static CGFloat getMedianXFromRects(NSRect r1, NSRect r2) {

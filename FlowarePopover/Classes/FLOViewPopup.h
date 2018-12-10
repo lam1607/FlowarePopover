@@ -47,4 +47,16 @@
  */
 @property (nonatomic, assign) BOOL isDetachable;
 
+/**
+ * Set tag for the popover.
+ */
+@property (nonatomic, assign) NSInteger tag;
+
+/**
+ * Make transition animation by moving frame of the popover instead of using CALayer.
+ */
+@property (nonatomic, assign) BOOL animatedByMovingFrame;
+
+@property (nonatomic, assign) NSTimeInterval animationDuration;
+
 @end

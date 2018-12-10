@@ -6,6 +6,8 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "FLOExtensionsCABasicAnimation.h"
 
 @implementation CABasicAnimation (FLOExtensionsCABasicAnimation)

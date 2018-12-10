@@ -6,9 +6,9 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "FLOWindowPopup.h"
-
 #import <QuartzCore/QuartzCore.h>
+
+#import "FLOWindowPopup.h"
 
 #import "FLOExtensionsGraphicsContext.h"
 #import "FLOExtensionsNSView.h"
@@ -68,6 +68,9 @@
         _isMovable = NO;
         _isDetachable = NO;
         _canBecomeKey = YES;
+        _tag = -1;
+        _animatedByMovingFrame = NO;
+        _animationDuration = 0.0;
     }
     
     return self;
@@ -131,6 +134,13 @@
     return self.popoverWindow.isVisible;
 }
 
+- (void)setTag:(NSInteger)tag {
+    _tag = tag;
+    
+    if ([self isShown]) {
+        self.popoverWindow.tag = tag;
+    }
+}
 
 #pragma mark - Processes
 
@@ -684,6 +694,10 @@
     
     NSTimeInterval duration = showing ? FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD : 0.15;
     
+    if (self.animationDuration > 0) {
+        duration = self.animationDuration;
+    }
+    
     [NSAnimationContext beginGrouping];
     [CATransaction begin];
     [CATransaction setAnimationDuration:duration];
@@ -714,7 +728,11 @@
  */
 - (void)popoverTransitionAnimationShowing:(BOOL)showing {
     if (self.utils.animationBehaviour == FLOPopoverAnimationBehaviorTransition) {
-        [self popoverTransitionAnimationShowing:showing animationType:self.utils.animationType];
+        if (self.animatedByMovingFrame) {
+            [self popoverTransitionAnimationFrameShowing:showing];
+        } else {
+            [self popoverTransitionAnimationShowing:showing animationType:self.utils.animationType];
+        }
     }
 }
 
@@ -819,6 +837,10 @@
     
     NSTimeInterval duration = FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD;
     
+    if (self.animationDuration > 0) {
+        duration = self.animationDuration;
+    }
+    
     [NSAnimationContext beginGrouping];
     [CATransaction begin];
     [CATransaction setAnimationDuration:duration];
@@ -855,7 +877,21 @@
         
         [self.utils calculateFromFrame:&fromFrame toFrame:&toFrame animationType:self.utils.animationType forwarding:self.animatedForwarding showing:showing];
         
-        [self.popoverWindow showingAnimated:showing fromFrame:fromFrame toFrame:toFrame source:self];
+        if (self.utils.animatedInApplicationRect) {
+            if (showing) {
+                fromFrame = NSIntersectionRect(self.utils.appMainWindow.frame, fromFrame);
+            } else {
+                toFrame = NSIntersectionRect(self.utils.appMainWindow.frame, toFrame);
+            }
+        }
+        
+        NSTimeInterval duration = FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD;
+        
+        if (self.animationDuration > 0) {
+            duration = self.animationDuration;
+        }
+        
+        [self.popoverWindow showingAnimated:showing fromFrame:fromFrame toFrame:toFrame duration:duration source:self];
     }
 }
 

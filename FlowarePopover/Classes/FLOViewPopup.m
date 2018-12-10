@@ -6,9 +6,9 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "FLOViewPopup.h"
-
 #import <QuartzCore/QuartzCore.h>
+
+#import "FLOViewPopup.h"
 
 #import "FLOExtensionsGraphicsContext.h"
 #import "FLOExtensionsNSView.h"
@@ -30,7 +30,7 @@
 @property (nonatomic, assign) BOOL popoverClosing;
 
 @property (nonatomic, strong) NSView *popoverTempView;
-@property (nonatomic, strong) NSView *popoverView;
+@property (nonatomic, strong) FLOPopoverBackgroundView *popoverView;
 @property (nonatomic, strong) FLOPopoverWindow *detachableWindow;
 
 /**
@@ -68,6 +68,9 @@
         _closesWhenApplicationResizes = NO;
         _isMovable = NO;
         _isDetachable = NO;
+        _tag = -1;
+        _animatedByMovingFrame = NO;
+        _animationDuration = 0.0;
     }
     
     return self;
@@ -129,6 +132,14 @@
 
 - (BOOL)isShown {
     return _shown;
+}
+
+- (void)setTag:(NSInteger)tag {
+    _tag = tag;
+    
+    if ([self isShown]) {
+        self.popoverView.tag = tag;
+    }
 }
 
 #pragma mark - Processes
@@ -444,6 +455,8 @@
         }
     }
     
+    self.utils.backgroundView.tag = self.tag;
+    
     NSRect windowRelativeRect = [self.utils.positioningAnchorView convertRect:[self.utils.positioningAnchorView alignmentRectForFrame:self.utils.positioningRect] toView:nil];
     NSRect positionOnScreenRect = [self.utils.positioningAnchorView.window convertRectToScreen:windowRelativeRect];
     
@@ -659,6 +672,10 @@
     
     NSTimeInterval duration = showing ? FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD : 0.15;
     
+    if (self.animationDuration > 0) {
+        duration = self.animationDuration;
+    }
+    
     [NSAnimationContext beginGrouping];
     [CATransaction begin];
     [CATransaction setAnimationDuration:duration];
@@ -689,7 +706,11 @@
  */
 - (void)popoverTransitionAnimationShowing:(BOOL)showing {
     if (self.utils.animationBehaviour == FLOPopoverAnimationBehaviorTransition) {
-        [self popoverTransitionAnimationShowing:showing animationType:self.utils.animationType];
+        if (self.animatedByMovingFrame) {
+            [self popoverTransitionAnimationFrameShowing:showing];
+        } else {
+            [self popoverTransitionAnimationShowing:showing animationType:self.utils.animationType];
+        }
     }
 }
 
@@ -784,6 +805,10 @@
     
     NSTimeInterval duration = FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD;
     
+    if (self.animationDuration > 0) {
+        duration = self.animationDuration;
+    }
+    
     [NSAnimationContext beginGrouping];
     [CATransaction begin];
     [CATransaction setAnimationDuration:duration];
@@ -819,7 +844,13 @@
         
         [self.utils calculateFromFrame:&fromFrame toFrame:&toFrame animationType:self.utils.animationType forwarding:self.animatedForwarding showing:showing];
         
-        [self.popoverView showingAnimated:showing fromFrame:fromFrame toFrame:toFrame source:self];
+        NSTimeInterval duration = FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD;
+        
+        if (self.animationDuration > 0) {
+            duration = self.animationDuration;
+        }
+        
+        [self.popoverView showingAnimated:showing fromFrame:fromFrame toFrame:toFrame duration:duration source:self];
     }
 }
 

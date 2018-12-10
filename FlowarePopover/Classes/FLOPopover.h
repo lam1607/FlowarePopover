@@ -12,6 +12,14 @@
 
 @class FLOPopover;
 
+#pragma mark - FLOPopoverView
+
+@interface FLOPopoverView : NSView
+
+@property (nonatomic, assign, readwrite) NSInteger tag;
+
+@end
+
 #pragma mark - FLOPopoverWindow
 
 @interface FLOPopoverWindow : NSWindow
@@ -84,9 +92,16 @@
 @property (nonatomic, assign) BOOL canBecomeKey;
 
 /**
- * Set tag for the popover window. Only apply for FLOWindowPopover type.
+ * Set tag for the popover.
  */
 @property (nonatomic, assign) NSInteger tag;
+
+/**
+ * Make transition animation by moving frame of the popover instead of using CALayer.
+ */
+@property (nonatomic, assign) BOOL animatedByMovingFrame;
+
+@property (nonatomic, assign) NSTimeInterval animationDuration;
 
 #pragma mark - Initialize
 
