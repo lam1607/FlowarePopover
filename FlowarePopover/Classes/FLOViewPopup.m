@@ -1139,7 +1139,7 @@
 }
 
 - (void)windowDidResize:(NSNotification *)notification {
-    if ([notification.name isEqualToString:NSWindowDidResizeNotification] && (notification.object == self.utils.appMainWindow)) {
+    if ((self.popoverShowing == NO) && (self.popoverClosing == NO) && [notification.name isEqualToString:NSWindowDidResizeNotification] && (notification.object == self.utils.appMainWindow)) {
         if (self.closesWhenApplicationResizes == NO) {
             NSWindow *resizedWindow = (NSWindow *)notification.object;
             NSRect popoverRect = (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) ? [self.utils _popoverRect] : [self.utils popoverRectForEdge:self.utils.preferredEdge];

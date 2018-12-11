@@ -193,7 +193,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
         self.layer.shadowColor = [NSColor.shadowColor CGColor];
         self.layer.shadowOpacity = 0.5;
         self.layer.shadowOffset = CGSizeMake(-0.5, 0.5);
-        self.layer.shadowRadius = 5.0;
+        self.layer.shadowRadius = 3.0;
     }
 }
 
