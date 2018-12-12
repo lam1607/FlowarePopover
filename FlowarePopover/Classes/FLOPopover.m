@@ -55,6 +55,7 @@
 @property (nonatomic, strong, readwrite) NSView *contentView;
 @property (nonatomic, strong, readwrite) NSViewController *contentViewController;
 @property (nonatomic, assign, readwrite) FLOPopoverType type;
+@property (nonatomic, assign, readwrite) BOOL isMoved;
 
 @end
 
@@ -272,6 +273,18 @@
     }
 }
 
+- (void)setClosesWhenNotBelongToApplicationFrame:(BOOL)closesWhenNotBelongToApplicationFrame {
+    [self restartPopupIfNeeded];
+    
+    _closesWhenNotBelongToApplicationFrame = closesWhenNotBelongToApplicationFrame;
+    
+    if (self.type == FLOWindowPopover) {
+        self.windowPopup.closesWhenNotBelongToApplicationFrame = closesWhenNotBelongToApplicationFrame;
+    } else {
+        self.viewPopup.closesWhenNotBelongToApplicationFrame = closesWhenNotBelongToApplicationFrame;
+    }
+}
+
 - (void)setClosesAfterTimeInterval:(NSTimeInterval)closesAfterTimeInterval {
     [self restartPopupIfNeeded];
     
@@ -422,6 +435,7 @@
         self.closesWhenPopoverResignsKey = viewPopup.closesWhenPopoverResignsKey;
         self.closesWhenApplicationBecomesInactive = viewPopup.closesWhenApplicationBecomesInactive;
         self.closesWhenApplicationResizes = viewPopup.closesWhenApplicationResizes;
+        self.closesWhenNotBelongToApplicationFrame = viewPopup.closesWhenNotBelongToApplicationFrame;
         self.isMovable = viewPopup.isMovable;
         self.isDetachable = viewPopup.isDetachable;
         self.tag = viewPopup.tag;
@@ -444,6 +458,7 @@
         self.closesWhenPopoverResignsKey = windowPopup.closesWhenPopoverResignsKey;
         self.closesWhenApplicationBecomesInactive = windowPopup.closesWhenApplicationBecomesInactive;
         self.closesWhenApplicationResizes = windowPopup.closesWhenApplicationResizes;
+        self.closesWhenNotBelongToApplicationFrame = windowPopup.closesWhenNotBelongToApplicationFrame;
         self.isMovable = windowPopup.isMovable;
         self.isDetachable = windowPopup.isDetachable;
         self.canBecomeKey = windowPopup.canBecomeKey;
@@ -471,6 +486,7 @@
         viewPopup.closesWhenPopoverResignsKey = self.closesWhenPopoverResignsKey;
         viewPopup.closesWhenApplicationBecomesInactive = self.closesWhenApplicationBecomesInactive;
         viewPopup.closesWhenApplicationResizes = self.closesWhenApplicationResizes;
+        viewPopup.closesWhenNotBelongToApplicationFrame = self.closesWhenNotBelongToApplicationFrame;
         viewPopup.isMovable = self.isMovable;
         viewPopup.isDetachable = self.isDetachable;
         viewPopup.tag = self.tag;
@@ -491,6 +507,7 @@
         windowPopup.closesWhenPopoverResignsKey = self.closesWhenPopoverResignsKey;
         windowPopup.closesWhenApplicationBecomesInactive = self.closesWhenApplicationBecomesInactive;
         windowPopup.closesWhenApplicationResizes = self.closesWhenApplicationResizes;
+        windowPopup.closesWhenNotBelongToApplicationFrame = self.closesWhenNotBelongToApplicationFrame;
         windowPopup.isMovable = self.isMovable;
         windowPopup.isDetachable = self.isDetachable;
         windowPopup.canBecomeKey = self.canBecomeKey;
@@ -518,8 +535,12 @@
     };
     
     target.willCloseBlock = ^(NSResponder *popover) {
-        if ((popover == target) && [wself.delegate respondsToSelector:@selector(floPopoverWillClose:)]) {
-            [wself.delegate floPopoverWillClose:self];
+        if (popover == target) {
+            wself.isMoved = NO;
+            
+            if ([wself.delegate respondsToSelector:@selector(floPopoverWillClose:)]) {
+                [wself.delegate floPopoverWillClose:self];
+            }
         }
     };
     
@@ -531,10 +552,14 @@
     };
     
     target.didMoveBlock = ^(NSResponder *popover) {
-        if ((popover == target) && (wself.closesAfterTimeInterval > 0)) {
-            wself.closesAfterTimeInterval = 0.0;
+        if (popover == target) {
+            wself.isMoved = YES;
             
-            [NSObject cancelPreviousPerformRequestsWithTarget:wself selector:@selector(close) object:nil];
+            if (wself.closesAfterTimeInterval > 0) {
+                wself.closesAfterTimeInterval = 0.0;
+                
+                [NSObject cancelPreviousPerformRequestsWithTarget:wself selector:@selector(close) object:nil];
+            }
         }
     };
     

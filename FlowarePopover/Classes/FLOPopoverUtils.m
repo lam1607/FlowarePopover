@@ -445,141 +445,137 @@
     return relativePositionValues;
 }
 
-- (void)setupPositioningAnchorWithView:(NSView *)positioningView positioningRect:(NSRect)positioningRect shouldUpdatePosition:(BOOL)shouldUpdatePosition {
-    NSDictionary *relativePositionValues = [self relativePositionValuesForView:positioningView rect:positioningRect];
-    FLOPopoverRelativePositionType relativeType = [[relativePositionValues objectForKey:@"type"] integerValue];
-    NSPoint relativePosition = [[relativePositionValues objectForKey:@"position"] pointValue];
+- (NSView *)anchorViewWithRelativePosition:(NSPoint)position type:(FLOPopoverRelativePositionType)relativeType parent:(NSView *)parentView {
+    CGFloat posX = position.x;
+    CGFloat posY = position.y;
     
-    CGFloat posX = relativePosition.x;
-    CGFloat posY = relativePosition.y;
+    NSView *anchorView = [[NSView alloc] initWithFrame:NSZeroRect];
     
-    if (self.positioningAnchorView == nil) {
-        self.positioningAnchorView = [[NSView alloc] initWithFrame:NSZeroRect];
+    anchorView.wantsLayer = YES;
+    anchorView.layer.backgroundColor = [NSColor.clearColor CGColor];
+    anchorView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [parentView addSubview:anchorView];
+    
+    if (relativeType == FLOPopoverRelativePositionTopLeading) {
+        NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:anchorView
+                                                               attribute:NSLayoutAttributeTop
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:parentView
+                                                               attribute:NSLayoutAttributeTop
+                                                              multiplier:1
+                                                                constant:posY];
         
-        self.positioningAnchorView.wantsLayer = YES;
-        self.positioningAnchorView.layer.backgroundColor = [NSColor.clearColor CGColor];
-        self.positioningAnchorView.translatesAutoresizingMaskIntoConstraints = NO;
-        
-        [positioningView addSubview:self.positioningAnchorView];
-        
-        if (relativeType == FLOPopoverRelativePositionTopLeading) {
-            NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.positioningAnchorView
-                                                                   attribute:NSLayoutAttributeTop
+        NSLayoutConstraint *leading = [NSLayoutConstraint constraintWithItem:anchorView
+                                                                   attribute:NSLayoutAttributeLeading
                                                                    relatedBy:NSLayoutRelationEqual
-                                                                      toItem:positioningView
-                                                                   attribute:NSLayoutAttributeTop
+                                                                      toItem:parentView
+                                                                   attribute:NSLayoutAttributeLeading
                                                                   multiplier:1
-                                                                    constant:posY];
-            
-            NSLayoutConstraint *leading = [NSLayoutConstraint constraintWithItem:self.positioningAnchorView
-                                                                       attribute:NSLayoutAttributeLeading
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:positioningView
-                                                                       attribute:NSLayoutAttributeLeading
-                                                                      multiplier:1
-                                                                        constant:posX];
-            
-            [top setActive:YES];
-            [leading setActive:YES];
-            
-            [positioningView addConstraints:@[top, leading]];
-        } else if (relativeType == FLOPopoverRelativePositionTopTrailing) {
-            NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.positioningAnchorView
-                                                                   attribute:NSLayoutAttributeTop
+                                                                    constant:posX];
+        
+        [top setActive:YES];
+        [leading setActive:YES];
+        
+        [parentView addConstraints:@[top, leading]];
+    } else if (relativeType == FLOPopoverRelativePositionTopTrailing) {
+        NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:anchorView
+                                                               attribute:NSLayoutAttributeTop
+                                                               relatedBy:NSLayoutRelationEqual
+                                                                  toItem:parentView
+                                                               attribute:NSLayoutAttributeTop
+                                                              multiplier:1
+                                                                constant:posY];
+        
+        NSLayoutConstraint *trailing = [NSLayoutConstraint constraintWithItem:parentView
+                                                                    attribute:NSLayoutAttributeTrailing
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:anchorView
+                                                                    attribute:NSLayoutAttributeTrailing
+                                                                   multiplier:1
+                                                                     constant:posX];
+        
+        [top setActive:YES];
+        [trailing setActive:YES];
+        
+        [parentView addConstraints:@[top, trailing]];
+    } else if (relativeType == FLOPopoverRelativePositionBottomLeading) {
+        NSLayoutConstraint *leading = [NSLayoutConstraint constraintWithItem:anchorView
+                                                                   attribute:NSLayoutAttributeLeading
                                                                    relatedBy:NSLayoutRelationEqual
-                                                                      toItem:positioningView
-                                                                   attribute:NSLayoutAttributeTop
+                                                                      toItem:parentView
+                                                                   attribute:NSLayoutAttributeLeading
                                                                   multiplier:1
-                                                                    constant:posY];
-            
-            NSLayoutConstraint *trailing = [NSLayoutConstraint constraintWithItem:positioningView
-                                                                        attribute:NSLayoutAttributeTrailing
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.positioningAnchorView
-                                                                        attribute:NSLayoutAttributeTrailing
-                                                                       multiplier:1
-                                                                         constant:posX];
-            
-            [top setActive:YES];
-            [trailing setActive:YES];
-            
-            [positioningView addConstraints:@[top, trailing]];
-        } else if (relativeType == FLOPopoverRelativePositionBottomLeading) {
-            NSLayoutConstraint *leading = [NSLayoutConstraint constraintWithItem:self.positioningAnchorView
-                                                                       attribute:NSLayoutAttributeLeading
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:positioningView
-                                                                       attribute:NSLayoutAttributeLeading
-                                                                      multiplier:1
-                                                                        constant:posX];
-            
-            NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:positioningView
-                                                                      attribute:NSLayoutAttributeBottom
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.positioningAnchorView
-                                                                      attribute:NSLayoutAttributeBottom
-                                                                     multiplier:1
-                                                                       constant:posY];
-            
-            [leading setActive:YES];
-            [bottom setActive:YES];
-            
-            [positioningView addConstraints:@[leading, bottom]];
-        } else {
-            NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:positioningView
-                                                                      attribute:NSLayoutAttributeBottom
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.positioningAnchorView
-                                                                      attribute:NSLayoutAttributeBottom
-                                                                     multiplier:1
-                                                                       constant:posY];
-            
-            NSLayoutConstraint *trailing = [NSLayoutConstraint constraintWithItem:positioningView
-                                                                        attribute:NSLayoutAttributeTrailing
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:self.positioningAnchorView
-                                                                        attribute:NSLayoutAttributeTrailing
-                                                                       multiplier:1
-                                                                         constant:posX];
-            
-            [bottom setActive:YES];
-            [trailing setActive:YES];
-            
-            [positioningView addConstraints:@[bottom, trailing]];
-        }
+                                                                    constant:posX];
         
-        CGFloat anchorViewWidth = 1.0;
-        
-        NSLayoutConstraint *width = [NSLayoutConstraint constraintWithItem:self.positioningAnchorView
-                                                                 attribute:NSLayoutAttributeWidth
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:nil
-                                                                 attribute:NSLayoutAttributeWidth
-                                                                multiplier:1
-                                                                  constant:anchorViewWidth];
-        NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:self.positioningAnchorView
-                                                                  attribute:NSLayoutAttributeHeight
+        NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:parentView
+                                                                  attribute:NSLayoutAttributeBottom
                                                                   relatedBy:NSLayoutRelationEqual
-                                                                     toItem:nil
-                                                                  attribute:NSLayoutAttributeHeight
+                                                                     toItem:anchorView
+                                                                  attribute:NSLayoutAttributeBottom
                                                                  multiplier:1
-                                                                   constant:anchorViewWidth];
+                                                                   constant:posY];
         
-        [width setActive:YES];
-        [height setActive:YES];
+        [leading setActive:YES];
+        [bottom setActive:YES];
         
-        [self.positioningAnchorView addConstraints:@[width, height]];
-        [self.positioningAnchorView setHidden:NO];
+        [parentView addConstraints:@[leading, bottom]];
+    } else {
+        NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:parentView
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:anchorView
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                 multiplier:1
+                                                                   constant:posY];
         
-        [positioningView setNeedsUpdateConstraints:YES];
-        [positioningView updateConstraints];
-        [positioningView updateConstraintsForSubtreeIfNeeded];
-        [positioningView layoutSubtreeIfNeeded];
+        NSLayoutConstraint *trailing = [NSLayoutConstraint constraintWithItem:parentView
+                                                                    attribute:NSLayoutAttributeTrailing
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:anchorView
+                                                                    attribute:NSLayoutAttributeTrailing
+                                                                   multiplier:1
+                                                                     constant:posX];
+        
+        [bottom setActive:YES];
+        [trailing setActive:YES];
+        
+        [parentView addConstraints:@[bottom, trailing]];
     }
     
-    if (shouldUpdatePosition && (self.positioningAnchorView != nil) && [self.positioningAnchorView isDescendantOf:positioningView]) {
-        for (NSLayoutConstraint *constraint in positioningView.constraints) {
-            if ((constraint.firstItem == self.positioningAnchorView) || (constraint.secondItem == self.positioningAnchorView)) {
+    CGFloat anchorViewWidth = 1.0;
+    
+    NSLayoutConstraint *width = [NSLayoutConstraint constraintWithItem:anchorView
+                                                             attribute:NSLayoutAttributeWidth
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:nil
+                                                             attribute:NSLayoutAttributeWidth
+                                                            multiplier:1
+                                                              constant:anchorViewWidth];
+    NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:anchorView
+                                                              attribute:NSLayoutAttributeHeight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:nil
+                                                              attribute:NSLayoutAttributeHeight
+                                                             multiplier:1
+                                                               constant:anchorViewWidth];
+    
+    [width setActive:YES];
+    [height setActive:YES];
+    
+    [anchorView addConstraints:@[width, height]];
+    [anchorView setHidden:NO];
+    
+    return anchorView;
+}
+
+- (void)anchorView:(NSView *)anchorView shouldUpdate:(BOOL)shouldUpdate position:(NSPoint)position inParent:(NSView *)parentView {
+    if (shouldUpdate && (anchorView != nil) && [anchorView isDescendantOf:parentView]) {
+        CGFloat posX = position.x;
+        CGFloat posY = position.y;
+        
+        for (NSLayoutConstraint *constraint in parentView.constraints) {
+            if ((constraint.firstItem == anchorView) || (constraint.secondItem == anchorView)) {
                 if (constraint.isActive && ((constraint.firstAttribute == NSLayoutAttributeLeading) || (constraint.firstAttribute == NSLayoutAttributeTrailing))) {
                     constraint.constant = posX;
                 }
@@ -590,11 +586,59 @@
             }
         }
         
+        [parentView setNeedsUpdateConstraints:YES];
+        [parentView updateConstraints];
+        [parentView updateConstraintsForSubtreeIfNeeded];
+        [parentView layoutSubtreeIfNeeded];
+    }
+}
+
+- (void)validateAnchorView:(NSView *)anchorView position:(NSPoint)position inParent:(NSView *)parentView withPositioningRect:(NSRect)positioningRect {
+    BOOL shouldUpdate = NO;
+    
+    CGFloat posX = position.x;
+    CGFloat posY = position.y;
+    
+    if ((anchorView != nil) && [anchorView isDescendantOf:parentView]) {
+        NSRect anchorViewFrame = [anchorView.window convertRectToScreen:[anchorView convertRect:anchorView.bounds toView:anchorView.window.contentView]];
+        
+        if ((anchorViewFrame.origin.x != positioningRect.origin.x) || (anchorViewFrame.origin.y != NSMaxY(positioningRect))) {
+            shouldUpdate = YES;
+            
+            if (anchorViewFrame.origin.x != positioningRect.origin.x) {
+                posX += anchorViewFrame.origin.x - positioningRect.origin.x;
+            }
+            
+            if (anchorViewFrame.origin.y != NSMaxY(positioningRect)) {
+                posY += anchorViewFrame.origin.y - NSMaxY(positioningRect);
+            }
+        }
+    }
+    
+    if (shouldUpdate) {
+        [self anchorView:anchorView shouldUpdate:shouldUpdate position:NSMakePoint(posX, posY) inParent:parentView];
+    }
+}
+
+- (void)setupPositioningAnchorWithView:(NSView *)positioningView positioningRect:(NSRect)positioningRect shouldUpdatePosition:(BOOL)shouldUpdatePosition {
+    NSDictionary *relativePositionValues = [self relativePositionValuesForView:positioningView rect:positioningRect];
+    FLOPopoverRelativePositionType relativeType = [[relativePositionValues objectForKey:@"type"] integerValue];
+    NSPoint relativePosition = [[relativePositionValues objectForKey:@"position"] pointValue];
+    
+    if (self.positioningAnchorView == nil) {
+        self.positioningAnchorView = [self anchorViewWithRelativePosition:relativePosition type:relativeType parent:positioningView];
+        
         [positioningView setNeedsUpdateConstraints:YES];
         [positioningView updateConstraints];
         [positioningView updateConstraintsForSubtreeIfNeeded];
         [positioningView layoutSubtreeIfNeeded];
     }
+    
+    if (shouldUpdatePosition) {
+        [self anchorView:self.positioningAnchorView shouldUpdate:shouldUpdatePosition position:relativePosition inParent:positioningView];
+    }
+    
+    [self validateAnchorView:self.positioningAnchorView position:relativePosition inParent:positioningView withPositioningRect:positioningRect];
     
     [self.positioningAnchorView setHidden:NO];
 }

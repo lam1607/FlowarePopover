@@ -54,6 +54,12 @@
 @property (nonatomic, assign, readonly) FLOPopoverType type;
 @property (nonatomic, assign, readonly) NSRect frame;
 @property (nonatomic, assign, readonly, getter = isShown) BOOL shown;
+@property (nonatomic, assign, readonly) BOOL isMoved;
+
+/**
+ * The positioning frame that used in displaying function. (only available for given frame displaying).
+ */
+@property (nonatomic, assign, readonly) NSRect initialPositioningRect;
 
 
 @property (nonatomic, assign) BOOL alwaysOnTop;
@@ -67,6 +73,7 @@
 @property (nonatomic, assign) BOOL closesWhenPopoverResignsKey;
 @property (nonatomic, assign) BOOL closesWhenApplicationBecomesInactive;
 @property (nonatomic, assign) BOOL closesWhenApplicationResizes;
+@property (nonatomic, assign) BOOL closesWhenNotBelongToApplicationFrame;
 @property (nonatomic, assign) NSTimeInterval closesAfterTimeInterval;
 
 /**

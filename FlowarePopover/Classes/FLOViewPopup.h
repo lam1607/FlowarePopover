@@ -17,6 +17,11 @@
 @property (nonatomic, assign, readonly) NSRect frame;
 @property (nonatomic, assign, readonly, getter = isShown) BOOL shown;
 
+/**
+ * The positioning frame that used in displaying function. (only available for given frame displaying).
+ */
+@property (nonatomic, assign, readonly) NSRect initialPositioningRect;
+
 
 @property (nonatomic, assign) BOOL alwaysOnTop;
 @property (nonatomic, assign) BOOL shouldShowArrow;
@@ -29,6 +34,7 @@
 @property (nonatomic, assign) BOOL closesWhenPopoverResignsKey;
 @property (nonatomic, assign) BOOL closesWhenApplicationBecomesInactive;
 @property (nonatomic, assign) BOOL closesWhenApplicationResizes;
+@property (nonatomic, assign) BOOL closesWhenNotBelongToApplicationFrame;
 
 /**
  * Make Popover window key as possible when mouse entered to popover.

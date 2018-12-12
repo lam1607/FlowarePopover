@@ -217,8 +217,8 @@
         NSRect contentViewRect = NSMakeRect(0.0, 0.0, contentViewWidth, contentViewHeight);
         
         CGFloat positioningRectX = visibleRect.size.width - contentViewRect.size.width - verticalMargin / 2;
-        CGFloat positioningRectY = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin / 2 - contentViewHeight;
-        NSRect positioningRect = [self.view.window convertRectToScreen:NSMakeRect(positioningRectX, positioningRectY, contentViewRect.size.width, contentViewRect.size.height)];
+        CGFloat positioningRectY = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin / 2;
+        NSRect positioningRect = [self.view.window convertRectToScreen:NSMakeRect(positioningRectX, positioningRectY, 0.0, 0.0)];
         
         [self.popoverComics setPopoverContentViewSize:contentViewRect.size positioningRect:positioningRect];
     }
@@ -238,9 +238,8 @@
     [popover setPopoverLevel:popoverWindowLevel];
 }
 
-- (void)showRelativeToRectOfViewWithPopover:(FLOPopover *)popover edgeType:(FLOPopoverEdgeType)edgeType atView:(NSView *)positioningView {
-    NSRect positioningRect = NSMakeRect(positioningView.bounds.origin.x, positioningView.bounds.origin.y, positioningView.bounds.size.width, self.vMenu.frame.size.height);
-    positioningRect = (positioningView.superview != nil) ? positioningView.superview.bounds : positioningView.bounds;
+- (void)showRelativeToRectOfViewWithPopover:(FLOPopover *)popover edgeType:(FLOPopoverEdgeType)edgeType atView:(NSView *)sender {
+    NSRect rect = (sender.superview != nil) ? sender.superview.bounds : sender.bounds;
     
     if (popover.delegate == nil) {
         popover.delegate = self;
@@ -251,7 +250,7 @@
     if ([popover isShown]) {
         [popover close];
     } else {
-        [popover showRelativeToRect:positioningRect ofView:positioningView edgeType:edgeType];
+        [popover showRelativeToRect:rect ofView:sender edgeType:edgeType];
     }
 }
 
@@ -266,7 +265,7 @@
         [popover close];
     } else {
 #ifdef SHOULD_COMICS_POPOVER_ANCHOR_TO_APPLICATION_VIEW
-        [popover showRelativeToView:[BaseWindowController sharedInstance].window.contentView withRect:rect sender:sender];
+        [popover showRelativeToView:[BaseWindowController sharedInstance].window.contentView withRect:rect sender:sender relativePositionType:FLOPopoverRelativePositionTopLeading];
 #else
         [popover showRelativeToView:sender withRect:rect];
 #endif
@@ -375,8 +374,8 @@
         //        self.popoverComics.isDetachable = YES;
         
         CGFloat positioningRectX = visibleRect.size.width - contentViewRect.size.width - verticalMargin / 2;
-        CGFloat positioningRectY = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin / 2 - contentViewHeight;
-        NSRect positioningRect = [sender.window convertRectToScreen:NSMakeRect(positioningRectX, positioningRectY, contentViewRect.size.width, contentViewRect.size.height)];
+        CGFloat positioningRectY = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin / 2;
+        NSRect positioningRect = [sender.window convertRectToScreen:NSMakeRect(positioningRectX, positioningRectY, 0.0, 0.0)];
         
         [self.popoverComics setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft animatedInApplicationRect:YES];
         

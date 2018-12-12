@@ -90,14 +90,14 @@ static BaseWindowController *_sharedInstance = nil;
 
 - (void)setupUI {
     NSRect visibleFrame = [self.window.screen visibleFrame];
-    CGFloat width = 0.6 * visibleFrame.size.width;
-    CGFloat height = 0.7 * visibleFrame.size.height;
+    CGFloat width = 0.7 * visibleFrame.size.width;
+    CGFloat height = 0.8 * visibleFrame.size.height;
     CGFloat x = (visibleFrame.size.width - width) / 2;
     CGFloat y = (visibleFrame.size.height + visibleFrame.origin.y - height) / 2;
     NSRect viewFrame = NSMakeRect(x, y, width, height);
     
     [self.window setFrame:viewFrame display:YES];
-    [self.window setMinSize:NSMakeSize(0.6 * visibleFrame.size.width, 0.7 * visibleFrame.size.height)];
+    [self.window setMinSize:NSMakeSize(0.7 * visibleFrame.size.width, 0.8 * visibleFrame.size.height)];
 }
 
 #pragma mark - Processes
