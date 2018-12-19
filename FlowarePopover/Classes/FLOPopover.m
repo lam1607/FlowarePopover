@@ -537,21 +537,22 @@
 
 - (void)bindEventsForPopover:(NSResponder<FLOPopoverService> *)target {
     __weak typeof(self) wself = self;
+    __weak typeof(target) wtarget = target;
     
     target.willShowBlock = ^(NSResponder *popover) {
-        if ((popover == target) && [wself.delegate respondsToSelector:@selector(floPopoverWillShow:)]) {
+        if ((popover == wtarget) && [wself.delegate respondsToSelector:@selector(floPopoverWillShow:)]) {
             [wself.delegate floPopoverWillShow:self];
         }
     };
     
     target.didShowBlock = ^(NSResponder *popover) {
-        if ((popover == target) && [wself.delegate respondsToSelector:@selector(floPopoverDidShow:)]) {
+        if ((popover == wtarget) && [wself.delegate respondsToSelector:@selector(floPopoverDidShow:)]) {
             [wself.delegate floPopoverDidShow:self];
         }
     };
     
     target.willCloseBlock = ^(NSResponder *popover) {
-        if (popover == target) {
+        if (popover == wtarget) {
             wself.isMoved = NO;
             
             if ([wself.delegate respondsToSelector:@selector(floPopoverWillClose:)]) {
@@ -561,14 +562,15 @@
     };
     
     target.didCloseBlock = ^(NSResponder *popover) {
-        if ((popover == target) && [wself.delegate respondsToSelector:@selector(floPopoverDidClose:)]) {
+        if ((popover == wtarget) && [wself.delegate respondsToSelector:@selector(floPopoverDidClose:)]) {
             [wself storePopupValues:popover];
+            
             [wself.delegate floPopoverDidClose:self];
         }
     };
     
     target.didMoveBlock = ^(NSResponder *popover) {
-        if (popover == target) {
+        if (popover == wtarget) {
             wself.isMoved = YES;
             
             if (wself.closesAfterTimeInterval > 0) {
@@ -580,7 +582,7 @@
     };
     
     target.didDetachBlock = ^(NSResponder *popover) {
-        if (popover == target) {
+        if (popover == wtarget) {
             wself.animated = NO;
         }
     };
