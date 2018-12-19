@@ -70,6 +70,8 @@
 
 @property (nonatomic, assign) NSTimeInterval animationDuration;
 
+@property (nonatomic, assign) BOOL needAutoresizingMask;
+
 #pragma mark - Display
 
 /**

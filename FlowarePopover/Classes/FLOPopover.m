@@ -383,6 +383,18 @@
     }
 }
 
+- (void)setNeedAutoresizingMask:(BOOL)needAutoresizingMask {
+    [self restartPopupIfNeeded];
+    
+    _needAutoresizingMask = needAutoresizingMask;
+    
+    if (self.type == FLOWindowPopover) {
+        self.windowPopup.needAutoresizingMask = needAutoresizingMask;
+    } else {
+        self.viewPopup.needAutoresizingMask = needAutoresizingMask;
+    }
+}
+
 #pragma mark - Local implementations
 
 - (void)setupPopupView {
@@ -441,6 +453,7 @@
         self.tag = viewPopup.tag;
         self.animatedByMovingFrame = viewPopup.animatedByMovingFrame;
         self.animationDuration = viewPopup.animationDuration;
+        self.needAutoresizingMask = viewPopup.needAutoresizingMask;
         
         self.viewPopup = nil;
     } else if ([popover isKindOfClass:[FLOWindowPopup class]] && (self.type == FLOWindowPopover)) {
@@ -465,6 +478,7 @@
         self.tag = windowPopup.tag;
         self.animatedByMovingFrame = windowPopup.animatedByMovingFrame;
         self.animationDuration = windowPopup.animationDuration;
+        self.needAutoresizingMask = windowPopup.needAutoresizingMask;
         
         self.windowPopup = nil;
     }
@@ -492,6 +506,7 @@
         viewPopup.tag = self.tag;
         viewPopup.animatedByMovingFrame = self.animatedByMovingFrame;
         viewPopup.animationDuration = self.animationDuration;
+        viewPopup.needAutoresizingMask = self.needAutoresizingMask;
     } else if ([popover isKindOfClass:[FLOWindowPopup class]] && (self.type == FLOWindowPopover)) {
         FLOWindowPopup *windowPopup = (FLOWindowPopup *)popover;
         
@@ -514,6 +529,7 @@
         windowPopup.tag = self.tag;
         windowPopup.animatedByMovingFrame = self.animatedByMovingFrame;
         windowPopup.animationDuration = self.animationDuration;
+        windowPopup.needAutoresizingMask = self.needAutoresizingMask;
     }
 }
 

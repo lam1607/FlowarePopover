@@ -73,6 +73,7 @@
         _tag = -1;
         _animatedByMovingFrame = NO;
         _animationDuration = 0.0;
+        _needAutoresizingMask = NO;
     }
     
     return self;
@@ -318,13 +319,13 @@
 - (void)updatePopoverFrame {
     if ([self isShown]) {
         if (self.updatesFrameWhileShowing || ((self.popoverShowing == NO) && (self.popoverClosing == NO))) {
-            [self showIfNeeded:NO];
+            [self displayWithAnimationProcess:NO];
         } else {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                 while (true) {
                     if ((self.popoverShowing == NO) && (self.popoverClosing == NO)) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            [self showIfNeeded:NO];
+                            [self displayWithAnimationProcess:NO];
                         });
                         
                         break;
@@ -356,21 +357,19 @@
     if ((self.popoverShowing == NO) && (self.popoverClosing == NO)) {
         self.popoverShowing = YES;
         
-        // Must set alphaValue 0.01 (for user don't see the view in UI) to let the content view makes data loading.
-        // NEVER set alphaValue 0.0, if alphaValue is set as 0.0 the content view cannot reload UI and update frame correctly.
-        [self.utils.contentView setAlphaValue:0.01];
-        
         if (willShowBlock) willShowBlock(self);
         
         self.utils.positioningRect = rect;
         self.utils.positioningView = positioningView;
         self.utils.positioningAnchorView = positioningView;
         self.utils.senderView = positioningView;
+        self.utils.needAutoresizingMask = self.needAutoresizingMask;
         
         [self setPopoverEdgeType:edgeType];
-        // Should perform with selector after 0.001 second, for preventing flashing issue
-        // When contentView is added to backgroundView, when running the while loop
-        [self performSelector:@selector(show) withObject:nil afterDelay:0.001];
+        [self setupPopover];
+        
+        // Waiting for content view loading data and update its frame correctly before animation.
+        [self performSelector:@selector(show) withObject:nil afterDelay:0.069];
         [self registerForApplicationEvents];
     }
 }
@@ -401,10 +400,6 @@
         self.popoverShowing = YES;
         self.initialPositioningRect = rect;
         
-        // Must set alphaValue 0.01 (for user don't see the view in UI) to let the content view makes data loading.
-        // NEVER set alphaValue 0.0, if alphaValue is set as 0.0 the content view cannot reload UI and update frame correctly.
-        [self.utils.contentView setAlphaValue:0.01];
-        
         if (willShowBlock) willShowBlock(self);
         
         self.utils.relativePositionType = relativePositionType;
@@ -414,51 +409,44 @@
         self.utils.positioningRect = [self.utils.positioningAnchorView bounds];
         self.utils.positioningView = positioningView;
         self.utils.senderView = sender;
+        self.utils.needAutoresizingMask = self.needAutoresizingMask;
         
         [self setPopoverEdgeType:edgeType];
-        // Should perform with selector after 0.001 second, for preventing flashing issue
-        // When contentView is added to backgroundView, when running the while loop
-        [self performSelector:@selector(show) withObject:nil afterDelay:0.001];
+        [self setupPopover];
+        
+        // Waiting for content view loading data and update its frame correctly before animation.
+        [self performSelector:@selector(show) withObject:nil afterDelay:0.069];
         [self registerForApplicationEvents];
     }
 }
 
 - (void)show {
-    [self showIfNeeded:YES];
+    [self displayWithAnimationProcess:YES];
 }
 
-- (void)showIfNeeded:(BOOL)needed {
-    if (NSEqualRects(self.utils.positioningRect, NSZeroRect)) {
-        self.utils.positioningRect = [self.utils.positioningAnchorView bounds];
-    }
+- (void)setupPopover {
+    self.utils.backgroundView.frame = NSMakeRect(SHRT_MIN, SHRT_MIN, self.utils.contentView.frame.size.width, self.utils.contentView.frame.size.height);
     
-    self.utils.contentView.translatesAutoresizingMaskIntoConstraints = YES;
+    [self.utils.backgroundView setNeedsDisplay:YES];
+    [self.utils.backgroundView displayRect:NSMakeRect(SHRT_MIN, SHRT_MIN, self.utils.contentView.frame.size.width, self.utils.contentView.frame.size.height)];
     
-    if (needed) {
-        self.utils.backgroundView.frame = (NSRect){ .size = self.utils.contentView.frame.size };
+    if (![self.utils.contentView isDescendantOf:self.utils.backgroundView]) {
+        [self.utils addView:self.utils.contentView toParent:self.utils.backgroundView];
     }
     
     if (![self.utils.backgroundView isDescendantOf:self.utils.positioningAnchorView.window.contentView]) {
-        [self.utils.positioningAnchorView.window.contentView addSubview:self.utils.backgroundView positioned:NSWindowAbove relativeTo:self.utils.positioningAnchorView];
+        [self.utils addView:self.utils.backgroundView toParent:self.utils.positioningAnchorView.window.contentView];
     }
     
-    if (![self.utils.contentView isDescendantOf:self.utils.backgroundView]) {
-        [self.utils.backgroundView addSubview:self.utils.contentView positioned:NSWindowAbove relativeTo:nil];
-    }
-    
-    if (needed) {
-        // Must set alphaValue 0.01 (for user don't see the view in UI) to let the content view makes data loading.
-        // NEVER set alphaValue 0.0, if alphaValue is set as 0.0 the content view cannot reload UI and update frame correctly.
-        [self.utils.backgroundView setAlphaValue:0.01];
-        
-        // Waiting for content view loading data and update its frame correctly before animation.
-        while (true) {
-            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.075]];
-            break;
-        }
-    }
-    
+    [self.utils setupAutoresizingMaskIfNeeded:YES];
+}
+
+- (void)displayWithAnimationProcess:(BOOL)needed {
     self.utils.backgroundView.tag = self.tag;
+    
+    if (NSEqualRects(self.utils.positioningRect, NSZeroRect)) {
+        self.utils.positioningRect = [self.utils.positioningAnchorView bounds];
+    }
     
     NSRect windowRelativeRect = [self.utils.positioningAnchorView convertRect:[self.utils.positioningAnchorView alignmentRectForFrame:self.utils.positioningRect] toView:nil];
     NSRect positionOnScreenRect = [self.utils.positioningAnchorView.window convertRectToScreen:windowRelativeRect];
@@ -491,7 +479,6 @@
     self.utils.backgroundView.popoverEdge = popoverEdge;
     
     NSRect contentViewFrame = [self.utils.backgroundView contentViewFrameForBackgroundFrame:self.utils.backgroundView.bounds popoverEdge:popoverEdge];
-    self.utils.contentView.translatesAutoresizingMaskIntoConstraints = YES;
     self.utils.contentView.frame = contentViewFrame;
     
     if (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) {
@@ -539,6 +526,7 @@
             
             if (willCloseBlock) willCloseBlock(self);
             
+            [self.utils setupAutoresizingMaskIfNeeded:NO];
             [self removeAllApplicationEvents];
             [self popoverShowing:NO animated:self.animated];
         }
@@ -552,6 +540,8 @@
         self.popoverView.alphaValue = 1.0;
         
         self.popoverShowing = NO;
+        
+        [self.utils setupAutoresizingMaskIfNeeded:YES];
         
         if (didShowBlock) didShowBlock(self);
     } else {
@@ -578,6 +568,8 @@
 
 - (void)popoverShowing:(BOOL)showing animated:(BOOL)animated {
     if (animated) {
+        [self.utils setupAutoresizingMaskIfNeeded:NO];
+        
         switch (self.utils.animationBehaviour) {
             case FLOPopoverAnimationBehaviorTransform:
                 [self popoverTransformAnimationShowing:showing];
@@ -625,24 +617,14 @@
     CGFloat y = frame.origin.y - (height - frame.size.height) / 2;
     NSRect scalingFrame = NSMakeRect(x, y, width, height);
     
-    NSVisualEffectView *visualEffectView = [self.utils contentViewDidContainVisualEffect];
-    
     [self.popoverView setAlphaValue:1.0];
     [self.utils.contentView setAlphaValue:1.0];
     [self.utils.contentView display];
     
-    if (visualEffectView) {
-        [self setVisualEffectImageViewEnabled:YES];
-    }
+    NSImage *snapshotImage = [FLOExtensionsGraphicsContext snapshotImageFromView:self.utils.contentView];
     
-    NSImage *snapshotImage = [FLOExtensionsGraphicsContext snapshotImageFromView:self.utils.backgroundView];
-    
-    if (visualEffectView) {
-        [self setVisualEffectImageViewEnabled:NO];
-    }
-    
-    [self.popoverView setAlphaValue:0.0];
-    [self.utils.contentView setAlphaValue:0.0];
+    [self.popoverView setAlphaValue:0.01];
+    [self.utils.contentView setAlphaValue:0.01];
     
     CGFloat layerX = (scalingFrame.size.width - frame.size.width) / 2;
     CGFloat layerY = (scalingFrame.size.height - frame.size.height) / 2;
@@ -733,24 +715,14 @@
     
     [self.utils calculateTransitionFrame:&transitionFrame fromFrame:fromFrame toFrame:toFrame animationType:animationType forwarding:self.animatedForwarding showing:showing];
     
-    NSVisualEffectView *visualEffectView = [self.utils contentViewDidContainVisualEffect];
-    
     [self.popoverView setAlphaValue:1.0];
     [self.utils.contentView setAlphaValue:1.0];
     [self.utils.contentView display];
     
-    if (visualEffectView) {
-        [self setVisualEffectImageViewEnabled:YES];
-    }
+    NSImage *snapshotImage = [FLOExtensionsGraphicsContext snapshotImageFromView:self.utils.contentView];
     
-    NSImage *snapshotImage = [FLOExtensionsGraphicsContext snapshotImageFromView:self.utils.backgroundView];
-    
-    if (visualEffectView) {
-        [self setVisualEffectImageViewEnabled:NO];
-    }
-    
-    [self.popoverView setAlphaValue:0.0];
-    [self.utils.contentView setAlphaValue:0.0];
+    [self.popoverView setAlphaValue:0.01];
+    [self.utils.contentView setAlphaValue:0.01];
     
     [self.popoverView setFrame:frame];
     
@@ -1190,7 +1162,6 @@
             
             if (!(self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView))) {
                 NSRect contentViewFrame = [self.utils.backgroundView contentViewFrameForBackgroundFrame:self.utils.backgroundView.bounds popoverEdge:self.utils.preferredEdge];
-                self.utils.contentView.translatesAutoresizingMaskIntoConstraints = YES;
                 self.utils.contentView.frame = contentViewFrame;
             }
             

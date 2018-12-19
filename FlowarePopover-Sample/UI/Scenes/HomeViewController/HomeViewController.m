@@ -483,6 +483,13 @@
 }
 
 - (void)floPopoverDidClose:(FLOPopover *)popover {
+    if (popover == self.popoverFilms) {
+        self.popoverFilms = nil;
+    } else if (popover == self.popoverNews) {
+        self.popoverNews = nil;
+    } else if (popover == self.popoverComics) {
+        self.popoverComics = nil;
+    }
 }
 
 @end

@@ -32,6 +32,8 @@
 @property (nonatomic, assign) FLOPopoverAnimationType animationType;
 @property (nonatomic, assign) BOOL animatedInApplicationRect;
 
+@property (nonatomic, assign) BOOL needAutoresizingMask;
+
 @property (nonatomic, strong) NSView *positioningAnchorView;
 @property (nonatomic, strong) NSView *senderView;
 @property (nonatomic, assign) FLOPopoverRelativePositionType relativePositionType;
@@ -64,6 +66,8 @@
 - (BOOL)didWindow:(NSWindow *)parent contain:(NSWindow *)child;
 - (BOOL)didWindows:(NSArray *)windows contain:(NSWindow *)window;
 - (NSVisualEffectView *)contentViewDidContainVisualEffect;
+- (void)addView:(NSView *)view toParent:(NSView *)parentView;
+- (void)setupAutoresizingMaskIfNeeded:(BOOL)needed;
 
 #pragma mark - Display utilities
 

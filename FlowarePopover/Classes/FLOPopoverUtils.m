@@ -300,6 +300,32 @@
     return nil;
 }
 
+- (void)addView:(NSView *)view toParent:(NSView *)parentView {
+    if ((view == nil) || (parentView == nil)) return;
+    
+    if ([view isDescendantOf:parentView] == NO) {
+        [parentView addSubview:view];
+        parentView.autoresizesSubviews = YES;
+        
+        view.translatesAutoresizingMaskIntoConstraints = YES;
+    }
+}
+
+- (void)setupAutoresizingMaskIfNeeded:(BOOL)needed {
+    if (self.needAutoresizingMask) {
+        self.contentView.translatesAutoresizingMaskIntoConstraints = YES;
+        self.backgroundView.translatesAutoresizingMaskIntoConstraints = YES;
+        
+        if (needed) {
+            self.contentView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable | NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin | NSViewMaxYMargin;
+            self.backgroundView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable | NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin | NSViewMaxYMargin;
+        } else {
+            self.contentView.autoresizingMask = NSViewNotSizable;
+            self.backgroundView.autoresizingMask = NSViewNotSizable;
+        }
+    }
+}
+
 #pragma mark - Display utilities
 
 - (void)setPopoverEdgeType:(FLOPopoverEdgeType)edgeType {

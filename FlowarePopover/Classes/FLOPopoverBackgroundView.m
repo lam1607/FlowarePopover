@@ -105,8 +105,8 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
         
         _clippingView = [[FLOPopoverClippingView alloc] initWithFrame:self.bounds];
         
-        _clippingView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
         _clippingView.translatesAutoresizingMaskIntoConstraints = YES;
+        _clippingView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable | NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin | NSViewMaxYMargin;
         
         [self addSubview:_clippingView];
     }

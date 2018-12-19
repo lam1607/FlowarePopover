@@ -226,11 +226,13 @@
 }
 
 + (BOOL)isDarkMode {
+#ifdef NSAppKitVersionNumber10_14
     NSAppearance *appearance = NSAppearance.currentAppearance;
     
-    if (@available(*, macOS 10.14)) {
+    if (@available(macOS 10.14, *)) {
         return appearance.name == NSAppearanceNameDarkAqua;
     }
+#endif
     
     return NO;
 }
