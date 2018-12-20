@@ -46,7 +46,7 @@ static CGFloat const PopoverBackgroundViewArrowHeight = 12.0;
 
 @property (nonatomic, weak) id<FLOPopoverBackgroundViewDelegate> delegate;
 
-@property (nonatomic, assign) BOOL makeKeyWindowOnMouseEvents;
+@property (nonatomic, assign) BOOL makesKeyWindowOnMouseEvents;
 
 // The edge of the target view which the popover is appearing next to. This will
 // be set by the popover.

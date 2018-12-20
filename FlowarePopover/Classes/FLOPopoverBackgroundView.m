@@ -407,7 +407,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 - (void)updateTrackingAreas {
     [super updateTrackingAreas];
     
-    if (self.makeKeyWindowOnMouseEvents && [self.window isKindOfClass:[FLOPopoverWindow class]]) {
+    if (self.makesKeyWindowOnMouseEvents && [self.window isKindOfClass:[FLOPopoverWindow class]]) {
         if (self.trackingArea != nil) {
             [self removeTrackingArea:self.trackingArea];
             self.trackingArea = nil;
@@ -420,7 +420,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 }
 
 - (void)mouseEntered:(NSEvent *)event {
-    if (self.makeKeyWindowOnMouseEvents && [self.window isKindOfClass:[FLOPopoverWindow class]]) {
+    if (self.makesKeyWindowOnMouseEvents && [self.window isKindOfClass:[FLOPopoverWindow class]]) {
         if ([self isDescendantOf:event.window.contentView] && ([event.window isKeyWindow] == NO)) {
             [event.window makeKeyAndOrderFront:nil];
         }
@@ -428,7 +428,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 }
 
 - (void)mouseExited:(NSEvent *)event {
-    if (self.makeKeyWindowOnMouseEvents && [self.window isKindOfClass:[FLOPopoverWindow class]]) {
+    if (self.makesKeyWindowOnMouseEvents && [self.window isKindOfClass:[FLOPopoverWindow class]]) {
         if ([self isDescendantOf:event.window.contentView] && [event.window isKeyWindow]) {
             [event.window resignKeyWindow];
         }

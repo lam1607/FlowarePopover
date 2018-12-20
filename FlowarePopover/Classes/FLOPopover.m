@@ -298,13 +298,25 @@
  * @note Becareful when using this property. If you have some views also implemented the
  * [mouseEntered:], [mouseExited:] methods. It might lead some unexpected behaviours.
  */
-- (void)setMakeKeyWindowOnMouseEvents:(BOOL)makeKeyWindowOnMouseEvents {
-    _makeKeyWindowOnMouseEvents = makeKeyWindowOnMouseEvents;
+- (void)setMakesKeyWindowOnMouseEvents:(BOOL)makesKeyWindowOnMouseEvents {
+    [self restartPopupIfNeeded];
+    
+    _makesKeyWindowOnMouseEvents = makesKeyWindowOnMouseEvents;
     
     if (self.type == FLOWindowPopover) {
-        self.windowPopup.makeKeyWindowOnMouseEvents = makeKeyWindowOnMouseEvents;
+        self.windowPopup.makesKeyWindowOnMouseEvents = makesKeyWindowOnMouseEvents;
     } else {
-        self.viewPopup.makeKeyWindowOnMouseEvents = makeKeyWindowOnMouseEvents;
+        self.viewPopup.makesKeyWindowOnMouseEvents = makesKeyWindowOnMouseEvents;
+    }
+}
+
+- (void)setMakesKeyAndOrderFrontOnDisplaying:(BOOL)makesKeyAndOrderFrontOnDisplaying {
+    [self restartPopupIfNeeded];
+    
+    _makesKeyAndOrderFrontOnDisplaying = makesKeyAndOrderFrontOnDisplaying;
+    
+    if (self.type == FLOWindowPopover) {
+        self.windowPopup.makesKeyAndOrderFrontOnDisplaying = makesKeyAndOrderFrontOnDisplaying;
     }
 }
 
@@ -441,13 +453,13 @@
         self.animatedForwarding = viewPopup.animatedForwarding;
         self.staysInApplicationRect = viewPopup.staysInApplicationRect;
         self.updatesFrameWhileShowing = viewPopup.updatesFrameWhileShowing;
-        self.makeKeyWindowOnMouseEvents = viewPopup.makeKeyWindowOnMouseEvents;
         self.shouldRegisterSuperviewObservers = viewPopup.shouldRegisterSuperviewObservers;
         self.shouldChangeSizeWhenApplicationResizes = viewPopup.shouldChangeSizeWhenApplicationResizes;
         self.closesWhenPopoverResignsKey = viewPopup.closesWhenPopoverResignsKey;
         self.closesWhenApplicationBecomesInactive = viewPopup.closesWhenApplicationBecomesInactive;
         self.closesWhenApplicationResizes = viewPopup.closesWhenApplicationResizes;
         self.closesWhenNotBelongToApplicationFrame = viewPopup.closesWhenNotBelongToApplicationFrame;
+        self.makesKeyWindowOnMouseEvents = viewPopup.makesKeyWindowOnMouseEvents;
         self.isMovable = viewPopup.isMovable;
         self.isDetachable = viewPopup.isDetachable;
         self.tag = viewPopup.tag;
@@ -465,13 +477,14 @@
         self.animatedForwarding = windowPopup.animatedForwarding;
         self.staysInApplicationRect = windowPopup.staysInApplicationRect;
         self.updatesFrameWhileShowing = windowPopup.updatesFrameWhileShowing;
-        self.makeKeyWindowOnMouseEvents = windowPopup.makeKeyWindowOnMouseEvents;
         self.shouldRegisterSuperviewObservers = windowPopup.shouldRegisterSuperviewObservers;
         self.shouldChangeSizeWhenApplicationResizes = windowPopup.shouldChangeSizeWhenApplicationResizes;
         self.closesWhenPopoverResignsKey = windowPopup.closesWhenPopoverResignsKey;
         self.closesWhenApplicationBecomesInactive = windowPopup.closesWhenApplicationBecomesInactive;
         self.closesWhenApplicationResizes = windowPopup.closesWhenApplicationResizes;
         self.closesWhenNotBelongToApplicationFrame = windowPopup.closesWhenNotBelongToApplicationFrame;
+        self.makesKeyWindowOnMouseEvents = windowPopup.makesKeyWindowOnMouseEvents;
+        self.makesKeyAndOrderFrontOnDisplaying = windowPopup.makesKeyAndOrderFrontOnDisplaying;
         self.isMovable = windowPopup.isMovable;
         self.isDetachable = windowPopup.isDetachable;
         self.canBecomeKey = windowPopup.canBecomeKey;
@@ -494,13 +507,13 @@
         viewPopup.animatedForwarding = self.animatedForwarding;
         viewPopup.staysInApplicationRect = self.staysInApplicationRect;
         viewPopup.updatesFrameWhileShowing = self.updatesFrameWhileShowing;
-        viewPopup.makeKeyWindowOnMouseEvents = self.makeKeyWindowOnMouseEvents;
         viewPopup.shouldRegisterSuperviewObservers = self.shouldRegisterSuperviewObservers;
         viewPopup.shouldChangeSizeWhenApplicationResizes = self.shouldChangeSizeWhenApplicationResizes;
         viewPopup.closesWhenPopoverResignsKey = self.closesWhenPopoverResignsKey;
         viewPopup.closesWhenApplicationBecomesInactive = self.closesWhenApplicationBecomesInactive;
         viewPopup.closesWhenApplicationResizes = self.closesWhenApplicationResizes;
         viewPopup.closesWhenNotBelongToApplicationFrame = self.closesWhenNotBelongToApplicationFrame;
+        viewPopup.makesKeyWindowOnMouseEvents = self.makesKeyWindowOnMouseEvents;
         viewPopup.isMovable = self.isMovable;
         viewPopup.isDetachable = self.isDetachable;
         viewPopup.tag = self.tag;
@@ -516,13 +529,14 @@
         windowPopup.animatedForwarding = self.animatedForwarding;
         windowPopup.staysInApplicationRect = self.staysInApplicationRect;
         windowPopup.updatesFrameWhileShowing = self.updatesFrameWhileShowing;
-        windowPopup.makeKeyWindowOnMouseEvents = self.makeKeyWindowOnMouseEvents;
         windowPopup.shouldRegisterSuperviewObservers = self.shouldRegisterSuperviewObservers;
         windowPopup.shouldChangeSizeWhenApplicationResizes = self.shouldChangeSizeWhenApplicationResizes;
         windowPopup.closesWhenPopoverResignsKey = self.closesWhenPopoverResignsKey;
         windowPopup.closesWhenApplicationBecomesInactive = self.closesWhenApplicationBecomesInactive;
         windowPopup.closesWhenApplicationResizes = self.closesWhenApplicationResizes;
         windowPopup.closesWhenNotBelongToApplicationFrame = self.closesWhenNotBelongToApplicationFrame;
+        windowPopup.makesKeyWindowOnMouseEvents = self.makesKeyWindowOnMouseEvents;
+        windowPopup.makesKeyAndOrderFrontOnDisplaying = self.makesKeyAndOrderFrontOnDisplaying;
         windowPopup.isMovable = self.isMovable;
         windowPopup.isDetachable = self.isDetachable;
         windowPopup.canBecomeKey = self.canBecomeKey;

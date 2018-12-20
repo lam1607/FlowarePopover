@@ -41,7 +41,7 @@
  * @note Becareful when using this property. If you have some views also implemented the
  * [mouseEntered:], [mouseExited:] methods. It might lead some unexpected behaviours.
  */
-@property (nonatomic, assign) BOOL makeKeyWindowOnMouseEvents;
+@property (nonatomic, assign) BOOL makesKeyWindowOnMouseEvents;
 
 /**
  * Make the popover movable.

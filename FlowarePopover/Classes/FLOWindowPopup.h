@@ -41,7 +41,13 @@
  * @note Becareful when using this property. If you have some views also implemented the
  * [mouseEntered:], [mouseExited:] methods. It might lead some unexpected behaviours.
  */
-@property (nonatomic, assign) BOOL makeKeyWindowOnMouseEvents;
+@property (nonatomic, assign) BOOL makesKeyWindowOnMouseEvents;
+
+/**
+ * Make Popover window become key, order front and also activate the application.
+ * Only available for FLOWindowPopover
+ */
+@property (nonatomic, assign) BOOL makesKeyAndOrderFrontOnDisplaying;
 
 /**
  * Make the popover movable.

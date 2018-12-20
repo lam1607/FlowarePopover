@@ -61,13 +61,14 @@
         _animatedForwarding = NO;
         _staysInApplicationRect = NO;
         _updatesFrameWhileShowing = NO;
-        _makeKeyWindowOnMouseEvents = NO;
         _shouldRegisterSuperviewObservers = YES;
         _shouldChangeSizeWhenApplicationResizes = YES;
         _closesWhenPopoverResignsKey = NO;
         _closesWhenApplicationBecomesInactive = NO;
         _closesWhenApplicationResizes = NO;
         _closesWhenNotBelongToApplicationFrame = YES;
+        _makesKeyWindowOnMouseEvents = NO;
+        _makesKeyAndOrderFrontOnDisplaying = NO;
         _isMovable = NO;
         _isDetachable = NO;
         _canBecomeKey = YES;
@@ -476,7 +477,7 @@
     NSSize contentViewSize = NSEqualSizes(self.utils.contentSize, NSZeroSize) ? self.utils.originalViewSize : self.utils.contentSize;
     NSRectEdge popoverEdge = self.utils.preferredEdge;
     
-    self.utils.backgroundView.makeKeyWindowOnMouseEvents = self.makeKeyWindowOnMouseEvents;
+    self.utils.backgroundView.makesKeyWindowOnMouseEvents = self.makesKeyWindowOnMouseEvents;
     
     [self.utils.backgroundView setMovable:self.isMovable];
     [self.utils.backgroundView setDetachable:self.isDetachable];
@@ -553,7 +554,10 @@
 
 - (void)popoverDidFinishShowing:(BOOL)showing {
     if (showing == YES) {
-        [self.popoverWindow makeKeyAndOrderFront:nil];
+        if (self.makesKeyAndOrderFrontOnDisplaying) {
+            [self.popoverWindow makeKeyAndOrderFront:nil];
+        }
+        
         self.popoverWindow.alphaValue = 1.0;
         
         self.popoverShowing = NO;

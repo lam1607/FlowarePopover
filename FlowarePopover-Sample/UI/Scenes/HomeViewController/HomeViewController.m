@@ -366,7 +366,7 @@
         //        self.popoverComics.shouldShowArrow = YES;
         self.popoverComics.animated = YES;
         //        self.popoverComics.animatedForwarding = YES;
-        self.popoverComics.makeKeyWindowOnMouseEvents = YES;
+        self.popoverComics.makesKeyWindowOnMouseEvents = YES;
         self.popoverComics.shouldChangeSizeWhenApplicationResizes = NO;
         //        self.popoverComics.closesWhenPopoverResignsKey = YES;
         //        self.popoverComics.closesWhenApplicationBecomesInactive = YES;
