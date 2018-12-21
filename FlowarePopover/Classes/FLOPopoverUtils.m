@@ -51,11 +51,12 @@
             _appMainWindow = [[[NSApplication sharedApplication] windows] firstObject];
         }
         
-        _anchorPoint = NSMakePoint(0.0, 0.0);
+        _animatedInApplicationRect = NO;
+        _popoverMoved = NO;
         _animationBehaviour = FLOPopoverAnimationBehaviorDefault;
         _animationType = FLOPopoverAnimationDefault;
-        _animatedInApplicationRect = NO;
         _relativePositionType = FLOPopoverRelativePositionAutomatic;
+        _anchorPoint = NSMakePoint(0.0, 0.0);
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidResize:) name:NSWindowDidResizeNotification object:nil];
     }

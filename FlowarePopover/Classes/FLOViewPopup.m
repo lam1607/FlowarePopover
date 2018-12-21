@@ -1173,6 +1173,8 @@
 #pragma mark - FLOPopoverBackgroundViewDelegate
 
 - (void)didPopoverMakeMovement {
+    self.utils.popoverMoved = YES;
+    
     if (didMoveBlock) {
         didMoveBlock(self);
         

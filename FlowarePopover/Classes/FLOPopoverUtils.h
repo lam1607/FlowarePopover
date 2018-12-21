@@ -26,6 +26,8 @@
 @property (nonatomic, strong) NSView *contentView;
 @property (nonatomic, strong) NSViewController *contentViewController;
 
+@property (nonatomic, assign) BOOL popoverMoved;
+
 @property (nonatomic, assign) BOOL staysInApplicationRect;
 
 @property (nonatomic, assign) FLOPopoverAnimationBehaviour animationBehaviour;

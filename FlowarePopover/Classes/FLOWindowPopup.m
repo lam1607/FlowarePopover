@@ -803,7 +803,7 @@
         transitionAnimation.toValue = [NSValue valueWithPoint:endPosition];
     }
     
-    if (self.utils.animatedInApplicationRect && (NSContainsRect(self.utils.appMainWindow.frame, transitionFrame) == NO)) {
+    if ((self.utils.popoverMoved == NO) && self.utils.animatedInApplicationRect && (NSContainsRect(self.utils.appMainWindow.frame, transitionFrame) == NO)) {
         NSRect intersectionRect = NSIntersectionRect(self.utils.appMainWindow.frame, transitionFrame);
         [self.popoverWindow setFrame:intersectionRect display:YES];
         [self.snapshotView setFrame:NSMakeRect(transitionFrame.origin.x - intersectionRect.origin.x, transitionFrame.origin.y - intersectionRect.origin.y, transitionFrame.size.width, transitionFrame.size.height)];
@@ -851,7 +851,7 @@
         
         [self.utils calculateFromFrame:&fromFrame toFrame:&toFrame animationType:self.utils.animationType forwarding:self.animatedForwarding showing:showing];
         
-        if (self.utils.animatedInApplicationRect) {
+        if ((self.utils.popoverMoved == NO) && self.utils.animatedInApplicationRect) {
             if (showing) {
                 fromFrame = NSIntersectionRect(self.utils.appMainWindow.frame, fromFrame);
             } else {
@@ -1211,6 +1211,8 @@
 #pragma mark - FLOPopoverBackgroundViewDelegate
 
 - (void)didPopoverMakeMovement {
+    self.utils.popoverMoved = YES;
+    
     if (didMoveBlock) {
         didMoveBlock(self);
         
