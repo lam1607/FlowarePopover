@@ -25,9 +25,6 @@
 }
 
 - (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame duration:(NSTimeInterval)duration source:(id)source {
-    self.styleMask = NSWindowStyleMaskBorderless;
-    self.movableByWindowBackground = YES;
-    
     if (showing) {
         [self setFrame:toFrame display:NO];
         self.alphaValue = 0.0;

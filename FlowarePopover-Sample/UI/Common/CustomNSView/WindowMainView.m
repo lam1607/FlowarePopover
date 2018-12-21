@@ -33,9 +33,9 @@
         self.trackingArea = nil;
     }
     
-    NSInteger opts = (NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways);
-    self.trackingArea = [ [NSTrackingArea alloc] initWithRect:[self bounds] options:opts owner:self userInfo:nil];
-    [self addTrackingArea:self.trackingArea];
+    //    NSInteger opts = (NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways);
+    //    self.trackingArea = [ [NSTrackingArea alloc] initWithRect:[self bounds] options:opts owner:self userInfo:nil];
+    //    [self addTrackingArea:self.trackingArea];
 }
 
 - (void)mouseEntered:(NSEvent *)event {

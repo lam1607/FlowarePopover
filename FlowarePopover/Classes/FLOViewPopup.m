@@ -1175,6 +1175,8 @@
 - (void)didPopoverMakeMovement {
     if (didMoveBlock) {
         didMoveBlock(self);
+        
+        didMoveBlock = nil;
     }
 }
 
@@ -1184,6 +1186,8 @@
         
         if (didDetachBlock) {
             didDetachBlock(self);
+            
+            didDetachBlock = nil;
         }
         
         [self.utils.backgroundView removeFromSuperview];

@@ -404,36 +404,36 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 #pragma mark - Mouse events
 
-- (void)updateTrackingAreas {
-    [super updateTrackingAreas];
-    
-    if (self.makesKeyWindowOnMouseEvents && [self.window isKindOfClass:[FLOPopoverWindow class]]) {
-        if (self.trackingArea != nil) {
-            [self removeTrackingArea:self.trackingArea];
-            self.trackingArea = nil;
-        }
-        
-        NSInteger opts = (NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways);
-        self.trackingArea = [ [NSTrackingArea alloc] initWithRect:[self bounds] options:opts owner:self userInfo:nil];
-        [self addTrackingArea:self.trackingArea];
-    }
-}
-
-- (void)mouseEntered:(NSEvent *)event {
-    if (self.makesKeyWindowOnMouseEvents && [self.window isKindOfClass:[FLOPopoverWindow class]]) {
-        if ([self isDescendantOf:event.window.contentView] && ([event.window isKeyWindow] == NO)) {
-            [event.window makeKeyAndOrderFront:nil];
-        }
-    }
-}
-
-- (void)mouseExited:(NSEvent *)event {
-    if (self.makesKeyWindowOnMouseEvents && [self.window isKindOfClass:[FLOPopoverWindow class]]) {
-        if ([self isDescendantOf:event.window.contentView] && [event.window isKeyWindow]) {
-            [event.window resignKeyWindow];
-        }
-    }
-}
+//- (void)updateTrackingAreas {
+//    [super updateTrackingAreas];
+//    
+//    if (self.makesKeyWindowOnMouseEvents && [self.window isKindOfClass:[FLOPopoverWindow class]]) {
+//        if (self.trackingArea != nil) {
+//            [self removeTrackingArea:self.trackingArea];
+//            self.trackingArea = nil;
+//        }
+//        
+//        NSInteger opts = (NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways);
+//        self.trackingArea = [ [NSTrackingArea alloc] initWithRect:[self bounds] options:opts owner:self userInfo:nil];
+//        [self addTrackingArea:self.trackingArea];
+//    }
+//}
+//
+//- (void)mouseEntered:(NSEvent *)event {
+//    if (self.makesKeyWindowOnMouseEvents && [self.window isKindOfClass:[FLOPopoverWindow class]]) {
+//        if ([self isDescendantOf:event.window.contentView] && ([event.window isKeyWindow] == NO)) {
+//            [event.window makeKeyAndOrderFront:nil];
+//        }
+//    }
+//}
+//
+//- (void)mouseExited:(NSEvent *)event {
+//    if (self.makesKeyWindowOnMouseEvents && [self.window isKindOfClass:[FLOPopoverWindow class]]) {
+//        if ([self isDescendantOf:event.window.contentView] && [event.window isKeyWindow]) {
+//            [event.window resignKeyWindow];
+//        }
+//    }
+//}
 
 - (void)mouseDown:(NSEvent *)event {
     BOOL isFLOPopoverWindow = [event.window isKindOfClass:[FLOPopoverWindow class]];
@@ -442,26 +442,24 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 }
 
 - (void)mouseDragged:(NSEvent *)event {
-    self.dragging = YES;
-    
     if (self.isMovable || self.isDetachable) {
-        if (self.dragging) {
-            if ([self.delegate respondsToSelector:@selector(didPopoverMakeMovement)]) {
-                [self.delegate didPopoverMakeMovement];
-            }
-            
-            BOOL isFLOPopoverWindow = [event.window isKindOfClass:[FLOPopoverWindow class]];
-            
-            NSPoint currentMouseOffset = isFLOPopoverWindow ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:event.window.contentView];
-            NSPoint difference = NSMakePoint(currentMouseOffset.x - self.originalMouseOffset.x, currentMouseOffset.y - self.originalMouseOffset.y);
-            NSPoint currentOrigin = isFLOPopoverWindow ? event.window.frame.origin : self.frame.origin;
-            NSPoint nextOrigin = NSMakePoint(currentOrigin.x + difference.x, currentOrigin.y + difference.y);
-            
-            if (isFLOPopoverWindow) {
-                [event.window setFrameOrigin:nextOrigin];
-            } else {
-                [self setFrameOrigin:nextOrigin];
-            }
+        self.dragging = YES;
+        
+        if ([self.delegate respondsToSelector:@selector(didPopoverMakeMovement)]) {
+            [self.delegate didPopoverMakeMovement];
+        }
+        
+        BOOL isFLOPopoverWindow = [event.window isKindOfClass:[FLOPopoverWindow class]];
+        
+        NSPoint currentMouseOffset = isFLOPopoverWindow ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:event.window.contentView];
+        NSPoint difference = NSMakePoint(currentMouseOffset.x - self.originalMouseOffset.x, currentMouseOffset.y - self.originalMouseOffset.y);
+        NSPoint currentOrigin = isFLOPopoverWindow ? event.window.frame.origin : self.frame.origin;
+        NSPoint nextOrigin = NSMakePoint(currentOrigin.x + difference.x, currentOrigin.y + difference.y);
+        
+        if (isFLOPopoverWindow) {
+            [event.window setFrameOrigin:nextOrigin];
+        } else {
+            [self setFrameOrigin:nextOrigin];
         }
     }
 }

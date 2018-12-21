@@ -68,7 +68,7 @@
         _closesWhenApplicationResizes = NO;
         _closesWhenNotBelongToApplicationFrame = YES;
         _makesKeyWindowOnMouseEvents = NO;
-        _makesKeyAndOrderFrontOnDisplaying = NO;
+        _makesKeyAndOrderFrontOnDisplaying = YES;
         _isMovable = NO;
         _isDetachable = NO;
         _canBecomeKey = YES;
@@ -1213,6 +1213,8 @@
 - (void)didPopoverMakeMovement {
     if (didMoveBlock) {
         didMoveBlock(self);
+        
+        didMoveBlock = nil;
     }
 }
 
@@ -1222,6 +1224,8 @@
         
         if (didDetachBlock) {
             didDetachBlock(self);
+            
+            didDetachBlock = nil;
         }
         
         [self.utils.backgroundView removeFromSuperview];
