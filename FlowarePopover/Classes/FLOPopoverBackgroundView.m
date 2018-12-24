@@ -94,6 +94,8 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 @property (nonatomic, strong) NSTrackingArea *trackingArea;
 
+@property (nonatomic, assign) BOOL isReceivedMouseDownEvent;
+
 @end
 
 @implementation FLOPopoverBackgroundView
@@ -102,6 +104,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     if (self = [super initWithFrame:frame]) {
         _arrowSize = NSZeroSize;
         _fillColor = NSColor.clearColor;
+        _isReceivedMouseDownEvent = NO;
         
         _clippingView = [[FLOPopoverClippingView alloc] initWithFrame:self.bounds];
         
@@ -439,10 +442,11 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     BOOL isFLOPopoverWindow = [event.window isKindOfClass:[FLOPopoverWindow class]];
     self.originalMouseOffset = isFLOPopoverWindow ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:self.window.contentView];
     self.dragging = NO;
+    self.isReceivedMouseDownEvent = YES;
 }
 
 - (void)mouseDragged:(NSEvent *)event {
-    if (self.isMovable || self.isDetachable) {
+    if (self.isReceivedMouseDownEvent && (self.isMovable || self.isDetachable)) {
         self.dragging = YES;
         
         if ([self.delegate respondsToSelector:@selector(didPopoverMakeMovement)]) {
@@ -465,7 +469,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 }
 
 - (void)mouseUp:(NSEvent *)event {
-    if (self.dragging) {
+    if (self.isReceivedMouseDownEvent && self.dragging) {
         if (self.isDetachable) {
             self.isDetachable = NO;
             self.isMovable = NO;
@@ -475,6 +479,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
             }
         }
         
+        self.isReceivedMouseDownEvent = NO;
         self.dragging = NO;
     }
 }

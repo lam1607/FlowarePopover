@@ -249,7 +249,6 @@ And animation type **`FLOPopoverAnimationType`** of **`FLOPopoverAnimationBehavi
   - **`FLOPopoverAnimationRightToLeft`**
   - **`FLOPopoverAnimationTopToBottom`**
   - **`FLOPopoverAnimationBottomToTop`**
-  - **`FLOPopoverAnimationFromMiddle`**
 
 `Example`:
 ```
