@@ -37,13 +37,6 @@
 @property (nonatomic, assign) BOOL closesWhenNotBelongToApplicationFrame;
 
 /**
- * Make Popover window key as possible when mouse entered to popover.
- * @note Becareful when using this property. If you have some views also implemented the
- * [mouseEntered:], [mouseExited:] methods. It might lead some unexpected behaviours.
- */
-@property (nonatomic, assign) BOOL makesKeyWindowOnMouseEvents;
-
-/**
  * Make Popover window become key, order front and also activate the application.
  * Only available for FLOWindowPopover
  */

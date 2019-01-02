@@ -21,7 +21,7 @@
 
 #import "AppleScript.h"
 
-#define SHOULD_COMICS_POPOVER_ANCHOR_TO_APPLICATION_VIEW
+//#define SHOULD_COMICS_POPOVER_ANCHOR_TO_APPLICATION_VIEW
 
 @interface HomeViewController () <FLOPopoverDelegate>
 
@@ -366,7 +366,6 @@
         //        self.popoverComics.shouldShowArrow = YES;
         self.popoverComics.animated = YES;
         //        self.popoverComics.animatedForwarding = YES;
-        //        self.popoverComics.makesKeyWindowOnMouseEvents = YES;
         self.popoverComics.shouldChangeSizeWhenApplicationResizes = NO;
         //        self.popoverComics.closesWhenPopoverResignsKey = YES;
         //        self.popoverComics.closesWhenApplicationBecomesInactive = YES;
@@ -483,6 +482,7 @@
 }
 
 - (void)floPopoverDidClose:(FLOPopover *)popover {
+    // @warning: MUST set the popover to nil for completely deallocating the content view or content view controller, when popover closed.
     if (popover == self.popoverFilms) {
         self.popoverFilms = nil;
     } else if (popover == self.popoverNews) {

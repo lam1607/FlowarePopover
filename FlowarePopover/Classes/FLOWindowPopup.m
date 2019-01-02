@@ -67,7 +67,6 @@
         _closesWhenApplicationBecomesInactive = NO;
         _closesWhenApplicationResizes = NO;
         _closesWhenNotBelongToApplicationFrame = YES;
-        _makesKeyWindowOnMouseEvents = NO;
         _makesKeyAndOrderFrontOnDisplaying = YES;
         _isMovable = NO;
         _isDetachable = NO;
@@ -457,12 +456,13 @@
     }
     
     [self.utils setupAutoresizingMaskIfNeeded:YES];
+    
+    self.popoverWindow.canBecomeKey = self.canBecomeKey;
+    self.popoverWindow.tag = self.tag;
+    self.popoverWindow.level = self.popoverWindowLevel;
 }
 
 - (void)displayWithAnimationProcess:(BOOL)needed {
-    self.popoverWindow.canBecomeKey = self.canBecomeKey;
-    self.popoverWindow.tag = self.tag;
-    
     if (NSEqualRects(self.utils.positioningRect, NSZeroRect)) {
         self.utils.positioningRect = [self.utils.positioningAnchorView bounds];
     }
@@ -476,8 +476,6 @@
     
     NSSize contentViewSize = NSEqualSizes(self.utils.contentSize, NSZeroSize) ? self.utils.originalViewSize : self.utils.contentSize;
     NSRectEdge popoverEdge = self.utils.preferredEdge;
-    
-    self.utils.backgroundView.makesKeyWindowOnMouseEvents = self.makesKeyWindowOnMouseEvents;
     
     [self.utils.backgroundView setMovable:self.isMovable];
     [self.utils.backgroundView setDetachable:self.isDetachable];
@@ -516,8 +514,6 @@
     self.utils.originalViewSize = self.utils.backgroundView.frame.size;
     
     [self.popoverWindow setFrame:popoverRect display:NO];
-    
-    self.popoverWindow.level = self.popoverWindowLevel;
     
     popoverRect = [self.utils.appMainWindow convertRectFromScreen:popoverRect];
     

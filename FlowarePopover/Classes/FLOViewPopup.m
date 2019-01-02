@@ -67,7 +67,6 @@
         _closesWhenApplicationBecomesInactive = NO;
         _closesWhenApplicationResizes = NO;
         _closesWhenNotBelongToApplicationFrame = YES;
-        _makesKeyWindowOnMouseEvents = NO;
         _isMovable = NO;
         _isDetachable = NO;
         _tag = -1;
@@ -439,11 +438,11 @@
     }
     
     [self.utils setupAutoresizingMaskIfNeeded:YES];
+    
+    self.utils.backgroundView.tag = self.tag;
 }
 
 - (void)displayWithAnimationProcess:(BOOL)needed {
-    self.utils.backgroundView.tag = self.tag;
-    
     if (NSEqualRects(self.utils.positioningRect, NSZeroRect)) {
         self.utils.positioningRect = [self.utils.positioningAnchorView bounds];
     }
@@ -457,8 +456,6 @@
     
     NSSize contentViewSize = NSEqualSizes(self.utils.contentSize, NSZeroSize) ? self.utils.originalViewSize : self.utils.contentSize;
     NSRectEdge popoverEdge = self.utils.preferredEdge;
-    
-    self.utils.backgroundView.makesKeyWindowOnMouseEvents = self.makesKeyWindowOnMouseEvents;
     
     [self.utils.backgroundView setMovable:self.isMovable];
     [self.utils.backgroundView setDetachable:self.isDetachable];

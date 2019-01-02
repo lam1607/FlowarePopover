@@ -92,8 +92,6 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 @property (nonatomic, assign) NSPoint originalMouseOffset;
 @property (nonatomic, assign) BOOL dragging;
 
-@property (nonatomic, strong) NSTrackingArea *trackingArea;
-
 @property (nonatomic, assign) BOOL isReceivedMouseDownEvent;
 
 @end
@@ -115,13 +113,6 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     }
     
     return self;
-}
-
-- (void)dealloc {
-    if (self.trackingArea != nil) {
-        [self removeTrackingArea:self.trackingArea];
-        self.trackingArea = nil;
-    }
 }
 
 - (void)drawRect:(NSRect)rect {
@@ -406,37 +397,6 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 }
 
 #pragma mark - Mouse events
-
-//- (void)updateTrackingAreas {
-//    [super updateTrackingAreas];
-//    
-//    if (self.makesKeyWindowOnMouseEvents && [self.window isKindOfClass:[FLOPopoverWindow class]]) {
-//        if (self.trackingArea != nil) {
-//            [self removeTrackingArea:self.trackingArea];
-//            self.trackingArea = nil;
-//        }
-//        
-//        NSInteger opts = (NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways);
-//        self.trackingArea = [ [NSTrackingArea alloc] initWithRect:[self bounds] options:opts owner:self userInfo:nil];
-//        [self addTrackingArea:self.trackingArea];
-//    }
-//}
-//
-//- (void)mouseEntered:(NSEvent *)event {
-//    if (self.makesKeyWindowOnMouseEvents && [self.window isKindOfClass:[FLOPopoverWindow class]]) {
-//        if ([self isDescendantOf:event.window.contentView] && ([event.window isKeyWindow] == NO)) {
-//            [event.window makeKeyAndOrderFront:nil];
-//        }
-//    }
-//}
-//
-//- (void)mouseExited:(NSEvent *)event {
-//    if (self.makesKeyWindowOnMouseEvents && [self.window isKindOfClass:[FLOPopoverWindow class]]) {
-//        if ([self isDescendantOf:event.window.contentView] && [event.window isKeyWindow]) {
-//            [event.window resignKeyWindow];
-//        }
-//    }
-//}
 
 - (void)mouseDown:(NSEvent *)event {
     BOOL isFLOPopoverWindow = [event.window isKindOfClass:[FLOPopoverWindow class]];

@@ -153,7 +153,7 @@ For more detail about **`[showRelativeToView:withRect:]`**, **`[showRelativeToVi
   ```
 - Given rect: Dipslay the popover at the given rect with selected view.
   ```
-    NSRect positioningRect = [sender.window convertRectToScreen:NSMakeRect(100.0f, 200.0f, 0.0f, 0.0f)];
+    NSRect positioningRect = [sender.window convertRectToScreen:NSMakeRect(100.0, 200.0, 0.0, 0.0)];
 
     [popover showRelativeToView:sender withRect:positioningRect];
   ```

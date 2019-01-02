@@ -293,23 +293,6 @@
     [self closeAfterTimeInterval];
 }
 
-/**
- * Make Popover window key as possible when mouse entered to popover.
- * @note Becareful when using this property. If you have some views also implemented the
- * [mouseEntered:], [mouseExited:] methods. It might lead some unexpected behaviours.
- */
-- (void)setMakesKeyWindowOnMouseEvents:(BOOL)makesKeyWindowOnMouseEvents {
-    [self restartPopupIfNeeded];
-    
-    _makesKeyWindowOnMouseEvents = makesKeyWindowOnMouseEvents;
-    
-    if (self.type == FLOWindowPopover) {
-        self.windowPopup.makesKeyWindowOnMouseEvents = makesKeyWindowOnMouseEvents;
-    } else {
-        self.viewPopup.makesKeyWindowOnMouseEvents = makesKeyWindowOnMouseEvents;
-    }
-}
-
 - (void)setMakesKeyAndOrderFrontOnDisplaying:(BOOL)makesKeyAndOrderFrontOnDisplaying {
     [self restartPopupIfNeeded];
     
@@ -459,7 +442,6 @@
         self.closesWhenApplicationBecomesInactive = viewPopup.closesWhenApplicationBecomesInactive;
         self.closesWhenApplicationResizes = viewPopup.closesWhenApplicationResizes;
         self.closesWhenNotBelongToApplicationFrame = viewPopup.closesWhenNotBelongToApplicationFrame;
-        self.makesKeyWindowOnMouseEvents = viewPopup.makesKeyWindowOnMouseEvents;
         self.isMovable = viewPopup.isMovable;
         self.isDetachable = viewPopup.isDetachable;
         self.tag = viewPopup.tag;
@@ -483,7 +465,6 @@
         self.closesWhenApplicationBecomesInactive = windowPopup.closesWhenApplicationBecomesInactive;
         self.closesWhenApplicationResizes = windowPopup.closesWhenApplicationResizes;
         self.closesWhenNotBelongToApplicationFrame = windowPopup.closesWhenNotBelongToApplicationFrame;
-        self.makesKeyWindowOnMouseEvents = windowPopup.makesKeyWindowOnMouseEvents;
         self.makesKeyAndOrderFrontOnDisplaying = windowPopup.makesKeyAndOrderFrontOnDisplaying;
         self.isMovable = windowPopup.isMovable;
         self.isDetachable = windowPopup.isDetachable;
@@ -513,7 +494,6 @@
         viewPopup.closesWhenApplicationBecomesInactive = self.closesWhenApplicationBecomesInactive;
         viewPopup.closesWhenApplicationResizes = self.closesWhenApplicationResizes;
         viewPopup.closesWhenNotBelongToApplicationFrame = self.closesWhenNotBelongToApplicationFrame;
-        viewPopup.makesKeyWindowOnMouseEvents = self.makesKeyWindowOnMouseEvents;
         viewPopup.isMovable = self.isMovable;
         viewPopup.isDetachable = self.isDetachable;
         viewPopup.tag = self.tag;
@@ -535,7 +515,6 @@
         windowPopup.closesWhenApplicationBecomesInactive = self.closesWhenApplicationBecomesInactive;
         windowPopup.closesWhenApplicationResizes = self.closesWhenApplicationResizes;
         windowPopup.closesWhenNotBelongToApplicationFrame = self.closesWhenNotBelongToApplicationFrame;
-        windowPopup.makesKeyWindowOnMouseEvents = self.makesKeyWindowOnMouseEvents;
         windowPopup.makesKeyAndOrderFrontOnDisplaying = self.makesKeyAndOrderFrontOnDisplaying;
         windowPopup.isMovable = self.isMovable;
         windowPopup.isDetachable = self.isDetachable;
