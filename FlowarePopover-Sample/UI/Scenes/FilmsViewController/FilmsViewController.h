@@ -6,12 +6,10 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "AbstractViewController.h"
 
 #import "FilmsViewProtocols.h"
-#import "FilmRepository.h"
-#import "FilmsPresenter.h"
 
-@interface FilmsViewController : BaseViewController <FilmsViewProtocols>
+@interface FilmsViewController : AbstractViewController <FilmsViewProtocols>
 
 @end

@@ -6,20 +6,8 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "AbstractPresenterProtocols.h"
 
-#import "NewsCellViewProtocols.h"
-#import "NewsRepositoryProtocols.h"
-
-@protocol NewsCellPresenterProtocols <NSObject>
-
-@property (nonatomic, strong) id<NewsCellViewProtocols> view;
-@property (nonatomic, strong) id<NewsRepositoryProtocols> repository;
-
-- (void)attachView:(id<NewsCellViewProtocols>)view repository:(id<NewsRepositoryProtocols>)repository;
-- (void)detachView;
-
-- (NSImage *)getNewsImage;
-- (void)fetchImageFromDataObject:(News *)obj;
+@protocol NewsCellPresenterProtocols <AbstractPresenterProtocols>
 
 @end

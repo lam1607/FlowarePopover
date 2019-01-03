@@ -11,15 +11,24 @@
 #import "CustomNSTableRowView.h"
 #import "FilmCellView.h"
 
+#import "FilmRepository.h"
+#import "FilmsPresenter.h"
+
 #import "Film.h"
 
 @interface FilmsViewController () <NSCollectionViewDataSource, NSCollectionViewDelegate, NSCollectionViewDelegateFlowLayout>
 
+//
+// IBOutlet
+//
 @property (weak) IBOutlet NSView *vHeader;
 
 @property (weak) IBOutlet NSScrollView *scrollView;
 @property (weak) IBOutlet NSCollectionView *collectionViewData;
 
+//
+// @property
+//
 @property (nonatomic, strong) FilmRepository *filmRepository;
 @property (nonatomic, strong) FilmsPresenter *filmsPresenter;
 
@@ -88,22 +97,24 @@
     CGFloat itemHeight = 230.0;
     NSSize itemSize = NSMakeSize(itemWidth, itemHeight);
     
-    Film *film = [[self.filmsPresenter data] objectAtIndex:indexPath.item];
-    CGFloat nameHorizontalMargin = 50.0;
-    NSTextField *lblName = [[NSTextField alloc] initWithFrame:NSMakeRect(0.0, 0.0, itemWidth - nameHorizontalMargin, 17.0)];
-    
-    lblName.font = [NSFont systemFontOfSize:18.0 weight:NSFontWeightMedium];
-    lblName.maximumNumberOfLines = 0;
-    lblName.stringValue = film.name;
-    
-    CGFloat imageHeight = 150.0;
-    CGFloat nameHeight = [Utils sizeOfControl:lblName].height;
-    CGFloat verticalMargins = 65.0; // Take a look at FilmCellView.xib file
-    
-    itemHeight = imageHeight + nameHeight + verticalMargins;
-    itemSize = NSMakeSize(itemWidth, itemHeight);
-    
-    [self.itemSizes setObject:[NSValue valueWithSize:itemSize] forKey:@(indexPath.item)];
+    if ([[[self.filmsPresenter data] objectAtIndex:indexPath.item] isKindOfClass:[Film class]]) {
+        Film *film = (Film *)[[self.filmsPresenter data] objectAtIndex:indexPath.item];
+        CGFloat nameHorizontalMargin = 50.0;
+        NSTextField *lblName = [[NSTextField alloc] initWithFrame:NSMakeRect(0.0, 0.0, itemWidth - nameHorizontalMargin, 17.0)];
+        
+        lblName.font = [NSFont systemFontOfSize:18.0 weight:NSFontWeightMedium];
+        lblName.maximumNumberOfLines = 0;
+        lblName.stringValue = film.name;
+        
+        CGFloat imageHeight = 150.0;
+        CGFloat nameHeight = [Utils sizeOfControl:lblName].height;
+        CGFloat verticalMargins = 65.0; // Take a look at FilmCellView.xib file
+        
+        itemHeight = imageHeight + nameHeight + verticalMargins;
+        itemSize = NSMakeSize(itemWidth, itemHeight);
+        
+        [self.itemSizes setObject:[NSValue valueWithSize:itemSize] forKey:@(indexPath.item)];
+    }
 }
 
 #pragma mark - NSCollectionViewDataSource, NSCollectionViewDelegate
@@ -130,7 +141,10 @@
 
 - (NSCollectionViewItem *)collectionView:(NSCollectionView *)collectionView itemForRepresentedObjectAtIndexPath:(NSIndexPath *)indexPath {
     FilmCellView *viewItem = [collectionView makeItemWithIdentifier:NSStringFromClass([FilmCellView class]) forIndexPath:indexPath];
-    [viewItem updateUIWithData:[[self.filmsPresenter data] objectAtIndex:indexPath.item]];
+    
+    if ([[[self.filmsPresenter data] objectAtIndex:indexPath.item] isKindOfClass:[Film class]]) {
+        [viewItem updateUIWithData:(Film *)[[self.filmsPresenter data] objectAtIndex:indexPath.item]];
+    }
     
     return viewItem;
 }
@@ -141,7 +155,7 @@
 
 #pragma mark - FilmsViewProtocols implementation
 
-- (void)reloadDataCollectionView {
+- (void)reloadViewData {
     [self.collectionViewData reloadData];
 }
 

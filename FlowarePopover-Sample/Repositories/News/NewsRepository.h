@@ -6,11 +6,10 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 #import "NewsRepositoryProtocols.h"
-#import "BaseRepository.h"
 
-@interface NewsRepository : BaseRepository <NewsRepositoryProtocols>
+#import "AbstractRepository.h"
+
+@interface NewsRepository : AbstractRepository <NewsRepositoryProtocols>
 
 @end

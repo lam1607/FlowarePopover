@@ -18,12 +18,7 @@
     },
     {
       "idiom" : "mac",
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
+      "unassigned" : true,
       "color" : {
         "color-space" : "srgb",
         "components" : {

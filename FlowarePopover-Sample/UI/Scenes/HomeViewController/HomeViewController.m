@@ -8,7 +8,7 @@
 
 #import "HomeViewController.h"
 
-#import "BaseWindowController.h"
+#import "AbstractWindowController.h"
 
 #import "FilmsViewController.h"
 #import "NewsViewController.h"
@@ -21,31 +21,35 @@
 
 #import "AppleScript.h"
 
-//#define SHOULD_COMICS_POPOVER_ANCHOR_TO_APPLICATION_VIEW
-
 @interface HomeViewController () <FLOPopoverDelegate>
 
-@property (weak) IBOutlet NSView *vMenu;
+//
+// IBOutlet
+//
+@property (weak) IBOutlet NSView *viewMenu;
 
-@property (weak) IBOutlet NSView *vChangeMode;
+@property (weak) IBOutlet NSView *viewContainerMode;
 @property (weak) IBOutlet NSButton *btnChangeMode;
-@property (weak) IBOutlet NSView *vOpenFinderApp;
-@property (weak) IBOutlet NSButton *btnOpenFinderApp;
-@property (weak) IBOutlet NSView *vOpenSafariApp;
-@property (weak) IBOutlet NSButton *btnOpenSafariApp;
+@property (weak) IBOutlet NSView *viewContainerFinder;
+@property (weak) IBOutlet NSButton *btnOpenFinder;
+@property (weak) IBOutlet NSView *viewContainerSafari;
+@property (weak) IBOutlet NSButton *btnOpenSafari;
 
-@property (weak) IBOutlet NSView *vOpenFilmsPopup;
-@property (weak) IBOutlet NSButton *btnOpenFilmsPopup;
-@property (weak) IBOutlet NSView *vOpenNewsPopup;
-@property (weak) IBOutlet NSButton *btnOpenNewsPopup;
-@property (weak) IBOutlet NSView *vShowSecondBar;
+@property (weak) IBOutlet NSView *viewContainerFilms;
+@property (weak) IBOutlet NSButton *btnOpenFilms;
+@property (weak) IBOutlet NSView *viewContainerNews;
+@property (weak) IBOutlet NSButton *btnOpenNews;
+@property (weak) IBOutlet NSView *viewContainerSecondBar;
 @property (weak) IBOutlet NSButton *btnShowSecondBar;
-@property (weak) IBOutlet NSView *vOpenComicsPopup;
-@property (weak) IBOutlet NSButton *btnOpenComicsPopup;
+@property (weak) IBOutlet NSView *viewContainerComics;
+@property (weak) IBOutlet NSButton *btnOpenComics;
 
-@property (weak) IBOutlet NSView *vSecondBar;
+@property (weak) IBOutlet NSView *viewSecondBar;
 @property (weak) IBOutlet NSLayoutConstraint *constraintVSecondBarHeight;
 
+//
+// @property
+//
 @property (nonatomic, strong) HomePresenter *homePresenter;
 
 @property (nonatomic, strong) FLOPopover *popoverFilms;
@@ -96,39 +100,39 @@
         [super refreshUIColors];
         
 #ifdef SHOULD_USE_ASSET_COLORS
-        [Utils setBackgroundColor:[NSColor _backgroundColor] forView:self.vMenu];
+        [Utils setBackgroundColor:[NSColor _backgroundColor] forView:self.viewMenu];
         
-        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vChangeMode];
-        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFinderApp];
-        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenSafariApp];
-        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFilmsPopup];
-        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenNewsPopup];
-        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vShowSecondBar];
-        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenComicsPopup];
+        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerMode];
+        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerFinder];
+        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerSafari];
+        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerFilms];
+        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerNews];
+        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerSecondBar];
+        [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerComics];
         
-        [Utils setTitle:@"Films popup" color:[NSColor _textWhiteColor] forControl:self.btnOpenFilmsPopup];
-        [Utils setTitle:@"News popup" color:[NSColor _textWhiteColor] forControl:self.btnOpenNewsPopup];
+        [Utils setTitle:@"Films popup" color:[NSColor _textWhiteColor] forControl:self.btnOpenFilms];
+        [Utils setTitle:@"News popup" color:[NSColor _textWhiteColor] forControl:self.btnOpenNews];
         [Utils setTitle:@"Show second bar" color:[NSColor _textWhiteColor] forControl:self.btnShowSecondBar];
-        [Utils setTitle:@"Comics popup" color:[NSColor _textWhiteColor] forControl:self.btnOpenComicsPopup];
+        [Utils setTitle:@"Comics popup" color:[NSColor _textWhiteColor] forControl:self.btnOpenComics];
         
-        [Utils setBackgroundColor:[NSColor _backgroundColor] forView:self.vSecondBar];
+        [Utils setBackgroundColor:[NSColor _backgroundColor] forView:self.viewSecondBar];
 #else
-        [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.vMenu];
+        [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.viewMenu];
         
-        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vChangeMode];
-        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFinderApp];
-        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenSafariApp];
-        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenFilmsPopup];
-        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenNewsPopup];
-        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vShowSecondBar];
-        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vOpenComicsPopup];
+        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerMode];
+        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerFinder];
+        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerSafari];
+        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerFilms];
+        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerNews];
+        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerSecondBar];
+        [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerComics];
         
-        [Utils setTitle:@"Films popup" color:[NSColor textWhiteColor] forControl:self.btnOpenFilmsPopup];
-        [Utils setTitle:@"News popup" color:[NSColor textWhiteColor] forControl:self.btnOpenNewsPopup];
+        [Utils setTitle:@"Films popup" color:[NSColor textWhiteColor] forControl:self.btnOpenFilms];
+        [Utils setTitle:@"News popup" color:[NSColor textWhiteColor] forControl:self.btnOpenNews];
         [Utils setTitle:@"Show second bar" color:[NSColor textWhiteColor] forControl:self.btnShowSecondBar];
-        [Utils setTitle:@"Comics popup" color:[NSColor textWhiteColor] forControl:self.btnOpenComicsPopup];
+        [Utils setTitle:@"Comics popup" color:[NSColor textWhiteColor] forControl:self.btnOpenComics];
         
-        [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.vSecondBar];
+        [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.viewSecondBar];
 #endif
     }
 }
@@ -144,7 +148,7 @@
 }
 
 - (void)changeWindowMode {
-    [[BaseWindowController sharedInstance] setWindowMode];
+    [[AbstractWindowController sharedInstance] setWindowMode];
     [[NSNotificationCenter defaultCenter] postNotificationName:FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE object:nil userInfo:nil];
 }
 
@@ -176,7 +180,7 @@
 - (void)handleComicsViewContentSizeChanging:(NSSize)newSize {
     if (self.comicsViewController) {
         NSRect visibleRect = [self.view visibleRect];
-        CGFloat menuHeight = self.vMenu.frame.size.height;
+        CGFloat menuHeight = self.viewMenu.frame.size.height;
         CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
         CGFloat verticalMargin = 10.0;
         CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
@@ -202,13 +206,13 @@
         
         self.constraintVSecondBarHeight.constant = secondBarHeight;
         
-        [self.vSecondBar setNeedsUpdateConstraints:YES];
-        [self.vSecondBar updateConstraints];
-        [self.vSecondBar updateConstraintsForSubtreeIfNeeded];
-        [self.vSecondBar layoutSubtreeIfNeeded];
+        [self.viewSecondBar setNeedsUpdateConstraints:YES];
+        [self.viewSecondBar updateConstraints];
+        [self.viewSecondBar updateConstraintsForSubtreeIfNeeded];
+        [self.viewSecondBar layoutSubtreeIfNeeded];
         
         NSRect visibleRect = [self.view visibleRect];
-        CGFloat menuHeight = self.vMenu.frame.size.height;
+        CGFloat menuHeight = self.viewMenu.frame.size.height;
         CGFloat verticalMargin = 10.0;
         CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
         CGFloat contentHeight = [self.comicsViewController getContentSizeHeight];
@@ -225,9 +229,9 @@
 }
 
 - (void)setWindowLevelForPopover:(FLOPopover *)popover {
-    NSWindowLevel popoverWindowLevel = [BaseWindowController sharedInstance].window.level;
+    NSWindowLevel popoverWindowLevel = [AbstractWindowController sharedInstance].window.level;
     
-    if ([[BaseWindowController sharedInstance] windowInDesktopMode]) {
+    if ([[AbstractWindowController sharedInstance] windowInDesktopMode]) {
         if (popover.alwaysOnTop == YES) {
             popoverWindowLevel = NSStatusWindowLevel;
         } else {
@@ -264,11 +268,7 @@
     if ([popover isShown]) {
         [popover close];
     } else {
-#ifdef SHOULD_COMICS_POPOVER_ANCHOR_TO_APPLICATION_VIEW
-        [popover showRelativeToView:[BaseWindowController sharedInstance].window.contentView withRect:rect sender:sender relativePositionType:FLOPopoverRelativePositionTopLeading];
-#else
         [popover showRelativeToView:sender withRect:rect];
-#endif
     }
 }
 
@@ -279,7 +279,7 @@
     }
     
     NSRect visibleRect = [self.view visibleRect];
-    CGFloat menuHeight = self.vMenu.frame.size.height;
+    CGFloat menuHeight = self.viewMenu.frame.size.height;
     CGFloat verticalMargin = 10.0;
     CGFloat width = 0.5 * visibleRect.size.width;
     CGFloat height = visibleRect.size.height - menuHeight - verticalMargin;
@@ -313,7 +313,7 @@
     }
     
     NSRect visibleRect = [self.view visibleRect];
-    CGFloat menuHeight = self.vMenu.frame.size.height;
+    CGFloat menuHeight = self.viewMenu.frame.size.height;
     CGFloat verticalMargin = 10.0;
     CGFloat width = 0.5 * visibleRect.size.width;
     CGFloat height = visibleRect.size.height - menuHeight - verticalMargin;
@@ -348,7 +348,7 @@
     
     if (option == 1) {
         NSRect visibleRect = [self.view visibleRect];
-        CGFloat menuHeight = self.vMenu.frame.size.height;
+        CGFloat menuHeight = self.viewMenu.frame.size.height;
         CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
         CGFloat verticalMargin = 10.0;
         CGFloat contentViewWidth = 350.0;
@@ -385,7 +385,7 @@
         [self showRelativeToViewWithRect:positioningRect byPopover:self.popoverComics sender:sender];
     } else {
         NSRect visibleRect = [self.view visibleRect];
-        CGFloat menuHeight = self.vMenu.frame.size.height;
+        CGFloat menuHeight = self.viewMenu.frame.size.height;
         CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
         CGFloat verticalMargin = 10.0;
         CGFloat width = 350.0;
@@ -416,58 +416,60 @@
 #pragma mark - Actions
 
 - (IBAction)btnChangeMode_clicked:(NSButton *)sender {
-    [self.homePresenter doSelectSender:@{@"type": @"changeMode", @"object": sender}];
+    [self.homePresenter changeWindowMode];
 }
 
-- (IBAction)btnOpenFinderApp_clicked:(NSButton *)sender {
-    [self.homePresenter doSelectSender:@{@"type": @"openFinder", @"object": sender}];
+- (IBAction)btnOpenFinder_clicked:(NSButton *)sender {
+    [self.homePresenter openFinder];
 }
 
-- (IBAction)btnOpenSafariApp_clicked:(NSButton *)sender {
-    [self.homePresenter doSelectSender:@{@"type": @"openSafari", @"object": sender}];
+- (IBAction)btnOpenSafari_clicked:(NSButton *)sender {
+    [self.homePresenter openSafari];
 }
 
-- (IBAction)btnOpenFilmsPopup_clicked:(NSButton *)sender {
-    [self.homePresenter doSelectSender:@{@"type": @"filmsPopup", @"object": sender}];
+- (IBAction)btnOpenFilms_clicked:(NSButton *)sender {
+    [self.homePresenter openFilmsView];
 }
 
-- (IBAction)btnOpenNewsPopup_clicked:(NSButton *)sender {
-    [self.homePresenter doSelectSender:@{@"type": @"newsPopup", @"object": sender}];
+- (IBAction)btnOpenNews_clicked:(NSButton *)sender {
+    [self.homePresenter openNewsView];
 }
 
 - (IBAction)btnShowSecondBar_clicked:(NSButton *)sender {
-    [self.homePresenter doSelectSender:@{@"type": @"showSecondBar", @"object": sender}];
+    [self.homePresenter showSecondBar];
 }
 
-- (IBAction)btnOpenComicsPopup_clicked:(NSButton *)sender {
-    [self.homePresenter doSelectSender:@{@"type": @"comicsPopup", @"object": sender}];
+- (IBAction)btnOpenComics_clicked:(NSButton *)sender {
+    [self.homePresenter openComicsView];
 }
 
 #pragma mark - HomeViewProtocols implementation
 
-- (void)showPopoverAtSender:(NSDictionary *)senderInfo {
-    NSString *keyType = @"type";
-    NSString *keyObject = @"object";
-    
-    if ([senderInfo objectForKey:keyObject] && [[senderInfo objectForKey:keyObject] isKindOfClass:[NSView class]]) {
-        NSView *sender = (NSView *)[senderInfo objectForKey:keyObject];
-        
-        if ([[senderInfo objectForKey:keyType] isEqualToString:@"changeMode"]) {
-            [self changeWindowMode];
-        } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"openFinder"]) {
-            [self openEntitlementApplicationWithIdentifier:FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER];
-        } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"openSafari"]) {
-            [self openEntitlementApplicationWithIdentifier:FLO_ENTITLEMENT_APP_IDENTIFIER_SAFARI];
-        } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"filmsPopup"]) {
-            [self showFilmsPopupAtView:sender];
-        } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"newsPopup"]) {
-            [self showNewsPopupAtView:sender];
-        } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"showSecondBar"]) {
-            [self handleShowSecondBar];
-        } else if ([[senderInfo objectForKey:keyType] isEqualToString:@"comicsPopup"]) {
-            [self showComicsPopupAtView:sender option:1];
-        }
-    }
+- (void)viewDidSelectWindowModeChanging {
+    [self changeWindowMode];
+}
+
+- (void)viewShouldOpenFinder {
+    [self openEntitlementApplicationWithIdentifier:FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER];
+}
+
+- (void)viewShouldOpenSafari {
+    [self openEntitlementApplicationWithIdentifier:FLO_ENTITLEMENT_APP_IDENTIFIER_SAFARI];
+}
+
+- (void)viewShouldOpenFilmsView {
+    [self showFilmsPopupAtView:self.btnOpenFilms];
+}
+- (void)viewShouldOpenNewsView {
+    [self showNewsPopupAtView:self.btnOpenNews];
+}
+
+- (void)viewShouldOpenComicsView {
+    [self showComicsPopupAtView:self.btnOpenComics option:0];
+}
+
+- (void)viewShouldShowSecondBar {
+    [self handleShowSecondBar];
 }
 
 #pragma mark - FLOPopoverDelegate

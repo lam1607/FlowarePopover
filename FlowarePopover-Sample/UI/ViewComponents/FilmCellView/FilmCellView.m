@@ -8,6 +8,9 @@
 
 #import "FilmCellView.h"
 
+#import "FilmRepository.h"
+#import "FilmCellPresenter.h"
+
 #import "Film.h"
 
 @interface FilmCellView ()
@@ -81,16 +84,16 @@
 }
 
 - (void)updateUIWithData:(Film *)film {
-    [self.filmCellPresenter fetchImageFromDataObject:film];
+    [self.filmCellPresenter fetchImageFromData:film];
     
     self.lblName.stringValue = film.name;
 }
 
 #pragma mark - FilmCellViewProtocols implementation
 
-- (void)updateCellViewImage {
-    if ([self.filmCellPresenter getFilmImage]) {
-        self.imgView.image = [self.filmCellPresenter getFilmImage];
+- (void)updateViewImage {
+    if ([self.filmCellPresenter fetchedImage]) {
+        self.imgView.image = [self.filmCellPresenter fetchedImage];
     }
 }
 

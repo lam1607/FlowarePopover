@@ -9,8 +9,6 @@
 #import <Cocoa/Cocoa.h>
 
 #import "FilmCellViewProtocols.h"
-#import "FilmRepository.h"
-#import "FilmCellPresenter.h"
 
 @class Film;
 

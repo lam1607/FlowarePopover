@@ -1,18 +1,18 @@
 //
-//  BaseViewController.m
+//  AbstractViewController.m
 //  FlowarePopover-Sample
 //
-//  Created by lamnguyen on 8/20/18.
-//  Copyright © 2018 Floware Inc. All rights reserved.
+//  Created by lamnguyen on 1/3/19.
+//  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "AbstractViewController.h"
 
-@interface BaseViewController ()
+@interface AbstractViewController ()
 
 @end
 
-@implementation BaseViewController
+@implementation AbstractViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -45,5 +45,6 @@
 #endif
     }
 }
+
 
 @end

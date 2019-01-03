@@ -8,6 +8,9 @@
 
 #import "DataCellView.h"
 
+#import "ComicRepository.h"
+#import "DataCellPresenter.h"
+
 #import "Comic.h"
 
 @interface DataCellView ()
@@ -85,7 +88,7 @@
 }
 
 - (void)updateUIWithData:(Comic *)comic {
-    [self.dataCellPresenter fetchImageFromDataObject:comic];
+    [self.dataCellPresenter fetchImageFromData:comic];
     
     self.lblTitle.stringValue = comic.name;
     self.lblShortDesc.stringValue = comic.shortDesc;
@@ -93,9 +96,9 @@
 
 #pragma mark - ComicDataCellViewProtocols implementation
 
-- (void)updateCellViewImage {
-    if ([self.dataCellPresenter getComicImage]) {
-        self.imgView.image = [self.dataCellPresenter getComicImage];
+- (void)updateViewImage {
+    if ([self.dataCellPresenter fetchedImage]) {
+        self.imgView.image = [self.dataCellPresenter fetchedImage];
     }
 }
 

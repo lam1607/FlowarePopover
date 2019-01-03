@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BaseRepositoryProtocols.h"
+#import "AbstractRepositoryProtocols.h"
 
 @class News;
 
-@protocol NewsRepositoryProtocols <BaseRepositoryProtocols>
+@protocol NewsRepositoryProtocols <AbstractRepositoryProtocols>
 
 - (NSArray<News *> *)fetchNews;
 

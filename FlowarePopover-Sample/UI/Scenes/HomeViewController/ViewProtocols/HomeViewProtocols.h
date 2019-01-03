@@ -6,10 +6,16 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "AbstractViewProtocols.h"
 
-@protocol HomeViewProtocols <NSObject>
-@optional
-- (void)showPopoverAtSender:(NSDictionary *)senderInfo;
+@protocol HomeViewProtocols <AbstractViewProtocols>
+
+- (void)viewDidSelectWindowModeChanging;
+- (void)viewShouldOpenFinder;
+- (void)viewShouldOpenSafari;
+- (void)viewShouldOpenFilmsView;
+- (void)viewShouldOpenNewsView;
+- (void)viewShouldOpenComicsView;
+- (void)viewShouldShowSecondBar;
 
 @end

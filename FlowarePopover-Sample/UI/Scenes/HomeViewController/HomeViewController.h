@@ -6,11 +6,11 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "AbstractViewController.h"
 
 #import "HomeViewProtocols.h"
 #import "HomePresenter.h"
 
-@interface HomeViewController : BaseViewController <HomeViewProtocols>
+@interface HomeViewController : AbstractViewController <HomeViewProtocols>
 
 @end

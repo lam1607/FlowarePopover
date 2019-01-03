@@ -6,10 +6,8 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "AbstractViewProtocols.h"
 
-@protocol NewsViewProtocols <NSObject>
-@optional
-- (void)reloadDataTableView;
+@protocol NewsViewProtocols <AbstractViewProtocols>
 
 @end

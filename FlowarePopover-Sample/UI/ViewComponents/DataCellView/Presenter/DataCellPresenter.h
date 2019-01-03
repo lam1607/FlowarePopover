@@ -6,15 +6,10 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-#import "DataCellViewProtocols.h"
 #import "DataCellPresenterProtocols.h"
-#import "ComicRepositoryProtocols.h"
 
-@protocol DataCellViewProtocols;
-@protocol ComicRepositoryProtocols;
+#import "AbstractPresenter.h"
 
-@interface DataCellPresenter : NSObject <DataCellPresenterProtocols>
+@interface DataCellPresenter : AbstractPresenter <DataCellPresenterProtocols>
 
 @end

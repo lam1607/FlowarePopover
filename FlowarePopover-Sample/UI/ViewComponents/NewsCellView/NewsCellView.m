@@ -85,7 +85,7 @@
 }
 
 - (void)updateUIWithData:(News *)news {
-    [self.newsCellPresenter fetchImageFromDataObject:news];
+    [self.newsCellPresenter fetchImageFromData:news];
     
     self.lblTitle.stringValue = news.title;
     self.lblContent.stringValue = news.content;
@@ -93,9 +93,9 @@
 
 #pragma mark - NewsCellViewProtocols implementation
 
-- (void)updateCellViewImage {
-    if ([self.newsCellPresenter getNewsImage]) {
-        self.imgView.image = [self.newsCellPresenter getNewsImage];
+- (void)updateViewImage {
+    if ([self.newsCellPresenter fetchedImage]) {
+        self.imgView.image = [self.newsCellPresenter fetchedImage];
     }
 }
 

@@ -12,15 +12,24 @@
 #import "CustomNSTableRowView.h"
 #import "ComicCellView.h"
 
+#import "ComicRepository.h"
+#import "ComicsPresenter.h"
+
 #import "Comic.h"
 
 @interface ComicsViewController () <NSOutlineViewDelegate, NSOutlineViewDataSource, CustomNSOutlineViewDelegate>
 
+//
+// IBOutlet
+//
 @property (weak) IBOutlet NSView *vHeader;
 
 @property (weak) IBOutlet NSScrollView *scrollView;
 @property (weak) IBOutlet CustomNSOutlineView *outlineViewData;
 
+//
+// @property
+//
 @property (nonatomic, strong) ComicRepository *comicRepository;
 @property (nonatomic, strong) ComicsPresenter *comicsPresenter;
 
@@ -102,8 +111,8 @@
 #pragma mark - CustomNSOutlineViewDelegate
 
 - (void)outlineView:(CustomNSOutlineView *)outlineView didSelectRow:(NSInteger)row {
-    if (row < [self.comicsPresenter data].count) {
-        Comic *selected = [[self.comicsPresenter data] objectAtIndex:row];
+    if ((row < [self.comicsPresenter data].count) && [[[self.comicsPresenter data] objectAtIndex:row] isKindOfClass:[Comic class]]) {
+        Comic *selected = (Comic *)[[self.comicsPresenter data] objectAtIndex:row];
         
         [[NSWorkspace sharedWorkspace] openURL:selected.pageUrl];
     }
@@ -198,7 +207,7 @@
 
 #pragma mark - ComicsViewProtocols implementation
 
-- (void)reloadDataOutlineView {
+- (void)reloadViewData {
     [self.outlineViewData reloadData];
     
     CGFloat height = [self getContentSizeHeight];

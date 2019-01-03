@@ -8,6 +8,9 @@
 
 #import "NewsPresenter.h"
 
+#import "NewsViewProtocols.h"
+#import "NewsRepositoryProtocols.h"
+
 #import "News.h"
 
 @interface NewsPresenter ()
@@ -18,30 +21,19 @@
 
 @implementation NewsPresenter
 
-@synthesize view;
-@synthesize repository;
-
-#pragma mark - DataPresenterProtocols implementation
-
-- (void)attachView:(id<NewsViewProtocols>)view repository:(id<NewsRepositoryProtocols>)repository {
-    self.view = view;
-    self.repository = repository;
-}
-
-- (void)detachView {
-    self.view = nil;
-    self.repository = nil;
-}
+#pragma mark - AbstractPresenterProtocols implementation
 
 - (void)fetchData {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSArray<News *> *news = [self.repository fetchNews];
-        self.news = [[NSArray alloc] initWithArray:news];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.view reloadDataTableView];
+    if ([self.repository conformsToProtocol:@protocol(NewsRepositoryProtocols)]) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            NSArray<News *> *news = [(id<NewsRepositoryProtocols>)self.repository fetchNews];
+            self.news = [[NSArray alloc] initWithArray:news];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.view reloadViewData];
+            });
         });
-    });
+    }
 }
 
 - (NSArray<News *> *)data {

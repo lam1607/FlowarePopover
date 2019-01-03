@@ -6,15 +6,10 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-#import "FilmCellViewProtocols.h"
 #import "FilmCellPresenterProtocols.h"
-#import "FilmRepositoryProtocols.h"
 
-@protocol FilmCellViewProtocols;
-@protocol FilmRepositoryProtocols;
+#import "AbstractPresenter.h"
 
-@interface FilmCellPresenter : NSObject <FilmCellPresenterProtocols>
+@interface FilmCellPresenter : AbstractPresenter <FilmCellPresenterProtocols>
 
 @end

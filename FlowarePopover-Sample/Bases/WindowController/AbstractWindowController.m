@@ -1,12 +1,12 @@
 //
-//  BaseWindowController.m
+//  AbstractWindowController.m
 //  FlowarePopover-Sample
 //
-//  Created by lamnguyen on 8/21/18.
-//  Copyright © 2018 Floware Inc. All rights reserved.
+//  Created by lamnguyen on 1/3/19.
+//  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
-#import "BaseWindowController.h"
+#import "AbstractWindowController.h"
 
 #import "FLOPopoverUtils.h"
 
@@ -14,7 +14,7 @@
 
 #import "AppleScript.h"
 
-@interface BaseWindowController ()
+@interface AbstractWindowController ()
 
 @property (nonatomic, assign, readwrite) FLOWindowMode windowMode;
 @property (nonatomic, assign, readwrite) BOOL windowInDesktopMode;
@@ -23,16 +23,16 @@
 
 @end
 
-static BaseWindowController *_sharedInstance = nil;
+static AbstractWindowController *_sharedInstance = nil;
 
-@implementation BaseWindowController
+@implementation AbstractWindowController
 
 @synthesize windowMode = _windowMode;
 @synthesize windowTitleBarHeight = _windowTitleBarHeight;
 
 #pragma mark - Singleton
 
-+ (BaseWindowController *)sharedInstance {
++ (AbstractWindowController *)sharedInstance {
     return _sharedInstance;
 }
 

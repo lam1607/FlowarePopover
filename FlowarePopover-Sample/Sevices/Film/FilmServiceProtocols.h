@@ -6,10 +6,8 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "AbstractServiceProtocols.h"
 
-#import "BaseServiceProtocols.h"
-
-@protocol FilmServiceProtocols <BaseServiceProtocols>
+@protocol FilmServiceProtocols <AbstractServiceProtocols>
 
 @end

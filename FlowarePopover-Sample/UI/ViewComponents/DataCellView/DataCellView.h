@@ -9,8 +9,6 @@
 #import <Cocoa/Cocoa.h>
 
 #import "DataCellViewProtocols.h"
-#import "ComicRepository.h"
-#import "DataCellPresenter.h"
 
 @class Comic;
 

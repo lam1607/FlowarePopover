@@ -19,7 +19,7 @@
 - (instancetype)initWithName:(NSString *)name imageUrl:(NSString *)imageUrl pageUrl:(NSString *)pageUrl;
 - (instancetype)initWithTitle:(NSString *)title imageUrl:(NSString *)imageUrl pageUrl:(NSString *)pageUrl;
 
-- (void)setImage:(NSImage *)image;
-- (NSImage *)getImage;
+- (void)setImage:(NSImage *)image forURL:(NSURL *)url;
+- (NSImage *)getImageForURL:(NSURL *)url;
 
 @end

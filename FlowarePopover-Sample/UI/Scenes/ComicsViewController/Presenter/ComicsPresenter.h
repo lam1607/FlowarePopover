@@ -6,15 +6,10 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-#import "ComicsViewProtocols.h"
 #import "ComicsPresenterProtocols.h"
-#import "ComicRepositoryProtocols.h"
 
-@protocol ComicsViewProtocols;
-@protocol ComicRepositoryProtocols;
+#import "AbstractPresenter.h"
 
-@interface ComicsPresenter : NSObject <ComicsPresenterProtocols>
+@interface ComicsPresenter : AbstractPresenter <ComicsPresenterProtocols>
 
 @end

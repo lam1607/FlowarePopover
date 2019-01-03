@@ -10,7 +10,7 @@
 
 @interface AbstractData ()
 
-@property (nonatomic, strong) NSImage *dataImage;
+@property (nonatomic, strong) NSMutableDictionary *imageDictionary;
 
 @end
 
@@ -59,12 +59,18 @@
 
 #pragma mark - Processes
 
-- (void)setImage:(NSImage *)image {
-    self.dataImage = image;
+- (void)setImage:(NSImage *)image forURL:(NSURL *)url {
+    if (self.imageDictionary == nil) {
+        self.imageDictionary = [[NSMutableDictionary alloc] init];
+    }
+    
+    if (image && ([self.imageDictionary objectForKey:url] == nil)) {
+        [self.imageDictionary setObject:image forKey:url];
+    }
 }
 
-- (NSImage *)getImage {
-    return self.dataImage;
+- (NSImage *)getImageForURL:(NSURL *)url {
+    return (self.imageDictionary && url) ? [self.imageDictionary objectForKey:url] : nil;
 }
 
 @end

@@ -12,15 +12,24 @@
 #import "CustomNSTableRowView.h"
 #import "DataCellView.h"
 
+#import "ComicRepository.h"
+#import "DataPresenter.h"
+
 #import "Comic.h"
 
 @interface DataViewController () <NSOutlineViewDelegate, NSOutlineViewDataSource, CustomNSOutlineViewDelegate>
 
+//
+// IBOutlet
+//
 @property (weak) IBOutlet NSView *vHeader;
 
 @property (weak) IBOutlet NSScrollView *scrollView;
 @property (weak) IBOutlet CustomNSOutlineView *outlineViewData;
 
+//
+// @property
+//
 @property (nonatomic, strong) ComicRepository *comicRepository;
 @property (nonatomic, strong) DataPresenter *dataPresenter;
 
@@ -101,8 +110,8 @@
 #pragma mark - CustomNSOutlineViewDelegate
 
 - (void)outlineView:(CustomNSOutlineView *)outlineView didSelectRow:(NSInteger)row {
-    if (row < [self.dataPresenter data].count) {
-        Comic *selected = [[self.dataPresenter data] objectAtIndex:row];
+    if ((row < [self.dataPresenter data].count) && [[[self.dataPresenter data] objectAtIndex:row] isKindOfClass:[Comic class]]) {
+        Comic *selected = (Comic *)[[self.dataPresenter data] objectAtIndex:row];
         
         [[NSWorkspace sharedWorkspace] openURL:selected.pageUrl];
     }
@@ -186,7 +195,7 @@
 
 #pragma mark - DataViewProtocols implementation
 
-- (void)reloadDataOutlineView {
+- (void)reloadViewData {
     [self.outlineViewData reloadData];
 }
 

@@ -6,10 +6,8 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "AbstractViewProtocols.h"
 
-@protocol FilmCellViewProtocols <NSObject>
-@optional
-- (void)updateCellViewImage;
+@protocol FilmCellViewProtocols <AbstractViewProtocols>
 
 @end

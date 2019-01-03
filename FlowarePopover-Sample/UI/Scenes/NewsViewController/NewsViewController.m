@@ -11,15 +11,24 @@
 #import "CustomNSTableRowView.h"
 #import "NewsCellView.h"
 
+#import "NewsRepository.h"
+#import "NewsPresenter.h"
+
 #import "News.h"
 
 @interface NewsViewController () <NSTableViewDelegate, NSTableViewDataSource>
 
+//
+// IBOutlet
+//
 @property (weak) IBOutlet NSView *vHeader;
 
 @property (weak) IBOutlet NSScrollView *scrollView;
 @property (weak) IBOutlet NSTableView *tableViewData;
 
+//
+// @property
+//
 @property (nonatomic, strong) NewsRepository *newsRepository;
 @property (nonatomic, strong) NewsPresenter *newsPresenter;
 
@@ -137,14 +146,17 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     NewsCellView *cellView = (NewsCellView *)[tableView makeViewWithIdentifier:NSStringFromClass([NewsCellView class]) owner:self];
-    [cellView updateUIWithData:[[self.newsPresenter data] objectAtIndex:row]];
+    
+    if ([[[self.newsPresenter data] objectAtIndex:row] isKindOfClass:[News class]]) {
+        [cellView updateUIWithData:(News *)[[self.newsPresenter data] objectAtIndex:row]];
+    }
     
     return cellView;
 }
 
 #pragma mark - NewsViewProtocols implementation
 
-- (void)reloadDataTableView {
+- (void)reloadViewData {
     [self.tableViewData reloadData];
 }
 

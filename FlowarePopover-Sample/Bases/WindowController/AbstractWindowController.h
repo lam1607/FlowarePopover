@@ -1,21 +1,21 @@
 //
-//  BaseWindowController.h
+//  AbstractWindowController.h
 //  FlowarePopover-Sample
 //
-//  Created by lamnguyen on 8/21/18.
-//  Copyright © 2018 Floware Inc. All rights reserved.
+//  Created by lamnguyen on 1/3/19.
+//  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
 
-@interface BaseWindowController : NSWindowController
+@interface AbstractWindowController : NSWindowController
 
 @property (nonatomic, assign, readonly) FLOWindowMode windowMode;
 @property (nonatomic, assign, readonly) BOOL windowInDesktopMode;
 @property (nonatomic, assign, readonly) NSRect windowNormalFrame;
 @property (nonatomic, assign, readonly) CGFloat windowTitleBarHeight;
 
-+ (BaseWindowController *)sharedInstance;
++ (AbstractWindowController *)sharedInstance;
 
 - (void)setWindowMode;
 - (void)setWindowTitleBarHeight;

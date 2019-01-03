@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		DE0BF080219BB9E800FF3AD6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE0BF07F219BB9E800FF3AD6 /* Colors.xcassets */; };
-		DE0BF084219BC98000FF3AD6 /* NSColor+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0BF083219BC98000FF3AD6 /* NSColor+Custom.m */; };
 		DE7BCDF321BA1C5900EE1B33 /* WindowMainView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7BCDF221BA1C5900EE1B33 /* WindowMainView.m */; };
 		DE8E5C7121534233002AE872 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE8E5C7021534233002AE872 /* AppleScriptObjC.framework */; };
 		DE8E5C7A21534821002AE872 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5C7921534821002AE872 /* AppDelegate.m */; };
@@ -20,15 +19,12 @@
 		DE8E5E3F215348EF002AE872 /* Film.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5D91215348EE002AE872 /* Film.m */; };
 		DE8E5E40215348EF002AE872 /* Comic.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5D94215348EE002AE872 /* Comic.m */; };
 		DE8E5E41215348EF002AE872 /* News.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5D97215348EE002AE872 /* News.m */; };
-		DE8E5E42215348EF002AE872 /* AbstractData.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5D9B215348EE002AE872 /* AbstractData.m */; };
 		DE8E5E43215348EF002AE872 /* FilmRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DA0215348EE002AE872 /* FilmRepository.m */; };
 		DE8E5E44215348EF002AE872 /* ComicRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DA2215348EE002AE872 /* ComicRepository.m */; };
 		DE8E5E45215348EF002AE872 /* NewsRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DA6215348EE002AE872 /* NewsRepository.m */; };
-		DE8E5E46215348EF002AE872 /* BaseRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DAB215348EE002AE872 /* BaseRepository.m */; };
 		DE8E5E47215348EF002AE872 /* FilmService.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DAF215348EE002AE872 /* FilmService.m */; };
 		DE8E5E48215348EF002AE872 /* ComicService.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DB5215348EE002AE872 /* ComicService.m */; };
 		DE8E5E49215348EF002AE872 /* NewsService.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DB8215348EE002AE872 /* NewsService.m */; };
-		DE8E5E4A215348EF002AE872 /* BaseService.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DBB215348EE002AE872 /* BaseService.m */; };
 		DE8E5E4B215348EF002AE872 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DC1215348EE002AE872 /* Utils.m */; };
 		DE8E5E4C215348EF002AE872 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE8E5DC4215348EE002AE872 /* Main.storyboard */; };
 		DE8E5E4D215348EF002AE872 /* ComicsPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DCB215348EE002AE872 /* ComicsPresenter.m */; };
@@ -45,8 +41,6 @@
 		DE8E5E59215348EF002AE872 /* DataViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE8E5DEF215348EE002AE872 /* DataViewController.xib */; };
 		DE8E5E5A215348EF002AE872 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DF3215348EE002AE872 /* HomeViewController.m */; };
 		DE8E5E5B215348EF002AE872 /* HomePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DF7215348EE002AE872 /* HomePresenter.m */; };
-		DE8E5E5C215348EF002AE872 /* BaseWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DFA215348EE002AE872 /* BaseWindowController.m */; };
-		DE8E5E5D215348EF002AE872 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DFB215348EE002AE872 /* BaseViewController.m */; };
 		DE8E5E5E215348EF002AE872 /* CustomNSTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E01215348EE002AE872 /* CustomNSTableRowView.m */; };
 		DE8E5E5F215348EF002AE872 /* CustomNSOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E03215348EE002AE872 /* CustomNSOutlineView.m */; };
 		DE8E5E60215348EF002AE872 /* NewsCellPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E0C215348EE002AE872 /* NewsCellPresenter.m */; };
@@ -109,12 +103,17 @@
 		DEDE467721534068004E8DEF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEDE467621534068004E8DEF /* Cocoa.framework */; };
 		DEDE46792153406C004E8DEF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEDE46782153406C004E8DEF /* QuartzCore.framework */; };
 		DEDE467B21534119004E8DEF /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEDE467A21534119004E8DEF /* AppKit.framework */; };
+		DEF15EB721DDCBD400FDE038 /* AbstractRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EA121DDCBD400FDE038 /* AbstractRepository.m */; };
+		DEF15EB921DDCBD400FDE038 /* AbstractWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EA421DDCBD400FDE038 /* AbstractWindowController.m */; };
+		DEF15EBA21DDCBD400FDE038 /* AbstractPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EA721DDCBD400FDE038 /* AbstractPresenter.m */; };
+		DEF15EBB21DDCBD400FDE038 /* AbstractData.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EAD21DDCBD400FDE038 /* AbstractData.m */; };
+		DEF15EBC21DDCBD400FDE038 /* AbstractService.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EB321DDCBD400FDE038 /* AbstractService.m */; };
+		DEF15EBD21DDCBD400FDE038 /* AbstractViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EB621DDCBD400FDE038 /* AbstractViewController.m */; };
+		DEF15EC221DDCC8400FDE038 /* NSColor+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EC121DDCC8400FDE038 /* NSColor+Custom.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		DE0BF07F219BB9E800FF3AD6 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
-		DE0BF082219BC98000FF3AD6 /* NSColor+Custom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSColor+Custom.h"; sourceTree = "<group>"; };
-		DE0BF083219BC98000FF3AD6 /* NSColor+Custom.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Custom.m"; sourceTree = "<group>"; };
 		DE7BCDF121BA1C5900EE1B33 /* WindowMainView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowMainView.h; sourceTree = "<group>"; };
 		DE7BCDF221BA1C5900EE1B33 /* WindowMainView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WindowMainView.m; sourceTree = "<group>"; };
 		DE8E5C7021534233002AE872 /* AppleScriptObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptObjC.framework; path = System/Library/Frameworks/AppleScriptObjC.framework; sourceTree = SDKROOT; };
@@ -136,8 +135,6 @@
 		DE8E5D95215348EE002AE872 /* Comic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Comic.h; sourceTree = "<group>"; };
 		DE8E5D97215348EE002AE872 /* News.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = News.m; sourceTree = "<group>"; };
 		DE8E5D98215348EE002AE872 /* News.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = News.h; sourceTree = "<group>"; };
-		DE8E5D9A215348EE002AE872 /* AbstractData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractData.h; sourceTree = "<group>"; };
-		DE8E5D9B215348EE002AE872 /* AbstractData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractData.m; sourceTree = "<group>"; };
 		DE8E5D9E215348EE002AE872 /* FilmRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilmRepository.h; sourceTree = "<group>"; };
 		DE8E5D9F215348EE002AE872 /* FilmRepositoryProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilmRepositoryProtocols.h; sourceTree = "<group>"; };
 		DE8E5DA0215348EE002AE872 /* FilmRepository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilmRepository.m; sourceTree = "<group>"; };
@@ -147,9 +144,6 @@
 		DE8E5DA6215348EE002AE872 /* NewsRepository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsRepository.m; sourceTree = "<group>"; };
 		DE8E5DA7215348EE002AE872 /* NewsRepositoryProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsRepositoryProtocols.h; sourceTree = "<group>"; };
 		DE8E5DA8215348EE002AE872 /* NewsRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsRepository.h; sourceTree = "<group>"; };
-		DE8E5DAA215348EE002AE872 /* BaseRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseRepository.h; sourceTree = "<group>"; };
-		DE8E5DAB215348EE002AE872 /* BaseRepository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseRepository.m; sourceTree = "<group>"; };
-		DE8E5DAC215348EE002AE872 /* BaseRepositoryProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseRepositoryProtocols.h; sourceTree = "<group>"; };
 		DE8E5DAF215348EE002AE872 /* FilmService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilmService.m; sourceTree = "<group>"; };
 		DE8E5DB0215348EE002AE872 /* FilmService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilmService.h; sourceTree = "<group>"; };
 		DE8E5DB1215348EE002AE872 /* FilmServiceProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilmServiceProtocols.h; sourceTree = "<group>"; };
@@ -159,9 +153,6 @@
 		DE8E5DB7215348EE002AE872 /* NewsService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsService.h; sourceTree = "<group>"; };
 		DE8E5DB8215348EE002AE872 /* NewsService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsService.m; sourceTree = "<group>"; };
 		DE8E5DB9215348EE002AE872 /* NewsServiceProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsServiceProtocols.h; sourceTree = "<group>"; };
-		DE8E5DBB215348EE002AE872 /* BaseService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseService.m; sourceTree = "<group>"; };
-		DE8E5DBC215348EE002AE872 /* BaseServiceProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseServiceProtocols.h; sourceTree = "<group>"; };
-		DE8E5DBD215348EE002AE872 /* BaseService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseService.h; sourceTree = "<group>"; };
 		DE8E5DBF215348EE002AE872 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		DE8E5DC0215348EE002AE872 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		DE8E5DC1215348EE002AE872 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
@@ -200,10 +191,6 @@
 		DE8E5DF6215348EE002AE872 /* HomePresenterProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomePresenterProtocols.h; sourceTree = "<group>"; };
 		DE8E5DF7215348EE002AE872 /* HomePresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomePresenter.m; sourceTree = "<group>"; };
 		DE8E5DF8215348EE002AE872 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
-		DE8E5DFA215348EE002AE872 /* BaseWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseWindowController.m; sourceTree = "<group>"; };
-		DE8E5DFB215348EE002AE872 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
-		DE8E5DFC215348EE002AE872 /* BaseWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseWindowController.h; sourceTree = "<group>"; };
-		DE8E5DFD215348EE002AE872 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		DE8E5E00215348EE002AE872 /* CustomNSTableRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomNSTableRowView.h; sourceTree = "<group>"; };
 		DE8E5E01215348EE002AE872 /* CustomNSTableRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomNSTableRowView.m; sourceTree = "<group>"; };
 		DE8E5E03215348EE002AE872 /* CustomNSOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomNSOutlineView.m; sourceTree = "<group>"; };
@@ -266,6 +253,24 @@
 		DEDE467621534068004E8DEF /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		DEDE46782153406C004E8DEF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		DEDE467A21534119004E8DEF /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		DEF15E9F21DDCBD400FDE038 /* AbstractRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractRepository.h; sourceTree = "<group>"; };
+		DEF15EA021DDCBD400FDE038 /* AbstractRepositoryProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractRepositoryProtocols.h; sourceTree = "<group>"; };
+		DEF15EA121DDCBD400FDE038 /* AbstractRepository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractRepository.m; sourceTree = "<group>"; };
+		DEF15EA421DDCBD400FDE038 /* AbstractWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractWindowController.m; sourceTree = "<group>"; };
+		DEF15EA521DDCBD400FDE038 /* AbstractWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractWindowController.h; sourceTree = "<group>"; };
+		DEF15EA721DDCBD400FDE038 /* AbstractPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractPresenter.m; sourceTree = "<group>"; };
+		DEF15EA821DDCBD400FDE038 /* AbstractPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPresenter.h; sourceTree = "<group>"; };
+		DEF15EA921DDCBD400FDE038 /* AbstractPresenterProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPresenterProtocols.h; sourceTree = "<group>"; };
+		DEF15EAC21DDCBD400FDE038 /* AbstractData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractData.h; sourceTree = "<group>"; };
+		DEF15EAD21DDCBD400FDE038 /* AbstractData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractData.m; sourceTree = "<group>"; };
+		DEF15EAF21DDCBD400FDE038 /* AbstractViewProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractViewProtocols.h; sourceTree = "<group>"; };
+		DEF15EB121DDCBD400FDE038 /* AbstractService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractService.h; sourceTree = "<group>"; };
+		DEF15EB221DDCBD400FDE038 /* AbstractServiceProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractServiceProtocols.h; sourceTree = "<group>"; };
+		DEF15EB321DDCBD400FDE038 /* AbstractService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractService.m; sourceTree = "<group>"; };
+		DEF15EB521DDCBD400FDE038 /* AbstractViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractViewController.h; sourceTree = "<group>"; };
+		DEF15EB621DDCBD400FDE038 /* AbstractViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractViewController.m; sourceTree = "<group>"; };
+		DEF15EC021DDCC8400FDE038 /* NSColor+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+Custom.h"; sourceTree = "<group>"; };
+		DEF15EC121DDCC8400FDE038 /* NSColor+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Custom.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -296,15 +301,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		DE0BF081219BC95000FF3AD6 /* Colors */ = {
-			isa = PBXGroup;
-			children = (
-				DE0BF082219BC98000FF3AD6 /* NSColor+Custom.h */,
-				DE0BF083219BC98000FF3AD6 /* NSColor+Custom.m */,
-			);
-			path = Colors;
-			sourceTree = "<group>";
-		};
 		DE7BCDE121BA0CC500EE1B33 /* CustomNSView */ = {
 			isa = PBXGroup;
 			children = (
@@ -318,13 +314,16 @@
 			isa = PBXGroup;
 			children = (
 				DE8E5E28215348EF002AE872 /* Application */,
-				DE8E5D64215348EE002AE872 /* Common */,
+				DEF15E9D21DDCBD400FDE038 /* Bases */,
+				DE8E5D64215348EE002AE872 /* Helpers */,
 				DE8E5D9C215348EE002AE872 /* Repositories */,
 				DE8E5DAD215348EE002AE872 /* Sevices */,
 				DE8E5D8F215348EE002AE872 /* Models */,
 				DE8E5DC2215348EE002AE872 /* UI */,
 				DE8E5DBE215348EE002AE872 /* Utils */,
 				DE8E5D62215348EE002AE872 /* Resources */,
+				DE8E5DFE215348EE002AE872 /* CustomClasses */,
+				DEF15EBE21DDCC8400FDE038 /* Categories */,
 				DE8E5D89215348EE002AE872 /* Supporting-Files */,
 			);
 			path = "FlowarePopover-Sample";
@@ -339,13 +338,12 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		DE8E5D64215348EE002AE872 /* Common */ = {
+		DE8E5D64215348EE002AE872 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				DE0BF081219BC95000FF3AD6 /* Colors */,
 				DE8E5D84215348EE002AE872 /* Scripts */,
 			);
-			path = Common;
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		DE8E5D84215348EE002AE872 /* Scripts */ = {
@@ -384,7 +382,6 @@
 				DE8E5D90215348EE002AE872 /* Film */,
 				DE8E5D93215348EE002AE872 /* Comic */,
 				DE8E5D96215348EE002AE872 /* News */,
-				DE8E5D99215348EE002AE872 /* Base */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -392,8 +389,8 @@
 		DE8E5D90215348EE002AE872 /* Film */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5D91215348EE002AE872 /* Film.m */,
 				DE8E5D92215348EE002AE872 /* Film.h */,
+				DE8E5D91215348EE002AE872 /* Film.m */,
 			);
 			path = Film;
 			sourceTree = "<group>";
@@ -401,8 +398,8 @@
 		DE8E5D93215348EE002AE872 /* Comic */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5D94215348EE002AE872 /* Comic.m */,
 				DE8E5D95215348EE002AE872 /* Comic.h */,
+				DE8E5D94215348EE002AE872 /* Comic.m */,
 			);
 			path = Comic;
 			sourceTree = "<group>";
@@ -410,25 +407,15 @@
 		DE8E5D96215348EE002AE872 /* News */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5D97215348EE002AE872 /* News.m */,
 				DE8E5D98215348EE002AE872 /* News.h */,
+				DE8E5D97215348EE002AE872 /* News.m */,
 			);
 			path = News;
-			sourceTree = "<group>";
-		};
-		DE8E5D99215348EE002AE872 /* Base */ = {
-			isa = PBXGroup;
-			children = (
-				DE8E5D9A215348EE002AE872 /* AbstractData.h */,
-				DE8E5D9B215348EE002AE872 /* AbstractData.m */,
-			);
-			path = Base;
 			sourceTree = "<group>";
 		};
 		DE8E5D9C215348EE002AE872 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DA9215348EE002AE872 /* Base */,
 				DE8E5D9D215348EE002AE872 /* Film */,
 				DE8E5DA1215348EE002AE872 /* Comic */,
 				DE8E5DA5215348EE002AE872 /* News */,
@@ -466,20 +453,9 @@
 			path = News;
 			sourceTree = "<group>";
 		};
-		DE8E5DA9215348EE002AE872 /* Base */ = {
-			isa = PBXGroup;
-			children = (
-				DE8E5DAC215348EE002AE872 /* BaseRepositoryProtocols.h */,
-				DE8E5DAA215348EE002AE872 /* BaseRepository.h */,
-				DE8E5DAB215348EE002AE872 /* BaseRepository.m */,
-			);
-			path = Base;
-			sourceTree = "<group>";
-		};
 		DE8E5DAD215348EE002AE872 /* Sevices */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DBA215348EE002AE872 /* Base */,
 				DE8E5DAE215348EE002AE872 /* Film */,
 				DE8E5DB2215348EE002AE872 /* Comic */,
 				DE8E5DB6215348EE002AE872 /* News */,
@@ -517,16 +493,6 @@
 			path = News;
 			sourceTree = "<group>";
 		};
-		DE8E5DBA215348EE002AE872 /* Base */ = {
-			isa = PBXGroup;
-			children = (
-				DE8E5DBC215348EE002AE872 /* BaseServiceProtocols.h */,
-				DE8E5DBD215348EE002AE872 /* BaseService.h */,
-				DE8E5DBB215348EE002AE872 /* BaseService.m */,
-			);
-			path = Base;
-			sourceTree = "<group>";
-		};
 		DE8E5DBE215348EE002AE872 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -542,7 +508,6 @@
 			children = (
 				DE8E5DC3215348EE002AE872 /* Storyboards */,
 				DE8E5DC5215348EE002AE872 /* Scenes */,
-				DE8E5DFE215348EE002AE872 /* Common */,
 				DE8E5E05215348EE002AE872 /* ViewComponents */,
 			);
 			path = UI;
@@ -559,7 +524,6 @@
 		DE8E5DC5215348EE002AE872 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DF9215348EE002AE872 /* Base */,
 				DE8E5DC6215348EE002AE872 /* ComicsViewController */,
 				DE8E5DD2215348EE002AE872 /* NewsViewController */,
 				DE8E5DDC215348EE002AE872 /* FilmsViewController */,
@@ -718,25 +682,14 @@
 			path = Presenter;
 			sourceTree = "<group>";
 		};
-		DE8E5DF9215348EE002AE872 /* Base */ = {
-			isa = PBXGroup;
-			children = (
-				DE8E5DFC215348EE002AE872 /* BaseWindowController.h */,
-				DE8E5DFA215348EE002AE872 /* BaseWindowController.m */,
-				DE8E5DFD215348EE002AE872 /* BaseViewController.h */,
-				DE8E5DFB215348EE002AE872 /* BaseViewController.m */,
-			);
-			path = Base;
-			sourceTree = "<group>";
-		};
-		DE8E5DFE215348EE002AE872 /* Common */ = {
+		DE8E5DFE215348EE002AE872 /* CustomClasses */ = {
 			isa = PBXGroup;
 			children = (
 				DE7BCDE121BA0CC500EE1B33 /* CustomNSView */,
 				DE8E5DFF215348EE002AE872 /* CustomNSTableRowView */,
 				DE8E5E02215348EE002AE872 /* CustomNSOutlineView */,
 			);
-			path = Common;
+			path = CustomClasses;
 			sourceTree = "<group>";
 		};
 		DE8E5DFF215348EE002AE872 /* CustomNSTableRowView */ = {
@@ -960,6 +913,110 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		DEF15E9D21DDCBD400FDE038 /* Bases */ = {
+			isa = PBXGroup;
+			children = (
+				DEF15EB021DDCBD400FDE038 /* Service */,
+				DEF15E9E21DDCBD400FDE038 /* Repository */,
+				DEF15EAB21DDCBD400FDE038 /* Model */,
+				DEF15EAE21DDCBD400FDE038 /* View */,
+				DEF15EA621DDCBD400FDE038 /* Presenter */,
+				DEF15EA221DDCBD400FDE038 /* WindowController */,
+				DEF15EB421DDCBD400FDE038 /* ViewController */,
+				DEF15EAA21DDCBD400FDE038 /* Component */,
+			);
+			path = Bases;
+			sourceTree = "<group>";
+		};
+		DEF15E9E21DDCBD400FDE038 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				DEF15EA021DDCBD400FDE038 /* AbstractRepositoryProtocols.h */,
+				DEF15E9F21DDCBD400FDE038 /* AbstractRepository.h */,
+				DEF15EA121DDCBD400FDE038 /* AbstractRepository.m */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		DEF15EA221DDCBD400FDE038 /* WindowController */ = {
+			isa = PBXGroup;
+			children = (
+				DEF15EA521DDCBD400FDE038 /* AbstractWindowController.h */,
+				DEF15EA421DDCBD400FDE038 /* AbstractWindowController.m */,
+			);
+			path = WindowController;
+			sourceTree = "<group>";
+		};
+		DEF15EA621DDCBD400FDE038 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				DEF15EA921DDCBD400FDE038 /* AbstractPresenterProtocols.h */,
+				DEF15EA821DDCBD400FDE038 /* AbstractPresenter.h */,
+				DEF15EA721DDCBD400FDE038 /* AbstractPresenter.m */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		DEF15EAA21DDCBD400FDE038 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		DEF15EAB21DDCBD400FDE038 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DEF15EAC21DDCBD400FDE038 /* AbstractData.h */,
+				DEF15EAD21DDCBD400FDE038 /* AbstractData.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DEF15EAE21DDCBD400FDE038 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DEF15EAF21DDCBD400FDE038 /* AbstractViewProtocols.h */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DEF15EB021DDCBD400FDE038 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				DEF15EB221DDCBD400FDE038 /* AbstractServiceProtocols.h */,
+				DEF15EB121DDCBD400FDE038 /* AbstractService.h */,
+				DEF15EB321DDCBD400FDE038 /* AbstractService.m */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		DEF15EB421DDCBD400FDE038 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DEF15EB521DDCBD400FDE038 /* AbstractViewController.h */,
+				DEF15EB621DDCBD400FDE038 /* AbstractViewController.m */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		DEF15EBE21DDCC8400FDE038 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				DEF15EBF21DDCC8400FDE038 /* Colors */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		DEF15EBF21DDCC8400FDE038 /* Colors */ = {
+			isa = PBXGroup;
+			children = (
+				DEF15EC021DDCC8400FDE038 /* NSColor+Custom.h */,
+				DEF15EC121DDCC8400FDE038 /* NSColor+Custom.m */,
+			);
+			path = Colors;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1115,23 +1172,24 @@
 				DE8E5E41215348EF002AE872 /* News.m in Sources */,
 				DE8E5E3F215348EF002AE872 /* Film.m in Sources */,
 				DE8E5E49215348EF002AE872 /* NewsService.m in Sources */,
-				DE8E5E5D215348EF002AE872 /* BaseViewController.m in Sources */,
+				DEF15EB921DDCBD400FDE038 /* AbstractWindowController.m in Sources */,
+				DEF15EBD21DDCBD400FDE038 /* AbstractViewController.m in Sources */,
 				DE8E5E55215348EF002AE872 /* FilmsViewController.m in Sources */,
 				DE8E5E58215348EF002AE872 /* DataPresenter.m in Sources */,
 				DE8E5E68215348EF002AE872 /* DataCellPresenter.m in Sources */,
 				DE8E5E40215348EF002AE872 /* Comic.m in Sources */,
 				DE8E5E60215348EF002AE872 /* NewsCellPresenter.m in Sources */,
-				DE8E5E42215348EF002AE872 /* AbstractData.m in Sources */,
-				DE0BF084219BC98000FF3AD6 /* NSColor+Custom.m in Sources */,
-				DE8E5E4A215348EF002AE872 /* BaseService.m in Sources */,
 				DE8E5C8221534822002AE872 /* main.m in Sources */,
 				DE7BCDF321BA1C5900EE1B33 /* WindowMainView.m in Sources */,
 				DE8E5E5A215348EF002AE872 /* HomeViewController.m in Sources */,
 				DE8E5E5B215348EF002AE872 /* HomePresenter.m in Sources */,
+				DEF15EC221DDCC8400FDE038 /* NSColor+Custom.m in Sources */,
+				DEF15EBA21DDCBD400FDE038 /* AbstractPresenter.m in Sources */,
 				DE8E5E54215348EF002AE872 /* FilmsPresenter.m in Sources */,
 				DE8E5E4B215348EF002AE872 /* Utils.m in Sources */,
 				DE8E5C7A21534821002AE872 /* AppDelegate.m in Sources */,
 				DE8E5E63215348EF002AE872 /* ComicCellView.m in Sources */,
+				DEF15EBC21DDCBD400FDE038 /* AbstractService.m in Sources */,
 				DE8E5E3A215348EF002AE872 /* AppleScript.m in Sources */,
 				DE8E5E47215348EF002AE872 /* FilmService.m in Sources */,
 				DE8E5E43215348EF002AE872 /* FilmRepository.m in Sources */,
@@ -1139,13 +1197,13 @@
 				DE8E5E69215348EF002AE872 /* DataCellView.m in Sources */,
 				DE8E5E51215348EF002AE872 /* NewsViewController.m in Sources */,
 				DE8E5E53215348EF002AE872 /* NewsPresenter.m in Sources */,
+				DEF15EB721DDCBD400FDE038 /* AbstractRepository.m in Sources */,
 				DE8E5E3B215348EF002AE872 /* AppleScriptBridge.applescript in Sources */,
-				DE8E5E5C215348EF002AE872 /* BaseWindowController.m in Sources */,
 				DE8E5E61215348EF002AE872 /* NewsCellView.m in Sources */,
 				DE8E5E5E215348EF002AE872 /* CustomNSTableRowView.m in Sources */,
 				DE8E5E48215348EF002AE872 /* ComicService.m in Sources */,
-				DE8E5E46215348EF002AE872 /* BaseRepository.m in Sources */,
 				DE8E5E44215348EF002AE872 /* ComicRepository.m in Sources */,
+				DEF15EBB21DDCBD400FDE038 /* AbstractData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

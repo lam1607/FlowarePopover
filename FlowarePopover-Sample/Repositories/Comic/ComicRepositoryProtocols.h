@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BaseRepositoryProtocols.h"
+#import "AbstractRepositoryProtocols.h"
 
 @class Comic;
 
-@protocol ComicRepositoryProtocols <BaseRepositoryProtocols>
+@protocol ComicRepositoryProtocols <AbstractRepositoryProtocols>
 
 - (NSArray<Comic *> *)fetchComics;
 

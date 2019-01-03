@@ -6,14 +6,14 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 #import "HomeViewProtocols.h"
 #import "HomePresenterProtocols.h"
 
+#import "AbstractPresenter.h"
+
 @protocol HomeViewProtocols;
 
-@interface HomePresenter : NSObject <HomePresenterProtocols>
+@interface HomePresenter : AbstractPresenter <HomePresenterProtocols>
 
 @end
 

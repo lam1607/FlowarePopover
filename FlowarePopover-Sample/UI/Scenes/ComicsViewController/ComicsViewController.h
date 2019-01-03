@@ -6,13 +6,11 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "AbstractViewController.h"
 
 #import "ComicsViewProtocols.h"
-#import "ComicRepository.h"
-#import "ComicsPresenter.h"
 
-@interface ComicsViewController : BaseViewController <ComicsViewProtocols>
+@interface ComicsViewController : AbstractViewController <ComicsViewProtocols>
 
 @property (nonatomic, copy) void (^didContentSizeChange)(NSSize newSize);
 

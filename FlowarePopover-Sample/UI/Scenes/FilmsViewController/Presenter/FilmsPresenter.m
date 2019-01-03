@@ -8,6 +8,9 @@
 
 #import "FilmsPresenter.h"
 
+#import "FilmsViewProtocols.h"
+#import "FilmRepositoryProtocols.h"
+
 #import "Film.h"
 
 @interface FilmsPresenter ()
@@ -18,30 +21,19 @@
 
 @implementation FilmsPresenter
 
-@synthesize view;
-@synthesize repository;
-
-#pragma mark - DataPresenterProtocols implementation
-
-- (void)attachView:(id<FilmsViewProtocols>)view repository:(id<FilmRepositoryProtocols>)repository {
-    self.view = view;
-    self.repository = repository;
-}
-
-- (void)detachView {
-    self.view = nil;
-    self.repository = nil;
-}
+#pragma mark - AbstractPresenterProtocols implementation
 
 - (void)fetchData {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSArray<Film *> *film = [self.repository fetchFilms];
-        self.films = [[NSArray alloc] initWithArray:film];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.view reloadDataCollectionView];
+    if ([self.repository conformsToProtocol:@protocol(FilmRepositoryProtocols)]) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            NSArray<Film *> *film = [(id<FilmRepositoryProtocols>)self.repository fetchFilms];
+            self.films = [[NSArray alloc] initWithArray:film];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.view reloadViewData];
+            });
         });
-    });
+    }
 }
 
 - (NSArray<Film *> *)data {

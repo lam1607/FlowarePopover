@@ -10,20 +10,48 @@
 
 @implementation HomePresenter
 
-@synthesize view;
-
 #pragma mark - HomePresenterProtocols implementation
 
-- (void)attachView:(id<HomeViewProtocols>)view {
-    self.view = view;
+- (void)changeWindowMode {
+    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)]) {
+        [(id<HomeViewProtocols>)self.view viewDidSelectWindowModeChanging];
+    }
 }
 
-- (void)detachView {
-    self.view = nil;
+- (void)openFinder {
+    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)]) {
+        [(id<HomeViewProtocols>)self.view viewShouldOpenFinder];
+    }
 }
 
-- (void)doSelectSender:(NSDictionary *)senderInfo {
-    [self.view showPopoverAtSender:senderInfo];
+- (void)openSafari {
+    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)]) {
+        [(id<HomeViewProtocols>)self.view viewShouldOpenSafari];
+    }
+}
+
+- (void)openFilmsView {
+    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)]) {
+        [(id<HomeViewProtocols>)self.view viewShouldOpenFilmsView];
+    }
+}
+
+- (void)openNewsView {
+    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)]) {
+        [(id<HomeViewProtocols>)self.view viewShouldOpenNewsView];
+    }
+}
+
+- (void)openComicsView {
+    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)]) {
+        [(id<HomeViewProtocols>)self.view viewShouldOpenComicsView];
+    }
+}
+
+- (void)showSecondBar {
+    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)]) {
+        [(id<HomeViewProtocols>)self.view viewShouldShowSecondBar];
+    }
 }
 
 @end

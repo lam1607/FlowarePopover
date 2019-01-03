@@ -6,12 +6,10 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "AbstractViewController.h"
 
 #import "NewsViewProtocols.h"
-#import "NewsRepository.h"
-#import "NewsPresenter.h"
 
-@interface NewsViewController : BaseViewController <NewsViewProtocols>
+@interface NewsViewController : AbstractViewController <NewsViewProtocols>
 
 @end

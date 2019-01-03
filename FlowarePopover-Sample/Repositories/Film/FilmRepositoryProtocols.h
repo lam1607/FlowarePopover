@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BaseRepositoryProtocols.h"
+#import "AbstractRepositoryProtocols.h"
 
 @class Film;
 
-@protocol FilmRepositoryProtocols <BaseRepositoryProtocols>
+@protocol FilmRepositoryProtocols <AbstractRepositoryProtocols>
 
 - (NSArray<Film *> *)fetchFilms;
 

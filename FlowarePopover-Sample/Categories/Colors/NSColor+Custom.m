@@ -101,63 +101,123 @@
 #pragma mark - Asset additional colors
 
 + (NSColor *)_backgroundColor {
-    return [NSColor colorNamed:@"_backgroundColor"];
+    if (@available(macOS 10.13, *)) {
+        return [NSColor colorNamed:@"_backgroundColor"];
+    } else {
+        return [NSColor backgroundColor];
+    }
 }
 
 + (NSColor *)_backgroundWhiteColor {
-    return [NSColor colorNamed:@"_backgroundWhiteColor"];
+    if (@available(macOS 10.13, *)) {
+        return [NSColor colorNamed:@"_backgroundWhiteColor"];
+    } else {
+        return [NSColor backgroundWhiteColor];
+    }
 }
 
 + (NSColor *)_blueColor {
-    return [NSColor colorNamed:@"_blueColor"];
+    if (@available(macOS 10.13, *)) {
+        return [NSColor colorNamed:@"_blueColor"];
+    } else {
+        return [NSColor blueColor];
+    }
 }
 
 + (NSColor *)_dustColor {
-    return [NSColor colorNamed:@"_dustColor"];
+    if (@available(macOS 10.13, *)) {
+        return [NSColor colorNamed:@"_dustColor"];
+    } else {
+        return [NSColor dustColor];
+    }
 }
 
 + (NSColor *)_grayColor {
-    return [NSColor colorNamed:@"_grayColor"];
+    if (@available(macOS 10.13, *)) {
+        return [NSColor colorNamed:@"_grayColor"];
+    } else {
+        return [NSColor grayColor];
+    }
 }
 
 + (NSColor *)_lavenderColor {
-    return [NSColor colorNamed:@"_lavenderColor"];
+    if (@available(macOS 10.13, *)) {
+        return [NSColor colorNamed:@"_lavenderColor"];
+    } else {
+        return [NSColor lavenderColor];
+    }
 }
 
 + (NSColor *)_mossColor {
-    return [NSColor colorNamed:@"_mossColor"];
+    if (@available(macOS 10.13, *)) {
+        return [NSColor colorNamed:@"_mossColor"];
+    } else {
+        return [NSColor mossColor];
+    }
 }
 
 + (NSColor *)_orangeColor {
-    return [NSColor colorNamed:@"_orangeColor"];
+    if (@available(macOS 10.13, *)) {
+        return [NSColor colorNamed:@"_orangeColor"];
+    } else {
+        return [NSColor orangeColor];
+    }
 }
 
 + (NSColor *)_shadowColor {
-    return [NSColor colorNamed:@"_shadowColor"];
+    if (@available(macOS 10.13, *)) {
+        return [NSColor colorNamed:@"_shadowColor"];
+    } else {
+        return [NSColor shadowColor];
+    }
 }
 
 + (NSColor *)_tealColor {
-    return [NSColor colorNamed:@"_tealColor"];
+    if (@available(macOS 10.13, *)) {
+        return [NSColor colorNamed:@"_tealColor"];
+    } else {
+        return [NSColor tealColor];
+    }
 }
 
 + (NSColor *)_textBlackColor {
-    return [NSColor colorNamed:@"_textBlackColor"];
+    if (@available(macOS 10.13, *)) {
+        return [NSColor colorNamed:@"_textBlackColor"];
+    } else {
+        return [NSColor textBlackColor];
+    }
 }
 
 + (NSColor *)_textGrayColor {
-    return [NSColor colorNamed:@"_textGrayColor"];
+    if (@available(macOS 10.13, *)) {
+        return [NSColor colorNamed:@"_textGrayColor"];
+    } else {
+        return [NSColor textGrayColor];
+    }
 }
 
 + (NSColor *)_textLightGrayColor {
-    return [NSColor colorNamed:@"_textLightGrayColor"];
+    if (@available(macOS 10.13, *)) {
+        return [NSColor colorNamed:@"_textLightGrayColor"];
+    } else {
+        return [NSColor textLightGrayColor];
+    }
 }
 
 + (NSColor *)_textWhiteColor {
-    return [NSColor colorNamed:@"_textWhiteColor"];
+    if (@available(macOS 10.13, *)) {
+        return [NSColor colorNamed:@"_textWhiteColor"];
+    } else {
+        return [NSColor textWhiteColor];
+    }
 }
 
 + (NSColor *)_violetColor {
-    return [NSColor colorNamed:@"_violetColor"];
+    if (@available(macOS 10.13, *)) {
+        return [NSColor colorNamed:@"_violetColor"];
+    } else {
+        return [NSColor violetColor];
+    }
 }
 
 @end

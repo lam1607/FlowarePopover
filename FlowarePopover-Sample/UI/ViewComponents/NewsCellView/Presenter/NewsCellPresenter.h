@@ -6,15 +6,10 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-#import "NewsCellViewProtocols.h"
 #import "NewsCellPresenterProtocols.h"
-#import "NewsRepositoryProtocols.h"
 
-@protocol NewsCellViewProtocols;
-@protocol NewsRepositoryProtocols;
+#import "AbstractPresenter.h"
 
-@interface NewsCellPresenter : NSObject <NewsCellPresenterProtocols>
+@interface NewsCellPresenter : AbstractPresenter <NewsCellPresenterProtocols>
 
 @end

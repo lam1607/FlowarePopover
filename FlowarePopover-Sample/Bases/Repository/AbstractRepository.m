@@ -1,32 +1,32 @@
 //
-//  BaseRepository.m
+//  AbstractRepository.m
 //  FlowarePopover-Sample
 //
-//  Created by lamnguyen on 8/31/18.
-//  Copyright © 2018 Floware Inc. All rights reserved.
+//  Created by lamnguyen on 1/3/19.
+//  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
-#import "BaseRepository.h"
+#import "AbstractRepository.h"
 
-#import "BaseService.h"
+#import "AbstractService.h"
 
-@interface BaseRepository ()
+@interface AbstractRepository ()
 
-@property (nonatomic, strong) BaseService *service;
+@property (nonatomic, strong) AbstractService *service;
 
 @end
 
-@implementation BaseRepository
+@implementation AbstractRepository
 
 - (instancetype)init {
     if (self = [super init]) {
-        self.service = [[BaseService alloc] init];
+        self.service = [[AbstractService alloc] init];
     }
     
     return self;
 }
 
-#pragma mark - BaseRepositoryProtocols implementation
+#pragma mark - AbstractRepositoryProtocols implementation
 
 - (void)fetchImageFromUrl:(NSURL *)url completion:(void (^)(NSImage *image))complete {
     [self.service fetchDataFromUrl:url completion:^(NSData *data) {

@@ -6,17 +6,16 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "AbstractPresenterProtocols.h"
 
-#import "HomeViewProtocols.h"
+@protocol HomePresenterProtocols <AbstractPresenterProtocols>
 
-@protocol HomePresenterProtocols <NSObject>
-
-@property (nonatomic, strong) id<HomeViewProtocols> view;
-
-- (void)attachView:(id<HomeViewProtocols>)view;
-- (void)detachView;
-
-- (void)doSelectSender:(NSDictionary *)senderInfo;
+- (void)changeWindowMode;
+- (void)openFinder;
+- (void)openSafari;
+- (void)openFilmsView;
+- (void)openNewsView;
+- (void)openComicsView;
+- (void)showSecondBar;
 
 @end

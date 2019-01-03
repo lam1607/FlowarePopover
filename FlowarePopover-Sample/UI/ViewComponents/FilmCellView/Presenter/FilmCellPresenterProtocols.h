@@ -6,20 +6,8 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "AbstractPresenterProtocols.h"
 
-#import "FilmCellViewProtocols.h"
-#import "FilmRepositoryProtocols.h"
-
-@protocol FilmCellPresenterProtocols <NSObject>
-
-@property (nonatomic, strong) id<FilmCellViewProtocols> view;
-@property (nonatomic, strong) id<FilmRepositoryProtocols> repository;
-
-- (void)attachView:(id<FilmCellViewProtocols>)view repository:(id<FilmRepositoryProtocols>)repository;
-- (void)detachView;
-
-- (NSImage *)getFilmImage;
-- (void)fetchImageFromDataObject:(Film *)obj;
+@protocol FilmCellPresenterProtocols <AbstractPresenterProtocols>
 
 @end

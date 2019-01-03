@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 
-#import "BaseWindowController.h"
+#import "AbstractWindowController.h"
 
 @interface AppDelegate ()
 
@@ -31,13 +31,13 @@
         NSRunningApplication *app = [notif.userInfo objectForKey:NSWorkspaceApplicationKey];
         
         if (![app.bundleIdentifier isEqualToString:[[NSBundle mainBundle] bundleIdentifier]]) {
-            if ([[BaseWindowController sharedInstance] windowInDesktopMode]) {
+            if ([[AbstractWindowController sharedInstance] windowInDesktopMode]) {
                 self.lastBundleIdentifier = app.bundleIdentifier;
                 
-                [[BaseWindowController sharedInstance] hideChildWindowsOnDeactivate];
+                [[AbstractWindowController sharedInstance] hideChildWindowsOnDeactivate];
                 
                 if ([self isEntitlementAppFocused]) {
-                    [[BaseWindowController sharedInstance] hideOtherAppsExceptThoseInside];
+                    [[AbstractWindowController sharedInstance] hideOtherAppsExceptThoseInside];
                 }
             }
         }
@@ -50,20 +50,20 @@
 }
 
 - (void)applicationDidResignActive:(NSNotification *)notification {
-    if ([[BaseWindowController sharedInstance] windowInDesktopMode]) {
-        [[BaseWindowController sharedInstance] hideChildWindowsOnDeactivate];
+    if ([[AbstractWindowController sharedInstance] windowInDesktopMode]) {
+        [[AbstractWindowController sharedInstance] hideChildWindowsOnDeactivate];
     }
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
-    if ([[BaseWindowController sharedInstance] windowInDesktopMode]) {
-        [[BaseWindowController sharedInstance] showChildWindowsOnActivate];
+    if ([[AbstractWindowController sharedInstance] windowInDesktopMode]) {
+        [[AbstractWindowController sharedInstance] showChildWindowsOnActivate];
     }
     
-    [[BaseWindowController sharedInstance] activate];
+    [[AbstractWindowController sharedInstance] activate];
     
-    if ([[BaseWindowController sharedInstance] windowInDesktopMode] && ![self isEntitlementAppFocused]) {
-        [[BaseWindowController sharedInstance] hideOtherAppsExceptThoseInside];
+    if ([[AbstractWindowController sharedInstance] windowInDesktopMode] && ![self isEntitlementAppFocused]) {
+        [[AbstractWindowController sharedInstance] hideOtherAppsExceptThoseInside];
     }
 }
 

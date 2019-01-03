@@ -6,12 +6,10 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "AbstractViewController.h"
 
 #import "DataViewProtocols.h"
-#import "ComicRepository.h"
-#import "DataPresenter.h"
 
-@interface DataViewController : BaseViewController <DataViewProtocols>
+@interface DataViewController : AbstractViewController <DataViewProtocols>
 
 @end
