@@ -8,11 +8,14 @@
 
 #import "ComicRepository.h"
 
-#import "Comic.h"
 #import "ComicService.h"
+
+#import "Comic.h"
 
 @interface ComicRepository ()
 
+/// @property
+///
 @property (nonatomic, strong) ComicService *service;
 
 @end
@@ -33,10 +36,12 @@
     NSMutableArray *comics = [[NSMutableArray alloc] init];
     NSArray<NSDictionary *> *comicDicts = [self.service getMockupDataType:@"comics"];
     
-    [comicDicts enumerateObjectsUsingBlock:^(NSDictionary *contentDict, NSUInteger idx, BOOL *stop) {
-        Comic *item = [[Comic alloc] initWithContent:contentDict];
-        [comics addObject:item];
-    }];
+    for (NSDictionary *contentDict in comicDicts) {
+        @autoreleasepool {
+            Comic *item = [[Comic alloc] initWithContent:contentDict];
+            [comics addObject:item];
+        }
+    }
     
     return comics;
 }

@@ -36,9 +36,6 @@
 		DE8E5E54215348EF002AE872 /* FilmsPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DE3215348EE002AE872 /* FilmsPresenter.m */; };
 		DE8E5E55215348EF002AE872 /* FilmsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DE4215348EE002AE872 /* FilmsViewController.m */; };
 		DE8E5E56215348EF002AE872 /* FilmsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE8E5DE5215348EE002AE872 /* FilmsViewController.xib */; };
-		DE8E5E57215348EF002AE872 /* DataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DE9215348EE002AE872 /* DataViewController.m */; };
-		DE8E5E58215348EF002AE872 /* DataPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DEB215348EE002AE872 /* DataPresenter.m */; };
-		DE8E5E59215348EF002AE872 /* DataViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE8E5DEF215348EE002AE872 /* DataViewController.xib */; };
 		DE8E5E5A215348EF002AE872 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DF3215348EE002AE872 /* HomeViewController.m */; };
 		DE8E5E5B215348EF002AE872 /* HomePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5DF7215348EE002AE872 /* HomePresenter.m */; };
 		DE8E5E5E215348EF002AE872 /* CustomNSTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E01215348EE002AE872 /* CustomNSTableRowView.m */; };
@@ -51,9 +48,6 @@
 		DE8E5E65215348EF002AE872 /* FilmCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE8E5E17215348EE002AE872 /* FilmCellView.xib */; };
 		DE8E5E66215348EF002AE872 /* FilmCellPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E1A215348EE002AE872 /* FilmCellPresenter.m */; };
 		DE8E5E67215348EF002AE872 /* FilmCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E1C215348EE002AE872 /* FilmCellView.m */; };
-		DE8E5E68215348EF002AE872 /* DataCellPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E23215348EF002AE872 /* DataCellPresenter.m */; };
-		DE8E5E69215348EF002AE872 /* DataCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E26215348EF002AE872 /* DataCellView.m */; };
-		DE8E5E6A215348EF002AE872 /* DataCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE8E5E27215348EF002AE872 /* DataCellView.xib */; };
 		DE8E5E6C215349FE002AE872 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEDE467A21534119004E8DEF /* AppKit.framework */; };
 		DE8E5E6D21534A03002AE872 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEDE467621534068004E8DEF /* Cocoa.framework */; };
 		DE8E5E6E21534A0A002AE872 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEDE467421534062004E8DEF /* Foundation.framework */; };
@@ -83,6 +77,22 @@
 		DE8E5E9F2153BD3A002AE872 /* FLOExtensionsNSValue.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E902153B8C1002AE872 /* FLOExtensionsNSValue.m */; };
 		DE8E5EA02153BD3E002AE872 /* FLOExtensionsNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E842153B69E002AE872 /* FLOExtensionsNSView.m */; };
 		DE8E5EA12153BD42002AE872 /* FLOExtensionsNSWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E802153B62B002AE872 /* FLOExtensionsNSWindow.m */; };
+		DED3A3C621E6E52500B479BF /* TechnologyService.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A3C521E6E52500B479BF /* TechnologyService.m */; };
+		DED3A3CC21E6E5DB00B479BF /* TechnologyRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A3CB21E6E5DB00B479BF /* TechnologyRepository.m */; };
+		DED3A3D021E6E60B00B479BF /* Technology.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A3CF21E6E60B00B479BF /* Technology.m */; };
+		DED3A3EF21E6E64200B479BF /* AbstractViewRow.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A3D721E6E64200B479BF /* AbstractViewRow.m */; };
+		DED3A3F021E6E64200B479BF /* CollectionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A3DA21E6E64200B479BF /* CollectionViewManager.m */; };
+		DED3A3F121E6E64200B479BF /* CollectionViewRow.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A3DD21E6E64200B479BF /* CollectionViewRow.m */; };
+		DED3A3F221E6E64200B479BF /* OutlineViewRow.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A3E221E6E64200B479BF /* OutlineViewRow.m */; };
+		DED3A3F321E6E64200B479BF /* TableViewRow.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A3E621E6E64200B479BF /* TableViewRow.m */; };
+		DED3A3F421E6E64200B479BF /* OutlineViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A3EB21E6E64200B479BF /* OutlineViewManager.m */; };
+		DED3A3F521E6E64200B479BF /* TableViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A3EE21E6E64200B479BF /* TableViewManager.m */; };
+		DED3A3FB21E6EB3B00B479BF /* TechnologyCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A3FA21E6EB3B00B479BF /* TechnologyCellView.m */; };
+		DED3A3FE21E6EB5700B479BF /* TechnologyCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DED3A3FD21E6EB5700B479BF /* TechnologyCellView.xib */; };
+		DED3A40321E6EC9A00B479BF /* TechnologyCellPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A40221E6EC9A00B479BF /* TechnologyCellPresenter.m */; };
+		DED3A40B21E6F97300B479BF /* TechnologiesPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A40A21E6F97300B479BF /* TechnologiesPresenter.m */; };
+		DED3A40F21E6FDF000B479BF /* TechnologiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A40D21E6FDF000B479BF /* TechnologiesViewController.m */; };
+		DED3A41021E6FDF000B479BF /* TechnologiesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DED3A40E21E6FDF000B479BF /* TechnologiesViewController.xib */; };
 		DEDE45F521533F86004E8DEF /* FlowarePopover.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE45F321533F86004E8DEF /* FlowarePopover.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DEDE465621534005004E8DEF /* FLOViewPopup.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE463821534005004E8DEF /* FLOViewPopup.h */; };
 		DEDE465721534005004E8DEF /* FLOWindowPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE463921534005004E8DEF /* FLOWindowPopup.m */; };
@@ -178,13 +188,6 @@
 		DE8E5DE3215348EE002AE872 /* FilmsPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilmsPresenter.m; sourceTree = "<group>"; };
 		DE8E5DE4215348EE002AE872 /* FilmsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilmsViewController.m; sourceTree = "<group>"; };
 		DE8E5DE5215348EE002AE872 /* FilmsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilmsViewController.xib; sourceTree = "<group>"; };
-		DE8E5DE8215348EE002AE872 /* DataViewProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataViewProtocols.h; sourceTree = "<group>"; };
-		DE8E5DE9215348EE002AE872 /* DataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataViewController.m; sourceTree = "<group>"; };
-		DE8E5DEB215348EE002AE872 /* DataPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataPresenter.m; sourceTree = "<group>"; };
-		DE8E5DEC215348EE002AE872 /* DataPresenterProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataPresenterProtocols.h; sourceTree = "<group>"; };
-		DE8E5DED215348EE002AE872 /* DataPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataPresenter.h; sourceTree = "<group>"; };
-		DE8E5DEE215348EE002AE872 /* DataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataViewController.h; sourceTree = "<group>"; };
-		DE8E5DEF215348EE002AE872 /* DataViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DataViewController.xib; sourceTree = "<group>"; };
 		DE8E5DF2215348EE002AE872 /* HomeViewProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewProtocols.h; sourceTree = "<group>"; };
 		DE8E5DF3215348EE002AE872 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		DE8E5DF5215348EE002AE872 /* HomePresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomePresenter.h; sourceTree = "<group>"; };
@@ -212,13 +215,6 @@
 		DE8E5E1B215348EE002AE872 /* FilmCellPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilmCellPresenter.h; sourceTree = "<group>"; };
 		DE8E5E1C215348EE002AE872 /* FilmCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilmCellView.m; sourceTree = "<group>"; };
 		DE8E5E1D215348EE002AE872 /* FilmCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilmCellView.h; sourceTree = "<group>"; };
-		DE8E5E20215348EF002AE872 /* DataCellViewProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataCellViewProtocols.h; sourceTree = "<group>"; };
-		DE8E5E21215348EF002AE872 /* DataCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataCellView.h; sourceTree = "<group>"; };
-		DE8E5E23215348EF002AE872 /* DataCellPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataCellPresenter.m; sourceTree = "<group>"; };
-		DE8E5E24215348EF002AE872 /* DataCellPresenterProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataCellPresenterProtocols.h; sourceTree = "<group>"; };
-		DE8E5E25215348EF002AE872 /* DataCellPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataCellPresenter.h; sourceTree = "<group>"; };
-		DE8E5E26215348EF002AE872 /* DataCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataCellView.m; sourceTree = "<group>"; };
-		DE8E5E27215348EF002AE872 /* DataCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DataCellView.xib; sourceTree = "<group>"; };
 		DE8E5E7F2153B62B002AE872 /* FLOExtensionsNSWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOExtensionsNSWindow.h; sourceTree = "<group>"; };
 		DE8E5E802153B62B002AE872 /* FLOExtensionsNSWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOExtensionsNSWindow.m; sourceTree = "<group>"; };
 		DE8E5E832153B69E002AE872 /* FLOExtensionsNSView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOExtensionsNSView.h; sourceTree = "<group>"; };
@@ -231,6 +227,47 @@
 		DE8E5E902153B8C1002AE872 /* FLOExtensionsNSValue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOExtensionsNSValue.m; sourceTree = "<group>"; };
 		DE8E5E932153BAAC002AE872 /* FLOExtensionsGraphicsContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOExtensionsGraphicsContext.h; sourceTree = "<group>"; };
 		DE8E5E942153BAAC002AE872 /* FLOExtensionsGraphicsContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOExtensionsGraphicsContext.m; sourceTree = "<group>"; };
+		DED3A3C321E6E50A00B479BF /* TechnologyServiceProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologyServiceProtocols.h; sourceTree = "<group>"; };
+		DED3A3C421E6E52500B479BF /* TechnologyService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologyService.h; sourceTree = "<group>"; };
+		DED3A3C521E6E52500B479BF /* TechnologyService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TechnologyService.m; sourceTree = "<group>"; };
+		DED3A3C921E6E5C400B479BF /* TechnologyRepositoryProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologyRepositoryProtocols.h; sourceTree = "<group>"; };
+		DED3A3CA21E6E5DB00B479BF /* TechnologyRepository.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologyRepository.h; sourceTree = "<group>"; };
+		DED3A3CB21E6E5DB00B479BF /* TechnologyRepository.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TechnologyRepository.m; sourceTree = "<group>"; };
+		DED3A3CE21E6E60B00B479BF /* Technology.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Technology.h; sourceTree = "<group>"; };
+		DED3A3CF21E6E60B00B479BF /* Technology.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Technology.m; sourceTree = "<group>"; };
+		DED3A3D421E6E64200B479BF /* ViewRowProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewRowProtocols.h; sourceTree = "<group>"; };
+		DED3A3D521E6E64200B479BF /* AbstractViewRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractViewRow.h; sourceTree = "<group>"; };
+		DED3A3D621E6E64200B479BF /* AbstractViewRowProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractViewRowProtocols.h; sourceTree = "<group>"; };
+		DED3A3D721E6E64200B479BF /* AbstractViewRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractViewRow.m; sourceTree = "<group>"; };
+		DED3A3D921E6E64200B479BF /* CollectionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewManager.h; sourceTree = "<group>"; };
+		DED3A3DA21E6E64200B479BF /* CollectionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewManager.m; sourceTree = "<group>"; };
+		DED3A3DD21E6E64200B479BF /* CollectionViewRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewRow.m; sourceTree = "<group>"; };
+		DED3A3DE21E6E64200B479BF /* CollectionViewRowProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewRowProtocols.h; sourceTree = "<group>"; };
+		DED3A3DF21E6E64200B479BF /* CollectionViewRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewRow.h; sourceTree = "<group>"; };
+		DED3A3E221E6E64200B479BF /* OutlineViewRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OutlineViewRow.m; sourceTree = "<group>"; };
+		DED3A3E321E6E64200B479BF /* OutlineViewRowProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OutlineViewRowProtocols.h; sourceTree = "<group>"; };
+		DED3A3E421E6E64200B479BF /* OutlineViewRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OutlineViewRow.h; sourceTree = "<group>"; };
+		DED3A3E621E6E64200B479BF /* TableViewRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewRow.m; sourceTree = "<group>"; };
+		DED3A3E721E6E64200B479BF /* TableViewRowProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewRowProtocols.h; sourceTree = "<group>"; };
+		DED3A3E821E6E64200B479BF /* TableViewRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewRow.h; sourceTree = "<group>"; };
+		DED3A3EA21E6E64200B479BF /* OutlineViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OutlineViewManager.h; sourceTree = "<group>"; };
+		DED3A3EB21E6E64200B479BF /* OutlineViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OutlineViewManager.m; sourceTree = "<group>"; };
+		DED3A3ED21E6E64200B479BF /* TableViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewManager.h; sourceTree = "<group>"; };
+		DED3A3EE21E6E64200B479BF /* TableViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewManager.m; sourceTree = "<group>"; };
+		DED3A3F921E6EB3B00B479BF /* TechnologyCellView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologyCellView.h; sourceTree = "<group>"; };
+		DED3A3FA21E6EB3B00B479BF /* TechnologyCellView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TechnologyCellView.m; sourceTree = "<group>"; };
+		DED3A3FD21E6EB5700B479BF /* TechnologyCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TechnologyCellView.xib; sourceTree = "<group>"; };
+		DED3A3FF21E6EC5300B479BF /* TechnologyCellViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologyCellViewProtocols.h; sourceTree = "<group>"; };
+		DED3A40021E6EC7A00B479BF /* TechnologyCellPresenterProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologyCellPresenterProtocols.h; sourceTree = "<group>"; };
+		DED3A40121E6EC9A00B479BF /* TechnologyCellPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologyCellPresenter.h; sourceTree = "<group>"; };
+		DED3A40221E6EC9A00B479BF /* TechnologyCellPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TechnologyCellPresenter.m; sourceTree = "<group>"; };
+		DED3A40721E6F94100B479BF /* TechnologiesViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologiesViewProtocols.h; sourceTree = "<group>"; };
+		DED3A40821E6F96700B479BF /* TechnologiesPresenterProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologiesPresenterProtocols.h; sourceTree = "<group>"; };
+		DED3A40921E6F97300B479BF /* TechnologiesPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologiesPresenter.h; sourceTree = "<group>"; };
+		DED3A40A21E6F97300B479BF /* TechnologiesPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TechnologiesPresenter.m; sourceTree = "<group>"; };
+		DED3A40C21E6FDF000B479BF /* TechnologiesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologiesViewController.h; sourceTree = "<group>"; };
+		DED3A40D21E6FDF000B479BF /* TechnologiesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TechnologiesViewController.m; sourceTree = "<group>"; };
+		DED3A40E21E6FDF000B479BF /* TechnologiesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TechnologiesViewController.xib; sourceTree = "<group>"; };
 		DEDE45F021533F86004E8DEF /* FlowarePopover.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FlowarePopover.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEDE45F321533F86004E8DEF /* FlowarePopover.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlowarePopover.h; sourceTree = "<group>"; };
 		DEDE45F421533F86004E8DEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -316,9 +353,10 @@
 				DE8E5E28215348EF002AE872 /* Application */,
 				DEF15E9D21DDCBD400FDE038 /* Bases */,
 				DE8E5D64215348EE002AE872 /* Helpers */,
-				DE8E5D9C215348EE002AE872 /* Repositories */,
 				DE8E5DAD215348EE002AE872 /* Sevices */,
+				DE8E5D9C215348EE002AE872 /* Repositories */,
 				DE8E5D8F215348EE002AE872 /* Models */,
+				DED3A3D121E6E64200B479BF /* DatasourcesManager */,
 				DE8E5DC2215348EE002AE872 /* UI */,
 				DE8E5DBE215348EE002AE872 /* Utils */,
 				DE8E5D62215348EE002AE872 /* Resources */,
@@ -367,8 +405,8 @@
 		DE8E5D89215348EE002AE872 /* Supporting-Files */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5D8A215348EE002AE872 /* MockData.plist */,
 				DE8E5D8C215348EE002AE872 /* PrefixHeader.pch */,
+				DE8E5D8A215348EE002AE872 /* MockData.plist */,
 				DE8E5C8021534822002AE872 /* Info.plist */,
 				DE8E5C8121534822002AE872 /* main.m */,
 				DE8E5C8321534822002AE872 /* FlowarePopover_Sample.entitlements */,
@@ -382,6 +420,7 @@
 				DE8E5D90215348EE002AE872 /* Film */,
 				DE8E5D93215348EE002AE872 /* Comic */,
 				DE8E5D96215348EE002AE872 /* News */,
+				DED3A3CD21E6E5F900B479BF /* Technology */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -419,6 +458,7 @@
 				DE8E5D9D215348EE002AE872 /* Film */,
 				DE8E5DA1215348EE002AE872 /* Comic */,
 				DE8E5DA5215348EE002AE872 /* News */,
+				DED3A3C721E6E5A800B479BF /* Technology */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -459,6 +499,7 @@
 				DE8E5DAE215348EE002AE872 /* Film */,
 				DE8E5DB2215348EE002AE872 /* Comic */,
 				DE8E5DB6215348EE002AE872 /* News */,
+				DED3A3C221E6E4F700B479BF /* Technology */,
 			);
 			path = Sevices;
 			sourceTree = "<group>";
@@ -524,16 +565,16 @@
 		DE8E5DC5215348EE002AE872 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DC6215348EE002AE872 /* ComicsViewController */,
-				DE8E5DD2215348EE002AE872 /* NewsViewController */,
-				DE8E5DDC215348EE002AE872 /* FilmsViewController */,
-				DE8E5DE6215348EE002AE872 /* DataViewController */,
-				DE8E5DF0215348EE002AE872 /* HomeViewController */,
+				DE8E5DF0215348EE002AE872 /* Home */,
+				DE8E5DDC215348EE002AE872 /* Films */,
+				DE8E5DD2215348EE002AE872 /* News */,
+				DE8E5DC6215348EE002AE872 /* Comics */,
+				DED3A40421E6F90800B479BF /* Technologies */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
 		};
-		DE8E5DC6215348EE002AE872 /* ComicsViewController */ = {
+		DE8E5DC6215348EE002AE872 /* Comics */ = {
 			isa = PBXGroup;
 			children = (
 				DE8E5DC7215348EE002AE872 /* ViewProtocols */,
@@ -542,7 +583,7 @@
 				DE8E5DCF215348EE002AE872 /* ComicsViewController.m */,
 				DE8E5DCE215348EE002AE872 /* ComicsViewController.xib */,
 			);
-			path = ComicsViewController;
+			path = Comics;
 			sourceTree = "<group>";
 		};
 		DE8E5DC7215348EE002AE872 /* ViewProtocols */ = {
@@ -563,7 +604,7 @@
 			path = Presenter;
 			sourceTree = "<group>";
 		};
-		DE8E5DD2215348EE002AE872 /* NewsViewController */ = {
+		DE8E5DD2215348EE002AE872 /* News */ = {
 			isa = PBXGroup;
 			children = (
 				DE8E5DD4215348EE002AE872 /* ViewProtocols */,
@@ -572,7 +613,7 @@
 				DE8E5DD3215348EE002AE872 /* NewsViewController.m */,
 				DE8E5DD6215348EE002AE872 /* NewsViewController.xib */,
 			);
-			path = NewsViewController;
+			path = News;
 			sourceTree = "<group>";
 		};
 		DE8E5DD4215348EE002AE872 /* ViewProtocols */ = {
@@ -593,7 +634,7 @@
 			path = Presenter;
 			sourceTree = "<group>";
 		};
-		DE8E5DDC215348EE002AE872 /* FilmsViewController */ = {
+		DE8E5DDC215348EE002AE872 /* Films */ = {
 			isa = PBXGroup;
 			children = (
 				DE8E5DDD215348EE002AE872 /* ViewProtocols */,
@@ -602,7 +643,7 @@
 				DE8E5DE4215348EE002AE872 /* FilmsViewController.m */,
 				DE8E5DE5215348EE002AE872 /* FilmsViewController.xib */,
 			);
-			path = FilmsViewController;
+			path = Films;
 			sourceTree = "<group>";
 		};
 		DE8E5DDD215348EE002AE872 /* ViewProtocols */ = {
@@ -623,37 +664,7 @@
 			path = Presenter;
 			sourceTree = "<group>";
 		};
-		DE8E5DE6215348EE002AE872 /* DataViewController */ = {
-			isa = PBXGroup;
-			children = (
-				DE8E5DE7215348EE002AE872 /* ViewProtocols */,
-				DE8E5DEA215348EE002AE872 /* Presenter */,
-				DE8E5DEE215348EE002AE872 /* DataViewController.h */,
-				DE8E5DE9215348EE002AE872 /* DataViewController.m */,
-				DE8E5DEF215348EE002AE872 /* DataViewController.xib */,
-			);
-			path = DataViewController;
-			sourceTree = "<group>";
-		};
-		DE8E5DE7215348EE002AE872 /* ViewProtocols */ = {
-			isa = PBXGroup;
-			children = (
-				DE8E5DE8215348EE002AE872 /* DataViewProtocols.h */,
-			);
-			path = ViewProtocols;
-			sourceTree = "<group>";
-		};
-		DE8E5DEA215348EE002AE872 /* Presenter */ = {
-			isa = PBXGroup;
-			children = (
-				DE8E5DEC215348EE002AE872 /* DataPresenterProtocols.h */,
-				DE8E5DED215348EE002AE872 /* DataPresenter.h */,
-				DE8E5DEB215348EE002AE872 /* DataPresenter.m */,
-			);
-			path = Presenter;
-			sourceTree = "<group>";
-		};
-		DE8E5DF0215348EE002AE872 /* HomeViewController */ = {
+		DE8E5DF0215348EE002AE872 /* Home */ = {
 			isa = PBXGroup;
 			children = (
 				DE8E5DF1215348EE002AE872 /* ViewProtocols */,
@@ -661,7 +672,7 @@
 				DE8E5DF8215348EE002AE872 /* HomeViewController.h */,
 				DE8E5DF3215348EE002AE872 /* HomeViewController.m */,
 			);
-			path = HomeViewController;
+			path = Home;
 			sourceTree = "<group>";
 		};
 		DE8E5DF1215348EE002AE872 /* ViewProtocols */ = {
@@ -713,10 +724,10 @@
 		DE8E5E05215348EE002AE872 /* ViewComponents */ = {
 			isa = PBXGroup;
 			children = (
+				DE8E5E14215348EE002AE872 /* FilmCellView */,
 				DE8E5E06215348EE002AE872 /* NewsCellView */,
 				DE8E5E10215348EE002AE872 /* ComicCellView */,
-				DE8E5E14215348EE002AE872 /* FilmCellView */,
-				DE8E5E1E215348EF002AE872 /* DataCellView */,
+				DED3A3F621E6EAF900B479BF /* TechnologyCellView */,
 			);
 			path = ViewComponents;
 			sourceTree = "<group>";
@@ -791,36 +802,6 @@
 			path = Presenter;
 			sourceTree = "<group>";
 		};
-		DE8E5E1E215348EF002AE872 /* DataCellView */ = {
-			isa = PBXGroup;
-			children = (
-				DE8E5E1F215348EF002AE872 /* ViewProtocols */,
-				DE8E5E22215348EF002AE872 /* Presenter */,
-				DE8E5E21215348EF002AE872 /* DataCellView.h */,
-				DE8E5E26215348EF002AE872 /* DataCellView.m */,
-				DE8E5E27215348EF002AE872 /* DataCellView.xib */,
-			);
-			path = DataCellView;
-			sourceTree = "<group>";
-		};
-		DE8E5E1F215348EF002AE872 /* ViewProtocols */ = {
-			isa = PBXGroup;
-			children = (
-				DE8E5E20215348EF002AE872 /* DataCellViewProtocols.h */,
-			);
-			path = ViewProtocols;
-			sourceTree = "<group>";
-		};
-		DE8E5E22215348EF002AE872 /* Presenter */ = {
-			isa = PBXGroup;
-			children = (
-				DE8E5E24215348EF002AE872 /* DataCellPresenterProtocols.h */,
-				DE8E5E25215348EF002AE872 /* DataCellPresenter.h */,
-				DE8E5E23215348EF002AE872 /* DataCellPresenter.m */,
-			);
-			path = Presenter;
-			sourceTree = "<group>";
-		};
 		DE8E5E28215348EF002AE872 /* Application */ = {
 			isa = PBXGroup;
 			children = (
@@ -828,6 +809,201 @@
 				DE8E5C7921534821002AE872 /* AppDelegate.m */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		DED3A3C221E6E4F700B479BF /* Technology */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A3C321E6E50A00B479BF /* TechnologyServiceProtocols.h */,
+				DED3A3C421E6E52500B479BF /* TechnologyService.h */,
+				DED3A3C521E6E52500B479BF /* TechnologyService.m */,
+			);
+			path = Technology;
+			sourceTree = "<group>";
+		};
+		DED3A3C721E6E5A800B479BF /* Technology */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A3C921E6E5C400B479BF /* TechnologyRepositoryProtocols.h */,
+				DED3A3CA21E6E5DB00B479BF /* TechnologyRepository.h */,
+				DED3A3CB21E6E5DB00B479BF /* TechnologyRepository.m */,
+			);
+			path = Technology;
+			sourceTree = "<group>";
+		};
+		DED3A3CD21E6E5F900B479BF /* Technology */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A3CE21E6E60B00B479BF /* Technology.h */,
+				DED3A3CF21E6E60B00B479BF /* Technology.m */,
+			);
+			path = Technology;
+			sourceTree = "<group>";
+		};
+		DED3A3D121E6E64200B479BF /* DatasourcesManager */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A3D221E6E64200B479BF /* Bases */,
+				DED3A3D821E6E64200B479BF /* CollectionViewManager */,
+				DED3A3E921E6E64200B479BF /* OutlineViewManager */,
+				DED3A3EC21E6E64200B479BF /* TableViewManager */,
+				DED3A3DB21E6E64200B479BF /* Components */,
+			);
+			path = DatasourcesManager;
+			sourceTree = "<group>";
+		};
+		DED3A3D221E6E64200B479BF /* Bases */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A3D321E6E64200B479BF /* RowProtocols */,
+			);
+			path = Bases;
+			sourceTree = "<group>";
+		};
+		DED3A3D321E6E64200B479BF /* RowProtocols */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A3D421E6E64200B479BF /* ViewRowProtocols.h */,
+				DED3A3D621E6E64200B479BF /* AbstractViewRowProtocols.h */,
+				DED3A3D521E6E64200B479BF /* AbstractViewRow.h */,
+				DED3A3D721E6E64200B479BF /* AbstractViewRow.m */,
+			);
+			path = RowProtocols;
+			sourceTree = "<group>";
+		};
+		DED3A3D821E6E64200B479BF /* CollectionViewManager */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A3D921E6E64200B479BF /* CollectionViewManager.h */,
+				DED3A3DA21E6E64200B479BF /* CollectionViewManager.m */,
+			);
+			path = CollectionViewManager;
+			sourceTree = "<group>";
+		};
+		DED3A3DB21E6E64200B479BF /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A3DC21E6E64200B479BF /* NSCollectionViewItem */,
+				DED3A3E021E6E64200B479BF /* NSTableCellView */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		DED3A3DC21E6E64200B479BF /* NSCollectionViewItem */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A3DE21E6E64200B479BF /* CollectionViewRowProtocols.h */,
+				DED3A3DF21E6E64200B479BF /* CollectionViewRow.h */,
+				DED3A3DD21E6E64200B479BF /* CollectionViewRow.m */,
+			);
+			path = NSCollectionViewItem;
+			sourceTree = "<group>";
+		};
+		DED3A3E021E6E64200B479BF /* NSTableCellView */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A3E521E6E64200B479BF /* TableViewRow */,
+				DED3A3E121E6E64200B479BF /* OutlineViewRow */,
+			);
+			path = NSTableCellView;
+			sourceTree = "<group>";
+		};
+		DED3A3E121E6E64200B479BF /* OutlineViewRow */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A3E321E6E64200B479BF /* OutlineViewRowProtocols.h */,
+				DED3A3E421E6E64200B479BF /* OutlineViewRow.h */,
+				DED3A3E221E6E64200B479BF /* OutlineViewRow.m */,
+			);
+			path = OutlineViewRow;
+			sourceTree = "<group>";
+		};
+		DED3A3E521E6E64200B479BF /* TableViewRow */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A3E721E6E64200B479BF /* TableViewRowProtocols.h */,
+				DED3A3E821E6E64200B479BF /* TableViewRow.h */,
+				DED3A3E621E6E64200B479BF /* TableViewRow.m */,
+			);
+			path = TableViewRow;
+			sourceTree = "<group>";
+		};
+		DED3A3E921E6E64200B479BF /* OutlineViewManager */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A3EA21E6E64200B479BF /* OutlineViewManager.h */,
+				DED3A3EB21E6E64200B479BF /* OutlineViewManager.m */,
+			);
+			path = OutlineViewManager;
+			sourceTree = "<group>";
+		};
+		DED3A3EC21E6E64200B479BF /* TableViewManager */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A3ED21E6E64200B479BF /* TableViewManager.h */,
+				DED3A3EE21E6E64200B479BF /* TableViewManager.m */,
+			);
+			path = TableViewManager;
+			sourceTree = "<group>";
+		};
+		DED3A3F621E6EAF900B479BF /* TechnologyCellView */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A3F821E6EB1800B479BF /* ViewProtocols */,
+				DED3A3F721E6EB1200B479BF /* Presenter */,
+				DED3A3F921E6EB3B00B479BF /* TechnologyCellView.h */,
+				DED3A3FA21E6EB3B00B479BF /* TechnologyCellView.m */,
+				DED3A3FD21E6EB5700B479BF /* TechnologyCellView.xib */,
+			);
+			path = TechnologyCellView;
+			sourceTree = "<group>";
+		};
+		DED3A3F721E6EB1200B479BF /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A40021E6EC7A00B479BF /* TechnologyCellPresenterProtocols.h */,
+				DED3A40121E6EC9A00B479BF /* TechnologyCellPresenter.h */,
+				DED3A40221E6EC9A00B479BF /* TechnologyCellPresenter.m */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		DED3A3F821E6EB1800B479BF /* ViewProtocols */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A3FF21E6EC5300B479BF /* TechnologyCellViewProtocols.h */,
+			);
+			path = ViewProtocols;
+			sourceTree = "<group>";
+		};
+		DED3A40421E6F90800B479BF /* Technologies */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A40621E6F92400B479BF /* ViewProtocols */,
+				DED3A40521E6F91500B479BF /* Presenter */,
+				DED3A40C21E6FDF000B479BF /* TechnologiesViewController.h */,
+				DED3A40D21E6FDF000B479BF /* TechnologiesViewController.m */,
+				DED3A40E21E6FDF000B479BF /* TechnologiesViewController.xib */,
+			);
+			path = Technologies;
+			sourceTree = "<group>";
+		};
+		DED3A40521E6F91500B479BF /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A40821E6F96700B479BF /* TechnologiesPresenterProtocols.h */,
+				DED3A40921E6F97300B479BF /* TechnologiesPresenter.h */,
+				DED3A40A21E6F97300B479BF /* TechnologiesPresenter.m */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		DED3A40621E6F92400B479BF /* ViewProtocols */ = {
+			isa = PBXGroup;
+			children = (
+				DED3A40721E6F94100B479BF /* TechnologiesViewProtocols.h */,
+			);
+			path = ViewProtocols;
 			sourceTree = "<group>";
 		};
 		DEDE45E621533F86004E8DEF = {
@@ -1124,10 +1300,10 @@
 				DE8E5E64215348EF002AE872 /* ComicCellView.xib in Resources */,
 				DE8E5E4C215348EF002AE872 /* Main.storyboard in Resources */,
 				DE8E5C7C21534822002AE872 /* Assets.xcassets in Resources */,
-				DE8E5E59215348EF002AE872 /* DataViewController.xib in Resources */,
-				DE8E5E6A215348EF002AE872 /* DataCellView.xib in Resources */,
+				DED3A3FE21E6EB5700B479BF /* TechnologyCellView.xib in Resources */,
 				DE8E5E62215348EF002AE872 /* NewsCellView.xib in Resources */,
 				DE8E5E56215348EF002AE872 /* FilmsViewController.xib in Resources */,
+				DED3A41021E6FDF000B479BF /* TechnologiesViewController.xib in Resources */,
 				DE8E5E52215348EF002AE872 /* NewsViewController.xib in Resources */,
 				DE8E5E4E215348EF002AE872 /* ComicsViewController.xib in Resources */,
 				DE0BF080219BB9E800FF3AD6 /* Colors.xcassets in Resources */,
@@ -1152,14 +1328,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE8E5EA12153BD42002AE872 /* FLOExtensionsNSWindow.m in Sources */,
+				DED3A3F521E6E64200B479BF /* TableViewManager.m in Sources */,
 				DE8E5EA02153BD3E002AE872 /* FLOExtensionsNSView.m in Sources */,
 				DE8E5E9F2153BD3A002AE872 /* FLOExtensionsNSValue.m in Sources */,
+				DED3A3D021E6E60B00B479BF /* Technology.m in Sources */,
 				DE8E5E9E2153BD36002AE872 /* FLOExtensionsGraphicsContext.m in Sources */,
 				DE8E5E9C2153BD2E002AE872 /* FLOExtensionsCAKeyframeAnimation.m in Sources */,
 				DE8E5E9B2153BD29002AE872 /* FLOExtensionsCABasicAnimation.m in Sources */,
 				DE8E5E772153515C002AE872 /* FLOPopoverBackgroundView.m in Sources */,
 				DE8E5E7621535154002AE872 /* FLOPopoverUtils.m in Sources */,
 				DE8E5E7421535132002AE872 /* FLOWindowPopup.m in Sources */,
+				DED3A3F221E6E64200B479BF /* OutlineViewRow.m in Sources */,
 				DE8E5E732153512C002AE872 /* FLOViewPopup.m in Sources */,
 				DE8E5E7221535110002AE872 /* FLOPopoverWindowController.m in Sources */,
 				DE8E5E712153510A002AE872 /* FLOPopover.m in Sources */,
@@ -1168,20 +1347,26 @@
 				DE8E5E67215348EF002AE872 /* FilmCellView.m in Sources */,
 				DE8E5E4F215348EF002AE872 /* ComicsViewController.m in Sources */,
 				DE8E5E66215348EF002AE872 /* FilmCellPresenter.m in Sources */,
-				DE8E5E57215348EF002AE872 /* DataViewController.m in Sources */,
 				DE8E5E41215348EF002AE872 /* News.m in Sources */,
 				DE8E5E3F215348EF002AE872 /* Film.m in Sources */,
 				DE8E5E49215348EF002AE872 /* NewsService.m in Sources */,
+				DED3A40F21E6FDF000B479BF /* TechnologiesViewController.m in Sources */,
+				DED3A3F321E6E64200B479BF /* TableViewRow.m in Sources */,
+				DED3A3C621E6E52500B479BF /* TechnologyService.m in Sources */,
 				DEF15EB921DDCBD400FDE038 /* AbstractWindowController.m in Sources */,
 				DEF15EBD21DDCBD400FDE038 /* AbstractViewController.m in Sources */,
+				DED3A3CC21E6E5DB00B479BF /* TechnologyRepository.m in Sources */,
 				DE8E5E55215348EF002AE872 /* FilmsViewController.m in Sources */,
-				DE8E5E58215348EF002AE872 /* DataPresenter.m in Sources */,
-				DE8E5E68215348EF002AE872 /* DataCellPresenter.m in Sources */,
+				DED3A40B21E6F97300B479BF /* TechnologiesPresenter.m in Sources */,
+				DED3A3F421E6E64200B479BF /* OutlineViewManager.m in Sources */,
 				DE8E5E40215348EF002AE872 /* Comic.m in Sources */,
 				DE8E5E60215348EF002AE872 /* NewsCellPresenter.m in Sources */,
+				DED3A40321E6EC9A00B479BF /* TechnologyCellPresenter.m in Sources */,
 				DE8E5C8221534822002AE872 /* main.m in Sources */,
 				DE7BCDF321BA1C5900EE1B33 /* WindowMainView.m in Sources */,
 				DE8E5E5A215348EF002AE872 /* HomeViewController.m in Sources */,
+				DED3A3FB21E6EB3B00B479BF /* TechnologyCellView.m in Sources */,
+				DED3A3EF21E6E64200B479BF /* AbstractViewRow.m in Sources */,
 				DE8E5E5B215348EF002AE872 /* HomePresenter.m in Sources */,
 				DEF15EC221DDCC8400FDE038 /* NSColor+Custom.m in Sources */,
 				DEF15EBA21DDCBD400FDE038 /* AbstractPresenter.m in Sources */,
@@ -1191,10 +1376,11 @@
 				DE8E5E63215348EF002AE872 /* ComicCellView.m in Sources */,
 				DEF15EBC21DDCBD400FDE038 /* AbstractService.m in Sources */,
 				DE8E5E3A215348EF002AE872 /* AppleScript.m in Sources */,
+				DED3A3F021E6E64200B479BF /* CollectionViewManager.m in Sources */,
 				DE8E5E47215348EF002AE872 /* FilmService.m in Sources */,
 				DE8E5E43215348EF002AE872 /* FilmRepository.m in Sources */,
 				DE8E5E5F215348EF002AE872 /* CustomNSOutlineView.m in Sources */,
-				DE8E5E69215348EF002AE872 /* DataCellView.m in Sources */,
+				DED3A3F121E6E64200B479BF /* CollectionViewRow.m in Sources */,
 				DE8E5E51215348EF002AE872 /* NewsViewController.m in Sources */,
 				DE8E5E53215348EF002AE872 /* NewsPresenter.m in Sources */,
 				DEF15EB721DDCBD400FDE038 /* AbstractRepository.m in Sources */,

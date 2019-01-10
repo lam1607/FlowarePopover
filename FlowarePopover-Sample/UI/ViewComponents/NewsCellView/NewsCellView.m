@@ -8,17 +8,24 @@
 
 #import "NewsCellView.h"
 
+#import "NewsRepository.h"
+#import "NewsCellPresenter.h"
+
 #import "News.h"
 
 @interface NewsCellView ()
 
+/// IBOutlet
+///
 @property (weak) IBOutlet NSView *vContainer;
 @property (weak) IBOutlet NSImageView *imgView;
 @property (weak) IBOutlet NSTextField *lblTitle;
 @property (weak) IBOutlet NSTextField *lblContent;
 
-@property (nonatomic, strong) NewsRepository *newsRepository;
-@property (nonatomic, strong) NewsCellPresenter *newsCellPresenter;
+/// @property
+///
+@property (nonatomic, strong) NewsRepository *repository;
+@property (nonatomic, strong) NewsCellPresenter *presenter;
 
 @end
 
@@ -40,9 +47,9 @@
 #pragma mark - Initialize
 
 - (void)initialize {
-    self.newsRepository = [[NewsRepository alloc] init];
-    self.newsCellPresenter = [[NewsCellPresenter alloc] init];
-    [self.newsCellPresenter attachView:self repository:self.newsRepository];
+    self.repository = [[NewsRepository alloc] init];
+    self.presenter = [[NewsCellPresenter alloc] init];
+    [self.presenter attachView:self repository:self.repository];
 }
 
 #pragma mark - Setup UI
@@ -73,7 +80,7 @@
     }
 }
 
-#pragma mark - Processes
+#pragma mark - Public methods
 
 - (CGFloat)getCellHeight {
     CGFloat imageHeight = self.imgView.frame.size.height;
@@ -84,18 +91,24 @@
     return imageHeight + titleHeight + contentHeight + verticalMargins;
 }
 
-- (void)updateUIWithData:(News *)news {
-    [self.newsCellPresenter fetchImageFromData:news];
-    
-    self.lblTitle.stringValue = news.title;
-    self.lblContent.stringValue = news.content;
+#pragma mark - ViewRowProtocols implementation
+
+- (void)updateData:(NSObject * _Nonnull)obj atIndex:(NSInteger)index {
+    if ([obj isKindOfClass:[News class]]) {
+        News *news = (News *)obj;
+        
+        [self.presenter fetchImageFromData:news];
+        
+        self.lblTitle.stringValue = news.title;
+        self.lblContent.stringValue = news.content;
+    }
 }
 
 #pragma mark - NewsCellViewProtocols implementation
 
 - (void)updateViewImage {
-    if ([self.newsCellPresenter fetchedImage]) {
-        self.imgView.image = [self.newsCellPresenter fetchedImage];
+    if ([self.presenter fetchedImage]) {
+        self.imgView.image = [self.presenter fetchedImage];
     }
 }
 

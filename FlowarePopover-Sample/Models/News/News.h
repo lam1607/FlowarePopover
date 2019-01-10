@@ -10,8 +10,12 @@
 
 @interface News : AbstractData
 
+/// @property
+///
 @property (nonatomic, strong) NSString *content;
 
+/// Initialize
+///
 - (instancetype)initWithTitle:(NSString *)title content:(NSString *)content imageUrl:(NSString *)imageUrl pageUrl:(NSString *)pageUrl;
 
 @end

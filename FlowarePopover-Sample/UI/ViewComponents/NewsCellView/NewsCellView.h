@@ -9,15 +9,13 @@
 #import <Cocoa/Cocoa.h>
 
 #import "NewsCellViewProtocols.h"
-#import "NewsRepository.h"
-#import "NewsCellPresenter.h"
 
-@class News;
+#import "ViewRowProtocols.h"
 
-@interface NewsCellView : NSTableCellView <NewsCellViewProtocols>
+@interface NewsCellView : NSTableCellView <NewsCellViewProtocols, ViewRowProtocols>
 
+/// Methods
+///
 - (CGFloat)getCellHeight;
-
-- (void)updateUIWithData:(News *)news;
 
 @end

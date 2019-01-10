@@ -12,6 +12,8 @@
 
 @interface ComicCellView ()
 
+/// IBOutlet
+///
 @property (weak) IBOutlet NSView *vContainer;
 @property (weak) IBOutlet NSTextField *lblTitle;
 
@@ -53,10 +55,14 @@
     }
 }
 
-#pragma mark - Processes
+#pragma mark - ViewRowProtocols implementation
 
-- (void)updateUIWithData:(Comic *)comic {
-    self.lblTitle.stringValue = comic.name;
+- (void)updateData:(NSObject * _Nonnull)obj atIndex:(NSInteger)index {
+    if ([obj isKindOfClass:[Comic class]]) {
+        Comic *comic = (Comic *)obj;
+        
+        self.lblTitle.stringValue = comic.name;
+    }
 }
 
 @end

@@ -6,8 +6,6 @@
 //  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 #import "AbstractServiceProtocols.h"
 
 @interface AbstractService : NSObject <AbstractServiceProtocols>

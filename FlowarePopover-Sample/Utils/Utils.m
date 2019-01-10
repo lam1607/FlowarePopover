@@ -12,6 +12,20 @@
 
 @implementation Utils
 
+#pragma mark - Singleton
+
++ (Utils *)sharedInstance {
+    static Utils *_sharedInstance = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        _sharedInstance = [[Utils alloc] init];
+    });
+    
+    return _sharedInstance;
+}
+
+
 #pragma mark - Model object parsing
 
 + (NSArray *)propertyNamesOfClass:(Class)class {
@@ -239,6 +253,9 @@
 
 #pragma mark - Application utilities
 
++ (void)setIsApplicationActive:(BOOL)isApplicationActive {
+}
+
 + (NSString *)getAppPathWithIdentifier:(NSString *)bundleIdentifier {
     NSString *path = nil;
     NSArray *urls = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationDirectory inDomains:NSLocalDomainMask];
@@ -278,6 +295,36 @@
     }
     
     return nil;
+}
+
+#pragma mark - Window utilities
+
++ (CGWindowLevel)windowLevelDesktop {
+    return ((CGWindowLevel)WindowLevelGroupTagDesktop);
+}
+
++ (CGWindowLevel)windowLevelBase {
+    return ((CGWindowLevel)WindowLevelGroupTagBase);
+}
+
++ (CGWindowLevel)windowLevelNormal {
+    return ((CGWindowLevel)WindowLevelGroupTagNormal);
+}
+
++ (CGWindowLevel)windowLevelSetting {
+    return ((CGWindowLevel)WindowLevelGroupTagSetting);
+}
+
++ (CGWindowLevel)windowLevelUtility {
+    return ((CGWindowLevel)WindowLevelGroupTagUtility);
+}
+
++ (CGWindowLevel)windowLevelHigh {
+    return ((CGWindowLevel)WindowLevelGroupTagHigh);
+}
+
++ (CGWindowLevel)windowLevelAlert {
+    return ((CGWindowLevel)WindowLevelGroupTagAlert);
 }
 
 @end

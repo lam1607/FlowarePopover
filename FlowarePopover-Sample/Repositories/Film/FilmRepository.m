@@ -8,11 +8,14 @@
 
 #import "FilmRepository.h"
 
-#import "Film.h"
 #import "FilmService.h"
+
+#import "Film.h"
 
 @interface FilmRepository ()
 
+/// @property
+///
 @property (nonatomic, strong) FilmService *service;
 
 @end
@@ -33,10 +36,12 @@
     NSMutableArray *films = [[NSMutableArray alloc] init];
     NSArray<NSDictionary *> *filmDicts = [self.service getMockupDataType:@"films"];
     
-    [filmDicts enumerateObjectsUsingBlock:^(NSDictionary *contentDict, NSUInteger idx, BOOL *stop) {
-        Film *item = [[Film alloc] initWithContent:contentDict];
-        [films addObject:item];
-    }];
+    for (NSDictionary *contentDict in filmDicts) {
+        @autoreleasepool {
+            Film *item = [[Film alloc] initWithContent:contentDict];
+            [films addObject:item];
+        }
+    }
     
     return films;
 }

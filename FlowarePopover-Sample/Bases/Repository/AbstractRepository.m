@@ -12,6 +12,8 @@
 
 @interface AbstractRepository ()
 
+/// @property
+///
 @property (nonatomic, strong) AbstractService *service;
 
 @end

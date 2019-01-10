@@ -8,7 +8,7 @@
 
 #import "AbstractWindowController.h"
 
-#import "FLOPopoverUtils.h"
+#import "FLOPopover.h"
 
 #import "AppDelegate.h"
 
@@ -16,6 +16,8 @@
 
 @interface AbstractWindowController ()
 
+/// @property
+///
 @property (nonatomic, assign, readwrite) FLOWindowMode windowMode;
 @property (nonatomic, assign, readwrite) BOOL windowInDesktopMode;
 @property (nonatomic, assign, readwrite) NSRect windowNormalFrame;
@@ -110,7 +112,7 @@ static AbstractWindowController *_sharedInstance = nil;
     self.window.titleVisibility = NSWindowTitleHidden;
     self.window.styleMask = NSWindowStyleMaskBorderless;
     [self.window makeKeyAndOrderFront:nil];
-    self.window.level = kCGDesktopIconWindowLevel + 1;
+    self.window.level = [Utils windowLevelDesktop];
     
     [self.window setFrame:[self.window.screen visibleFrame] display:YES animate:YES];
 }
@@ -118,36 +120,81 @@ static AbstractWindowController *_sharedInstance = nil;
 - (void)changeWindowToNormalMode {
     self.window.titleVisibility = NSWindowTitleVisible;
     self.window.styleMask = (NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable);
-    self.window.level = NSNormalWindowLevel;
+    self.window.level = [Utils windowLevelBase];
     
     [self.window setFrame:self.windowNormalFrame display:YES animate:YES];
 }
 
 - (void)showChildWindowsOnActivate {
+    NSWindowLevel levelNormal = [Utils windowLevelNormal];
+    NSWindowLevel levelSetting = [Utils windowLevelSetting];
+    NSWindowLevel levelUtility = [Utils windowLevelUtility];
+    NSWindowLevel levelHigh = [Utils windowLevelHigh];
+    NSWindowLevel levelAlert = [Utils windowLevelAlert];
+    
+    NSWindowLevel windowLevel = levelNormal;
+    
     for (NSWindow *childWindow in self.window.childWindows) {
-        if (childWindow.level >= self.window.level) {
-            if (childWindow == [FLOPopoverUtils sharedInstance].topWindow) {
-                childWindow.level = NSStatusWindowLevel;
-            } else {
-                childWindow.level = NSFloatingWindowLevel;
+        windowLevel = levelNormal;
+        
+        if ([childWindow isKindOfClass:[FLOPopoverWindow class]]) {
+            switch (((FLOPopoverWindow *)childWindow).tag) {
+                case WindowLevelGroupTagSetting:
+                    windowLevel = levelSetting;
+                    break;
+                case WindowLevelGroupTagUtility:
+                    windowLevel = levelUtility;
+                    break;
+                case WindowLevelGroupTagHigh:
+                    windowLevel = levelHigh;
+                    break;
+                case WindowLevelGroupTagAlert:
+                    windowLevel = levelAlert;
+                    break;
+                default:
+                    break;
             }
         }
+        
+        childWindow.level = windowLevel;
     }
 }
 
 - (void)hideChildWindowsOnDeactivate {
-    AppDelegate *appDelegate = (AppDelegate *)[[NSApplication sharedApplication] delegate];
+    NSWindowLevel levelBase = [Utils windowLevelBase];
+    NSWindowLevel levelAlert = [Utils windowLevelAlert];
+    BOOL shouldOrderChildWindows = NO;
     
     for (NSWindow *childWindow in self.window.childWindows) {
-        if (![appDelegate isEntitlementAppFocused]) {
-            childWindow.level = self.window.level;
-        } else {
-            if (childWindow == [FLOPopoverUtils sharedInstance].topWindow) {
-                childWindow.level = NSFloatingWindowLevel;
-            } else {
-                childWindow.level = self.window.level;
-            }
+        if (childWindow.level != levelBase) {
+            shouldOrderChildWindows = YES;
+            
+            childWindow.level = levelBase;
+            
+            // **NOTE: MUST have this line to make childWindow sink.
+            // If we don't have this line the childWindow still floats on other active application,
+            // even the childWindow.level is set as levelBase (NSNormalWindowLevel)
+            [childWindow orderFront:self.window];
         }
+    }
+    
+    BOOL shouldChildWindowsFloat = [Utils sharedInstance].shouldChildWindowsFloat;
+    
+    // If we want some childWindow float on other active application.
+    if (shouldChildWindowsFloat) {
+        //        for (NSWindow *childWindow in self.window.childWindows) {
+        //            if ([childWindow isKindOfClass:[FLOPopoverWindow class]])
+        //            {
+        //                if (((FLOPopoverWindow *)childWindow).tag == WindowLevelGroupTagAlert)
+        //                {
+        //                    childWindow.level = levelAlert;
+        //                }
+        //            }
+        //        }
+    }
+    
+    // If none of childWindows floats on other active application. But we want to keep childWindow orders.
+    if ((shouldChildWindowsFloat == NO) && shouldOrderChildWindows) {
     }
 }
 

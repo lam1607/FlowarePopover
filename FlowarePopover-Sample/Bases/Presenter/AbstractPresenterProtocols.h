@@ -11,8 +11,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "AbstractRepositoryProtocols.h"
 #import "AbstractViewProtocols.h"
+#import "AbstractRepositoryProtocols.h"
 
 @class AbstractData;
 
@@ -20,14 +20,20 @@
 
 @optional
 
+/// @property
+///
 @property (nonatomic, strong) id<AbstractViewProtocols> view;
 @property (nonatomic, strong) id<AbstractRepositoryProtocols> repository;
 
+/// View attachment/detachment
+///
 - (void)attachView:(id<AbstractViewProtocols>)view;
 - (void)attachView:(id<AbstractViewProtocols>)view repository:(id<AbstractRepositoryProtocols>)repository;
 - (void)detachView;
 - (void)detachViewRepository;
 
+/// Methods
+///
 - (void)fetchData;
 - (NSArray<AbstractData *> *)data;
 - (NSImage *)fetchedImage;

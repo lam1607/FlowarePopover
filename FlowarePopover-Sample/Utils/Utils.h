@@ -11,6 +11,17 @@
 
 @interface Utils : NSObject
 
+/// @property
+///
+@property (nonatomic, assign) BOOL isApplicationActive;
+@property (nonatomic, assign) BOOL shouldChildWindowsFloat;
+
+/// Methods
+///
+#pragma mark - Singleton
+
++ (Utils *)sharedInstance;
+
 #pragma mark - Model object parsing
 
 /**
@@ -80,5 +91,15 @@
 
 + (NSString *)getAppPathWithIdentifier:(NSString *)bundleIdentifier;
 + (NSString *)getAppNameWithIdentifier:(NSString *)bundleIdentifier;
+
+#pragma mark - Window utilities
+
++ (CGWindowLevel)windowLevelDesktop;
++ (CGWindowLevel)windowLevelBase;
++ (CGWindowLevel)windowLevelNormal;
++ (CGWindowLevel)windowLevelSetting;
++ (CGWindowLevel)windowLevelUtility;
++ (CGWindowLevel)windowLevelHigh;
++ (CGWindowLevel)windowLevelAlert;
 
 @end

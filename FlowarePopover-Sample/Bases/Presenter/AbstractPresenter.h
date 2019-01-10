@@ -6,10 +6,9 @@
 //  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "AbstractPresenterProtocols.h"
 
 #import "AbstractViewProtocols.h"
-#import "AbstractPresenterProtocols.h"
 
 @protocol AbstractViewProtocols;
 

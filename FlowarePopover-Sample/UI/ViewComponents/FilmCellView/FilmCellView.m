@@ -15,12 +15,16 @@
 
 @interface FilmCellView ()
 
+/// IBOutlet
+///
 @property (weak) IBOutlet NSView *vContainer;
 @property (weak) IBOutlet NSImageView *imgView;
 @property (weak) IBOutlet NSTextField *lblName;
 
-@property (nonatomic, strong) FilmRepository *filmRepository;
-@property (nonatomic, strong) FilmCellPresenter *filmCellPresenter;
+/// @property
+///
+@property (nonatomic, strong) FilmRepository *repository;
+@property (nonatomic, strong) FilmCellPresenter *presenter;
 
 @end
 
@@ -43,9 +47,9 @@
 #pragma mark - Initialize
 
 - (void)initialize {
-    self.filmRepository = [[FilmRepository alloc] init];
-    self.filmCellPresenter = [[FilmCellPresenter alloc] init];
-    [self.filmCellPresenter attachView:self repository:self.filmRepository];
+    self.repository = [[FilmRepository alloc] init];
+    self.presenter = [[FilmCellPresenter alloc] init];
+    [self.presenter attachView:self repository:self.repository];
 }
 
 #pragma mark - Setup UI
@@ -73,7 +77,7 @@
     }
 }
 
-#pragma mark - Processes
+#pragma mark - Public methods
 
 - (CGFloat)getViewItemHeight {
     CGFloat imageHeight = self.imgView.frame.size.height;
@@ -83,17 +87,23 @@
     return imageHeight + nameHeight + verticalMargins;
 }
 
-- (void)updateUIWithData:(Film *)film {
-    [self.filmCellPresenter fetchImageFromData:film];
-    
-    self.lblName.stringValue = film.name;
+#pragma mark - ViewRowProtocols implementation
+
+- (void)updateData:(NSObject * _Nonnull)obj atIndex:(NSInteger)index {
+    if ([obj isKindOfClass:[Film class]]) {
+        Film *film = (Film *)obj;
+        
+        [self.presenter fetchImageFromData:film];
+        
+        self.lblName.stringValue = film.name;
+    }
 }
 
 #pragma mark - FilmCellViewProtocols implementation
 
 - (void)updateViewImage {
-    if ([self.filmCellPresenter fetchedImage]) {
-        self.imgView.image = [self.filmCellPresenter fetchedImage];
+    if ([self.presenter fetchedImage]) {
+        self.imgView.image = [self.presenter fetchedImage];
     }
 }
 

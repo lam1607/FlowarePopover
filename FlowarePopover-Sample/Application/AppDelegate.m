@@ -15,6 +15,7 @@
 @property (weak) IBOutlet NSWindow *window;
 
 @property (nonatomic, strong) NSMutableDictionary *entitlementAppStatuses;
+@property (nonatomic, strong) NSMutableArray<NSString *> *openedBundleIdentifiers;
 @property (nonatomic, strong) NSString *lastBundleIdentifier;
 
 @end
@@ -27,47 +28,67 @@
         self.entitlementAppStatuses = [[NSMutableDictionary alloc] init];
     }
     
-    [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidActivateApplicationNotification object:nil queue:nil usingBlock:^(NSNotification *notif) {
-        NSRunningApplication *app = [notif.userInfo objectForKey:NSWorkspaceApplicationKey];
-        
-        if (![app.bundleIdentifier isEqualToString:[[NSBundle mainBundle] bundleIdentifier]]) {
-            if ([[AbstractWindowController sharedInstance] windowInDesktopMode]) {
-                self.lastBundleIdentifier = app.bundleIdentifier;
-                
-                [[AbstractWindowController sharedInstance] hideChildWindowsOnDeactivate];
-                
-                if ([self isEntitlementAppFocused]) {
-                    [[AbstractWindowController sharedInstance] hideOtherAppsExceptThoseInside];
-                }
-            }
-        }
-    }];
+    self.openedBundleIdentifiers = [[NSMutableArray alloc] init];
+    [self.openedBundleIdentifiers addObject:[[NSBundle mainBundle] bundleIdentifier]];
+    
+    [self observerActivateApplicationNotification];
 }
 
+- (void)applicationWillBecomeActive:(NSNotification *)notification {
+    [Utils sharedInstance].isApplicationActive = YES;
+}
+
+- (void)applicationDidBecomeActive:(NSNotification *)notification {
+    if ([[AbstractWindowController sharedInstance] windowInDesktopMode]) {
+    }
+    
+    if ([[AbstractWindowController sharedInstance] windowInDesktopMode] && ![self isEntitlementAppFocused]) {
+        [[AbstractWindowController sharedInstance] hideOtherAppsExceptThoseInside];
+    }
+    
+    [[AbstractWindowController sharedInstance] activate];
+}
+
+- (void)applicationWillResignActive:(NSNotification *)notification {
+    [Utils sharedInstance].isApplicationActive = NO;
+}
+
+- (void)applicationDidResignActive:(NSNotification *)notification {
+    if ([[AbstractWindowController sharedInstance] windowInDesktopMode]) {
+    }
+}
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
 }
 
-- (void)applicationDidResignActive:(NSNotification *)notification {
-    if ([[AbstractWindowController sharedInstance] windowInDesktopMode]) {
-        [[AbstractWindowController sharedInstance] hideChildWindowsOnDeactivate];
-    }
+#pragma mark - Observers
+
+- (void)observerActivateApplicationNotification {
+    [[[NSWorkspace sharedWorkspace] notificationCenter] addObserverForName:NSWorkspaceDidActivateApplicationNotification object:nil queue:nil usingBlock:^(NSNotification *notif) {
+        NSRunningApplication *app = [notif.userInfo objectForKey:NSWorkspaceApplicationKey];
+        
+        if (![app.bundleIdentifier isEqualToString:[[NSBundle mainBundle] bundleIdentifier]]) {
+            if (![self isEntitlementAppForBundleId:app.bundleIdentifier])
+            {
+                [self.openedBundleIdentifiers removeAllObjects];
+            }
+            
+            self.lastBundleIdentifier = app.bundleIdentifier;
+            
+            [self validateChildWindowsFloating];
+            
+            [[AbstractWindowController sharedInstance] performSelectorOnMainThread:@selector(hideChildWindowsOnDeactivate) withObject:nil waitUntilDone:YES];
+        }
+        else {
+            if ([self.openedBundleIdentifiers containsObject:app.bundleIdentifier] == NO) {
+                [self.openedBundleIdentifiers addObject:app.bundleIdentifier];
+            }
+        }
+    }];
 }
 
-- (void)applicationDidBecomeActive:(NSNotification *)notification {
-    if ([[AbstractWindowController sharedInstance] windowInDesktopMode]) {
-        [[AbstractWindowController sharedInstance] showChildWindowsOnActivate];
-    }
-    
-    [[AbstractWindowController sharedInstance] activate];
-    
-    if ([[AbstractWindowController sharedInstance] windowInDesktopMode] && ![self isEntitlementAppFocused]) {
-        [[AbstractWindowController sharedInstance] hideOtherAppsExceptThoseInside];
-    }
-}
-
-#pragma mark - BundleIdentifier from entitlement apps
+#pragma mark - Entitlement apps handlers
 
 - (void)addEntitlementBundleId:(NSString *)bundleId {
     if (!bundleId.length) return;
@@ -140,6 +161,13 @@
 
 - (BOOL)isFinderAppFocused {
     return [self.lastBundleIdentifier isEqualToString:FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER];
+}
+
+- (void)validateChildWindowsFloating {
+    BOOL isApplicationOpenedFirst = [[self.openedBundleIdentifiers firstObject] isEqualToString:[[NSBundle mainBundle] bundleIdentifier]];
+    BOOL shouldChildWindowsFloat = ((self.openedBundleIdentifiers.count > 0) && [self isEntitlementAppFocused] && isApplicationOpenedFirst);
+    
+    [Utils sharedInstance].shouldChildWindowsFloat = shouldChildWindowsFloat;
 }
 
 @end

@@ -60,4 +60,18 @@ typedef NS_ENUM(NSInteger, FLOWindowMode) {
 
 #define CORNER_RADIUSES                                         @[@(5.0), @(10.0)]
 
+//--------------------------------------------------------------------------------------------------------------------------------
+//      WINDOW LEVEL GROUP TAG
+//--------------------------------------------------------------------------------------------------------------------------------
+typedef NS_ENUM(NSInteger, WindowLevelGroupTag) {
+    WindowLevelGroupTagDesktop          = kCGDesktopIconWindowLevel + 1,
+    WindowLevelGroupTagBase             = kCGNormalWindowLevel,
+    WindowLevelGroupTagNormal           = kCGNormalWindowLevel + 1,
+    WindowLevelGroupTagSetting          = kCGNormalWindowLevel + 2,
+    WindowLevelGroupTagUtility          = kCGFloatingWindowLevel,
+    WindowLevelGroupTagHigh             = kCGFloatingWindowLevel + 2,
+    WindowLevelGroupTagAlert            = kCGModalPanelWindowLevel,
+};
+//--------------------------------------------------------------------------------------------------------------------------------
+
 #endif /* Constants_h */

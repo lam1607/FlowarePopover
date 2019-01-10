@@ -10,6 +10,8 @@
 
 @interface AbstractData ()
 
+/// @property
+///
 @property (nonatomic, strong) NSMutableDictionary *imageDictionary;
 
 @end
@@ -57,7 +59,7 @@
     return self;
 }
 
-#pragma mark - Processes
+#pragma mark - Public methods
 
 - (void)setImage:(NSImage *)image forURL:(NSURL *)url {
     if (self.imageDictionary == nil) {

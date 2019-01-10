@@ -10,12 +10,12 @@
 
 #import "FilmCellViewProtocols.h"
 
-@class Film;
+#import "ViewRowProtocols.h"
 
-@interface FilmCellView : NSCollectionViewItem <FilmCellViewProtocols>
+@interface FilmCellView : NSCollectionViewItem <FilmCellViewProtocols, ViewRowProtocols>
 
+/// Methods
+///
 - (CGFloat)getViewItemHeight;
-
-- (void)updateUIWithData:(Film *)film;
 
 @end

@@ -12,6 +12,8 @@
 
 @interface AbstractPresenter ()
 
+/// @property
+///
 @property (nonatomic, strong) NSImage *image;
 
 @end

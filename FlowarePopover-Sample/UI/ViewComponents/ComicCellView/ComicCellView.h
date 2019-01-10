@@ -8,10 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class Comic;
+#import "ViewRowProtocols.h"
 
-@interface ComicCellView : NSTableCellView
-
-- (void)updateUIWithData:(Comic *)comic;
+@interface ComicCellView : NSTableCellView <ViewRowProtocols>
 
 @end

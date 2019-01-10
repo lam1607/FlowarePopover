@@ -6,8 +6,6 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 #import "AbstractRepositoryProtocols.h"
 
 @class Film;

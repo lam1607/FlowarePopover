@@ -8,11 +8,14 @@
 
 #import "NewsRepository.h"
 
-#import "News.h"
 #import "NewsService.h"
+
+#import "News.h"
 
 @interface NewsRepository ()
 
+/// @property
+///
 @property (nonatomic, strong) NewsService *service;
 
 @end
@@ -33,10 +36,12 @@
     NSMutableArray *news = [[NSMutableArray alloc] init];
     NSArray<NSDictionary *> *newsDicts = [self.service getMockupDataType:@"news"];
     
-    [newsDicts enumerateObjectsUsingBlock:^(NSDictionary *contentDict, NSUInteger idx, BOOL *stop) {
-        News *item = [[News alloc] initWithContent:contentDict];
-        [news addObject:item];
-    }];
+    for (NSDictionary *contentDict in newsDicts) {
+        @autoreleasepool {
+            News *item = [[News alloc] initWithContent:contentDict];
+            [news addObject:item];
+        }
+    }
     
     return news;
 }

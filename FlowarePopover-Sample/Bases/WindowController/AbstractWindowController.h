@@ -10,13 +10,19 @@
 
 @interface AbstractWindowController : NSWindowController
 
+/// @property
+///
 @property (nonatomic, assign, readonly) FLOWindowMode windowMode;
 @property (nonatomic, assign, readonly) BOOL windowInDesktopMode;
 @property (nonatomic, assign, readonly) NSRect windowNormalFrame;
 @property (nonatomic, assign, readonly) CGFloat windowTitleBarHeight;
 
+/// Singleton
+///
 + (AbstractWindowController *)sharedInstance;
 
+/// Methods
+///
 - (void)setWindowMode;
 - (void)setWindowTitleBarHeight;
 

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="NewsViewController">
+            <connections>
+                <outlet property="scrollView" destination="7lu-CP-cFj" id="XGv-Bq-TtC"/>
+                <outlet property="tableView" destination="ZTi-NY-wyo" id="5r8-fW-kHM"/>
+                <outlet property="vHeader" destination="t8x-eC-8DK" id="EBj-9H-Ghh"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="t8x-eC-8DK" userLabel="View Header">
+                    <rect key="frame" x="0.0" y="585" width="800" height="15"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="95B-Nx-VEt"/>
+                    </constraints>
+                </customView>
+                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7lu-CP-cFj">
+                    <rect key="frame" x="0.0" y="0.0" width="800" height="585"/>
+                    <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="uBY-Zc-afI">
+                        <rect key="frame" x="0.0" y="0.0" width="800" height="585"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" id="ZTi-NY-wyo">
+                                <rect key="frame" x="0.0" y="0.0" width="800" height="585"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <size key="intercellSpacing" width="3" height="2"/>
+                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                <tableColumns>
+                                    <tableColumn identifier="NewsCellViewColumn" width="797" minWidth="40" maxWidth="1000" id="9or-cM-Yh7">
+                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
+                                            <font key="font" metaFont="smallSystem"/>
+                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                        </tableHeaderCell>
+                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="o6N-8a-fMj">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                    </tableColumn>
+                                </tableColumns>
+                            </tableView>
+                        </subviews>
+                        <nil key="backgroundColor"/>
+                    </clipView>
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="NgB-Nb-RmQ">
+                        <rect key="frame" x="1" y="119" width="223" height="15"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="nzk-EZ-2lj">
+                        <rect key="frame" x="224" y="17" width="15" height="102"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                </scrollView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="7lu-CP-cFj" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="0fo-a2-EwA"/>
+                <constraint firstAttribute="bottom" secondItem="7lu-CP-cFj" secondAttribute="bottom" id="4SY-Zp-lVO"/>
+                <constraint firstAttribute="trailing" secondItem="t8x-eC-8DK" secondAttribute="trailing" id="ALy-wp-SJz"/>
+                <constraint firstAttribute="trailing" secondItem="7lu-CP-cFj" secondAttribute="trailing" id="Bia-eB-e3m"/>
+                <constraint firstItem="t8x-eC-8DK" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="Det-VI-ASn"/>
+                <constraint firstItem="7lu-CP-cFj" firstAttribute="top" secondItem="t8x-eC-8DK" secondAttribute="bottom" id="VoO-ad-loC"/>
+                <constraint firstItem="t8x-eC-8DK" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="gsO-EY-wJA"/>
+            </constraints>
+        </customView>
+    </objects>
+</document>
