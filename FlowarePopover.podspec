@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "FlowarePopover"
-  s.version      = "0.1.33"
+  s.version      = "0.1.34"
   s.summary      = "The custom popover using to display the popup."
 
   # This description is used to generate tags and improve search results.
