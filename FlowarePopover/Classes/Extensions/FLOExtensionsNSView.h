@@ -19,8 +19,8 @@
 
 #pragma mark - Utilities
 
-- (void)animatedDisplayWillBeginAtPoint:(NSPoint)beginPoint endedAtPoint:(NSPoint)endedPoint handler:(void(^)(void))handler;
-- (void)animatedCloseWillBeginAtPoint:(NSPoint)beginPoint endedAtPoint:(NSPoint)endedPoint handler:(void(^)(void))handler;
+- (void)displayAnimatedWillBeginAtPoint:(NSPoint)beginPoint endAtPoint:(NSPoint)endedPoint handler:(void(^)(void))handler;
+- (void)closeAnimatedWillBeginAtPoint:(NSPoint)beginPoint endAtPoint:(NSPoint)endedPoint handler:(void(^)(void))handler;
 
 - (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame;
 - (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame source:(id)source;

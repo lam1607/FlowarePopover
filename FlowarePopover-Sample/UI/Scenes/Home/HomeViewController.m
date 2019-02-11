@@ -360,20 +360,24 @@
         CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
         CGFloat verticalMargin = 10.0;
         CGFloat contentViewWidth = 350.0;
+        CGFloat minHeight = 429.0;
         CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
         CGFloat contentHeight = [self.comicsViewController getContentSizeHeight];
-        CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : contentHeight;
+        CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : ((contentHeight >= minHeight) ? contentHeight : minHeight);
         NSRect contentViewRect = NSMakeRect(0.0, 0.0, contentViewWidth, contentViewHeight);
         
         if (self.popoverComics == nil) {
             self.comicsViewController = [[ComicsViewController alloc] initWithNibName:NSStringFromClass([ComicsViewController class]) bundle:nil];
-            self.popoverComics = [[FLOPopover alloc] initWithContentViewController:self.comicsViewController];
+            [self.comicsViewController.view setFrame:contentViewRect];
+            self.popoverComics = [[FLOPopover alloc] initWithContentViewController:self.comicsViewController type:FLOViewPopover];
         }
         
         self.popoverComics.alwaysOnTop = YES;
         //        self.popoverComics.shouldShowArrow = YES;
         self.popoverComics.animated = YES;
         //        self.popoverComics.animatedForwarding = YES;
+        self.popoverComics.animatedByMovingFrame = YES;
+        self.popoverComics.animatedByMovingFrame = YES;
         self.popoverComics.shouldChangeSizeWhenApplicationResizes = NO;
         //        self.popoverComics.closesWhenPopoverResignsKey = YES;
         //        self.popoverComics.closesWhenApplicationBecomesInactive = YES;
@@ -477,7 +481,7 @@
 }
 
 - (void)viewShouldOpenComicsView {
-    [self showComicsPopupAtView:self.btnOpenComics option:0];
+    [self showComicsPopupAtView:self.btnOpenComics option:1];
 }
 
 - (void)viewShouldShowSecondBar {

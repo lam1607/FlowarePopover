@@ -134,8 +134,8 @@ static CALayer *subLayer;
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
     
     [CATransaction setCompletionBlock:^{
-        
         [subLayer removeFromSuperlayer];
+        
         subLayer = nil;
     }];
     
@@ -152,10 +152,10 @@ static CALayer *subLayer;
     [CATransaction setDisableActions:YES];
     [CATransaction commit];
     
-    CAAnimation  *animator;
-    if(axis == axis_x) {
+    CAAnimation *animator;
+    if (axis == axis_x) {
         animator = [CABasicAnimation transformAxisXAnimationWithDuration:duration forLayerBeginningOnTop:YES scaleFactor:1.0 fromTransX:startPoint toTransX:endPoint fromOpacity:0.0 toOpacity:1.0];
-    } else if(axis == axis_y) {
+    } else if (axis == axis_y) {
         animator = [CABasicAnimation transformAxisYAnimationWithDuration:duration forLayerBeginningOnTop:YES scaleFactor:1.0 fromTransY:startPoint toTransY:endPoint fromOpacity:0.0 toOpacity:1.0];
     }
     
@@ -178,17 +178,18 @@ static CALayer *subLayer;
     [CATransaction setDisableActions:YES];
     [CATransaction commit];
     
-    CABasicAnimation* positionAnim;
+    CABasicAnimation *positionAnim;
     
     if (axis == axis_x) {
         positionAnim = [CABasicAnimation animationWithKeyPath:@"position"];
         positionAnim.fromValue = [NSValue valueWithPoint:startPoint];
         positionAnim.toValue = [NSValue valueWithPoint:endPoint];
-    } else if(axis == axis_y) {
+    } else if (axis == axis_y) {
         positionAnim = [CABasicAnimation animationWithKeyPath:@"position"];
         positionAnim.fromValue = [NSValue valueWithPoint:startPoint];
         positionAnim.toValue = [NSValue valueWithPoint:endPoint];
     }
+    
     [CATransaction begin];
     [CATransaction setAnimationDuration:duration];
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
@@ -203,54 +204,91 @@ static CALayer *subLayer;
 
 #pragma mark - Utilities
 
-- (void)animatedDisplayWillBeginAtPoint:(NSPoint)beginPoint endedAtPoint:(NSPoint)endedPoint handler:(void(^)(void))handler {
+- (void)displayAnimatedWillBeginAtPoint:(NSPoint)beginPoint endAtPoint:(NSPoint)endedPoint handler:(void(^)(void))handler {
+    [self setWantsLayer:YES];
     [self.layer removeAllAnimations];
-    // along x-axis / this is
-    CABasicAnimation *animationx = [CABasicAnimation animationWithKeyPath:nil];
     
-    animationx.toValue = [NSValue valueWithPoint:endedPoint];
-    animationx.fromValue = [NSValue valueWithPoint:beginPoint];
+    CABasicAnimation *transitionAnimation = [CABasicAnimation animationWithKeyPath:nil];
+    transitionAnimation.fillMode = kCAFillModeForwards;
+    transitionAnimation.removedOnCompletion = NO;
     
-    CABasicAnimation *topOpacity = [CABasicAnimation animationWithKeyPath:nil];
-    topOpacity.fromValue = @(0.0);
-    topOpacity.toValue = @(1);
+    if (beginPoint.y != endedPoint.y) {
+        transitionAnimation.byValue = @(endedPoint.y - beginPoint.y);
+    } else {
+        transitionAnimation.fromValue = [NSValue valueWithPoint:beginPoint];
+        transitionAnimation.toValue = [NSValue valueWithPoint:endedPoint];
+    }
+    
+    CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:nil];
+    opacityAnimation.fillMode = kCAFillModeForwards;
+    opacityAnimation.removedOnCompletion = NO;
+    opacityAnimation.fromValue = @(0.0);
+    opacityAnimation.toValue = @(1.0);
     
     [CATransaction begin];
-    [CATransaction setAnimationDuration:0.3];
-    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
+    [CATransaction setAnimationDuration:FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
     [CATransaction setCompletionBlock:^{
-        if(handler != nil) {
+        [self.layer removeAllAnimations];
+        
+        if (handler != nil) {
             handler();
         }
     }];
     
-    [self.layer addAnimation:animationx forKey:@"position.x"];
-    [self.layer addAnimation:topOpacity forKey:@"opacity"];
+    if (beginPoint.x != endedPoint.x) {
+        [self.layer addAnimation:transitionAnimation forKey:@"position.x"];
+    } else if (beginPoint.y != endedPoint.y) {
+        [self.layer addAnimation:transitionAnimation forKey:@"position.y"];
+    } else {
+        [self.layer addAnimation:transitionAnimation forKey:@"position"];
+    }
+    
+    [self.layer addAnimation:opacityAnimation forKey:@"opacity"];
     [CATransaction commit];
 }
 
-- (void)animatedCloseWillBeginAtPoint:(NSPoint)beginPoint endedAtPoint:(NSPoint)endedPoint handler:(void(^)(void))handler {
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:nil];
-    CABasicAnimation *opacityAnim = [CABasicAnimation animationWithKeyPath:nil];
-    opacityAnim.fromValue = @(0.5);
-    opacityAnim.toValue = @(0.0);
+- (void)closeAnimatedWillBeginAtPoint:(NSPoint)beginPoint endAtPoint:(NSPoint)endedPoint handler:(void(^)(void))handler {
+    CABasicAnimation *transitionAnimation = [CABasicAnimation animationWithKeyPath:nil];
+    transitionAnimation.fillMode = kCAFillModeForwards;
+    transitionAnimation.removedOnCompletion = NO;
     
-    animation.toValue = [NSValue valueWithPoint:endedPoint];
-    animation.fromValue = [NSValue valueWithPoint:beginPoint];
+    if (beginPoint.y != endedPoint.y) {
+        transitionAnimation.byValue = @(endedPoint.y - beginPoint.y);
+    } else {
+        transitionAnimation.fromValue = [NSValue valueWithPoint:beginPoint];
+        transitionAnimation.toValue = [NSValue valueWithPoint:endedPoint];
+    }
+    
+    CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:nil];
+    opacityAnimation.fillMode = kCAFillModeForwards;
+    opacityAnimation.removedOnCompletion = NO;
+    opacityAnimation.fromValue = @(1.0);
+    opacityAnimation.toValue = @(0.0);
     
     self.alphaValue = 0.0;
+    
     [CATransaction begin];
-    [CATransaction setAnimationDuration:0.3];
-    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
+    [CATransaction setAnimationDuration:FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
     [CATransaction setCompletionBlock:^{
         self.alphaValue = 1.0;
-        [self .layer removeAllAnimations];
-        if(handler != nil) {
+        [self.layer removeAllAnimations];
+        
+        if (handler != nil) {
             handler();
         }
     }];
-    [self.layer addAnimation:opacityAnim forKey:@"opacity"];
-    [self.layer addAnimation:animation forKey:@"position.x"];
+    
+    if (beginPoint.x != endedPoint.x) {
+        [self.layer addAnimation:transitionAnimation forKey:@"position.x"];
+    } else if (beginPoint.y != endedPoint.y) {
+        [self.layer addAnimation:transitionAnimation forKey:@"position.y"];
+    } else {
+        [self.layer addAnimation:transitionAnimation forKey:@"position"];
+    }
+    
+    [self.layer addAnimation:opacityAnimation forKey:@"opacity"];
     [CATransaction commit];
 }
 

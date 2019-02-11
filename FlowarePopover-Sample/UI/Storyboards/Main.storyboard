@@ -712,7 +712,7 @@
                         <subviews>
                             <imageView horizontalCompressionResistancePriority="249" verticalCompressionResistancePriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="Y8i-ib-bNN">
                                 <rect key="frame" x="0.0" y="0.0" width="2800" height="1800"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="Beijing Sunrise" id="5ox-hz-Opb"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="Route 66" id="5ox-hz-Opb"/>
                             </imageView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="WeF-sb-hLO" userLabel="Menu View">
                                 <rect key="frame" x="0.0" y="1750" width="2800" height="50"/>
@@ -939,7 +939,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Beijing Sunrise" width="2800" height="1800"/>
+        <image name="Route 66" width="2800" height="1800"/>
         <image name="ic_finder" width="27" height="24"/>
         <image name="ic_safari" width="29" height="28"/>
         <image name="ic_switch_mode" width="30" height="30"/>

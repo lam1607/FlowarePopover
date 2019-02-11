@@ -136,6 +136,12 @@
     return _shown;
 }
 
+- (void)setStaysInApplicationRect:(BOOL)staysInApplicationRect {
+    _staysInApplicationRect = staysInApplicationRect;
+    
+    self.utils.staysInApplicationRect = staysInApplicationRect;
+}
+
 - (void)setTag:(NSInteger)tag {
     _tag = tag;
     
@@ -479,8 +485,6 @@
     self.utils.contentView.frame = contentViewFrame;
     
     if (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) {
-        self.staysInApplicationRect = YES;
-        self.utils.staysInApplicationRect = YES;
         self.utils.animationBehaviour = FLOPopoverAnimationBehaviorDefault;
         self.utils.animationType = FLOPopoverAnimationDefault;
     }
@@ -807,22 +811,36 @@
 }
 
 - (void)popoverTransitionAnimationFrameShowing:(BOOL)showing {
-    if (self.utils.animationBehaviour == FLOPopoverAnimationBehaviorTransition) {
-        NSRect fromFrame = self.popoverView.frame;
-        NSRect toFrame = fromFrame;
+    if (self.animatedByMovingFrame && (self.utils.animationBehaviour == FLOPopoverAnimationBehaviorTransition)) {
+        __block NSRect frame = self.popoverView.frame;
+        NSRect fromFrame = frame;
+        NSRect toFrame = frame;
         
         [self.utils.backgroundView setAlphaValue:1.0];
         [self.utils.contentView setAlphaValue:1.0];
         
         [self.utils calculateFromFrame:&fromFrame toFrame:&toFrame animationType:self.utils.animationType forwarding:self.animatedForwarding showing:showing];
         
-        NSTimeInterval duration = FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD;
+        NSPoint beginPoint = fromFrame.origin;
+        NSPoint endedPoint = toFrame.origin;
         
-        if (self.animationDuration > 0) {
-            duration = self.animationDuration;
+        [self.popoverView setFrame:fromFrame];
+        
+        void(^animationDidStop)(void) = ^{
+            [self.popoverView setFrame:frame];
+            
+            [self popoverDidStopAnimation];
+        };
+        
+        if (showing) {
+            [self.popoverView displayAnimatedWillBeginAtPoint:beginPoint endAtPoint:endedPoint handler:^{
+                animationDidStop();
+            }];
+        } else {
+            [self.popoverView closeAnimatedWillBeginAtPoint:beginPoint endAtPoint:endedPoint handler:^{
+                animationDidStop();
+            }];
         }
-        
-        [self.popoverView showingAnimated:showing fromFrame:fromFrame toFrame:toFrame duration:duration source:self];
     }
 }
 

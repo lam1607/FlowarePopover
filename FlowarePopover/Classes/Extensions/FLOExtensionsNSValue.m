@@ -10,41 +10,41 @@
 
 @implementation NSValue (FLOExtensionsNSValue)
 
-- (CGRect)flo_rectValue {
+- (CGRect)floRectValue {
     return [self rectValue];
 }
 
-- (CGSize)flo_sizeValue {
+- (CGSize)floSizeValue {
     return [self sizeValue];
 }
 
-- (CGPoint)flo_pointValue {
+- (CGPoint)floPointValue {
     return [self pointValue];
 }
 
-- (CGAffineTransform)flo_affineTransformValue {
+- (CGAffineTransform)floAffineTransformValue {
     CGAffineTransform transform;
     [self getValue:&transform];
     return transform;
 }
 
-+ (NSValue *)flo_valueWithRect:(CGRect)rect {
++ (NSValue *)floValueWithRect:(CGRect)rect {
     return [self valueWithRect:rect];
 }
 
-+ (NSValue *)flo_valueWithPoint:(CGPoint)point {
++ (NSValue *)floValueWithPoint:(CGPoint)point {
     return [self valueWithPoint:point];
 }
 
-+ (NSValue *)flo_valueWithSize:(CGSize)size {
++ (NSValue *)floValueWithSize:(CGSize)size {
     return [self valueWithSize:size];
 }
 
-+ (NSValue *)flo_valueWithAffineTransform:(CGAffineTransform)transform {
++ (NSValue *)floValueWithAffineTransform:(CGAffineTransform)transform {
     return [NSValue valueWithBytes:&transform objCType:@encode(CGAffineTransform)];
 }
 
-- (FLOValueType)flo_type {
+- (FLOValueType)floType {
     const char *type = self.objCType;
     
     static const NSInteger numberofNumberTypes = 10;

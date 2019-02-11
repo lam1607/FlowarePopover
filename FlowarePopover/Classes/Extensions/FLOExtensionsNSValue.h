@@ -21,16 +21,16 @@ typedef NS_ENUM(NSInteger, FLOValueType) {
 
 @interface NSValue (FLOExtensionsNSValue)
 
-- (CGRect)flo_rectValue;
-- (CGSize)flo_sizeValue;
-- (CGPoint)flo_pointValue;
-- (CGAffineTransform)flo_affineTransformValue;
+- (CGRect)floRectValue;
+- (CGSize)floSizeValue;
+- (CGPoint)floPointValue;
+- (CGAffineTransform)floAffineTransformValue;
 
-+ (NSValue *)flo_valueWithRect:(CGRect)rect;
-+ (NSValue *)flo_valueWithSize:(CGSize)size;
-+ (NSValue *)flo_valueWithPoint:(CGPoint)point;
-+ (NSValue *)flo_valueWithAffineTransform:(CGAffineTransform)transform;
++ (NSValue *)floValueWithRect:(CGRect)rect;
++ (NSValue *)floValueWithSize:(CGSize)size;
++ (NSValue *)floValueWithPoint:(CGPoint)point;
++ (NSValue *)floValueWithAffineTransform:(CGAffineTransform)transform;
 
-- (FLOValueType)flo_type;
+- (FLOValueType)floType;
 
 @end

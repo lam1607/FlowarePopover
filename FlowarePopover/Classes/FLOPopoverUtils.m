@@ -51,6 +51,7 @@
             _appMainWindow = [[[NSApplication sharedApplication] windows] firstObject];
         }
         
+        _staysInApplicationRect = NO;
         _animatedInApplicationRect = NO;
         _popoverMoved = NO;
         _animationBehaviour = FLOPopoverAnimationBehaviorDefault;
@@ -797,7 +798,7 @@
 #pragma mark - Saving edge utilities
 
 - (NSRect)_popoverRectForEdge:(NSRectEdge *)popoverEdge {
-    NSRect applicationRect = [FLOPopoverUtils sharedInstance].appMainWindow.frame;
+    NSRect visibleRect = self.staysInApplicationRect ? [FLOPopoverUtils sharedInstance].appMainWindow.frame : [FLOPopoverUtils sharedInstance].appMainWindow.screen.frame;
     NSRect windowRelativeRect = [self.positioningAnchorView convertRect:[self.positioningAnchorView alignmentRectForFrame:self.positioningRect] toView:nil];
     NSRect positionOnScreenRect = [self.positioningAnchorView.window convertRectToScreen:windowRelativeRect];
     
@@ -826,7 +827,7 @@
         returnRect.origin.x = x0 + floor((x1 - x0) * anchorPoint.x);
         returnRect.origin.y = NSMinY(positionOnScreenRect) - popoverSize.height;
         
-        if (NSMaxY(returnRect) < NSMinY(applicationRect)) {
+        if (NSMaxY(returnRect) < NSMinY(visibleRect)) {
             *popoverEdge = NSRectEdgeMaxY;
             
             return [self _popoverRectForEdge:popoverEdge];
@@ -838,7 +839,7 @@
         returnRect.origin.x = x0 + floor((x1 - x0) * anchorPoint.x);
         returnRect.origin.y = NSMaxY(positionOnScreenRect);
         
-        if (NSMinY(returnRect) > NSMaxY(applicationRect)) {
+        if (NSMinY(returnRect) > NSMaxY(visibleRect)) {
             *popoverEdge = NSRectEdgeMinY;
             
             return [self _popoverRectForEdge:popoverEdge];
@@ -850,7 +851,7 @@
         returnRect.origin.x = NSMinX(positionOnScreenRect) - popoverSize.width;
         returnRect.origin.y = y0 + floor((y1 - y0) * anchorPoint.y);
         
-        if (NSMaxX(returnRect) < NSMinX(applicationRect)) {
+        if (NSMaxX(returnRect) < NSMinX(visibleRect)) {
             *popoverEdge = NSRectEdgeMaxX;
             
             return [self _popoverRectForEdge:popoverEdge];
@@ -862,7 +863,7 @@
         returnRect.origin.x = NSMaxX(positionOnScreenRect);
         returnRect.origin.y = y0 + floor((y1 - y0) * anchorPoint.y);
         
-        if (NSMinX(returnRect) > NSMaxX(applicationRect)) {
+        if (NSMinX(returnRect) > NSMaxX(visibleRect)) {
             *popoverEdge = NSRectEdgeMinX;
             
             return [self _popoverRectForEdge:popoverEdge];
@@ -875,10 +876,10 @@
 }
 
 - (BOOL)_checkPopoverRectWithEdge:(NSRectEdge *)popoverEdge {
-    NSRect applicationRect = [FLOPopoverUtils sharedInstance].appMainWindow.frame;
+    NSRect visibleRect = self.staysInApplicationRect ? [FLOPopoverUtils sharedInstance].appMainWindow.frame : [FLOPopoverUtils sharedInstance].appMainWindow.screen.frame;
     NSRect popoverRect = [self _popoverRectForEdge:popoverEdge];
     
-    return NSContainsRect(applicationRect, popoverRect);
+    return NSContainsRect(visibleRect, popoverRect);
 }
 
 - (NSRectEdge)_nextEdgeForEdge:(NSRectEdge)currentEdge {
@@ -896,22 +897,22 @@
 }
 
 - (NSRect)_fitRectToScreen:(NSRect)proposedRect {
-    NSRect applicationRect = [FLOPopoverUtils sharedInstance].appMainWindow.frame;
+    NSRect visibleRect = self.staysInApplicationRect ? [FLOPopoverUtils sharedInstance].appMainWindow.frame : [FLOPopoverUtils sharedInstance].appMainWindow.screen.frame;
     
-    if (proposedRect.origin.y < NSMinY(applicationRect)) {
-        proposedRect.origin.y = NSMinY(applicationRect);
+    if (proposedRect.origin.y < NSMinY(visibleRect)) {
+        proposedRect.origin.y = NSMinY(visibleRect);
     }
     
-    if (proposedRect.origin.x < NSMinX(applicationRect)) {
-        proposedRect.origin.x = NSMinX(applicationRect);
+    if (proposedRect.origin.x < NSMinX(visibleRect)) {
+        proposedRect.origin.x = NSMinX(visibleRect);
     }
     
-    if (NSMaxY(proposedRect) > NSMaxY(applicationRect)) {
-        proposedRect.origin.y = NSMaxY(applicationRect) - NSHeight(proposedRect);
+    if (NSMaxY(proposedRect) > NSMaxY(visibleRect)) {
+        proposedRect.origin.y = NSMaxY(visibleRect) - NSHeight(proposedRect);
     }
     
-    if (NSMaxX(proposedRect) > NSMaxX(applicationRect)) {
-        proposedRect.origin.x = NSMaxX(applicationRect) - NSWidth(proposedRect);
+    if (NSMaxX(proposedRect) > NSMaxX(visibleRect)) {
+        proposedRect.origin.x = NSMaxX(visibleRect) - NSWidth(proposedRect);
     }
     
     return proposedRect;
@@ -919,12 +920,12 @@
 
 - (BOOL)_screenRectContainsRectEdge:(NSRectEdge)edge {
     NSRect proposedRect = [self _popoverRectForEdge:&edge];
-    NSRect applicationRect = [FLOPopoverUtils sharedInstance].appMainWindow.frame;
+    NSRect visibleRect = self.staysInApplicationRect ? [FLOPopoverUtils sharedInstance].appMainWindow.frame : [FLOPopoverUtils sharedInstance].appMainWindow.screen.frame;
     
-    BOOL minYInBounds = (edge == NSRectEdgeMinY) && (NSMinY(proposedRect) >= NSMinY(applicationRect));
-    BOOL maxYInBounds = (edge == NSRectEdgeMaxY) && (NSMaxY(proposedRect) <= NSMaxY(applicationRect));
-    BOOL minXInBounds = (edge == NSRectEdgeMinX) && (NSMinX(proposedRect) >= NSMinX(applicationRect));
-    BOOL maxXInBounds = (edge == NSRectEdgeMaxX) && (NSMaxX(proposedRect) <= NSMaxX(applicationRect));
+    BOOL minYInBounds = (edge == NSRectEdgeMinY) && (NSMinY(proposedRect) >= NSMinY(visibleRect));
+    BOOL maxYInBounds = (edge == NSRectEdgeMaxY) && (NSMaxY(proposedRect) <= NSMaxY(visibleRect));
+    BOOL minXInBounds = (edge == NSRectEdgeMinX) && (NSMinX(proposedRect) >= NSMinX(visibleRect));
+    BOOL maxXInBounds = (edge == NSRectEdgeMaxX) && (NSMaxX(proposedRect) <= NSMaxX(visibleRect));
     
     return minYInBounds || maxYInBounds || minXInBounds || maxXInBounds;
 }

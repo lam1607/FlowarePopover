@@ -138,6 +138,12 @@
     return self.popoverWindow.isVisible;
 }
 
+- (void)setStaysInApplicationRect:(BOOL)staysInApplicationRect {
+    _staysInApplicationRect = staysInApplicationRect;
+    
+    self.utils.staysInApplicationRect = staysInApplicationRect;
+}
+
 - (void)setTag:(NSInteger)tag {
     _tag = tag;
     
@@ -497,8 +503,6 @@
     self.utils.contentView.frame = contentViewFrame;
     
     if (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) {
-        self.staysInApplicationRect = YES;
-        self.utils.staysInApplicationRect = YES;
         self.utils.animationBehaviour = FLOPopoverAnimationBehaviorDefault;
         self.utils.animationType = FLOPopoverAnimationDefault;
     }
@@ -837,31 +841,50 @@
 }
 
 - (void)popoverTransitionAnimationFrameShowing:(BOOL)showing {
-    if (self.utils.animationBehaviour == FLOPopoverAnimationBehaviorTransition) {
-        NSRect fromFrame = self.popoverWindow.frame;
-        NSRect toFrame = fromFrame;
-        
-        self.popoverWindow.hasShadow = YES;
-        [self.utils.backgroundView setAlphaValue:1.0];
-        [self.utils.contentView setAlphaValue:1.0];
+    if (self.animatedByMovingFrame && (self.utils.animationBehaviour == FLOPopoverAnimationBehaviorTransition)) {
+        __block NSRect frame = self.popoverWindow.frame;
+        NSRect fromFrame = frame;
+        NSRect toFrame = frame;
         
         [self.utils calculateFromFrame:&fromFrame toFrame:&toFrame animationType:self.utils.animationType forwarding:self.animatedForwarding showing:showing];
         
-        if ((self.utils.popoverMoved == NO) && self.utils.animatedInApplicationRect) {
-            if (showing) {
-                fromFrame = NSIntersectionRect(self.utils.appMainWindow.frame, fromFrame);
-            } else {
-                toFrame = NSIntersectionRect(self.utils.appMainWindow.frame, toFrame);
-            }
+        NSRect transitionFrame = frame;
+        
+        [self.utils calculateTransitionFrame:&transitionFrame fromFrame:fromFrame toFrame:toFrame animationType:self.utils.animationType forwarding:self.animatedForwarding showing:showing];
+        
+        self.popoverWindow.hasShadow = NO;
+        [self.popoverWindow setAlphaValue:1.0];
+        
+        [self.popoverWindow setFrame:transitionFrame display:YES];
+        
+        if ((self.utils.popoverMoved == NO) && self.utils.animatedInApplicationRect && (NSContainsRect(self.utils.appMainWindow.frame, transitionFrame) == NO)) {
+            NSRect intersectionRect = NSIntersectionRect(self.utils.appMainWindow.frame, transitionFrame);
+            [self.popoverWindow setFrame:intersectionRect display:YES];
         }
         
-        NSTimeInterval duration = FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD;
+        NSRect beginFrame = [self.popoverWindow convertRectFromScreen:fromFrame];
+        NSRect endFrame = [self.popoverWindow convertRectFromScreen:toFrame];
+        NSPoint beginPoint = beginFrame.origin;
+        NSPoint endedPoint = endFrame.origin;
         
-        if (self.animationDuration > 0) {
-            duration = self.animationDuration;
+        [self.popoverWindow.contentView setWantsLayer:YES];
+        [self.popoverWindow.contentView.layer setFrame:beginFrame];
+        
+        void(^animationDidStop)(void) = ^{
+            [self.popoverWindow setFrame:frame display:YES];
+            
+            [self popoverDidStopAnimation];
+        };
+        
+        if (showing) {
+            [self.popoverWindow.contentView displayAnimatedWillBeginAtPoint:beginPoint endAtPoint:endedPoint handler:^{
+                animationDidStop();
+            }];
+        } else {
+            [self.popoverWindow.contentView closeAnimatedWillBeginAtPoint:beginPoint endAtPoint:endedPoint handler:^{
+                animationDidStop();
+            }];
         }
-        
-        [self.popoverWindow showingAnimated:showing fromFrame:fromFrame toFrame:toFrame duration:duration source:self];
     }
 }
 

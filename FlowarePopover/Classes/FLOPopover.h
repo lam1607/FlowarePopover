@@ -66,6 +66,11 @@
 @property (nonatomic, assign) BOOL shouldShowArrow;
 @property (nonatomic, assign) BOOL animated;
 @property (nonatomic, assign) BOOL animatedForwarding;
+
+/**
+ * Determine whether the popover should stay in application frame or screen frame.
+ * Default value of staysInApplicationRect is NO, it means that the popover will stay inside the screen frame.
+ */
 @property (nonatomic, assign) BOOL staysInApplicationRect;
 @property (nonatomic, assign) BOOL updatesFrameWhileShowing;
 @property (nonatomic, assign) BOOL shouldRegisterSuperviewObservers;

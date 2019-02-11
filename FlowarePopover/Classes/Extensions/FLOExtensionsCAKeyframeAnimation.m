@@ -115,8 +115,8 @@ static const CGFloat FLOAnimationMinimumThreshold = 0.0001;
 - (void)calculateInterpolatedValues {
     NSAssert(self.fromValue != nil && self.toValue != nil, @"fromValue and or toValue must not be nil.");
     
-    FLOValueType fromType = [self.fromValue flo_type];
-    __unused FLOValueType toType = [self.toValue flo_type];
+    FLOValueType fromType = [self.fromValue floType];
+    __unused FLOValueType toType = [self.toValue floType];
     NSArray *values = nil;
     
     if (fromType == FLOValueTypeNumber) {
@@ -124,32 +124,32 @@ static const CGFloat FLOAnimationMinimumThreshold = 0.0001;
             return @(values[0]);
         }];
     } else if (fromType == FLOValueTypePoint) {
-        CGPoint f = [self.fromValue flo_pointValue];
-        CGPoint t = [self.toValue flo_pointValue];
+        CGPoint f = [self.fromValue floPointValue];
+        CGPoint t = [self.toValue floPointValue];
         values = [self valuesFromNumbers:@[@(f.x), @(f.y)]
                                toNumbers:@[@(t.x), @(t.y)]
                                      map:^id(CGFloat *values, NSUInteger count) {
-                                         return [NSValue flo_valueWithPoint:NSMakePoint(values[0], values[1])];
+                                         return [NSValue floValueWithPoint:NSMakePoint(values[0], values[1])];
                                      }];
     } else if (fromType == FLOValueTypeSize) {
-        CGSize f = [self.fromValue flo_sizeValue];
-        CGSize t = [self.toValue flo_sizeValue];
+        CGSize f = [self.fromValue floSizeValue];
+        CGSize t = [self.toValue floSizeValue];
         values = [self valuesFromNumbers:@[@(f.width), @(f.height)]
                                toNumbers:@[@(t.width), @(t.height)]
                                      map:^id(CGFloat *values, NSUInteger count) {
-                                         return [NSValue flo_valueWithSize:CGSizeMake(values[0], values[1])];
+                                         return [NSValue floValueWithSize:CGSizeMake(values[0], values[1])];
                                      }];
     } else if (fromType == FLOValueTypeRect) { // note that CA will not animate the `frame` property
-        CGRect f = [self.fromValue flo_rectValue];
-        CGRect t = [self.toValue flo_rectValue];
+        CGRect f = [self.fromValue floRectValue];
+        CGRect t = [self.toValue floRectValue];
         values = [self valuesFromNumbers:@[@(f.origin.x), @(f.origin.y), @(f.size.width), @(f.size.height)]
                                toNumbers:@[@(t.origin.x), @(t.origin.y), @(t.size.width), @(t.size.height)]
                                      map:^id(CGFloat *values, NSUInteger count) {
-                                         return [NSValue flo_valueWithRect:CGRectMake(values[0], values[1], values[2], values[3])];
+                                         return [NSValue floValueWithRect:CGRectMake(values[0], values[1], values[2], values[3])];
                                      }];
     } else if (fromType == FLOValueTypeAffineTransform) {
-        CGAffineTransform f = [self.fromValue flo_affineTransformValue];
-        CGAffineTransform t = [self.toValue flo_affineTransformValue];
+        CGAffineTransform f = [self.fromValue floAffineTransformValue];
+        CGAffineTransform t = [self.toValue floAffineTransformValue];
         
         values = [self valuesFromNumbers:@[@(f.a), @(f.b), @(f.c), @(f.d), @(f.tx), @(f.ty)]
                                toNumbers:@[@(t.a), @(t.b), @(t.c), @(t.d), @(t.tx), @(t.ty)]
@@ -162,7 +162,7 @@ static const CGFloat FLOAnimationMinimumThreshold = 0.0001;
                                          transform.tx = values[4];
                                          transform.ty = values[5];
                                          
-                                         return [NSValue flo_valueWithAffineTransform:transform];
+                                         return [NSValue floValueWithAffineTransform:transform];
                                      }];
     } else if (fromType == FLOValueTypeTransform3D) {
         CATransform3D f = [self.fromValue CATransform3DValue];
