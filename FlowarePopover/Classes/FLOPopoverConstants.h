@@ -12,6 +12,10 @@
 #define FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD                                          0.2
 #define FLO_CONST_POPOVER_BOTTOM_OFFSET                                                     5.0
 
+static CGFloat const PopoverBackgroundViewBorderRadius = 5.0;
+static CGFloat const PopoverBackgroundViewArrowWidth = 17.0;
+static CGFloat const PopoverBackgroundViewArrowHeight = 12.0;
+
 typedef NS_ENUM(NSInteger, FLOPopoverType) {
     FLOWindowPopover,
     FLOViewPopover

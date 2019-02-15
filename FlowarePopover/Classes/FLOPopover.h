@@ -64,6 +64,7 @@
 
 @property (nonatomic, assign) BOOL alwaysOnTop;
 @property (nonatomic, assign) BOOL shouldShowArrow;
+@property (nonatomic, assign) NSSize arrowSize;
 @property (nonatomic, assign) BOOL animated;
 @property (nonatomic, assign) BOOL animatedForwarding;
 
@@ -165,6 +166,8 @@
 - (void)setPopoverContentViewSize:(NSSize)newSize;
 - (void)setPopoverPositioningRect:(NSRect)rect;
 - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;
+
+- (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 
 
 /**

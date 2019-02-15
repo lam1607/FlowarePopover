@@ -51,6 +51,11 @@
             _appMainWindow = [[[NSApplication sharedApplication] windows] firstObject];
         }
         
+        _shouldShowArrowWithVisualEffect = NO;
+        _arrowVisualEffectMaterial = NSVisualEffectMaterialLight;
+        _arrowVisualEffectBlendingMode = NSVisualEffectBlendingModeBehindWindow;
+        _arrowVisualEffectState = NSVisualEffectStateInactive;
+        
         _staysInApplicationRect = NO;
         _animatedInApplicationRect = NO;
         _popoverMoved = NO;

@@ -57,6 +57,7 @@
         _utils = [[FLOPopoverUtils alloc] init];
         _alwaysOnTop = NO;
         _shouldShowArrow = NO;
+        _arrowSize = NSZeroSize;
         _animated = NO;
         _animatedForwarding = NO;
         _staysInApplicationRect = NO;
@@ -134,6 +135,16 @@
 
 - (BOOL)isShown {
     return _shown;
+}
+
+- (void)setShouldShowArrow:(BOOL)shouldShowArrow {
+    _shouldShowArrow = shouldShowArrow;
+    
+    if (shouldShowArrow && NSEqualSizes(self.arrowSize, NSZeroSize)) {
+        self.arrowSize = NSMakeSize(PopoverBackgroundViewArrowWidth, PopoverBackgroundViewArrowHeight);
+    } else {
+        self.arrowSize = NSZeroSize;
+    }
 }
 
 - (void)setStaysInApplicationRect:(BOOL)staysInApplicationRect {
@@ -222,6 +233,26 @@
             if (self.visualEffectImageView && [self.visualEffectImageView isDescendantOf:self.popoverView]) {
                 [self.visualEffectImageView removeFromSuperview];
             }
+        }
+    }
+}
+
+- (void)updatePopoverFrame {
+    if ([self isShown]) {
+        if (self.updatesFrameWhileShowing || ((self.popoverShowing == NO) && (self.popoverClosing == NO))) {
+            [self displayWithAnimationProcess:NO];
+        } else {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                while (true) {
+                    if ((self.popoverShowing == NO) && (self.popoverClosing == NO)) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self displayWithAnimationProcess:NO];
+                        });
+                        
+                        break;
+                    }
+                }
+            });
         }
     }
 }
@@ -321,24 +352,11 @@
     [self updatePopoverFrame];
 }
 
-- (void)updatePopoverFrame {
-    if ([self isShown]) {
-        if (self.updatesFrameWhileShowing || ((self.popoverShowing == NO) && (self.popoverClosing == NO))) {
-            [self displayWithAnimationProcess:NO];
-        } else {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                while (true) {
-                    if ((self.popoverShowing == NO) && (self.popoverClosing == NO)) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self displayWithAnimationProcess:NO];
-                        });
-                        
-                        break;
-                    }
-                }
-            });
-        }
-    }
+- (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
+    self.utils.shouldShowArrowWithVisualEffect = needed;
+    self.utils.arrowVisualEffectMaterial = material;
+    self.utils.arrowVisualEffectBlendingMode = blendingMode;
+    self.utils.arrowVisualEffectState = state;
 }
 
 /**
@@ -463,15 +481,23 @@
     NSSize contentViewSize = NSEqualSizes(self.utils.contentSize, NSZeroSize) ? self.utils.originalViewSize : self.utils.contentSize;
     NSRectEdge popoverEdge = self.utils.preferredEdge;
     
-    [self.utils.backgroundView setMovable:self.isMovable];
-    [self.utils.backgroundView setDetachable:self.isDetachable];
+    self.utils.backgroundView.borderRadius = self.utils.contentView.layer ? self.utils.contentView.layer.cornerRadius : PopoverBackgroundViewBorderRadius;
+    
+    [self.utils.backgroundView makeMovable:self.isMovable];
+    [self.utils.backgroundView makeDetachable:self.isDetachable];
     
     if (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) {
-        [self.utils.backgroundView setShouldShowArrow:self.shouldShowArrow];
+        self.utils.backgroundView.arrowSize = self.arrowSize;
+        
+        [self.utils.backgroundView shouldShowArrow:self.shouldShowArrow];
         [self.utils.backgroundView setArrowColor:self.utils.contentView.layer.backgroundColor];
+        
+        if (self.utils.shouldShowArrowWithVisualEffect) {
+            [self.utils.backgroundView shouldShowArrowWithVisualEffect:self.utils.shouldShowArrowWithVisualEffect material:self.utils.arrowVisualEffectMaterial blendingMode:self.utils.arrowVisualEffectBlendingMode state:self.utils.arrowVisualEffectState];
+        }
     }
     
-    [self.utils.backgroundView setShouldShowShadow:YES];
+    [self.utils.backgroundView shouldShowShadow:YES];
     
     if (self.isMovable || self.isDetachable) {
         self.utils.backgroundView.delegate = self;

@@ -25,7 +25,54 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     return (minY + maxY) / 2;
 }
 
+static void CGPathCallback(void *info, const CGPathElement *element) {
+    NSBezierPath *bezierPath = (__bridge NSBezierPath *)info;
+    CGPoint *points = element->points;
+    
+    switch (element->type) {
+        case kCGPathElementMoveToPoint: {
+            [bezierPath moveToPoint:points[0]];
+            break;
+        }
+        case kCGPathElementAddLineToPoint: {
+            [bezierPath lineToPoint:points[0]];
+            break;
+        }
+        case kCGPathElementAddQuadCurveToPoint: {
+            NSPoint qp0 = bezierPath.currentPoint, qp1 = points[0], qp2 = points[1], cp1, cp2;
+            CGFloat m = 0.666666666666667;
+            cp1.x = (qp0.x + ((qp1.x - qp0.x) * m));
+            cp1.y = (qp0.y + ((qp1.y - qp0.y) * m));
+            cp2.x = (qp2.x + ((qp1.x - qp2.x) * m));
+            cp2.y = (qp2.y + ((qp1.y - qp2.y) * m));
+            [bezierPath curveToPoint:qp2 controlPoint1:cp1 controlPoint2:cp2];
+            break;
+        }
+        case kCGPathElementAddCurveToPoint: {
+            [bezierPath curveToPoint:points[2] controlPoint1:points[0] controlPoint2:points[1]];
+            break;
+        }
+        case kCGPathElementCloseSubpath: {
+            [bezierPath closePath];
+            break;
+        }
+    }
+}
+
+static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
+    NSBezierPath *bezierPath = [NSBezierPath bezierPath];
+    CGPathApply(cgPath, (__bridge void *)bezierPath, CGPathCallback);
+    
+    return bezierPath;
+}
+
 #pragma mark - FLOPopoverClippingView
+
+@interface FLOPopoverClippingView ()
+
+@property (nonatomic, strong) NSVisualEffectView *visualEffectView;
+
+@end
 
 @implementation FLOPopoverClippingView
 - (void)dealloc {
@@ -53,16 +100,37 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     [self setupArrowPath];
 }
 
-- (void)setupArrowPath {
-    CGContextRef currentContext = NSGraphicsContext.currentContext.CGContext;
-    
-    if (currentContext != nil) {
-        self.pathColor = ((self.pathColor != nil) && (self.pathColor != [NSColor.clearColor CGColor])) ? self.pathColor : [NSColor.lightGrayColor CGColor];
+- (void)setupArrowVisualEffectViewMaterial:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
+    if (self.visualEffectView == nil) {
+        self.visualEffectView = [[NSVisualEffectView alloc] initWithFrame:self.frame];
+        self.visualEffectView.state = state;
+        self.visualEffectView.material = material;
+        self.visualEffectView.blendingMode = blendingMode;
         
-        CGContextAddPath(currentContext, self.clippingPath);
-        CGContextSetBlendMode(currentContext, kCGBlendModeCopy);
-        CGContextSetFillColorWithColor(currentContext, self.pathColor);
-        CGContextEOFillPath(currentContext);
+        [self addSubview:self.visualEffectView];
+    }
+}
+
+- (void)setupArrowPath {
+    if (self.visualEffectView != nil) {
+        [self.visualEffectView setFrameSize:self.frame.size];
+        
+        self.visualEffectView.maskImage = [NSImage imageWithSize:self.frame.size flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+            NSBezierPath *path = bezierPathWithCGPath(self.clippingPath);
+            [path fill];
+            
+            return YES;
+        }];
+    } else {
+        CGContextRef currentContext = NSGraphicsContext.currentContext.CGContext;
+        
+        if (currentContext != nil) {
+            self.pathColor = ((self.pathColor != nil) && (self.pathColor != [NSColor.clearColor CGColor])) ? self.pathColor : [NSColor.lightGrayColor CGColor];
+            
+            CGContextAddPath(currentContext, self.clippingPath);
+            CGContextSetFillColorWithColor(currentContext, self.pathColor);
+            CGContextFillPath(currentContext);
+        }
     }
 }
 
@@ -94,6 +162,8 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 @property (nonatomic, assign) BOOL isReceivedMouseDownEvent;
 
+@property (nonatomic, assign) BOOL shouldShowArrowWithVisualEffect;
+
 @end
 
 @implementation FLOPopoverBackgroundView
@@ -103,6 +173,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
         _arrowSize = NSZeroSize;
         _fillColor = NSColor.clearColor;
         _isReceivedMouseDownEvent = NO;
+        _shouldShowArrowWithVisualEffect = NO;
         
         _clippingView = [[FLOPopoverClippingView alloc] initWithFrame:self.bounds];
         
@@ -128,12 +199,22 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 #pragma mark - Getter/Setter
 
+- (void)setArrowSize:(CGSize)arrowSize {
+    if (NSEqualSizes(arrowSize, self.arrowSize) && (NSEqualSizes(self.arrowSize, NSZeroSize) == NO)) return;
+    
+    _arrowSize = arrowSize;
+    
+    self.needsDisplay = YES;
+}
+
 - (void)setFillColor:(NSColor *)fillColor {
     _fillColor = fillColor;
     [self.fillColor set];
 }
 
 - (void)setBorderRadius:(CGFloat)borderRadius {
+    _borderRadius = borderRadius;
+    
     self.wantsLayer = YES;
     self.layer.cornerRadius = borderRadius;
 }
@@ -172,15 +253,15 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 #pragma mark - Processes
 
-- (void)setMovable:(BOOL)movable {
+- (void)makeMovable:(BOOL)movable {
     self.isMovable = movable;
 }
 
-- (void)setDetachable:(BOOL)detachable {
+- (void)makeDetachable:(BOOL)detachable {
     self.isDetachable = detachable;
 }
 
-- (void)setShouldShowShadow:(BOOL)needed {
+- (void)shouldShowShadow:(BOOL)needed {
     if (needed) {
         self.wantsLayer = YES;
         self.layer.masksToBounds = NO;
@@ -191,11 +272,17 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     }
 }
 
-- (void)setShouldShowArrow:(BOOL)needed {
-    self.arrowSize = needed ? CGSizeMake(PopoverBackgroundViewArrowWidth, PopoverBackgroundViewArrowHeight) : NSZeroSize;
-    
+- (void)shouldShowArrow:(BOOL)needed {
     if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
         [self updateClippingView];
+    }
+}
+
+- (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
+    self.shouldShowArrowWithVisualEffect = needed;
+    
+    if (needed) {
+        [self.clippingView setupArrowVisualEffectViewMaterial:material blendingMode:blendingMode state:state];
     }
 }
 
@@ -211,13 +298,6 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 - (void)setFrame:(NSRect)frameRect {
     [super setFrame:frameRect];
-    self.needsDisplay = YES;
-}
-
-- (void)setArrowSize:(CGSize)arrowSize {
-    if (CGSizeEqualToSize(arrowSize, self.arrowSize)) return;
-    
-    _arrowSize = arrowSize;
     self.needsDisplay = YES;
 }
 
@@ -317,7 +397,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     // That is what this complete mess below does.
     if (arrowEdge == NSRectEdgeMinY || arrowEdge == NSRectEdgeMaxY) {
         maxArrowX = floor(midOriginX + (self.arrowSize.width / 2.0));
-        CGFloat maxPossible = (NSMaxX(contentRect) - PopoverBackgroundViewBorderRadius);
+        CGFloat maxPossible = (NSMaxX(contentRect) - self.borderRadius);
         
         if (maxArrowX > maxPossible) {
             maxArrowX = maxPossible;
@@ -325,20 +405,20 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
         } else {
             minArrowX = floor(midOriginX - (self.arrowSize.width / 2.0));
             
-            if (minArrowX < PopoverBackgroundViewBorderRadius) {
-                minArrowX = PopoverBackgroundViewBorderRadius;
+            if (minArrowX < self.borderRadius) {
+                minArrowX = self.borderRadius;
                 maxArrowX = minArrowX + self.arrowSize.width;
             }
         }
     } else {
         minArrowY = floor(midOriginY - (self.arrowSize.width / 2.0));
         
-        if (minArrowY < PopoverBackgroundViewBorderRadius) {
-            minArrowY = PopoverBackgroundViewBorderRadius;
+        if (minArrowY < self.borderRadius) {
+            minArrowY = self.borderRadius;
             maxArrowY = minArrowY + self.arrowSize.width;
         } else {
             maxArrowY = floor(midOriginY + (self.arrowSize.width / 2.0));
-            CGFloat maxPossible = (NSMaxY(contentRect) - PopoverBackgroundViewBorderRadius);
+            CGFloat maxPossible = (NSMaxY(contentRect) - self.borderRadius);
             
             if (maxArrowY > maxPossible) {
                 maxArrowY = maxPossible;
@@ -348,22 +428,26 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     }
     
     // These represent the centerpoints of the popover's corner arcs.
-    CGFloat minCenterpointX = floor(minX + PopoverBackgroundViewBorderRadius);
-    CGFloat maxCenterpointX = floor(maxX - PopoverBackgroundViewBorderRadius);
-    CGFloat minCenterpointY = floor(minY + PopoverBackgroundViewBorderRadius);
-    CGFloat maxCenterpointY = floor(maxY - PopoverBackgroundViewBorderRadius);
+    CGFloat minCenterpointX = floor(minX + self.borderRadius);
+    CGFloat maxCenterpointX = floor(maxX - self.borderRadius);
+    CGFloat minCenterpointY = floor(minY + self.borderRadius);
+    CGFloat maxCenterpointY = floor(maxY - self.borderRadius);
     
     CGMutablePathRef path = CGPathCreateMutable();
-    CGPathMoveToPoint(path, NULL, minX, minCenterpointY);
     
-    CGFloat radius = PopoverBackgroundViewBorderRadius;
-    
-    CGPathAddArc(path, NULL, minCenterpointX, maxCenterpointY, radius, M_PI, M_PI_2, true);
-    CGPathAddArc(path, NULL, maxCenterpointX, maxCenterpointY, radius, M_PI_2, 0, true);
-    CGPathAddArc(path, NULL, maxCenterpointX, minCenterpointY, radius, 0, -M_PI_2, true);
-    CGPathAddArc(path, NULL, minCenterpointX, minCenterpointY, radius, -M_PI_2, M_PI, true);
+    if (self.shouldShowArrowWithVisualEffect) {
+        CGPathMoveToPoint(path, NULL, minX, minCenterpointY);
+        
+        CGFloat radius = self.borderRadius;
+        
+        CGPathAddArc(path, NULL, minCenterpointX, maxCenterpointY, radius, M_PI, M_PI_2, true);
+        CGPathAddArc(path, NULL, maxCenterpointX, maxCenterpointY, radius, M_PI_2, 0, true);
+        CGPathAddArc(path, NULL, maxCenterpointX, minCenterpointY, radius, 0, -M_PI_2, true);
+        CGPathAddArc(path, NULL, minCenterpointX, minCenterpointY, radius, -M_PI_2, M_PI, true);
+    }
     
     CGPoint minBasePoint, tipPoint, maxBasePoint;
+    
     switch (arrowEdge) {
         case NSRectEdgeMinX:
             minBasePoint = NSMakePoint(minX, minArrowY);

@@ -169,6 +169,18 @@
     }
 }
 
+- (void)setArrowSize:(NSSize)arrowSize {
+    [self restartPopupIfNeeded];
+    
+    _arrowSize = arrowSize;
+    
+    if (self.type == FLOWindowPopover) {
+        self.windowPopup.arrowSize = arrowSize;
+    } else {
+        self.viewPopup.arrowSize = arrowSize;
+    }
+}
+
 - (void)setAnimated:(BOOL)animated {
     [self restartPopupIfNeeded];
     
@@ -671,6 +683,14 @@
         [self.windowPopup setPopoverContentViewSize:newSize positioningRect:rect];
     } else {
         [self.viewPopup setPopoverContentViewSize:newSize positioningRect:rect];
+    }
+}
+
+- (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
+    if (self.type == FLOWindowPopover) {
+        [self.windowPopup shouldShowArrowWithVisualEffect:needed material:material blendingMode:blendingMode state:state];
+    } else {
+        [self.viewPopup shouldShowArrowWithVisualEffect:needed material:material blendingMode:blendingMode state:state];
     }
 }
 

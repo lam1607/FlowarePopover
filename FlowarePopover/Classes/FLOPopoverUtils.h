@@ -28,6 +28,11 @@
 
 @property (nonatomic, assign) BOOL popoverMoved;
 
+@property (nonatomic, assign) BOOL shouldShowArrowWithVisualEffect;
+@property (nonatomic, assign) NSVisualEffectMaterial arrowVisualEffectMaterial;
+@property (nonatomic, assign) NSVisualEffectBlendingMode arrowVisualEffectBlendingMode;
+@property (nonatomic, assign) NSVisualEffectState arrowVisualEffectState;
+
 @property (nonatomic, assign) BOOL staysInApplicationRect;
 
 @property (nonatomic, assign) FLOPopoverAnimationBehaviour animationBehaviour;

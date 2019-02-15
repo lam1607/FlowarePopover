@@ -10,10 +10,6 @@
 
 #import "FLOPopover.h"
 
-static CGFloat const PopoverBackgroundViewBorderRadius = 5.0;
-static CGFloat const PopoverBackgroundViewArrowWidth = 17.0;
-static CGFloat const PopoverBackgroundViewArrowHeight = 12.0;
-
 #pragma mark - FLOPopoverClippingView
 
 // A class which forcably draws `NSClearColor.clearColor` around a given path,
@@ -27,6 +23,7 @@ static CGFloat const PopoverBackgroundViewArrowHeight = 12.0;
 
 @property (nonatomic) CGColorRef pathColor;
 
+- (void)setupArrowVisualEffectViewMaterial:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 - (void)setupArrowPath;
 - (void)setupArrowPathColor:(CGColorRef)color;
 
@@ -98,10 +95,12 @@ static CGFloat const PopoverBackgroundViewArrowHeight = 12.0;
 // Returns a `CGPathRef` of the outline of the background view.
 - (CGPathRef)newPopoverPathForEdge:(NSRectEdge)popoverEdge inFrame:(NSRect)frame;
 
-- (void)setMovable:(BOOL)movable;
-- (void)setDetachable:(BOOL)detachable;
-- (void)setShouldShowShadow:(BOOL)needed;
-- (void)setShouldShowArrow:(BOOL)needed;
+
+- (void)makeMovable:(BOOL)movable;
+- (void)makeDetachable:(BOOL)detachable;
+- (void)shouldShowShadow:(BOOL)needed;
+- (void)shouldShowArrow:(BOOL)needed;
+- (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 - (void)setArrowColor:(CGColorRef)color;
 - (void)setPopoverEdge:(NSRectEdge)popoverEdge;
 - (void)setPopoverOrigin:(NSRect)popoverOrigin;

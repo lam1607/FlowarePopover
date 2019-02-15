@@ -57,6 +57,8 @@
 - (void)setPopoverPositioningRect:(NSRect)rect;
 - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;
 
+- (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
+
 
 /**
  * Sticking rect: Display the popover relative to the rect of positioning view
