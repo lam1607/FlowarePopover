@@ -8,16 +8,16 @@
 
 #import "AppleScript.h"
 
-void AppleScriptOpenFile(NSString *appName, NSString *filePath, float x, float y, float w, float h) {
-    if ([Utils isEmptyObject:appName]) {
-        return;
-    }
+void script_openFile(NSString *appName, NSString *filePath, float x, float y, float w, float h)
+{
+    if ([appName isKindOfClass:[NSString class]] == NO) return;
     
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSString *partOfCurrWindowName = [filePath lastPathComponent];
         NSString *source;
         
-        if ([appName isEqualToString:@"Preview"]) {
+        if ([appName isEqualToString:@"Preview"])
+        {
             source = [NSString stringWithFormat:@"\
                       \nactivate \
                       \ntell application \"%@\" \
@@ -28,7 +28,9 @@ void AppleScriptOpenFile(NSString *appName, NSString *filePath, float x, float y
                       \nend try \
                       \nset bounds of first window to {%f, %f, %f, %f} \
                       \nend tell", appName, appName, partOfCurrWindowName, appName, filePath, x, y, w + x, h + y];
-        } else if ([appName isEqualToString:@"Microsoft Word"]) {
+        }
+        else if ([appName isEqualToString:@"Microsoft Word"])
+        {
             source = [NSString stringWithFormat:@"\
                       \ntell application \"%@\" \
                       \nactivate \
@@ -39,7 +41,9 @@ void AppleScriptOpenFile(NSString *appName, NSString *filePath, float x, float y
                       \nend try \
                       \nset bounds of first window to {%f, %f, %f, %f} \
                       \nend tell", appName, appName, partOfCurrWindowName, appName, filePath, x, y, w + x, h + y];
-        } else if ([appName isEqualToString:@"Microsoft Excel"]) {
+        }
+        else if ([appName isEqualToString:@"Microsoft Excel"])
+        {
             source = [NSString stringWithFormat:@"\
                       \ntell application \"%@\" \
                       \nactivate \
@@ -50,7 +54,9 @@ void AppleScriptOpenFile(NSString *appName, NSString *filePath, float x, float y
                       \nend try \
                       \nset bounds of first window to {%f, %f, %f, %f} \
                       \nend tell", appName, appName, partOfCurrWindowName, appName, filePath, x, y, w + x, h + y];
-        } else if ([appName isEqualToString:@"Finder"]) {
+        }
+        else if ([appName isEqualToString:@"Finder"])
+        {
             source = [NSString stringWithFormat:@"\
                       \nscript OpenFile\
                       \non Open()\
@@ -90,28 +96,31 @@ void AppleScriptOpenFile(NSString *appName, NSString *filePath, float x, float y
         NSDictionary *errorDictionary;
         NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
         
-        if (![script executeAndReturnError:&errorDictionary]) {
-            DLog(@"APPLESCRIPT - Return Error: %@. \n", errorDictionary);
-        } else {
-            DLog(@"APPLESCRIPT - Successfully:\n%@\n", source);
+        DLog(@"AppleScript execute script:\n%@\n", source);
+        
+        if (![script executeAndReturnError:&errorDictionary])
+        {
+            DLog(@"Error execute script: %@. \n", errorDictionary);
         }
     });
 }
 
-void AppleScriptCloseFile(NSString *appName, NSString *filePath) {
-    if ([Utils isEmptyObject:appName]) {
-        return;
-    }
+void script_closeFile(NSString *appName, NSString *filePath)
+{
+    if ([appName isKindOfClass:[NSString class]] == NO) return;
     
     NSString *partOfCurrWindowName = [filePath lastPathComponent];
     NSString *source;
     
-    if ([appName isEqualToString:@"Microsoft Excel"]) {
+    if ([appName isEqualToString:@"Microsoft Excel"])
+    {
         source = [NSString stringWithFormat:@" \
                   \ntell application \"%@\" \
                   \nclose (workbook \"%@\")\
                   \nend", appName, partOfCurrWindowName];
-    } else {
+    }
+    else
+    {
         source = [NSString stringWithFormat:@" \
                   \ntell application \"%@\" \
                   \nclose (first window whose name contains \"%@\")\
@@ -121,16 +130,17 @@ void AppleScriptCloseFile(NSString *appName, NSString *filePath) {
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
     if (![script executeAndReturnError:&errorDictionary])
-        DLog(@"APPLESCRIPT - Return Error: %@. \n", errorDictionary);
-    else
-        DLog(@"APPLESCRIPT - Successfully .\n");
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
+    }
 }
 
-void AppleScriptOpenApplication(NSString *appName, float x, float y, float w, float h) {
-    if ([Utils isEmptyObject:appName]) {
-        return;
-    }
+void script_openApplication(NSString *appName, float x, float y, float w, float h)
+{
+    if ([appName isKindOfClass:[NSString class]] == NO) return;
     
     NSString *source = [NSString stringWithFormat:@" \
                         \ntell application \"%@\"   \
@@ -144,25 +154,22 @@ void AppleScriptOpenApplication(NSString *appName, float x, float y, float w, fl
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
     if (![script executeAndReturnError:&errorDictionary])
-        DLog(@"APPLESCRIPT - Return Error: %@. \n", errorDictionary);
-    else
-        DLog(@"APPLESCRIPT - Successfully:\n%@\n", source);
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
+    }
 }
 
-void AppleScriptHideApplication(NSString *appName) {
-    if ([Utils isEmptyObject:appName]) {
-        return;
-    }
+void script_hideApplication(NSString *appName)
+{
+    if ([appName isKindOfClass:[NSString class]] == NO) return;
     
-    /* * ---- Technical note ---- * *
-     tell application "Safari"
-     set miniaturized of every window to true
-     end tell
-     */
     NSString *source;
     
-    if ([appName isEqualToString:@"Google Chrome"]) {
+    if ([appName isEqualToString:@"Google Chrome"])
+    {
         source = [NSString stringWithFormat:@" \
                   \ntell application \"%@\"   \
                   \ntry\
@@ -172,7 +179,9 @@ void AppleScriptHideApplication(NSString *appName) {
                   \nset collapsed of first window to true \
                   \nend try \
                   \nend tell", appName];
-    } else {
+    }
+    else
+    {
         source = [NSString stringWithFormat:@" \
                   \ntell application \"%@\"   \
                   \ntry\
@@ -187,25 +196,29 @@ void AppleScriptHideApplication(NSString *appName) {
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
     if (![script executeAndReturnError:&errorDictionary])
-        DLog(@"APPLESCRIPT - Return Error: %@. \n", errorDictionary);
-    else
-        DLog(@"APPLESCRIPT - Successfully .\n");
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
+    }
 }
 
-void AppleScriptCloseApplication(NSString *appName) {
-    if ([Utils isEmptyObject:appName]) {
-        return;
-    }
+void script_closeApplication(NSString *appName)
+{
+    if ([appName isKindOfClass:[NSString class]] == NO) return;
     
     NSString *source;
     
-    if ([appName isEqualToString:@"Safari"] || [appName isEqualToString:@"Firefox"] || [appName isEqualToString:@"Google Chrome"]) {
+    if ([appName isEqualToString:@"Safari"] || [appName isEqualToString:@"Firefox"] || [appName isEqualToString:@"Google Chrome"])
+    {
         source = [NSString stringWithFormat:@" \
                   \ntell application \"%@\"   \
                   \nclose first window \
                   \nend tell", appName];
-    } else {
+    }
+    else
+    {
         source = [NSString stringWithFormat:@" \
                   \ntell application \"%@\"   \
                   \nset visible of first window to false \
@@ -215,13 +228,16 @@ void AppleScriptCloseApplication(NSString *appName) {
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
     if (![script executeAndReturnError:&errorDictionary])
-        DLog(@"APPLESCRIPT - Return Error: %@. \n", errorDictionary);
-    else
-        DLog(@"APPLESCRIPT - Successfully .\n");
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
+    }
 }
 
-BOOL AppleScriptCloseWindow(NSString *appName, NSString *title) {
+BOOL script_closeWindow(NSString *appName, NSString *title)
+{
     BOOL documentWindow = [appName isEqualToString:@"Microsoft Powerpoint"];
     NSString *windowTitle = [title stringByDeletingPathExtension];
     
@@ -238,9 +254,11 @@ BOOL AppleScriptCloseWindow(NSString *appName, NSString *title) {
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     
-    if (![script executeAndReturnError:&errorDictionary]) {
-        DLog(@"closeWindow script source: %@", source);
-        DLog(@"Error execute closeWindow script: %@", errorDictionary);
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (![script executeAndReturnError:&errorDictionary])
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
         
         return NO;
     }
@@ -248,10 +266,9 @@ BOOL AppleScriptCloseWindow(NSString *appName, NSString *title) {
     return YES;
 }
 
-BOOL AppleScriptCheckAppHidden(NSString *bundleIdentifier) {
-    if ([Utils isEmptyObject:bundleIdentifier]) {
-        return NO;
-    }
+BOOL script_checkAppHidden(NSString *bundleIdentifier)
+{
+    if ([bundleIdentifier isKindOfClass:[NSString class]] == NO) return YES;
     
     NSInteger ret = 1;
     
@@ -269,21 +286,24 @@ BOOL AppleScriptCheckAppHidden(NSString *bundleIdentifier) {
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     NSAppleEventDescriptor *result = [script executeAndReturnError:&errorDictionary];
     
-    if (result) {
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (result)
+    {
         NSData *data = [result data];
         [data getBytes:&ret length:data.length];
-    } else {
-        DLog(@"checkAppHidden script source: %@", source);
-        DLog(@"Error execute checkAppHidden script: %@", errorDictionary);
+    }
+    else
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
     }
     
     return ret == 1;
 }
 
-BOOL AppleScriptCheckMinimized(NSString *appName, NSString *property, NSString *title) {
-    if ([Utils isEmptyObject:appName]) {
-        return NO;
-    }
+BOOL script_checkMinimized(NSString *appName, NSString *property, NSString *title)
+{
+    if ([appName isKindOfClass:[NSString class]] == NO) return YES;
     
     NSInteger ret = 1;
     NSString *document = [appName isEqualToString:@"Microsoft PowerPoint"]?@"document":@"";
@@ -317,23 +337,25 @@ BOOL AppleScriptCheckMinimized(NSString *appName, NSString *property, NSString *
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     NSAppleEventDescriptor *result = [script executeAndReturnError:&errorDictionary];
     
-    DLog(@"checkMinimized script source: %@", source);
+    DLog(@"AppleScript execute script:\n%@\n", source);
     
-    if (result) {
+    if (result)
+    {
         NSData *data = [result data];
         [data getBytes:&ret length:data.length];
-    } else {
-        DLog(@"checkAppMinimized script source: %@", source);
-        DLog(@"Error execute checkMinimized script: %@", errorDictionary);
+    }
+    else
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
     }
     
     return ret == 1;
 }
 
-BOOL AppleScriptCheckWinMinimized(NSString *appName) {
-    if ([Utils isEmptyObject:appName]) {
-        return NO;
-    }
+BOOL script_checkWinMinimized(NSString *appName)
+{
+    if ([appName isKindOfClass:[NSString class]] == NO) return YES;
+    
     NSInteger ret = 1;
     
     NSString *source = [NSString stringWithFormat:@" \
@@ -350,22 +372,24 @@ BOOL AppleScriptCheckWinMinimized(NSString *appName) {
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     NSAppleEventDescriptor *result = [script executeAndReturnError:&errorDictionary];
     
-    DLog(@"checkWinMinimized script source: %@", source);
+    DLog(@"AppleScript execute script:\n%@\n", source);
     
-    if (result) {
+    if (result)
+    {
         NSData *data = [result data];
         [data getBytes:&ret length:data.length];
-    } else {
-        DLog(@"Error execute checkWinMinimized script: %@", errorDictionary);
+    }
+    else
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
     }
     
     return ret == 1;
 }
 
-BOOL AppleScriptCheckWinCollapsed(NSString *appName) {
-    if ([Utils isEmptyObject:appName]) {
-        return NO;
-    }
+BOOL script_checkWinCollapsed(NSString *appName)
+{
+    if ([appName isKindOfClass:[NSString class]] == NO) return YES;
     
     NSInteger ret = 1;
     NSString *document = [appName isEqualToString:@"Microsoft PowerPoint"]?@"document":@"";
@@ -384,21 +408,24 @@ BOOL AppleScriptCheckWinCollapsed(NSString *appName) {
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     NSAppleEventDescriptor *result = [script executeAndReturnError:&errorDictionary];
     
-    if (result) {
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (result)
+    {
         NSData *data = [result data];
         [data getBytes:&ret length:data.length];
-    } else {
-        DLog(@"checkWinCollapsed script source: %@", source);
-        DLog(@"Error execute checkWinCollapsed script: %@", errorDictionary);
+    }
+    else
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
     }
     
     return ret == 1;
 }
 
-BOOL AppleScriptCheckWinHidden(NSString *appName) {
-    if ([Utils isEmptyObject:appName]) {
-        return NO;
-    }
+BOOL script_checkWinHidden(NSString *appName)
+{
+    if ([appName isKindOfClass:[NSString class]] == NO) return YES;
     
     NSInteger ret = 1;
     
@@ -416,23 +443,24 @@ BOOL AppleScriptCheckWinHidden(NSString *appName) {
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     NSAppleEventDescriptor *result = [script executeAndReturnError:&errorDictionary];
     
-    if (result) {
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (result)
+    {
         NSData *data = [result data];
         [data getBytes:&ret length:data.length];
-    } else {
-        DLog(@"checkWinHidden script source: %@", source);
-        DLog(@"Error execute checkWinHidden script: %@", errorDictionary);
+    }
+    else
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
     }
     
     return ret == 1;
 }
 
-BOOL AppleScriptCheckFirstWinExist(NSString *appName) {
-    DLog(@"checkFirstWinExist for app: %@", appName);
-    
-    if ([Utils isEmptyObject:appName]) {
-        return NO;
-    }
+BOOL script_checkFirstWinExist(NSString *appName)
+{
+    if ([appName isKindOfClass:[NSString class]] == NO) return YES;
     
     NSInteger ret = 0;
     
@@ -447,32 +475,29 @@ BOOL AppleScriptCheckFirstWinExist(NSString *appName) {
                         \nend tell \
                         \nreturn ret", appName];
     
-    DLog(@"checkFirstWinExist source: %@", source);
-    
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     NSAppleEventDescriptor *result = [script executeAndReturnError:&errorDictionary];
     
-    if (!result) {
-        DLog(@"checkFirstWinExist script source: %@", source);
-        DLog(@"Error execute checkFirstWinExist script: %@", errorDictionary);
-    } else {
-        DLog(@"checkFirstWinExist script source: %@", source);
-        
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (!result)
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
+    }
+    else
+    {
         NSData *data = [result data];
         [data getBytes:&ret length:data.length];
     }
     
-    DLog(@"checkFirstWinExist finished for app: %@", appName);
-    
     return ret == 1;
 }
 
-void AppleScriptPositionApp(NSString *appName, float x, float y) {
+void script_positionApp(NSString *appName, float x, float y)
+{
     // Pass x = -1 or y = -1 to keep x or y position
-    if ([Utils isEmptyObject:appName]) {
-        return;
-    }
+    if ([appName isKindOfClass:[NSString class]] == NO) return;
     
     NSString *xStr = (x == -1 ? @"set x to winX" : [NSString stringWithFormat:@"set x to %f", x]);
     NSString *yStr = (y == -1 ? @"set y to winY" : [NSString stringWithFormat:@"set y to %f", y]);
@@ -495,49 +520,54 @@ void AppleScriptPositionApp(NSString *appName, float x, float y) {
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     
-    if (![script executeAndReturnError:&errorDictionary]) {
-        DLog(@"positionApp script source: %@", source);
-        DLog(@"Error execute positionApp script: %@", errorDictionary);
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (![script executeAndReturnError:&errorDictionary])
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
     }
 }
 
-void AppleScriptHideApp(NSString *bundleIdentifier) {
+void script_hideApp(NSString *bundleIdentifier)
+{
     NSString *source = [NSString stringWithFormat:@" \
                         \ntell application \"System Events\" \
                         \nset visible of processes where bundle identifier is \"%@\" to false \
                         \nend tell", bundleIdentifier];
     
-    DLog(@"hideApp script source: %@", source);
-    
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     
-    if (![script executeAndReturnError:&errorDictionary]) {
-        DLog(@"Error execute close script: %@", errorDictionary);
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (![script executeAndReturnError:&errorDictionary])
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
     }
 }
 
-void AppleScriptShowApp(NSString *bundleIdentifier) {
+void script_showApp(NSString *bundleIdentifier)
+{
     NSString *source = [NSString stringWithFormat:@" \
                         \ntell application \"System Events\" \
                         \nset visible of processes where bundle identifier is \"%@\" to true \
                         \nactivate \
                         \nend tell", bundleIdentifier];
     
-    DLog(@"showApp script source: %@", source);
-    
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     
-    if (![script executeAndReturnError:&errorDictionary]) {
-        DLog(@"Error execute close script: %@", errorDictionary);
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (![script executeAndReturnError:&errorDictionary])
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
     }
 }
 
-void AppleScriptOpenApp(NSString *appName) {
-    if ([Utils isEmptyObject:appName]) {
-        return;
-    }
+void script_openApp(NSString *appName)
+{
+    if ([appName isKindOfClass:[NSString class]] == NO) return;
     
     NSString *source = [NSString stringWithFormat:@" \
                         \ntell application \"%@\" \
@@ -547,15 +577,17 @@ void AppleScriptOpenApp(NSString *appName) {
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     
-    if (![script executeAndReturnError:&errorDictionary]) {
-        DLog(@"Error execute openApp script: %@", errorDictionary);
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (![script executeAndReturnError:&errorDictionary])
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
     }
 }
 
-void AppleScriptOpenMSAppWithNewDocument(NSString *appName) {
-    if ([Utils isEmptyObject:appName]) {
-        return;
-    }
+void script_openMSAppWithNewDocument(NSString *appName)
+{
+    if ([appName isKindOfClass:[NSString class]] == NO) return;
     
     NSString *doc = [appName isEqualToString:@"Microsoft PowerPoint"]?@"presentation":@"document";
     NSString *source = [NSString stringWithFormat:@" \
@@ -566,21 +598,26 @@ void AppleScriptOpenMSAppWithNewDocument(NSString *appName) {
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     
-    if (![script executeAndReturnError:&errorDictionary]) {
-        DLog(@"openMSAppWithNewDocument script source: %@", source);
-        DLog(@"Error execute openMSAppWithNewDocument script: %@", errorDictionary);
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (![script executeAndReturnError:&errorDictionary])
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
     }
 }
 
-void AppleScriptHideAllAppsExcept(NSString *bundleIdentifier1, NSString *bundleIdentifier2) {
+void script_hideAllAppsExcept(NSString *bundleIdentifier1, NSString *bundleIdentifier2)
+{
     NSString *apps = @"";
     
-    if ((bundleIdentifier1 == nil) && (bundleIdentifier2 != nil)) {
+    if ((bundleIdentifier1 == nil) && (bundleIdentifier2 != nil))
+    {
         bundleIdentifier1 = bundleIdentifier2;
         bundleIdentifier2 = nil;
     }
     
-    if (bundleIdentifier1 != nil) {
+    if (bundleIdentifier1 != nil)
+    {
         apps = [NSString stringWithFormat:@" or bundle identifier is \"%@\"%@", bundleIdentifier1, (bundleIdentifier2 == nil) ? @"" : [NSString stringWithFormat:@" or bundle identifier is \"%@\"", bundleIdentifier2]];
     }
     
@@ -589,47 +626,53 @@ void AppleScriptHideAllAppsExcept(NSString *bundleIdentifier1, NSString *bundleI
                         \nset visible of processes where not (bundle identifier is \"%@\"%@) to false \
                         \nend tell", [[NSBundle mainBundle] bundleIdentifier], apps];
     
-    DLog(@"hideAllApps script source: %@", source);
-    
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     
-    if (![script executeAndReturnError:&errorDictionary]) {
-        DLog(@"Error execute close script: %@", errorDictionary);
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (![script executeAndReturnError:&errorDictionary])
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
     }
 }
 
-void AppleScriptHideAllApps() {
+void script_hideAllApps(void)
+{
     NSString *source = [NSString stringWithFormat:@" \
                         \ntell application \"System Events\" \
                         \nset visible of processes where bundle identifier is not \"%@\" to false \
                         \nend tell", [[NSBundle mainBundle] bundleIdentifier]];
     
-    DLog(@"hideAllApps script source: %@", source);
-    
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     
-    if (![script executeAndReturnError:&errorDictionary]) {
-        DLog(@"Error execute close script: %@", errorDictionary);
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (![script executeAndReturnError:&errorDictionary])
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
     }
 }
 
-void AppleScriptAutoHideDock(BOOL hidden) {
+void script_autoHideDock(BOOL hidden)
+{
     NSString *source = [NSString stringWithFormat:@" \
                         \ntell application \"System Events\" to set autohide of dock preferences to %@", hidden ? @"true" : @"false"];
     
-    DLog(@"hideDock script source: %@", source);
-    
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     
-    if (![script executeAndReturnError:&errorDictionary]) {
-        DLog(@"Error execute close script: %@", errorDictionary);
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (![script executeAndReturnError:&errorDictionary])
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
     }
 }
 
-BOOL AppleScriptCheckDockAutoHidden() {
+BOOL script_checkDockAutoHidden(void)
+{
     NSInteger ret = 0;
     
     NSString *source = [NSString stringWithFormat:@" \
@@ -641,23 +684,24 @@ BOOL AppleScriptCheckDockAutoHidden() {
                         \nend tell \
                         \nreturn ret"];
     
-    DLog(@"checkDockAutoHidden script source: %@", source);
-    
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     
-    if (![script executeAndReturnError:&errorDictionary]) {
-        DLog(@"Error execute close script: %@", errorDictionary);
+    if (![script executeAndReturnError:&errorDictionary])
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
     }
     
     NSAppleEventDescriptor *result = [script executeAndReturnError:&errorDictionary];
     
-    if (!result) {
-        DLog(@"checkDockAutoHidden script source: %@", source);
-        DLog(@"Error execute checkDockAutoHidden script: %@", errorDictionary);
-    } else {
-        DLog(@"checkDockAutoHidden script source: %@", source);
-        
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (!result)
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
+    }
+    else
+    {
         NSData *data = [result data];
         [data getBytes:&ret length:data.length];
     }
@@ -665,7 +709,8 @@ BOOL AppleScriptCheckDockAutoHidden() {
     return ret == 1;
 }
 
-void AppleScriptOpenAccessibilityPreference() {
+void script_openAccessibilityPreference(void)
+{
     NSString *source = [NSString stringWithFormat:@" \
                         \ntell application \"System Preferences\" \
                         \nset securityPane to pane id \"com.apple.preference.security\" \
@@ -673,19 +718,19 @@ void AppleScriptOpenAccessibilityPreference() {
                         \nactivate \
                         \nend tell"];
     
-    DLog(@"openAccessibilityPreference script source: %@", source);
-    
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     
-    if (![script executeAndReturnError:&errorDictionary]) {
-        DLog(@"Error execute openAccessibilityPreference script: %@", errorDictionary);
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (![script executeAndReturnError:&errorDictionary])
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
     }
 }
 
-#pragma mark - Updated scripts
-
-int AppleScriptPresentApp(NSString *appName, NSString *bundle, float x, float y, float maxWidth, float maxHeight, BOOL needResize) {
+int script_presentApp(NSString *appName, NSString *bundle, float x, float y, float maxWidth, float maxHeight, BOOL needResize)
+{
     /* get frontmost process:  */
     // set myFrontMost to name of first item of (processes whose frontmost is true)
     // set theName to name of the first process whose frontmost is true
@@ -693,12 +738,13 @@ int AppleScriptPresentApp(NSString *appName, NSString *bundle, float x, float y,
     
     NSString *processName = appName;
     
-    if ([appName containsString:@".app"]) {
+    if ([appName containsString:@".app"])
+    {
         processName = [processName substringWithRange:NSMakeRange(0, processName.length - 4)];
     }
     
     int xPos = (int)x;
-    int ret;
+    int ret = -1;
     float width = maxWidth;
     float height = maxHeight;
     NSString *reboundsWindow = [NSString stringWithFormat:@"\
@@ -752,25 +798,34 @@ int AppleScriptPresentApp(NSString *appName, NSString *bundle, float x, float y,
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     NSAppleEventDescriptor *result = [script executeAndReturnError:&errorDictionary];
     
-    if (!result) {
-        DLog(@"Error execute resizeWindow script: %@", errorDictionary);
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (!result)
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
+        
         ret = 0;
-    } else {
+    }
+    else
+    {
         NSData *data = [result data];
         [data getBytes:&ret length:data.length];
+        
+        // @param: ret
+        // ret = 0: has an unexpected error => we can't handle => need to reset script
+        // ret = 1: successfull
+        // ret = 2: has an error that can be managed
     }
     
-    // @param: ret
-    // ret = 0: has an unexpected error => we can't handle => need to reset script
-    // ret = 1: successfull
-    // ret = 2: has an error that can be managed
     return ret;
 }
 
-int AppleScriptPresentDocument(NSString *appName, NSString *title, NSString *siblingTitle, float x, float y, float w, float h, BOOL needResize) {
+int script_presentDocument(NSString *appName, NSString *title, NSString *siblingTitle, float x, float y, float w, float h, BOOL needResize)
+{
     NSString *processName = appName;
     
-    if ([appName containsString:@".app"]) {
+    if ([appName containsString:@".app"])
+    {
         processName = [processName substringWithRange:NSMakeRange(0, processName.length - 4)];
     }
     
@@ -822,32 +877,35 @@ int AppleScriptPresentDocument(NSString *appName, NSString *title, NSString *sib
      \nend tell \
      \nget ret", processName, documentWindow ? @"document": @"", documentWindow ? @"document" : @"", windowTitle, resizeWin, siblingWindowTitle];
     
-    DLog(@"presentDocument script source: %@", source);
-    
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     NSAppleEventDescriptor *result = [script executeAndReturnError:&errorDictionary];
     
-    if (!result) {
-        DLog(@"Error execute resizeWindow script: %@", errorDictionary);
-        ret = -1;
-    } else {
-        NSData *data = [result data];
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
+    if (!result)
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
         
+        ret = -1;
+    }
+    else
+    {
+        NSData *data = [result data];
         [data getBytes:&ret length:data.length];
     }
     
     return ret;
 }
 
-void AppleScriptActivateApplication(NSString *appName) {
-    if ([Utils isEmptyObject:appName]) {
-        return;
-    }
+void script_activateApplication(NSString *appName)
+{
+    if ([appName isKindOfClass:[NSString class]] == NO) return;
     
     NSString *processName = appName;
     
-    if ([appName containsString:@".app"]) {
+    if ([appName containsString:@".app"])
+    {
         processName = [processName substringWithRange:NSMakeRange(0, processName.length - 4)];
     }
     
@@ -861,10 +919,12 @@ void AppleScriptActivateApplication(NSString *appName) {
     NSDictionary *errorDictionary;
     NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
     
+    DLog(@"AppleScript execute script:\n%@\n", source);
+    
     if (![script executeAndReturnError:&errorDictionary])
-        DLog(@"APPLESCRIPT - Return Error: %@. \n", errorDictionary);
-    else
-        DLog(@"APPLESCRIPT - Successfully:\n%@\n", source);
+    {
+        DLog(@"Error execute script: %@. \n", errorDictionary);
+    }
 }
 
 @implementation AppleScript

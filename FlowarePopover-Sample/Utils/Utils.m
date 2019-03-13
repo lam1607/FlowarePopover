@@ -6,15 +6,18 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
+#import <objc/runtime.h>
+
 #import "Utils.h"
 
-#import <objc/runtime.h>
+#import "NSObject+Extensions.h"
 
 @implementation Utils
 
 #pragma mark - Singleton
 
-+ (Utils *)sharedInstance {
++ (Utils *)sharedInstance
+{
     static Utils *_sharedInstance = nil;
     static dispatch_once_t onceToken;
     
@@ -25,93 +28,15 @@
     return _sharedInstance;
 }
 
-
-#pragma mark - Model object parsing
-
-+ (NSArray *)propertyNamesOfClass:(Class)class {
-    NSMutableArray *propertyNames = [[NSMutableArray alloc] init];
-    unsigned int propertyCount = 0;
-    objc_property_t *properties = class_copyPropertyList(class, &propertyCount);
-    
-    for (unsigned int i = 0; i < propertyCount; ++i) {
-        objc_property_t property = properties[i];
-        const char *name = property_getName(property);
-        [propertyNames addObject:[NSString stringWithUTF8String:name]];
-    }
-    
-    free(properties);
-    
-    return propertyNames;
-}
-
-+ (void)setValuesToPropertiesOfObject:(id<NSObject>)object withInfo:(NSDictionary *)info {
-    if ([self isEmptyObject:info] || [self isEmptyObject:object]) {
-        return;
-    }
-    
-    NSArray *propertyNames = [self propertyNamesOfClass:[object class]];
-    NSObject *obj = (NSObject *)object;
-    
-    for (NSString *property in propertyNames) {
-        if (![self isEmptyObject:[info valueForKey:property]]) {
-            id value = [info valueForKey:property];
-            
-            if (![self isEmptyObject:value]) {
-                [obj setValue:value forKey:property];
-            }
-        }
-    }
-}
-
-+ (void)decode:(NSCoder *)decoder object:(id<NSObject>)object {
-    if ([self isEmptyObject:decoder] || [self isEmptyObject:object]) {
-        return;
-    }
-    
-    NSArray *propertyNames = [self propertyNamesOfClass:[object class]];
-    NSObject *obj = (NSObject *)object;
-    
-    for (NSString *property in propertyNames) {
-        [obj setValue:[decoder decodeObjectForKey:property] forKey:property];
-    }
-}
-
-+ (void)encode:(NSCoder *)encoder object:(id<NSObject>)object {
-    if ([self isEmptyObject:encoder] || [self isEmptyObject:object]) {
-        return;
-    }
-    
-    NSArray *propertyNames = [self propertyNamesOfClass:[object class]];
-    NSObject *obj = (NSObject *)object;
-    
-    for (NSString *property in propertyNames) {
-        [encoder encodeObject:[obj valueForKey:property] forKey:property];
-    }
-}
-
-+ (void)copy:(NSObject *)copy from:(NSObject *)object withZone:(NSZone *)zone {
-    if ([self isEmptyObject:copy] || [self isEmptyObject:object]) {
-        return;
-    }
-    
-    if ([copy class] != [object class]) {
-        return;
-    }
-    
-    NSArray *propertyNames = [self propertyNamesOfClass:[copy class]];
-    
-    for (NSString *property in propertyNames) {
-        [copy setValue:[[object valueForKey:property] copyWithZone:zone] forKey:property];
-    }
-}
-
 #pragma mark - Formats
 
-+ (void)setViewTransparent:(NSView *)view withBackgroundColor:(NSColor *)color {
++ (void)setViewTransparent:(NSView *)view withBackgroundColor:(NSColor *)color
+{
     view.layer.backgroundColor = [[color colorWithAlphaComponent:COLOR_ALPHA] CGColor];
 }
 
-+ (void)setShadowForView:(NSView *)view {
++ (void)setShadowForView:(NSView *)view
+{
     NSShadow *dropShadow = [[NSShadow alloc] init];
     
 #ifdef SHOULD_USE_ASSET_COLORS
@@ -127,77 +52,77 @@
     [view setShadow:dropShadow];
 }
 
-+ (void)setBackgroundColor:(NSColor *)color forView:(NSView *)view {
++ (void)setBackgroundColor:(NSColor *)color forView:(NSView *)view
+{
     view.wantsLayer = YES;
     view.layer.backgroundColor = [color CGColor];
 }
 
-+ (void)setBackgroundColor:(NSColor *)color cornerRadius:(CGFloat)radius forView:(NSView *)view {
++ (void)setBackgroundColor:(NSColor *)color cornerRadius:(CGFloat)radius forView:(NSView *)view
+{
     [self setBackgroundColor:color forView:view];
     view.layer.cornerRadius = radius;
 }
 
-+ (void)setTitle:(NSString *)title attributes:(NSDictionary *)attributes forControl:(NSControl *)control {
++ (void)setBackgroundColor:(NSColor *)color cornerRadius:(CGFloat)radius borderWidth:(CGFloat)borderWidth borderColor:(NSColor *)borderColor forView:(NSView *)view
+{
+    [self setBackgroundColor:color cornerRadius:radius forView:view];
+    view.layer.borderWidth = borderWidth;
+    view.layer.borderColor = [borderColor CGColor];
+}
+
++ (void)setTitle:(NSString *)title attributes:(NSDictionary *)attributes forControl:(NSControl *)control
+{
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:title attributes:attributes];
     control.attributedStringValue = attributedString;
     
-    if ([control isKindOfClass:[NSButton class]]) {
+    if ([control isKindOfClass:[NSButton class]])
+    {
         ((NSButton *)control).attributedTitle = attributedString;
     }
 }
 
-+ (void)setTitle:(NSString *)title color:(NSColor *)color fontSize:(CGFloat)fontSize forControl:(NSControl *)control {
++ (void)setTitle:(NSString *)title color:(NSColor *)color fontSize:(CGFloat)fontSize forControl:(NSControl *)control
+{
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys: [NSFont systemFontOfSize:fontSize weight:NSFontWeightRegular], NSFontAttributeName, color, NSForegroundColorAttributeName, nil];
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:title attributes:attributes];
     control.attributedStringValue = attributedString;
     
-    if ([control isKindOfClass:[NSButton class]]) {
+    if ([control isKindOfClass:[NSButton class]])
+    {
         ((NSButton *)control).attributedTitle = attributedString;
     }
 }
 
-+ (void)setTitle:(NSString *)title color:(NSColor *)color forControl:(NSControl *)control {
++ (void)setTitle:(NSString *)title color:(NSColor *)color forControl:(NSControl *)control
+{
     [self setTitle:title color:color fontSize:14.0 forControl:control];
-}
-
-#pragma mark - Checking
-
-+ (BOOL)isEmptyObject:(id)obj {
-    if (([obj isKindOfClass:[NSNull class]]) || ([obj isEqual:[NSNull null]]) || (obj == nil)) {
-        return YES;
-    } else if ([obj isKindOfClass:[NSString class]]) {
-        NSString *string = (NSString *)obj;
-        
-        if (string.length == 0 || [string isKindOfClass:[NSNull class]] || (string == nil) ||
-            [string isEqualToString:@"(null)"] || [string isEqualToString:@"<null>" ] || [string isEqualToString:@"null"] ||
-            [string isEqualToString:EMPTY_STRING] ||
-            [[string stringByReplacingOccurrencesOfString:WHITESPACE withString:EMPTY_STRING] isEqualToString:EMPTY_STRING]) {
-            return YES;
-        }
-    }
-    
-    return NO;
 }
 
 #pragma mark - String
 
-+ (NSSize)sizeOfControl:(NSControl *)control {
++ (NSSize)sizeOfControl:(NSControl *)control
+{
     return [self sizeOfControl:control withWidth:control.frame.size.width];
 }
 
-+ (NSSize)sizeOfControl:(NSControl *)control withWidth:(CGFloat)width {
++ (NSSize)sizeOfControl:(NSControl *)control withWidth:(CGFloat)width
+{
     return [control sizeThatFits:NSMakeSize(width, (CGFloat) SHRT_MAX)];
 }
 
-+ (CGFloat)heightForWidth:(CGFloat)width string:(NSAttributedString*)string {
++ (CGFloat)heightForWidth:(CGFloat)width string:(NSAttributedString *)string
+{
     return [self sizeForWidth:width height:FLT_MAX string:string].height;
 }
 
-+ (NSSize)sizeForWidth:(CGFloat)width height:(CGFloat)height string:(NSAttributedString*)string {
++ (NSSize)sizeForWidth:(CGFloat)width height:(CGFloat)height string:(NSAttributedString *)string
+{
     NSInteger typesetterBehavior = NSTypesetterLatestBehavior;
     NSSize size = NSZeroSize;
 
-    if ([string length] > 0) {
+    if ([string length] > 0)
+    {
         // Checking for empty string is necessary since Layout Manager will give the nominal
         // height of one line if length is 0.  Our API specifies 0.0 for an empty string.
         NSSize dumpSize = NSMakeSize(width, height);
@@ -209,7 +134,8 @@
         [textStorage addLayoutManager:layoutManager];
         [layoutManager setHyphenationFactor:0.0];
 
-        if (typesetterBehavior != NSTypesetterLatestBehavior) {
+        if (typesetterBehavior != NSTypesetterLatestBehavior)
+        {
             [layoutManager setTypesetterBehavior:typesetterBehavior];
         }
 
@@ -221,7 +147,8 @@
         // Adjust if there is extra height for the cursor
         NSSize extraLineSize = [layoutManager extraLineFragmentRect].size;
 
-        if (extraLineSize.height > 0) {
+        if (extraLineSize.height > 0)
+        {
             size.height -= extraLineSize.height;
         }
 
@@ -235,15 +162,18 @@
 
 #pragma mark - Device
 
-+ (NSSize)screenSize {
++ (NSSize)screenSize
+{
     return [[NSScreen mainScreen] frame].size;
 }
 
-+ (BOOL)isDarkMode {
++ (BOOL)isDarkMode
+{
 #ifdef NSAppKitVersionNumber10_14
     NSAppearance *appearance = NSAppearance.currentAppearance;
     
-    if (@available(macOS 10.14, *)) {
+    if (@available(macOS 10.14, *))
+    {
         return appearance.name == NSAppearanceNameDarkAqua;
     }
 #endif
@@ -253,10 +183,12 @@
 
 #pragma mark - Application utilities
 
-+ (void)setIsApplicationActive:(BOOL)isApplicationActive {
++ (void)setIsApplicationActive:(BOOL)isApplicationActive
+{
 }
 
-+ (NSString *)getAppPathWithIdentifier:(NSString *)bundleIdentifier {
++ (NSString *)getAppPathWithIdentifier:(NSString *)bundleIdentifier
+{
     NSString *path = nil;
     NSArray *urls = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationDirectory inDomains:NSLocalDomainMask];
     NSArray *properties = [NSArray arrayWithObjects: NSURLLocalizedNameKey, NSURLCreationDateKey, NSURLLocalizedTypeDescriptionKey, nil];
@@ -267,27 +199,30 @@
                                                                       options:(NSDirectoryEnumerationSkipsHiddenFiles)
                                                                         error:&error];
     
-    if (array != nil) {
-        for (NSURL *appUrl in array) {
-            NSString *appPath = [appUrl path];
-            NSBundle *appBundle = [NSBundle bundleWithPath:appPath];
-            
-            if ([bundleIdentifier isEqualToString:[appBundle bundleIdentifier]]) {
-                path = appPath;
-                break;
-            }
+    for (NSURL *appUrl in array)
+    {
+        NSString *appPath = [appUrl path];
+        NSBundle *appBundle = [NSBundle bundleWithPath:appPath];
+        
+        if ([bundleIdentifier isEqualToString:[appBundle bundleIdentifier]])
+        {
+            path = appPath;
+            break;
         }
     }
     
-    if (path == nil) {
+    if (path == nil)
+    {
         path = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:bundleIdentifier];
     }
     
     return path;
 }
 
-+ (NSString *)getAppNameWithIdentifier:(NSString *)bundleIdentifier {
-    if (![Utils isEmptyObject:bundleIdentifier]) {
++ (NSString *)getAppNameWithIdentifier:(NSString *)bundleIdentifier
+{
+    if ([bundleIdentifier isKindOfClass:[NSString class]])
+    {
         NSString *path = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:bundleIdentifier];
         path = [Utils getAppPathWithIdentifier:bundleIdentifier];
         
@@ -299,31 +234,38 @@
 
 #pragma mark - Window utilities
 
-+ (CGWindowLevel)windowLevelDesktop {
++ (CGWindowLevel)windowLevelDesktop
+{
     return ((CGWindowLevel)WindowLevelGroupTagDesktop);
 }
 
-+ (CGWindowLevel)windowLevelBase {
++ (CGWindowLevel)windowLevelBase
+{
     return ((CGWindowLevel)WindowLevelGroupTagBase);
 }
 
-+ (CGWindowLevel)windowLevelNormal {
++ (CGWindowLevel)windowLevelNormal
+{
     return ((CGWindowLevel)WindowLevelGroupTagNormal);
 }
 
-+ (CGWindowLevel)windowLevelSetting {
++ (CGWindowLevel)windowLevelSetting
+{
     return ((CGWindowLevel)WindowLevelGroupTagSetting);
 }
 
-+ (CGWindowLevel)windowLevelUtility {
++ (CGWindowLevel)windowLevelUtility
+{
     return ((CGWindowLevel)WindowLevelGroupTagUtility);
 }
 
-+ (CGWindowLevel)windowLevelHigh {
++ (CGWindowLevel)windowLevelHigh
+{
     return ((CGWindowLevel)WindowLevelGroupTagHigh);
 }
 
-+ (CGWindowLevel)windowLevelAlert {
++ (CGWindowLevel)windowLevelAlert
+{
     return ((CGWindowLevel)WindowLevelGroupTagAlert);
 }
 

@@ -14,7 +14,8 @@
 ///
 @property (nonatomic, strong) NSString *shortDesc;
 @property (nonatomic, strong) NSString *longDesc;
-@property (nonatomic, strong) NSMutableArray<Comic *> *childItems;
+@property (nonatomic, weak) Comic *parentItem;
+@property (nonatomic, strong) NSMutableArray<Comic *> *subItems;
 
 /// Initialize
 ///

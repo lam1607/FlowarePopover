@@ -8,18 +8,24 @@
 
 #import "FilmsViewController.h"
 
-#import "FilmCellView.h"
-
-#import "CollectionViewManager.h"
-
-#import "CollectionViewRow.h"
-
 #import "FilmRepository.h"
 #import "FilmsPresenter.h"
 
 #import "Film.h"
 
+#import "FilmCellView.h"
+
+#import "CollectionViewManager.h"
+
 @interface FilmsViewController () <CollectionViewManagerProtocols>
+{
+    FilmRepository *_repository;
+    FilmsPresenter *_presenter;
+    
+    CollectionViewManager *_collectionManager;
+    
+    NSSize _estimatedItemSize;
+}
 
 /// IBOutlet
 ///
@@ -30,54 +36,60 @@
 
 /// @property
 ///
-@property (nonatomic, strong) FilmRepository *repository;
-@property (nonatomic, strong) FilmsPresenter *presenter;
-
-@property (nonatomic, assign) NSSize estimatedItemSize;
-
-@property (nonatomic, strong) CollectionViewManager *collectionManager;
 
 @end
 
 @implementation FilmsViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
     
-    [self initialize];
+    [self objectsInitialize];
     [self setupUI];
     [self loadData];
 }
 
 #pragma mark - Initialize
 
-- (void)initialize {
-    self.repository = [[FilmRepository alloc] init];
-    self.presenter = [[FilmsPresenter alloc] init];
-    [self.presenter attachView:self repository:self.repository];
+- (void)objectsInitialize
+{
+    _repository = [[FilmRepository alloc] init];
+    _presenter = [[FilmsPresenter alloc] init];
+    [_presenter attachView:self repository:_repository];
+    [_presenter setupProvider];
+    [_presenter registerNotificationObservers];
     
-    self.estimatedItemSize = NSMakeSize(self.view.frame.size.width / 3, 230.0);
+    _estimatedItemSize = NSMakeSize(self.view.frame.size.width / 3, 230.0);
     
-    self.collectionManager = [[CollectionViewManager alloc] initWithCollectionView:self.collectionView];
-    self.collectionManager.protocols = self;
+    _collectionManager = [[CollectionViewManager alloc] initWithCollectionView:self.collectionView source:self provider:[_presenter provider]];
 }
 
 #pragma mark - Setup UI
 
-- (void)setupUI {
+- (void)setupUI
+{
     NSCollectionViewFlowLayout *flowLayout = [[NSCollectionViewFlowLayout alloc] init];
     flowLayout.minimumInteritemSpacing = 10.0;
     flowLayout.sectionInset = NSEdgeInsetsMake(10.0, 10.0, 10.0, 10.0);
     self.collectionView.collectionViewLayout = flowLayout;
     
     self.collectionView.backgroundColors = @[[NSColor clearColor]];
+    
+    [self.collectionView setSelectable:YES];
+    [self.collectionView setAllowsMultipleSelection:YES];
+    [self.collectionView registerForDraggedTypes:[NSArray arrayWithObjects:(NSPasteboardType)kUTTypeData, (NSPasteboardType)kUTTypeFileURL, NSFilenamesPboardType, nil]];
+    [self.collectionView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:YES];
+    [self.collectionView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
 }
 
-- (void)refreshUIColors {
+- (void)refreshUIColors
+{
     [super refreshUIColors];
     
-    if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name]) {
+    if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name])
+    {
 #ifdef SHOULD_USE_ASSET_COLORS
         [Utils setBackgroundColor:[NSColor _tealColor] forView:self.vHeader];
 #else
@@ -88,72 +100,171 @@
 
 #pragma mark - Local methods
 
-- (void)loadData {
-    [self.presenter fetchData];
+- (void)loadData
+{
+    [_presenter fetchData];
 }
 
-- (NSSize)sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat horizontalMargin = 30.0;
-    CGFloat itemWidth = self.view.frame.size.width / 2 - horizontalMargin;
-    CGFloat itemHeight = 230.0;
-    NSSize itemSize = NSMakeSize(itemWidth, itemHeight);
-    
-    if ([[[self.presenter data] objectAtIndex:indexPath.item] isKindOfClass:[Film class]]) {
-        @autoreleasepool {
-            Film *film = (Film *)[[self.presenter data] objectAtIndex:indexPath.item];
-            CGFloat nameHorizontalMargin = 50.0;
-            NSTextField *lblName = [[NSTextField alloc] initWithFrame:NSMakeRect(0.0, 0.0, itemWidth - nameHorizontalMargin, 17.0)];
-            
-            lblName.font = [NSFont systemFontOfSize:18.0 weight:NSFontWeightMedium];
-            lblName.maximumNumberOfLines = 0;
-            lblName.stringValue = film.name;
-            
-            CGFloat imageHeight = 150.0;
-            CGFloat nameHeight = [Utils sizeOfControl:lblName].height;
-            CGFloat verticalMargins = 65.0; // Take a look at FilmCellView.xib file
-            
-            itemHeight = imageHeight + nameHeight + verticalMargins;
-            itemSize = NSMakeSize(itemWidth, itemHeight);
-        }
+- (NSSize)sizeForItem:(Film *)item atIndexPath:(NSIndexPath *)indexPath
+{
+    @autoreleasepool
+    {
+        CGFloat horizontalMargin = 30.0;
+        CGFloat itemWidth = self.view.frame.size.width / 2 - horizontalMargin;
+        CGFloat itemHeight = 230.0;
+        NSSize itemSize = NSMakeSize(itemWidth, itemHeight);
+        CGFloat nameHorizontalMargin = 50.0;
+        NSTextField *lblName = [[NSTextField alloc] initWithFrame:NSMakeRect(0.0, 0.0, itemWidth - nameHorizontalMargin, 17.0)];
+        
+        lblName.font = [NSFont systemFontOfSize:18.0 weight:NSFontWeightMedium];
+        lblName.maximumNumberOfLines = 0;
+        lblName.stringValue = item.name;
+        
+        CGFloat imageHeight = 150.0;
+        CGFloat nameHeight = [Utils sizeOfControl:lblName].height;
+        CGFloat verticalMargins = 65.0; // Take a look at FilmCellView.xib file
+        
+        itemHeight = imageHeight + nameHeight + verticalMargins;
+        itemSize = NSMakeSize(itemWidth, itemHeight);
+        
+        return itemSize;
     }
-    
-    return itemSize;
 }
 
 #pragma mark - CollectionViewManagerProtocols implementation
 
-- (NSSize)collectionViewManager:(CollectionViewManager *)manager sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return [self sizeForItemAtIndexPath:indexPath];
+- (NSUserInterfaceItemIdentifier)collectionViewManager:(CollectionViewManager *)manager makeItemWithIdentifierForItem:(id)item atIndexPath:(NSIndexPath *)indexPath
+{
+    return NSStringFromClass([FilmCellView class]);
 }
 
-- (void)collectionViewManager:(CollectionViewManager *)manager didSelectItems:(NSArray<id<CollectionViewRowProtocols>> *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths {
-    if (manager == self.collectionManager) {
-        for (id<CollectionViewRowProtocols>item in items) {
-            if ([item.data isKindOfClass:[Film class]] && (((Film *)item.data).trailerUrl != nil)) {
-                [[NSWorkspace sharedWorkspace] openURL:((Film *)item.data).trailerUrl];
-            } else {
-                DLog(@"URL of item %@ is unavailable", item.data);
-            }
+- (NSEdgeInsets)collectionViewManager:(CollectionViewManager *)manager layout:(NSCollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return NSEdgeInsetsMake(10.0, 10.0, 10.0, 10.0);
+}
+
+- (NSSize)collectionViewManager:(CollectionViewManager *)manager layout:(NSCollectionViewLayout *)collectionViewLayout sizeForItem:(id)item atIndexPath:(NSIndexPath *)indexPath
+{
+    if ([item isKindOfClass:[Film class]])
+    {
+        return [self sizeForItem:(Film *)item atIndexPath:indexPath];
+    }
+    
+    return _estimatedItemSize;
+}
+
+//- (void)collectionViewManager:(CollectionViewManager *)manager didSelectItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths
+//{
+//    for (id item in items)
+//    {
+//        if ([item isKindOfClass:[Film class]] && (((Film *)item).trailerUrl != nil))
+//        {
+//            [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:((Film *)item).trailerUrl]];
+//        }
+//        else
+//        {
+//            DLog(@"URL of item %@ is unavailable", item);
+//        }
+//    }
+//}
+
+#pragma mark - CollectionViewManagerProtocols Drag/Drop
+
+/**
+ * Asks the delegate whether a drag operation involving the specified items can begin.
+ */
+- (BOOL)collectionViewManager:(CollectionViewManager *)manager canDragItems:(NSArray *)draggedItems atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths withEvent:(NSEvent *)event
+{
+    return YES;
+}
+
+/**
+ * Asks the delegate whether a drag operation can place the data on the pasteboard.
+ */
+- (BOOL)collectionViewManager:(CollectionViewManager *)manager writeItems:(NSArray *)draggedItems atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths toPasteboard:(NSPasteboard *)pasteboard
+{
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:draggedItems];
+    
+    [pasteboard setData:data forType:(NSPasteboardType)kUTTypeData];
+    
+    return YES;
+}
+
+/**
+ * Asks the delegate whether a drop operation is possible at the specified location.
+ */
+- (NSDragOperation)collectionViewManager:(CollectionViewManager *)manager validateDrop:(id<NSDraggingInfo>)draggingInfo proposedItem:(nullable id)item proposedIndexPath:(NSIndexPath * __nonnull * __nonnull)proposedDropIndexPath dropOperation:(NSCollectionViewDropOperation *)proposedDropOperation
+{
+    NSPasteboard *pasteboard = [draggingInfo draggingPasteboard];
+    
+    if (([draggingInfo draggingSource] != nil) && [[pasteboard types] containsObject:(NSPasteboardType)kUTTypeData])
+    {
+        id draggedObj = [NSKeyedUnarchiver unarchiveObjectWithData:[pasteboard dataForType:(NSPasteboardType)kUTTypeData]];
+        
+        if ([_presenter couldDropObject:draggedObj])
+        {
+            return NSDragOperationMove;
         }
     }
+    
+    return NSDragOperationNone;
 }
 
-#pragma mark - FilmsViewProtocols implementation
-
-- (void)reloadViewData {
-    for (AbstractData *obj in [self.presenter data]) {
-        if ([obj isKindOfClass:[Film class]]) {
-            @autoreleasepool {
-                CollectionViewRow *row = [[CollectionViewRow alloc] initWithIdentifier:NSStringFromClass([FilmCellView class]) data:(Film *)obj];
+/**
+ * Asks the delegate to incorporate the dropped content into the collection view.
+ */
+- (BOOL)collectionViewManager:(CollectionViewManager *)manager acceptDrop:(id<NSDraggingInfo>)draggingInfo item:(nullable id)item indexPath:(NSIndexPath *)indexPath dropOperation:(NSCollectionViewDropOperation)dropOperation
+{
+    NSPasteboard *pasteboard = [draggingInfo draggingPasteboard];
+    
+    if (([draggingInfo draggingSource] != nil) && [[pasteboard types] containsObject:(NSPasteboardType)kUTTypeData])
+    {
+        id draggedObj = [NSKeyedUnarchiver unarchiveObjectWithData:[pasteboard dataForType:(NSPasteboardType)kUTTypeData]];
+        
+        if ([_presenter couldDropObject:draggedObj])
+        {
+            if ([_presenter data].count > 0)
+            {
+                [_presenter dropObject:draggedObj forRow:indexPath.item target:item completion:^(BOOL finished) {
+                    if (finished)
+                    {
+                    }
+                }];
                 
-                row.estimatedItemSize = self.estimatedItemSize;
-                
-                [self.collectionManager addRow:row];
+                return YES;
             }
         }
     }
     
-    [self.collectionManager reloadData];
+    return NO;
+}
+
+/**
+ * Asks the delegate that a drag session is about to begin.
+ */
+- (void)collectionViewManager:(CollectionViewManager *)manager draggingSession:(NSDraggingSession *)session willBeginAtPoint:(NSPoint)screenPoint forItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths
+{
+}
+
+/**
+ * Asks the delegate that a drag session ended.
+ */
+- (void)collectionViewManager:(CollectionViewManager *)manager draggingSession:(NSDraggingSession *)session endedAtPoint:(NSPoint)screenPoint dragOperation:(NSDragOperation)operation
+{
+}
+
+/**
+ * Asks the delegate to update the dragging items during a drag operation.
+ */
+- (void)collectionViewManager:(CollectionViewManager *)manager updateDraggingItemsForDrag:(id<NSDraggingInfo>)draggingInfo
+{
+}
+
+#pragma mark - FilmsViewProtocols implementation
+
+- (void)reloadViewData
+{
+    [_collectionManager reloadData];
 }
 
 @end

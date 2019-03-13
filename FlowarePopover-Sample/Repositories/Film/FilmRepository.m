@@ -13,18 +13,22 @@
 #import "Film.h"
 
 @interface FilmRepository ()
+{
+    FilmService *_service;
+}
 
 /// @property
 ///
-@property (nonatomic, strong) FilmService *service;
 
 @end
 
 @implementation FilmRepository
 
-- (instancetype)init {
-    if (self = [super init]) {
-        self.service = [[FilmService alloc] init];
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        _service = [[FilmService alloc] init];
     }
     
     return self;
@@ -32,12 +36,15 @@
 
 #pragma mark - FilmRepositoryProtocols implementation
 
-- (NSArray<Film *> *)fetchFilms {
+- (NSArray<Film *> *)fetchFilms
+{
     NSMutableArray *films = [[NSMutableArray alloc] init];
-    NSArray<NSDictionary *> *filmDicts = [self.service getMockupDataType:@"films"];
+    NSArray<NSDictionary *> *filmDicts = [_service getMockupDataType:@"films"];
     
-    for (NSDictionary *contentDict in filmDicts) {
-        @autoreleasepool {
+    for (NSDictionary *contentDict in filmDicts)
+    {
+        @autoreleasepool
+        {
             Film *item = [[Film alloc] initWithContent:contentDict];
             [films addObject:item];
         }

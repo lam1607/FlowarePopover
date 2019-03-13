@@ -14,32 +14,94 @@
 #import "Technology.h"
 
 @interface TechnologiesPresenter ()
+{
+    NSArray<Technology *> *_technologies;
+}
 
 /// @property
 ///
-@property (nonatomic, strong) NSArray<Technology *> *technologies;
 
 @end
 
 @implementation TechnologiesPresenter
 
+#pragma mark - Local methods
+
 #pragma mark - AbstractPresenterProtocols implementation
 
-- (void)fetchData {
-    if ([self.repository conformsToProtocol:@protocol(TechnologyRepositoryProtocols)]) {
+- (void)fetchData
+{
+    if ([self.repository conformsToProtocol:@protocol(TechnologyRepositoryProtocols)])
+    {
+        __block typeof(self) wself = self;
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-            NSArray<Technology *> *technologies = [(id<TechnologyRepositoryProtocols>)self.repository fetchTechnologies];
-            self.technologies = [[NSArray alloc] initWithArray:technologies];
+            self->_technologies = [(id<TechnologyRepositoryProtocols>)self.repository fetchTechnologies];
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.view reloadViewData];
-            });
+            [[wself provider] buildDataSource];
+            
+            if ([wself provider].dataSource.count > 0)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [wself.view reloadViewData];
+                });
+            }
         });
     }
 }
 
-- (NSArray<Technology *> *)data {
-    return self.technologies;
+- (void)clearData
+{
+    _technologies = nil;
+}
+
+- (NSArray<Technology *> *)data
+{
+    return _technologies;
+}
+
+/// Find object that the represented item is mapped to.
+///
+- (Class)targetObjectClass
+{
+    return [Technology class];
+}
+
+#pragma mark - DataProviderProtocols implementation
+
+- (NSMutableArray<id<ListSupplierProtocol>> *)dataSourceForProvider:(id<DataProviderProtocols>)provider
+{
+    return (NSMutableArray<id<ListSupplierProtocol>> *)_technologies;
+}
+
+#pragma mark - NotificationObserversProtocols implementation
+
+- (void)notificationObservers_objectInserted:(NSNotification *)notification
+{
+    DLog(@"notification = %@", notification);
+    
+    [self handleNotificationObserversObjectInserted:notification.object];
+}
+
+- (void)notificationObservers_objectUpdated:(NSNotification *)notification
+{
+    DLog(@"notification = %@", notification);
+    
+    [self handleNotificationObserversObjectUpdated:notification.object];
+}
+
+- (void)notificationObservers_objectDeleted:(NSNotification *)notification
+{
+    DLog(@"notification = %@", notification);
+    
+    [self handleNotificationObserversObjectDeleted:notification.object];
+}
+
+- (void)notificationObservers_objectTrashed:(NSNotification *)notification
+{
+    DLog(@"notification = %@", notification);
+    
+    [self handleNotificationObserversObjectTrashed:notification.object];
 }
 
 @end

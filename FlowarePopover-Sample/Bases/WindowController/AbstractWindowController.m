@@ -15,13 +15,15 @@
 #import "AppleScript.h"
 
 @interface AbstractWindowController ()
+{
+    FLOWindowMode _mode;
+    BOOL _isDesktopMode;
+    NSRect _normalFrame;
+    CGFloat _titleBarHeight;
+}
 
 /// @property
 ///
-@property (nonatomic, assign, readwrite) FLOWindowMode windowMode;
-@property (nonatomic, assign, readwrite) BOOL windowInDesktopMode;
-@property (nonatomic, assign, readwrite) NSRect windowNormalFrame;
-@property (nonatomic, assign, readwrite) CGFloat windowTitleBarHeight;
 
 @end
 
@@ -29,23 +31,23 @@ static AbstractWindowController *_sharedInstance = nil;
 
 @implementation AbstractWindowController
 
-@synthesize windowMode = _windowMode;
-@synthesize windowTitleBarHeight = _windowTitleBarHeight;
-
 #pragma mark - Singleton
 
-+ (AbstractWindowController *)sharedInstance {
++ (AbstractWindowController *)sharedInstance
+{
     return _sharedInstance;
 }
 
 #pragma mark - Window lifecycle
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     _sharedInstance = self;
-    _windowMode = FLOWindowModeNormal;
+    _mode = FLOWindowModeNormal;
 }
 
-- (void)windowDidLoad {
+- (void)windowDidLoad
+{
     [super windowDidLoad];
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
@@ -53,44 +55,55 @@ static AbstractWindowController *_sharedInstance = nil;
     [self registerEventMonitor];
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Getter/Setter
 
-- (FLOWindowMode)windowMode {
-    return _windowMode;
+- (FLOWindowMode)mode
+{
+    return _mode;
 }
 
-- (BOOL)windowInDesktopMode {
-    return self.windowMode == FLOWindowModeDesktop;
+- (BOOL)isDesktopMode
+{
+    return _mode == FLOWindowModeDesktop;
 }
 
-- (NSRect)windowNormalFrame {
-    return _windowNormalFrame;
+- (NSRect)normalFrame
+{
+    return _normalFrame;
 }
 
-- (CGFloat)windowTitleBarHeight {
-    return _windowTitleBarHeight;
+- (CGFloat)titleBarHeight
+{
+    return _titleBarHeight;
 }
 
-- (void)setWindowMode {
-    if (_windowMode == FLOWindowModeNormal) {
-        _windowMode = FLOWindowModeDesktop;
-        _windowNormalFrame = self.window.frame;
-    } else {
-        _windowMode = FLOWindowModeNormal;
+- (void)setMode
+{
+    if (_mode == FLOWindowModeNormal)
+    {
+        _mode = FLOWindowModeDesktop;
+        _normalFrame = self.window.frame;
+    }
+    else
+    {
+        _mode = FLOWindowModeNormal;
     }
 }
 
-- (void)setWindowTitleBarHeight {
-    _windowTitleBarHeight = self.window.frame.size.height - self.window.contentView.frame.size.height;
+- (void)setTitleBarHeight
+{
+    _titleBarHeight = self.window.frame.size.height - self.window.contentView.frame.size.height;
 }
 
 #pragma mark - Setup UI
 
-- (void)setupUI {
+- (void)setupUI
+{
     NSRect visibleFrame = [self.window.screen visibleFrame];
     CGFloat width = 0.7 * visibleFrame.size.width;
     CGFloat height = 0.8 * visibleFrame.size.height;
@@ -102,13 +115,15 @@ static AbstractWindowController *_sharedInstance = nil;
     [self.window setMinSize:NSMakeSize(0.7 * visibleFrame.size.width, 0.8 * visibleFrame.size.height)];
 }
 
-#pragma mark - Processes
+#pragma mark - Local methods
 
-- (void)activate {
+- (void)activate
+{
     [self.window makeKeyAndOrderFront:nil];
 }
 
-- (void)changeWindowToDesktopMode {
+- (void)changeWindowToDesktopMode
+{
     self.window.titleVisibility = NSWindowTitleHidden;
     self.window.styleMask = NSWindowStyleMaskBorderless;
     [self.window makeKeyAndOrderFront:nil];
@@ -117,15 +132,17 @@ static AbstractWindowController *_sharedInstance = nil;
     [self.window setFrame:[self.window.screen visibleFrame] display:YES animate:YES];
 }
 
-- (void)changeWindowToNormalMode {
+- (void)changeWindowToNormalMode
+{
     self.window.titleVisibility = NSWindowTitleVisible;
     self.window.styleMask = (NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable);
     self.window.level = [Utils windowLevelBase];
     
-    [self.window setFrame:self.windowNormalFrame display:YES animate:YES];
+    [self.window setFrame:self.normalFrame display:YES animate:YES];
 }
 
-- (void)showChildWindowsOnActivate {
+- (void)showChildWindowsOnActivate
+{
     NSWindowLevel levelNormal = [Utils windowLevelNormal];
     NSWindowLevel levelSetting = [Utils windowLevelSetting];
     NSWindowLevel levelUtility = [Utils windowLevelUtility];
@@ -134,11 +151,14 @@ static AbstractWindowController *_sharedInstance = nil;
     
     NSWindowLevel windowLevel = levelNormal;
     
-    for (NSWindow *childWindow in self.window.childWindows) {
+    for (NSWindow *childWindow in self.window.childWindows)
+    {
         windowLevel = levelNormal;
         
-        if ([childWindow isKindOfClass:[FLOPopoverWindow class]]) {
-            switch (((FLOPopoverWindow *)childWindow).tag) {
+        if ([childWindow isKindOfClass:[FLOPopoverWindow class]])
+        {
+            switch (((FLOPopoverWindow *)childWindow).tag)
+            {
                 case WindowLevelGroupTagSetting:
                     windowLevel = levelSetting;
                     break;
@@ -160,13 +180,16 @@ static AbstractWindowController *_sharedInstance = nil;
     }
 }
 
-- (void)hideChildWindowsOnDeactivate {
+- (void)hideChildWindowsOnDeactivate
+{
     NSWindowLevel levelBase = [Utils windowLevelBase];
     NSWindowLevel levelAlert = [Utils windowLevelAlert];
     BOOL shouldOrderChildWindows = NO;
     
-    for (NSWindow *childWindow in self.window.childWindows) {
-        if (childWindow.level != levelBase) {
+    for (NSWindow *childWindow in self.window.childWindows)
+    {
+        if (childWindow.level != levelBase)
+        {
             shouldOrderChildWindows = YES;
             
             childWindow.level = levelBase;
@@ -181,7 +204,8 @@ static AbstractWindowController *_sharedInstance = nil;
     BOOL shouldChildWindowsFloat = [Utils sharedInstance].shouldChildWindowsFloat;
     
     // If we want some childWindow float on other active application.
-    if (shouldChildWindowsFloat) {
+    if (shouldChildWindowsFloat)
+    {
         //        for (NSWindow *childWindow in self.window.childWindows) {
         //            if ([childWindow isKindOfClass:[FLOPopoverWindow class]])
         //            {
@@ -194,55 +218,69 @@ static AbstractWindowController *_sharedInstance = nil;
     }
     
     // If none of childWindows floats on other active application. But we want to keep childWindow orders.
-    if ((shouldChildWindowsFloat == NO) && shouldOrderChildWindows) {
+    if ((shouldChildWindowsFloat == NO) && shouldOrderChildWindows)
+    {
     }
 }
 
-- (void)hideOtherAppsExceptThoseInside {
-    AppleScriptHideAllAppsExcept(FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER, FLO_ENTITLEMENT_APP_IDENTIFIER_SAFARI);
+- (void)hideOtherAppsExceptThoseInside
+{
+    script_hideAllAppsExcept(FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER, FLO_ENTITLEMENT_APP_IDENTIFIER_SAFARI);
 }
 
 #pragma mark - Event handles
 
-- (void)windowDidChangeMode:(NSNotification *)notification {
-    if ([notification.name isEqualToString:FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE]) {
-        if (self.windowMode == FLOWindowModeDesktop) {
+- (void)windowDidChangeMode:(NSNotification *)notification
+{
+    if ([notification.name isEqualToString:FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE])
+    {
+        if (self.mode == FLOWindowModeDesktop)
+        {
             [self changeWindowToDesktopMode];
-            AppleScriptHideAllApps();
-        } else {
+            script_hideAllApps();
+        }
+        else
+        {
             [self changeWindowToNormalMode];
         }
     }
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"effectiveAppearance"] && [[change objectForKey:@"new"] isKindOfClass:[NSAppearance class]]) {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"effectiveAppearance"] && [[change objectForKey:@"new"] isKindOfClass:[NSAppearance class]])
+    {
         [NSAppearance setCurrentAppearance:[change objectForKey:@"new"]];
     }
 }
 
 #pragma mark - Event monitor
 
-- (void)registerEventMonitor {
+- (void)registerEventMonitor
+{
     [self registerWindowChangeModeEvent];
     [self registerApplicationAppearanceNotification];
 }
 
-- (void)registerWindowChangeModeEvent {
+- (void)registerWindowChangeModeEvent
+{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidChangeMode:) name:FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE object:nil];
 }
 
-- (void)removeWindowChangeModeEvent {
+- (void)removeWindowChangeModeEvent
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE object:nil];
 }
 
-- (void)registerApplicationAppearanceNotification {
+- (void)registerApplicationAppearanceNotification
+{
     [self.window.contentView addObserver:self forKeyPath:@"effectiveAppearance"
                                  options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
                                  context:NULL];
 }
 
-- (void)unregisterApplicationAppearanceNotification {
+- (void)unregisterApplicationAppearanceNotification
+{
     [self.window.contentView removeObserver:self forKeyPath:@"effectiveAppearance"];
 }
 

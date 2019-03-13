@@ -14,45 +14,67 @@
 
 #pragma mark - HomePresenterProtocols implementation
 
-- (void)changeWindowMode {
-    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)]) {
+- (void)changeWindowMode
+{
+    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
+    {
         [(id<HomeViewProtocols>)self.view viewDidSelectWindowModeChanging];
     }
 }
 
-- (void)openFinder {
-    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)]) {
+- (void)openFinder
+{
+    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
+    {
         [(id<HomeViewProtocols>)self.view viewShouldOpenFinder];
     }
 }
 
-- (void)openSafari {
-    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)]) {
+- (void)openSafari
+{
+    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
+    {
         [(id<HomeViewProtocols>)self.view viewShouldOpenSafari];
     }
 }
 
-- (void)openFilmsView {
-    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)]) {
+- (void)openFilmsView
+{
+    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
+    {
         [(id<HomeViewProtocols>)self.view viewShouldOpenFilmsView];
     }
 }
 
-- (void)openNewsView {
-    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)]) {
+- (void)openNewsView
+{
+    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
+    {
         [(id<HomeViewProtocols>)self.view viewShouldOpenNewsView];
     }
 }
 
-- (void)openComicsView {
-    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)]) {
+- (void)openComicsView
+{
+    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
+    {
         [(id<HomeViewProtocols>)self.view viewShouldOpenComicsView];
     }
 }
 
-- (void)showSecondBar {
-    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)]) {
+- (void)showSecondBar
+{
+    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
+    {
         [(id<HomeViewProtocols>)self.view viewShouldShowSecondBar];
+    }
+}
+
+- (void)showTrashView
+{
+    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
+    {
+        [(id<HomeViewProtocols>)self.view viewShouldShowTrashView];
     }
 }
 

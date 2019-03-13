@@ -6,16 +6,16 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "ListSupplierProtocol.h"
 
-@interface AbstractData : NSObject
+@interface AbstractData : NSObject <ListSupplierProtocol, NSCoding, NSCopying, NSMutableCopying, NSPasteboardWriting, NSPasteboardReading>
 
 /// @property
 ///
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSURL *imageUrl;
-@property (nonatomic, strong) NSURL *pageUrl;
+@property (nonatomic, strong) NSString *imageUrl;
+@property (nonatomic, strong) NSString *pageUrl;
 
 /// Initialize
 ///
@@ -25,7 +25,7 @@
 
 /// Methods
 ///
-- (void)setImage:(NSImage *)image forURL:(NSURL *)url;
-- (NSImage *)getImageForURL:(NSURL *)url;
+- (void)setImage:(NSImage *)image forURL:(NSString *)url;
+- (NSImage *)getImageForURL:(NSString *)url;
 
 @end

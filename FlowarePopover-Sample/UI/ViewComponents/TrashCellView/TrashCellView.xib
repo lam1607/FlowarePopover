@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView identifier="TrashCellView" id="c22-O7-iKe" customClass="TrashCellView">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="59"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="cyJ-CW-HmM" userLabel="View Container">
+                    <rect key="frame" x="10" y="5" width="460" height="49"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gxg-wd-EQ8" userLabel="Lbl Title">
+                            <rect key="frame" x="3" y="27" width="454" height="17"/>
+                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="left" title="Title" usesSingleLineMode="YES" id="RPg-kR-5PU">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="66k-3b-JAE" userLabel="Lbl Url">
+                            <rect key="frame" x="3" y="5" width="454" height="17"/>
+                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="left" title="Url" usesSingleLineMode="YES" id="5tc-Z2-IRE">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="66k-3b-JAE" secondAttribute="bottom" constant="5" id="3aW-nk-sC1"/>
+                        <constraint firstItem="66k-3b-JAE" firstAttribute="leading" secondItem="cyJ-CW-HmM" secondAttribute="leading" constant="5" id="MsB-GW-yT6"/>
+                        <constraint firstAttribute="trailing" secondItem="66k-3b-JAE" secondAttribute="trailing" constant="5" id="aCb-BV-J0O"/>
+                        <constraint firstItem="gxg-wd-EQ8" firstAttribute="top" secondItem="cyJ-CW-HmM" secondAttribute="top" constant="5" id="bxX-HA-pFx"/>
+                        <constraint firstAttribute="trailing" secondItem="gxg-wd-EQ8" secondAttribute="trailing" constant="5" id="hgm-qe-PXx"/>
+                        <constraint firstItem="gxg-wd-EQ8" firstAttribute="leading" secondItem="cyJ-CW-HmM" secondAttribute="leading" constant="5" id="n0s-3I-jNS"/>
+                        <constraint firstItem="66k-3b-JAE" firstAttribute="top" secondItem="gxg-wd-EQ8" secondAttribute="bottom" constant="5" id="vD8-m1-Ttv"/>
+                    </constraints>
+                </customView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="cyJ-CW-HmM" secondAttribute="bottom" constant="5" id="GlI-tK-K8n"/>
+                <constraint firstItem="cyJ-CW-HmM" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="5" id="MEg-ea-kaD"/>
+                <constraint firstAttribute="trailing" secondItem="cyJ-CW-HmM" secondAttribute="trailing" constant="10" id="aFo-6D-dSS"/>
+                <constraint firstItem="cyJ-CW-HmM" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="mN8-h0-nZa"/>
+            </constraints>
+            <connections>
+                <outlet property="lblTitle" destination="gxg-wd-EQ8" id="jJe-vY-9ld"/>
+                <outlet property="lblUrl" destination="66k-3b-JAE" id="GJQ-4k-ta2"/>
+                <outlet property="vContainer" destination="cyJ-CW-HmM" id="GOe-sf-dFb"/>
+            </connections>
+        </customView>
+    </objects>
+</document>

@@ -10,9 +10,9 @@
 
 #import "FilmCellViewProtocols.h"
 
-#import "ViewRowProtocols.h"
+#import "ItemCellViewProtocols.h"
 
-@interface FilmCellView : NSCollectionViewItem <FilmCellViewProtocols, ViewRowProtocols>
+@interface FilmCellView : NSCollectionViewItem <FilmCellViewProtocols, ItemCellViewProtocols>
 
 /// Methods
 ///

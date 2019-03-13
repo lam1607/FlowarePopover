@@ -8,8 +8,14 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "ViewRowProtocols.h"
+#import "ItemCellViewProtocols.h"
 
-@interface ComicCellView : NSTableCellView <ViewRowProtocols>
+@interface ComicCellView : NSTableCellView <ItemCellViewProtocols>
+
+/// @property
+///
+
+/// Methods
+///
 
 @end

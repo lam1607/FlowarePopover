@@ -11,18 +11,22 @@
 #import "AbstractService.h"
 
 @interface AbstractRepository ()
+{
+    AbstractService *_service;
+}
 
 /// @property
 ///
-@property (nonatomic, strong) AbstractService *service;
 
 @end
 
 @implementation AbstractRepository
 
-- (instancetype)init {
-    if (self = [super init]) {
-        self.service = [[AbstractService alloc] init];
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        _service = [[AbstractService alloc] init];
     }
     
     return self;
@@ -30,9 +34,11 @@
 
 #pragma mark - AbstractRepositoryProtocols implementation
 
-- (void)fetchImageFromUrl:(NSURL *)url completion:(void (^)(NSImage *image))complete {
-    [self.service fetchDataFromUrl:url completion:^(NSData *data) {
-        if (complete) {
+- (void)fetchImageFromUrl:(NSURL *)url completion:(void (^)(NSImage *image))complete
+{
+    [_service fetchDataFromUrl:url completion:^(NSData *data) {
+        if (complete)
+        {
             complete((data != nil) ? [[NSImage alloc] initWithData:data] : nil);
         }
     }];

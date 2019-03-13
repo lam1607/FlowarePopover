@@ -706,7 +706,7 @@
         <scene sceneID="hIz-AP-VOD">
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="HomeViewController" sceneMemberID="viewController">
-                    <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl" customClass="WindowMainView">
+                    <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="2800" height="1800"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
@@ -899,9 +899,51 @@
                                     <constraint firstAttribute="height" constant="40" id="YfI-Rj-GWa"/>
                                 </constraints>
                             </customView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="XGp-hp-9Zr" userLabel="Trash Icon Container View" customClass="DragDroppableView">
+                                <rect key="frame" x="20" y="1589" width="100" height="100"/>
+                                <subviews>
+                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XrS-aX-ZZO" userLabel="Trash Icon Image View">
+                                        <rect key="frame" x="18" y="18" width="64" height="64"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="64" id="F1l-9j-3rd"/>
+                                            <constraint firstAttribute="width" secondItem="XrS-aX-ZZO" secondAttribute="height" multiplier="1:1" id="HqT-3R-cHa"/>
+                                        </constraints>
+                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="ic_trash_empty" id="Kze-cp-kIP"/>
+                                    </imageView>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gNy-e0-QJo" userLabel="Trash Icon Button">
+                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                        <buttonCell key="cell" type="bevel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Wfq-bg-Jnx">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="btnTrashIcon_clicked:" target="XfG-lQ-9wD" id="r6M-mW-Sbh"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="gNy-e0-QJo" firstAttribute="top" secondItem="XGp-hp-9Zr" secondAttribute="top" id="EJU-8x-Eoy"/>
+                                    <constraint firstItem="XrS-aX-ZZO" firstAttribute="centerY" secondItem="XGp-hp-9Zr" secondAttribute="centerY" id="EMt-SJ-Nfw"/>
+                                    <constraint firstAttribute="bottom" secondItem="gNy-e0-QJo" secondAttribute="bottom" id="Euk-AJ-FN7"/>
+                                    <constraint firstAttribute="width" constant="100" id="MI9-Hs-IuO"/>
+                                    <constraint firstItem="gNy-e0-QJo" firstAttribute="leading" secondItem="XGp-hp-9Zr" secondAttribute="leading" id="Pql-pX-N95"/>
+                                    <constraint firstAttribute="trailing" secondItem="gNy-e0-QJo" secondAttribute="trailing" id="Sts-cw-T1s"/>
+                                    <constraint firstItem="XrS-aX-ZZO" firstAttribute="centerX" secondItem="XGp-hp-9Zr" secondAttribute="centerX" id="f6S-88-4TB"/>
+                                    <constraint firstAttribute="width" secondItem="XGp-hp-9Zr" secondAttribute="height" multiplier="1:1" id="jtu-UD-mor"/>
+                                </constraints>
+                            </customView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="2eL-Gn-vhd" userLabel="Trash Container View">
+                                <rect key="frame" x="140" y="20" width="350" height="1669"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="350" id="rM1-jp-LTI"/>
+                                </constraints>
+                            </customView>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="XGp-hp-9Zr" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="6K8-I9-bKt"/>
+                            <constraint firstItem="2eL-Gn-vhd" firstAttribute="top" secondItem="XGp-hp-9Zr" secondAttribute="top" id="6r2-zm-KKG"/>
                             <constraint firstItem="Y8i-ib-bNN" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="8wb-rS-4gh"/>
+                            <constraint firstItem="2eL-Gn-vhd" firstAttribute="leading" secondItem="XGp-hp-9Zr" secondAttribute="trailing" constant="20" id="CP1-1P-1Z6"/>
                             <constraint firstAttribute="bottom" secondItem="Y8i-ib-bNN" secondAttribute="bottom" id="D6m-e7-OHC"/>
                             <constraint firstItem="Y8i-ib-bNN" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="KT7-si-xcs"/>
                             <constraint firstItem="WeF-sb-hLO" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="OZa-xU-FvP"/>
@@ -909,6 +951,8 @@
                             <constraint firstAttribute="trailing" secondItem="Y8i-ib-bNN" secondAttribute="trailing" id="ZZI-We-B95"/>
                             <constraint firstItem="1S0-QQ-tGa" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="j6b-yT-l8Z"/>
                             <constraint firstItem="WeF-sb-hLO" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="jUs-pM-rGd"/>
+                            <constraint firstAttribute="bottom" secondItem="2eL-Gn-vhd" secondAttribute="bottom" constant="20" id="nJF-Nw-ap4"/>
+                            <constraint firstItem="XGp-hp-9Zr" firstAttribute="top" secondItem="1S0-QQ-tGa" secondAttribute="bottom" constant="20" id="nf6-it-sNB"/>
                             <constraint firstItem="1S0-QQ-tGa" firstAttribute="top" secondItem="WeF-sb-hLO" secondAttribute="bottom" constant="1" id="r4C-lx-JQO"/>
                             <constraint firstAttribute="trailing" secondItem="1S0-QQ-tGa" secondAttribute="trailing" id="tlX-Pg-WX7"/>
                         </constraints>
@@ -921,7 +965,9 @@
                         <outlet property="btnOpenNews" destination="QKT-rF-oHD" id="AHU-JR-3is"/>
                         <outlet property="btnOpenSafari" destination="vYx-ID-mZ0" id="e9V-4H-ZNz"/>
                         <outlet property="btnShowSecondBar" destination="922-Oc-zMC" id="w5Z-hW-QbF"/>
+                        <outlet property="btnTrashIcon" destination="gNy-e0-QJo" id="Jk6-rJ-bIw"/>
                         <outlet property="constraintVSecondBarHeight" destination="YfI-Rj-GWa" id="Vp1-Vd-CMU"/>
+                        <outlet property="imgTrashIcon" destination="XrS-aX-ZZO" id="QtH-l5-tBy"/>
                         <outlet property="viewContainerComics" destination="4xE-ia-sMm" id="uVy-hw-ZLd"/>
                         <outlet property="viewContainerFilms" destination="uQl-Vp-Bbc" id="7Qm-VY-6bN"/>
                         <outlet property="viewContainerFinder" destination="24A-hG-ZdQ" id="T0n-v7-PC9"/>
@@ -929,6 +975,8 @@
                         <outlet property="viewContainerNews" destination="hH7-0V-lua" id="CmL-Ft-1sE"/>
                         <outlet property="viewContainerSafari" destination="uUK-hZ-BLj" id="Ogt-Hs-38Y"/>
                         <outlet property="viewContainerSecondBar" destination="dAj-4e-xyd" id="v2r-jm-T0x"/>
+                        <outlet property="viewContainerTrash" destination="2eL-Gn-vhd" id="B0o-Zp-oGF"/>
+                        <outlet property="viewContainerTrashIcon" destination="XGp-hp-9Zr" id="1ql-68-faE"/>
                         <outlet property="viewMenu" destination="WeF-sb-hLO" id="gLE-B5-lHd"/>
                         <outlet property="viewSecondBar" destination="1S0-QQ-tGa" id="0Sa-vp-WPC"/>
                     </connections>
@@ -943,5 +991,6 @@
         <image name="ic_finder" width="27" height="24"/>
         <image name="ic_safari" width="29" height="28"/>
         <image name="ic_switch_mode" width="30" height="30"/>
+        <image name="ic_trash_empty" width="64" height="64"/>
     </resources>
 </document>

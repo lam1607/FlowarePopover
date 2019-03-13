@@ -10,9 +10,12 @@
 
 #import "TechnologyCellViewProtocols.h"
 
-#import "ViewRowProtocols.h"
+#import "ItemCellViewProtocols.h"
 
-@interface TechnologyCellView : NSTableCellView <TechnologyCellViewProtocols, ViewRowProtocols>
+@interface TechnologyCellView : NSTableCellView <TechnologyCellViewProtocols, ItemCellViewProtocols>
+
+/// @property
+///
 
 /// Methods
 ///

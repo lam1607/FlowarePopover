@@ -13,18 +13,22 @@
 #import "Technology.h"
 
 @interface TechnologyRepository ()
+{
+    TechnologyService *_service;
+}
 
 /// @property
 ///
-@property (nonatomic, strong) TechnologyService *service;
 
 @end
 
 @implementation TechnologyRepository
 
-- (instancetype)init {
-    if (self = [super init]) {
-        self.service = [[TechnologyService alloc] init];
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        _service = [[TechnologyService alloc] init];
     }
     
     return self;
@@ -32,12 +36,15 @@
 
 #pragma mark - TechnologyRepositoryProtocols implementation
 
-- (NSArray<Technology *> *)fetchTechnologies {
+- (NSArray<Technology *> *)fetchTechnologies
+{
     NSMutableArray *technologies = [[NSMutableArray alloc] init];
-    NSArray<NSDictionary *> *technologyDicts = [self.service getMockupDataType:@"technology"];
+    NSArray<NSDictionary *> *technologyDicts = [_service getMockupDataType:@"technology"];
     
-    for (NSDictionary *contentDict in technologyDicts) {
-        @autoreleasepool {
+    for (NSDictionary *contentDict in technologyDicts)
+    {
+        @autoreleasepool
+        {
             Technology *item = [[Technology alloc] initWithContent:contentDict];
             [technologies addObject:item];
         }

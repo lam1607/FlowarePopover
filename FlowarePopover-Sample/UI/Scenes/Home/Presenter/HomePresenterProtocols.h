@@ -17,5 +17,6 @@
 - (void)openNewsView;
 - (void)openComicsView;
 - (void)showSecondBar;
+- (void)showTrashView;
 
 @end

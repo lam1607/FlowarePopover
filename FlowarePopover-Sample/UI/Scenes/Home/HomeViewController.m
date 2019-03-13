@@ -14,6 +14,9 @@
 #import "NewsViewController.h"
 #import "ComicsViewController.h"
 #import "TechnologiesViewController.h"
+#import "TrashViewController.h"
+
+#import "DragDroppableView.h"
 
 #import "FLOPopover.h"
 
@@ -23,7 +26,16 @@
 
 #import "HomePresenter.h"
 
-@interface HomeViewController () <FLOPopoverDelegate>
+@interface HomeViewController () <FLOPopoverDelegate, DragDropTrackingDelegate>
+{
+    HomePresenter *_presenter;
+    
+    FLOPopover *_popoverFilms;
+    FLOPopover *_popoverNews;
+    FLOPopover *_popoverComics;
+    
+    NSArray<NSString *> *_entitlementAppBundles;
+}
 
 /// IBOutlet
 ///
@@ -48,55 +60,79 @@
 @property (weak) IBOutlet NSView *viewSecondBar;
 @property (weak) IBOutlet NSLayoutConstraint *constraintVSecondBarHeight;
 
+@property (weak) IBOutlet DragDroppableView *viewContainerTrashIcon;
+@property (weak) IBOutlet NSImageView *imgTrashIcon;
+@property (weak) IBOutlet NSButton *btnTrashIcon;
+
+
+@property (weak) IBOutlet NSView *viewContainerTrash;
+
 /// @property
 ///
-@property (nonatomic, strong) HomePresenter *presenter;
-
-@property (nonatomic, strong) FLOPopover *popoverFilms;
-@property (nonatomic, strong) FLOPopover *popoverNews;
-@property (nonatomic, strong) FLOPopover *popoverComics;
-
 @property (nonatomic, strong) FilmsViewController *filmsViewController;
 @property (nonatomic, strong) NewsViewController *newsViewController;
 @property (nonatomic, strong) TechnologiesViewController *technologiesViewController;
 @property (nonatomic, strong) ComicsViewController *comicsViewController;
-
-@property (nonatomic, strong) NSArray<NSString *> *entitlementAppBundles;
+@property (nonatomic, strong) TrashViewController *trashViewController;
 
 @end
 
 @implementation HomeViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
     
-    [self initialize];
+    [self objectsInitialize];
     [self setupEntitlementAppBundles];
     [self setupUI];
 }
 
-- (void)viewWillAppear {
+- (void)viewWillAppear
+{
     [super viewWillAppear];
 }
 
 #pragma mark - Initialize
 
-- (void)initialize {
-    self.presenter = [[HomePresenter alloc] init];
-    [self.presenter attachView:self];
+- (void)objectsInitialize
+{
+    _presenter = [[HomePresenter alloc] init];
+    [_presenter attachView:self];
     
-    self.entitlementAppBundles = [[NSArray alloc] initWithObjects: FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER, FLO_ENTITLEMENT_APP_IDENTIFIER_SAFARI, nil];
+    _entitlementAppBundles = [[NSArray alloc] initWithObjects: FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER, FLO_ENTITLEMENT_APP_IDENTIFIER_SAFARI, nil];
 }
 
 #pragma mark - Setup UI
 
-- (void)setupUI {
+- (void)setupUI
+{
     self.constraintVSecondBarHeight.constant = 0.0;
+    
+    [self setupTrashView];
+    [self setTrashViewHidden:YES];
 }
 
-- (void)refreshUIColors {
-    if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name]) {
+- (void)setupTrashView
+{
+    [Utils setBackgroundColor:[NSColor _backgroundColor] forView:self.viewContainerTrash];
+    
+    if (self.trashViewController == nil)
+    {
+        self.trashViewController = [[TrashViewController alloc] initWithNibName:NSStringFromClass([TrashViewController class]) bundle:nil];
+    }
+    
+    if ([self.trashViewController.view isDescendantOf:self.viewContainerTrash] == NO)
+    {
+        [self addView:self.trashViewController.view toParent:self.viewContainerTrash];
+    }
+}
+
+- (void)refreshUIColors
+{
+    if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name])
+    {
         [super refreshUIColors];
         
 #ifdef SHOULD_USE_ASSET_COLORS
@@ -137,38 +173,46 @@
     }
 }
 
-#pragma mark - Processes
+#pragma mark - Local methods
 
-- (void)setupEntitlementAppBundles {
+- (void)setupEntitlementAppBundles
+{
     AppDelegate *appDelegate = (AppDelegate *)[[NSApplication sharedApplication] delegate];
     
-    [self.entitlementAppBundles enumerateObjectsUsingBlock:^(NSString *bundle, NSUInteger idx, BOOL *stop) {
+    for (NSString *bundle in _entitlementAppBundles)
+    {
         [appDelegate addEntitlementBundleId:bundle];
-    }];
+    }
 }
 
-- (void)changeWindowMode {
-    [[AbstractWindowController sharedInstance] setWindowMode];
+- (void)changeWindowMode
+{
+    [[AbstractWindowController sharedInstance] setMode];
     [[NSNotificationCenter defaultCenter] postNotificationName:FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE object:nil userInfo:nil];
 }
 
-- (void)openEntitlementApplicationWithIdentifier:(NSString *)appIdentifier {
+- (void)openEntitlementApplicationWithIdentifier:(NSString *)appIdentifier
+{
     AppDelegate *appDelegate = (AppDelegate *)[[NSApplication sharedApplication] delegate];
     NSURL *appUrl = [NSURL fileURLWithPath:[Utils getAppPathWithIdentifier:appIdentifier]];
     
     if (![[NSWorkspace sharedWorkspace] launchApplicationAtURL:appUrl options:NSWorkspaceLaunchDefault configuration:[NSDictionary dictionary] error:NULL]) {
         // If the application cannot be launched, then re-launch it by script
         NSString *appName = [Utils getAppNameWithIdentifier:appIdentifier];
-        AppleScriptOpenApp(appName);
+        script_openApp(appName);
         
         [appDelegate activateEntitlementForBundleId:appIdentifier];
-    } else {
+    }
+    else
+    {
         [appDelegate activateEntitlementForBundleId:appIdentifier];
     }
 }
 
-- (void)observeComicsViewContentSizeChange {
-    if (self.comicsViewController) {
+- (void)observeComicsViewContentSizeChange
+{
+    if (self.comicsViewController)
+    {
         __weak typeof(self) wself = self;
         
         self.comicsViewController.didContentSizeChange = ^(NSSize newSize) {
@@ -177,8 +221,10 @@
     }
 }
 
-- (void)handleComicsViewContentSizeChanging:(NSSize)newSize {
-    if (self.comicsViewController) {
+- (void)handleComicsViewContentSizeChanging:(NSSize)newSize
+{
+    if (self.comicsViewController)
+    {
         NSRect visibleRect = [self.view visibleRect];
         CGFloat menuHeight = self.viewMenu.frame.size.height;
         CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
@@ -190,17 +236,22 @@
         
         contentViewRect = NSMakeRect(contentViewRect.origin.x, contentViewRect.origin.y, contentViewWidth, contentViewHeight);
         
-        [self.popoverComics setPopoverContentViewSize:contentViewRect.size];
+        [_popoverComics setPopoverContentViewSize:contentViewRect.size];
     }
 }
 
-- (void)handleShowSecondBar {
-    if (self.comicsViewController) {
+- (void)handleShowSecondBar
+{
+    if (self.comicsViewController)
+    {
         CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
         
-        if (secondBarHeight < 40.0) {
+        if (secondBarHeight < 40.0)
+        {
             secondBarHeight = 40.0;
-        } else {
+        }
+        else
+        {
             secondBarHeight = 0.0;
         }
         
@@ -224,15 +275,18 @@
         CGFloat positioningRectY = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin / 2;
         NSRect positioningRect = [self.view.window convertRectToScreen:NSMakeRect(positioningRectX, positioningRectY, 0.0, 0.0)];
         
-        [self.popoverComics setPopoverContentViewSize:contentViewRect.size positioningRect:positioningRect];
+        [_popoverComics setPopoverContentViewSize:contentViewRect.size positioningRect:positioningRect];
     }
 }
 
-- (void)setLevelForPopover:(FLOPopover *)popover {
+- (void)setLevelForPopover:(FLOPopover *)popover
+{
     NSWindowLevel level = [Utils windowLevelBase];
     
-    if ([Utils sharedInstance].isApplicationActive) {
-        switch (popover.tag) {
+    if ([Utils sharedInstance].isApplicationActive)
+    {
+        switch (popover.tag)
+        {
             case WindowLevelGroupTagNormal:
                 level = [Utils windowLevelNormal];
                 break;
@@ -256,10 +310,12 @@
     [popover setPopoverLevel:level];
 }
 
-- (void)showRelativeToRectOfViewWithPopover:(FLOPopover *)popover edgeType:(FLOPopoverEdgeType)edgeType atView:(NSView *)sender {
+- (void)showRelativeToRectOfViewWithPopover:(FLOPopover *)popover edgeType:(FLOPopoverEdgeType)edgeType atView:(NSView *)sender
+{
     NSRect rect = (sender.superview != nil) ? sender.superview.bounds : sender.bounds;
     
-    if (popover.delegate == nil) {
+    if (popover.delegate == nil)
+    {
         popover.delegate = self;
     }
     
@@ -267,8 +323,10 @@
     [popover showRelativeToRect:rect ofView:sender edgeType:edgeType];
 }
 
-- (void)showRelativeToViewWithRect:(NSRect)rect byPopover:(FLOPopover *)popover sender:(NSView *)sender {
-    if (popover.delegate == nil) {
+- (void)showRelativeToViewWithRect:(NSRect)rect byPopover:(FLOPopover *)popover sender:(NSView *)sender
+{
+    if (popover.delegate == nil)
+    {
         popover.delegate = self;
     }
     
@@ -276,9 +334,11 @@
     [popover showRelativeToView:sender withRect:rect];
 }
 
-- (void)showFilmsPopupAtView:(NSView *)sender {
-    if ([self.popoverFilms isShown]) {
-        [self.popoverFilms close];
+- (void)showFilmsPopupAtView:(NSView *)sender
+{
+    if ([_popoverFilms isShown])
+    {
+        [_popoverFilms close];
         return;
     }
     
@@ -289,32 +349,33 @@
     CGFloat height = visibleRect.size.height - menuHeight - verticalMargin;
     NSRect contentViewRect = NSMakeRect(0.0, 0.0, width, height);
     
-    if (self.popoverFilms == nil) {
+    if (_popoverFilms == nil)
+    {
         self.filmsViewController = [[FilmsViewController alloc] initWithNibName:NSStringFromClass([FilmsViewController class]) bundle:nil];
         [self.filmsViewController.view setFrame:contentViewRect];
         
-        self.popoverFilms = [[FLOPopover alloc] initWithContentViewController:self.filmsViewController type:FLOViewPopover];
+        _popoverFilms = [[FLOPopover alloc] initWithContentViewController:self.filmsViewController type:FLOViewPopover];
     }
     
-    //    self.popoverFilms.alwaysOnTop = YES;
-    //    self.popoverFilms.shouldShowArrow = YES;
-    self.popoverFilms.animated = YES;
-    self.popoverFilms.closesWhenPopoverResignsKey = YES;
-    //    self.popoverFilms.closesWhenApplicationBecomesInactive = YES;
-    self.popoverFilms.isMovable = YES;
-    self.popoverFilms.isDetachable = YES;
+    _popoverFilms.animated = YES;
+    _popoverFilms.closesWhenPopoverResignsKey = YES;
+    //    _popoverFilms.closesWhenApplicationBecomesInactive = YES;
+    _popoverFilms.isMovable = YES;
+    _popoverFilms.isDetachable = YES;
     
-    self.popoverFilms.tag = WindowLevelGroupTagNormal;
+    _popoverFilms.tag = WindowLevelGroupTagNormal;
     
-    //    [self.popoverFilms setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationLeftToRight];
-    [self.popoverFilms setAnimationBehaviour:FLOPopoverAnimationBehaviorTransform type:FLOPopoverAnimationScale];
+    //    [_popoverFilms setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationLeftToRight];
+    [_popoverFilms setAnimationBehaviour:FLOPopoverAnimationBehaviorTransform type:FLOPopoverAnimationScale];
     
-    [self showRelativeToRectOfViewWithPopover:self.popoverFilms edgeType:FLOPopoverEdgeTypeBelowLeftEdge atView:sender];
+    [self showRelativeToRectOfViewWithPopover:_popoverFilms edgeType:FLOPopoverEdgeTypeBelowLeftEdge atView:sender];
 }
 
-- (void)showNewsPopupAtView:(NSView *)sender {
-    if ([self.popoverNews isShown]) {
-        [self.popoverNews close];
+- (void)showNewsPopupAtView:(NSView *)sender
+{
+    if ([_popoverNews isShown])
+    {
+        [_popoverNews close];
         return;
     }
     
@@ -325,36 +386,38 @@
     CGFloat height = visibleRect.size.height - menuHeight - verticalMargin;
     NSRect contentViewRect = NSMakeRect(0.0, 0.0, width, height);
     
-    if (self.popoverNews == nil) {
+    if (_popoverNews == nil)
+    {
         self.newsViewController = [[NewsViewController alloc] initWithNibName:NSStringFromClass([NewsViewController class]) bundle:nil];
         [self.newsViewController.view setFrame:contentViewRect];
         
-        self.popoverNews = [[FLOPopover alloc] initWithContentViewController:self.newsViewController];
+        _popoverNews = [[FLOPopover alloc] initWithContentViewController:self.newsViewController];
     }
     
-    //    self.popoverNews.alwaysOnTop = YES;
-    //    self.popoverNews.shouldShowArrow = YES;
-    self.popoverNews.animated = YES;
-    //    self.popoverNews.closesWhenPopoverResignsKey = YES;
-    //    self.popoverNews.closesWhenApplicationBecomesInactive = YES;
-    //    self.popoverNews.closesAfterTimeInterval = 3.0;
-    self.popoverNews.isMovable = YES;
-    self.popoverNews.isDetachable = YES;
+    _popoverNews.animated = YES;
+    //    _popoverNews.closesWhenPopoverResignsKey = YES;
+    //    _popoverNews.closesWhenApplicationBecomesInactive = YES;
+    //    _popoverNews.closesAfterTimeInterval = 3.0;
+    _popoverNews.isMovable = YES;
+    _popoverNews.isDetachable = YES;
     
-    self.popoverNews.tag = WindowLevelGroupTagNormal;
+    _popoverNews.tag = WindowLevelGroupTagNormal;
     
-    [self.popoverNews setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationLeftToRight];
+    [_popoverNews setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationLeftToRight];
     
-    [self showRelativeToRectOfViewWithPopover:self.popoverNews edgeType:FLOPopoverEdgeTypeBelowLeftEdge atView:sender];
+    [self showRelativeToRectOfViewWithPopover:_popoverNews edgeType:FLOPopoverEdgeTypeBelowLeftEdge atView:sender];
 }
 
-- (void)showComicsPopupAtView:(NSView *)sender option:(NSInteger)option {
-    if ([self.popoverComics isShown]) {
-        [self.popoverComics close];
+- (void)showComicsPopupAtView:(NSView *)sender option:(NSInteger)option
+{
+    if ([_popoverComics isShown])
+    {
+        [_popoverComics close];
         return;
     }
     
-    if (option == 1) {
+    if (option == 1)
+    {
         NSRect visibleRect = [self.view visibleRect];
         CGFloat menuHeight = self.viewMenu.frame.size.height;
         CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
@@ -366,38 +429,40 @@
         CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : ((contentHeight >= minHeight) ? contentHeight : minHeight);
         NSRect contentViewRect = NSMakeRect(0.0, 0.0, contentViewWidth, contentViewHeight);
         
-        if (self.popoverComics == nil) {
+        if (_popoverComics == nil)
+        {
             self.comicsViewController = [[ComicsViewController alloc] initWithNibName:NSStringFromClass([ComicsViewController class]) bundle:nil];
             [self.comicsViewController.view setFrame:contentViewRect];
-            self.popoverComics = [[FLOPopover alloc] initWithContentViewController:self.comicsViewController type:FLOViewPopover];
+            
+            _popoverComics = [[FLOPopover alloc] initWithContentViewController:self.comicsViewController];
         }
         
-        self.popoverComics.alwaysOnTop = YES;
-        //        self.popoverComics.shouldShowArrow = YES;
-        self.popoverComics.animated = YES;
-        //        self.popoverComics.animatedForwarding = YES;
-        self.popoverComics.animatedByMovingFrame = YES;
-        self.popoverComics.animatedByMovingFrame = YES;
-        self.popoverComics.shouldChangeSizeWhenApplicationResizes = NO;
-        //        self.popoverComics.closesWhenPopoverResignsKey = YES;
-        //        self.popoverComics.closesWhenApplicationBecomesInactive = YES;
-        self.popoverComics.isMovable = YES;
-        //        self.popoverComics.isDetachable = YES;
+        _popoverComics.animated = YES;
+        //        _popoverComics.animatedForwarding = YES;
+        _popoverComics.animatedByMovingFrame = YES;
+        _popoverComics.animatedByMovingFrame = YES;
+        _popoverComics.shouldChangeSizeWhenApplicationResizes = NO;
+        //        _popoverComics.closesWhenPopoverResignsKey = YES;
+        //        _popoverComics.closesWhenApplicationBecomesInactive = YES;
+        _popoverComics.isMovable = YES;
+        //        _popoverComics.isDetachable = YES;
         
         CGFloat positioningRectX = visibleRect.size.width - contentViewRect.size.width - verticalMargin / 2;
         CGFloat positioningRectY = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin / 2;
         NSRect positioningRect = [sender.window convertRectToScreen:NSMakeRect(positioningRectX, positioningRectY, 0.0, 0.0)];
         
-        self.popoverComics.tag = WindowLevelGroupTagUtility;
+        _popoverComics.tag = WindowLevelGroupTagUtility;
         
-        [self.popoverComics setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft animatedInApplicationRect:YES];
+        [_popoverComics setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft animatedInApplicationRect:YES];
         
         // MUST call the didContentSizeChange block before popover makes displaying.
         // To update the content view frame before capturing image for animation.
         [self observeComicsViewContentSizeChange];
         
-        [self showRelativeToViewWithRect:positioningRect byPopover:self.popoverComics sender:sender];
-    } else {
+        [self showRelativeToViewWithRect:positioningRect byPopover:_popoverComics sender:sender];
+    }
+    else
+    {
         NSRect visibleRect = [self.view visibleRect];
         CGFloat menuHeight = self.viewMenu.frame.size.height;
         CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
@@ -406,107 +471,148 @@
         CGFloat height = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
         NSRect contentViewRect = NSMakeRect(0.0, 0.0, width, height);
         
-        if (self.popoverComics == nil) {
+        if (_popoverComics == nil)
+        {
             self.technologiesViewController = [[TechnologiesViewController alloc] initWithNibName:NSStringFromClass([TechnologiesViewController class]) bundle:nil];
             [self.technologiesViewController.view setFrame:contentViewRect];
-            self.popoverComics = [[FLOPopover alloc] initWithContentViewController:self.technologiesViewController];
+            
+            _popoverComics = [[FLOPopover alloc] initWithContentViewController:self.technologiesViewController];
         }
         
-        self.popoverComics.alwaysOnTop = YES;
-        self.popoverComics.shouldShowArrow = YES;
-        self.popoverComics.animated = YES;
-        self.popoverComics.shouldChangeSizeWhenApplicationResizes = NO;
-        //        self.popoverComics.closesWhenPopoverResignsKey = YES;
-        //        self.popoverComics.closesWhenApplicationBecomesInactive = YES;
-        self.popoverComics.isMovable = YES;
-        self.popoverComics.isDetachable = YES;
+        _popoverComics.shouldShowArrow = YES;
+        _popoverComics.animated = YES;
+        _popoverComics.shouldChangeSizeWhenApplicationResizes = NO;
+        //        _popoverComics.closesWhenPopoverResignsKey = YES;
+        //        _popoverComics.closesWhenApplicationBecomesInactive = YES;
+        _popoverComics.isMovable = YES;
+        _popoverComics.isDetachable = YES;
         
-        self.popoverComics.tag = WindowLevelGroupTagUtility;
+        _popoverComics.tag = WindowLevelGroupTagUtility;
         
-        [self.popoverComics setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationLeftToRight];
+        [_popoverComics setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationLeftToRight];
         
-        [self showRelativeToRectOfViewWithPopover:self.popoverComics edgeType:FLOPopoverEdgeTypeForwardTopEdge atView:sender];
+        [self showRelativeToRectOfViewWithPopover:_popoverComics edgeType:FLOPopoverEdgeTypeForwardTopEdge atView:sender];
     }
+}
+
+- (void)setTrashViewHidden:(BOOL)isHidden
+{
+    [self.viewContainerTrash setHidden:isHidden];
 }
 
 #pragma mark - Actions
 
-- (IBAction)btnChangeMode_clicked:(NSButton *)sender {
-    [self.presenter changeWindowMode];
+- (IBAction)btnChangeMode_clicked:(NSButton *)sender
+{
+    [_presenter changeWindowMode];
 }
 
-- (IBAction)btnOpenFinder_clicked:(NSButton *)sender {
-    [self.presenter openFinder];
+- (IBAction)btnOpenFinder_clicked:(NSButton *)sender
+{
+    [_presenter openFinder];
 }
 
-- (IBAction)btnOpenSafari_clicked:(NSButton *)sender {
-    [self.presenter openSafari];
+- (IBAction)btnOpenSafari_clicked:(NSButton *)sender
+{
+    [_presenter openSafari];
 }
 
-- (IBAction)btnOpenFilms_clicked:(NSButton *)sender {
-    [self.presenter openFilmsView];
+- (IBAction)btnOpenFilms_clicked:(NSButton *)sender
+{
+    [_presenter openFilmsView];
 }
 
-- (IBAction)btnOpenNews_clicked:(NSButton *)sender {
-    [self.presenter openNewsView];
+- (IBAction)btnOpenNews_clicked:(NSButton *)sender
+{
+    [_presenter openNewsView];
 }
 
-- (IBAction)btnShowSecondBar_clicked:(NSButton *)sender {
-    [self.presenter showSecondBar];
+- (IBAction)btnShowSecondBar_clicked:(NSButton *)sender
+{
+    [_presenter showSecondBar];
 }
 
-- (IBAction)btnOpenComics_clicked:(NSButton *)sender {
-    [self.presenter openComicsView];
+- (IBAction)btnOpenComics_clicked:(NSButton *)sender
+{
+    [_presenter openComicsView];
 }
+
+- (IBAction)btnTrashIcon_clicked:(NSButton *)sender
+{
+    [_presenter showTrashView];
+}
+
 
 #pragma mark - HomeViewProtocols implementation
 
-- (void)viewDidSelectWindowModeChanging {
+- (void)viewDidSelectWindowModeChanging
+{
     [self changeWindowMode];
 }
 
-- (void)viewShouldOpenFinder {
+- (void)viewShouldOpenFinder
+{
     [self openEntitlementApplicationWithIdentifier:FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER];
 }
 
-- (void)viewShouldOpenSafari {
+- (void)viewShouldOpenSafari
+{
     [self openEntitlementApplicationWithIdentifier:FLO_ENTITLEMENT_APP_IDENTIFIER_SAFARI];
 }
 
-- (void)viewShouldOpenFilmsView {
+- (void)viewShouldOpenFilmsView
+{
     [self showFilmsPopupAtView:self.btnOpenFilms];
 }
-- (void)viewShouldOpenNewsView {
+
+- (void)viewShouldOpenNewsView
+{
     [self showNewsPopupAtView:self.btnOpenNews];
 }
 
-- (void)viewShouldOpenComicsView {
-    [self showComicsPopupAtView:self.btnOpenComics option:1];
+- (void)viewShouldOpenComicsView
+{
+    [self showComicsPopupAtView:self.btnOpenComics option:0];
 }
 
-- (void)viewShouldShowSecondBar {
+- (void)viewShouldShowSecondBar
+{
     [self handleShowSecondBar];
+}
+
+- (void)viewShouldShowTrashView
+{
+    [self setTrashViewHidden:!self.viewContainerTrash.isHidden];
 }
 
 #pragma mark - FLOPopoverDelegate
 
-- (void)floPopoverWillShow:(FLOPopover *)popover {
+- (void)floPopoverWillShow:(FLOPopover *)popover
+{
 }
 
-- (void)floPopoverDidShow:(FLOPopover *)popover {
+- (void)floPopoverDidShow:(FLOPopover *)popover
+{
 }
 
-- (void)floPopoverWillClose:(FLOPopover *)popover {
+- (void)floPopoverWillClose:(FLOPopover *)popover
+{
 }
 
-- (void)floPopoverDidClose:(FLOPopover *)popover {
+- (void)floPopoverDidClose:(FLOPopover *)popover
+{
     // @warning: MUST set the popover to nil for completely deallocating the content view or content view controller, when popover closed.
-    if (popover == self.popoverFilms) {
-        self.popoverFilms = nil;
-    } else if (popover == self.popoverNews) {
-        self.popoverNews = nil;
-    } else if (popover == self.popoverComics) {
-        self.popoverComics = nil;
+    if (popover == _popoverFilms)
+    {
+        _popoverFilms = nil;
+    }
+    else if (popover == _popoverNews)
+    {
+        _popoverNews = nil;
+    }
+    else if (popover == _popoverComics)
+    {
+        _popoverComics = nil;
     }
 }
 

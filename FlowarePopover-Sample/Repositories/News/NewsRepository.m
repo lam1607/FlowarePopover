@@ -13,18 +13,22 @@
 #import "News.h"
 
 @interface NewsRepository ()
+{
+    NewsService *_service;
+}
 
 /// @property
 ///
-@property (nonatomic, strong) NewsService *service;
 
 @end
 
 @implementation NewsRepository
 
-- (instancetype)init {
-    if (self = [super init]) {
-        self.service = [[NewsService alloc] init];
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        _service = [[NewsService alloc] init];
     }
     
     return self;
@@ -32,12 +36,15 @@
 
 #pragma mark - NewsRepositoryProtocols implementation
 
-- (NSArray<News *> *)fetchNews {
+- (NSArray<News *> *)fetchNews
+{
     NSMutableArray *news = [[NSMutableArray alloc] init];
-    NSArray<NSDictionary *> *newsDicts = [self.service getMockupDataType:@"news"];
+    NSArray<NSDictionary *> *newsDicts = [_service getMockupDataType:@"news"];
     
-    for (NSDictionary *contentDict in newsDicts) {
-        @autoreleasepool {
+    for (NSDictionary *contentDict in newsDicts)
+    {
+        @autoreleasepool
+        {
             News *item = [[News alloc] initWithContent:contentDict];
             [news addObject:item];
         }

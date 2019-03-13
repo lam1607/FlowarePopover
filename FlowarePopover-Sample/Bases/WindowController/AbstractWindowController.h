@@ -12,10 +12,10 @@
 
 /// @property
 ///
-@property (nonatomic, assign, readonly) FLOWindowMode windowMode;
-@property (nonatomic, assign, readonly) BOOL windowInDesktopMode;
-@property (nonatomic, assign, readonly) NSRect windowNormalFrame;
-@property (nonatomic, assign, readonly) CGFloat windowTitleBarHeight;
+@property (nonatomic, assign, readonly) FLOWindowMode mode;
+@property (nonatomic, assign, readonly) BOOL isDesktopMode;
+@property (nonatomic, assign, readonly) NSRect normalFrame;
+@property (nonatomic, assign, readonly) CGFloat titleBarHeight;
 
 /// Singleton
 ///
@@ -23,8 +23,8 @@
 
 /// Methods
 ///
-- (void)setWindowMode;
-- (void)setWindowTitleBarHeight;
+- (void)setMode;
+- (void)setTitleBarHeight;
 
 - (void)activate;
 - (void)hideChildWindowsOnDeactivate;

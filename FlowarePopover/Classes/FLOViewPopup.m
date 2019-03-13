@@ -161,7 +161,7 @@
     }
 }
 
-#pragma mark - Processes
+#pragma mark - Local methods
 
 - (void)setPopoverEdgeType:(FLOPopoverEdgeType)edgeType {
     [self.utils setPopoverEdgeType:edgeType];

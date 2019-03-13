@@ -10,8 +10,12 @@
 
 #import "AbstractViewProtocols.h"
 
-@protocol AbstractViewProtocols;
+#import "NotificationObserversProtocols.h"
+#import "NotificationService.h"
 
-@interface AbstractPresenter : NSObject <AbstractPresenterProtocols>
+#import "DataProvider.h"
+#import "ListSupplierProtocol.h"
+
+@interface AbstractPresenter : NSObject <AbstractPresenterProtocols, NotificationObserversProtocols, DataProviderProtocols>
 
 @end

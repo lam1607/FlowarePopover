@@ -11,6 +11,8 @@
 #import "Comic.h"
 
 @interface ComicCellView ()
+{
+}
 
 /// IBOutlet
 ///
@@ -21,13 +23,15 @@
 
 @implementation ComicCellView
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
     
     [self setupUI];
 }
 
-- (void)layout {
+- (void)layout
+{
     [super layout];
     
     [self refreshUIColors];
@@ -35,31 +39,36 @@
 
 #pragma mark - Setup UI
 
-- (void)setupUI {
+- (void)setupUI
+{
     self.lblTitle.maximumNumberOfLines = 0;
 }
 
-- (void)refreshUIColors {
-    if ([self.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name]) {
+- (void)refreshUIColors
+{
+    if ([self.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name])
+    {
         [Utils setShadowForView:self.vContainer];
         
 #ifdef SHOULD_USE_ASSET_COLORS
-        [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+        [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] borderWidth:0.0 borderColor:[NSColor _blueColor] forView:self.vContainer];
         
         [Utils setTitle:self.lblTitle.stringValue color:[NSColor _textGrayColor] fontSize:16.0 forControl:self.lblTitle];
 #else
-        [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+        [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] borderWidth:0.0 borderColor:[NSColor blueColor] forView:self.vContainer];
         
         [Utils setTitle:self.lblTitle.stringValue color:[NSColor textGrayColor] fontSize:16.0 forControl:self.lblTitle];
 #endif
     }
 }
 
-#pragma mark - ViewRowProtocols implementation
+#pragma mark - ItemCellViewProtocols implementation
 
-- (void)updateData:(NSObject * _Nonnull)obj atIndex:(NSInteger)index {
-    if ([obj isKindOfClass:[Comic class]]) {
-        Comic *comic = (Comic *)obj;
+- (void)itemCellView:(id<ItemCellViewProtocols>)itemCellView updateWithData:(id<ListSupplierProtocol> _Nonnull)data atIndex:(NSInteger)index
+{
+    if ([data isKindOfClass:[Comic class]])
+    {
+        Comic *comic = (Comic *)data;
         
         self.lblTitle.stringValue = comic.name;
     }

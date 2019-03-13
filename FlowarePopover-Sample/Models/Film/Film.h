@@ -14,7 +14,7 @@
 ///
 @property (nonatomic, strong) NSString *releaseDate;
 @property (nonatomic, strong) NSString *synopsis;
-@property (nonatomic, strong) NSURL *trailerUrl;
+@property (nonatomic, strong) NSString *trailerUrl;
 
 /// Initialize
 ///

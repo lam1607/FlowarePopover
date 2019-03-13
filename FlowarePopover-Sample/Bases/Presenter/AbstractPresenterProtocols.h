@@ -15,6 +15,8 @@
 #import "AbstractRepositoryProtocols.h"
 
 @class AbstractData;
+@class DataProvider;
+@protocol ListSupplierProtocol;
 
 @protocol AbstractPresenterProtocols <NSObject>
 
@@ -34,10 +36,34 @@
 
 /// Methods
 ///
+- (void)registerNotificationObservers;
+- (void)setupProvider;
+- (DataProvider *)provider;
 - (void)fetchData;
+- (void)clearData;
 - (NSArray<AbstractData *> *)data;
 - (NSImage *)fetchedImage;
 - (void)fetchImageFromData:(AbstractData *)obj;
+
+/// Find object that the represented item is mapped to.
+///
+- (Class)targetObjectClass;
+- (id<ListSupplierProtocol>)findObjectForRepresentedItem:(AbstractData *)representedItem;
+- (NSArray<id<ListSupplierProtocol>> *)findObjectsForRepresentedItems:(NSArray *)items;
+- (NSArray<id<ListSupplierProtocol>> *)findObjectsForItem:(id)item;
+
+/// Drag/Drop handler
+///
+- (BOOL)couldDropObject:(id)object;
+- (BOOL)couldDropObjects:(NSArray *)objects;
+- (void)dropObject:(id)object forRow:(NSInteger)row target:(id<ListSupplierProtocol>)target completion:(void(^)(BOOL finished))complete;
+
+/// Notification observers handler
+///
+- (void)handleNotificationObserversObjectInserted:(id)object;
+- (void)handleNotificationObserversObjectUpdated:(id)object;
+- (void)handleNotificationObserversObjectDeleted:(id)object;
+- (void)handleNotificationObserversObjectTrashed:(id)object;
 
 @end
 

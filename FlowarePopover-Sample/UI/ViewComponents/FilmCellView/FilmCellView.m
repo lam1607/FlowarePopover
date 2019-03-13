@@ -14,6 +14,10 @@
 #import "Film.h"
 
 @interface FilmCellView ()
+{
+    FilmRepository *_repository;
+    FilmCellPresenter *_presenter;
+}
 
 /// IBOutlet
 ///
@@ -23,22 +27,22 @@
 
 /// @property
 ///
-@property (nonatomic, strong) FilmRepository *repository;
-@property (nonatomic, strong) FilmCellPresenter *presenter;
 
 @end
 
 @implementation FilmCellView
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do view setup here.
     
-    [self initialize];
+    [self objectsInitialize];
     [self setupUI];
 }
 
-- (void)viewWillLayout {
+- (void)viewWillLayout
+{
     [super viewWillLayout];
     
     [self refreshUIColors];
@@ -46,30 +50,43 @@
 
 #pragma mark - Initialize
 
-- (void)initialize {
-    self.repository = [[FilmRepository alloc] init];
-    self.presenter = [[FilmCellPresenter alloc] init];
-    [self.presenter attachView:self repository:self.repository];
+- (void)objectsInitialize
+{
+    _repository = [[FilmRepository alloc] init];
+    _presenter = [[FilmCellPresenter alloc] init];
+    [_presenter attachView:self repository:_repository];
+}
+
+#pragma mark - Getter/Setter
+
+- (void)setSelected:(BOOL)selected
+{
+    self.vContainer.layer.borderWidth = selected ? 2.5 : 0.0;
 }
 
 #pragma mark - Setup UI
 
-- (void)setupUI {
+- (void)setupUI
+{
     self.imgView.imageScaling = NSImageScaleProportionallyUpOrDown;
     self.lblName.maximumNumberOfLines = 0;
 }
 
-- (void)refreshUIColors {
-    if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name]) {
+- (void)refreshUIColors
+{
+    if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name])
+    {
         [Utils setShadowForView:self.vContainer];
         
 #ifdef SHOULD_USE_ASSET_COLORS
-        [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+        [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] borderWidth:0.0 borderColor:[NSColor _blueColor] forView:self.vContainer];
+        
         [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
         
         [Utils setTitle:self.lblName.stringValue color:[NSColor _textBlackColor] fontSize:16.0 forControl:self.lblName];
 #else
-        [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+        [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] borderWidth:0.0 borderColor:[NSColor blueColor] forView:self.vContainer];
+        
         [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
         
         [Utils setTitle:self.lblName.stringValue color:[NSColor textBlackColor] fontSize:16.0 forControl:self.lblName];
@@ -79,7 +96,8 @@
 
 #pragma mark - Public methods
 
-- (CGFloat)getViewItemHeight {
+- (CGFloat)getViewItemHeight
+{
     CGFloat imageHeight = self.imgView.frame.size.height;
     CGFloat nameHeight = [Utils sizeOfControl:self.lblName].height;
     CGFloat verticalMargins = 65.0; // Take a look at FilmCellView.xib file
@@ -87,13 +105,15 @@
     return imageHeight + nameHeight + verticalMargins;
 }
 
-#pragma mark - ViewRowProtocols implementation
+#pragma mark - ItemCellViewProtocols implementation
 
-- (void)updateData:(NSObject * _Nonnull)obj atIndex:(NSInteger)index {
-    if ([obj isKindOfClass:[Film class]]) {
-        Film *film = (Film *)obj;
+- (void)itemCellView:(id<ItemCellViewProtocols>)itemCellView updateWithData:(id<ListSupplierProtocol> _Nonnull)data atIndexPath:(NSIndexPath *)indexPath
+{
+    if ([data isKindOfClass:[Film class]])
+    {
+        Film *film = (Film *)data;
         
-        [self.presenter fetchImageFromData:film];
+        [_presenter fetchImageFromData:film];
         
         self.lblName.stringValue = film.name;
     }
@@ -101,9 +121,11 @@
 
 #pragma mark - FilmCellViewProtocols implementation
 
-- (void)updateViewImage {
-    if ([self.presenter fetchedImage]) {
-        self.imgView.image = [self.presenter fetchedImage];
+- (void)updateViewImage
+{
+    if ([_presenter fetchedImage])
+    {
+        self.imgView.image = [_presenter fetchedImage];
     }
 }
 

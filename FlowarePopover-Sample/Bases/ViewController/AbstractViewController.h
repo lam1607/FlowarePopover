@@ -11,5 +11,7 @@
 @interface AbstractViewController : NSViewController
 
 - (void)refreshUIColors;
+- (void)addView:(NSView *)child toParent:(NSView *)parent;
+- (void)addView:(NSView *)child toParent:(NSView *)parent needConstraints:(BOOL)needConstraints;
 
 @end

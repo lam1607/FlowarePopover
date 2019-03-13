@@ -13,18 +13,22 @@
 #import "Comic.h"
 
 @interface ComicRepository ()
+{
+    ComicService *_service;
+}
 
 /// @property
 ///
-@property (nonatomic, strong) ComicService *service;
 
 @end
 
 @implementation ComicRepository
 
-- (instancetype)init {
-    if (self = [super init]) {
-        self.service = [[ComicService alloc] init];
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        _service = [[ComicService alloc] init];
     }
     
     return self;
@@ -32,12 +36,15 @@
 
 #pragma mark - ComicRepositoryProtocols implementation
 
-- (NSArray<Comic *> *)fetchComics {
+- (NSArray<Comic *> *)fetchComics
+{
     NSMutableArray *comics = [[NSMutableArray alloc] init];
-    NSArray<NSDictionary *> *comicDicts = [self.service getMockupDataType:@"comics"];
+    NSArray<NSDictionary *> *comicDicts = [_service getMockupDataType:@"comics"];
     
-    for (NSDictionary *contentDict in comicDicts) {
-        @autoreleasepool {
+    for (NSDictionary *contentDict in comicDicts)
+    {
+        @autoreleasepool
+        {
             Comic *item = [[Comic alloc] initWithContent:contentDict];
             [comics addObject:item];
         }

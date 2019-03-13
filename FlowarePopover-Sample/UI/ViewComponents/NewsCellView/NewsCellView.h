@@ -10,9 +10,12 @@
 
 #import "NewsCellViewProtocols.h"
 
-#import "ViewRowProtocols.h"
+#import "ItemCellViewProtocols.h"
 
-@interface NewsCellView : NSTableCellView <NewsCellViewProtocols, ViewRowProtocols>
+@interface NewsCellView : NSTableCellView <NewsCellViewProtocols, ItemCellViewProtocols>
+
+/// @property
+///
 
 /// Methods
 ///

@@ -14,6 +14,10 @@
 #import "News.h"
 
 @interface NewsCellView ()
+{
+    NewsRepository *_repository;
+    NewsCellPresenter *_presenter;
+}
 
 /// IBOutlet
 ///
@@ -24,21 +28,21 @@
 
 /// @property
 ///
-@property (nonatomic, strong) NewsRepository *repository;
-@property (nonatomic, strong) NewsCellPresenter *presenter;
 
 @end
 
 @implementation NewsCellView
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
     
-    [self initialize];
+    [self objectsInitialize];
     [self setupUI];
 }
 
-- (void)layout {
+- (void)layout
+{
     [super layout];
     
     [self refreshUIColors];
@@ -46,32 +50,38 @@
 
 #pragma mark - Initialize
 
-- (void)initialize {
-    self.repository = [[NewsRepository alloc] init];
-    self.presenter = [[NewsCellPresenter alloc] init];
-    [self.presenter attachView:self repository:self.repository];
+- (void)objectsInitialize
+{
+    _repository = [[NewsRepository alloc] init];
+    _presenter = [[NewsCellPresenter alloc] init];
+    [_presenter attachView:self repository:_repository];
 }
 
 #pragma mark - Setup UI
 
-- (void)setupUI {
+- (void)setupUI
+{
     self.imgView.imageScaling = NSImageScaleProportionallyDown;
     self.lblTitle.maximumNumberOfLines = 0;
     self.lblContent.maximumNumberOfLines = 0;
 }
 
-- (void)refreshUIColors {
-    if ([self.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name]) {
+- (void)refreshUIColors
+{
+    if ([self.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name])
+    {
         [Utils setShadowForView:self.vContainer];
         
 #ifdef SHOULD_USE_ASSET_COLORS
-        [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+        [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] borderWidth:0.0 borderColor:[NSColor _blueColor] forView:self.vContainer];
+        
         [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
         
         [Utils setTitle:self.lblTitle.stringValue color:[NSColor _textBlackColor] fontSize:16.0 forControl:self.lblTitle];
         [Utils setTitle:self.lblContent.stringValue color:[NSColor _textGrayColor] fontSize:14.0 forControl:self.lblContent];
 #else
-        [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.vContainer];
+        [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] borderWidth:0.0 borderColor:[NSColor blueColor] forView:self.vContainer];
+        
         [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
         
         [Utils setTitle:self.lblTitle.stringValue color:[NSColor textBlackColor] fontSize:16.0 forControl:self.lblTitle];
@@ -82,7 +92,8 @@
 
 #pragma mark - Public methods
 
-- (CGFloat)getCellHeight {
+- (CGFloat)getCellHeight
+{
     CGFloat imageHeight = self.imgView.frame.size.height;
     CGFloat titleHeight = [Utils sizeOfControl:self.lblTitle].height;
     CGFloat contentHeight = [Utils sizeOfControl:self.lblContent].height;
@@ -91,13 +102,15 @@
     return imageHeight + titleHeight + contentHeight + verticalMargins;
 }
 
-#pragma mark - ViewRowProtocols implementation
+#pragma mark - ItemCellViewProtocols implementation
 
-- (void)updateData:(NSObject * _Nonnull)obj atIndex:(NSInteger)index {
-    if ([obj isKindOfClass:[News class]]) {
-        News *news = (News *)obj;
+- (void)itemCellView:(id<ItemCellViewProtocols>)itemCellView updateWithData:(id<ListSupplierProtocol> _Nonnull)data atIndex:(NSInteger)index
+{
+    if ([data isKindOfClass:[News class]])
+    {
+        News *news = (News *)data;
         
-        [self.presenter fetchImageFromData:news];
+        [_presenter fetchImageFromData:news];
         
         self.lblTitle.stringValue = news.title;
         self.lblContent.stringValue = news.content;
@@ -106,9 +119,11 @@
 
 #pragma mark - NewsCellViewProtocols implementation
 
-- (void)updateViewImage {
-    if ([self.presenter fetchedImage]) {
-        self.imgView.image = [self.presenter fetchedImage];
+- (void)updateViewImage
+{
+    if ([_presenter fetchedImage])
+    {
+        self.imgView.image = [_presenter fetchedImage];
     }
 }
 
