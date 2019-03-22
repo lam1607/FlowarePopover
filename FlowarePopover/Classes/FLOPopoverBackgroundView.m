@@ -276,12 +276,17 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 }
 
 - (void)shouldShowArrow:(BOOL)needed {
-    if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
-        [self updateClippingView];
-    } else {
-        self.clippingView.clippingPath = nil;
-        
-        [self.clippingView setupArrowPath];
+    @try {
+        if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
+            //        [self updateClippingView];
+            self.needsDisplay = YES;
+        } else {
+            self.clippingView.clippingPath = nil;
+            
+            [self.clippingView setupArrowPath];
+        }
+    } @catch (NSException *exception) {
+        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
     }
 }
 

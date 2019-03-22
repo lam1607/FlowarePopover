@@ -104,7 +104,7 @@ The default initialization of FLOPopover type is **`FLOWindowPopover`**
 
 The popover is displayed with follwing methods:
 
-- Display the popover at selected view **`positioningView`** with frame as selected view bounds **`rect`**. It means that the popover will stick to selected view.
+- Display the popover at selected view **`positioningView`** with frame as selected view visible bounds **`rect`**. It means that the popover will stick to selected view. We **`SHOULD`** use **`visibleRect`** here in case of displaying arrow on the popover. If we don't use **`visibleRect`**, in some situations the arrow might display at unexpected position.
   ```
     - (void)showRelativeToRect:(NSRect)rect ofView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType;
   ```
@@ -147,9 +147,9 @@ The relative position **`FLOPopoverRelativePositionType`** has the following typ
 For more detail about **`[showRelativeToView:withRect:]`**, **`[showRelativeToView:withRect:relativePositionType:]`**, **`[showRelativeToView:withRect:sender:]`**, and **`[showRelativeToView:withRect:sender:relativePositionType:]`** methods and **`FLOPopoverRelativePositionType`**, please take a look at and try sample in github repository.
 
 `Examples`:
-- Sticking rect: Display the popover relative to the rect of positioning view
+- Sticking rect: Display the popover relative to the visible rect of positioning view.
   ```
-    [popover showRelativeToRect:[sender bounds] ofView:sender edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
+    [popover showRelativeToRect:[sender visibleRect] ofView:sender edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
   ```
 - Given rect: Dipslay the popover at the given rect with selected view.
   ```
