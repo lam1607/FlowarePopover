@@ -10,6 +10,7 @@
 
 @class OutlineViewManager;
 @class DataProvider;
+@protocol ListSupplierProtocol;
 
 @protocol OutlineViewManagerProtocols <NSObject>
 
@@ -20,6 +21,11 @@
  * Asks the delegate for the identifier of the specified item.
  */
 - (NSUserInterfaceItemIdentifier)outlineViewManager:(OutlineViewManager *)manager makeViewWithIdentifierForItem:(id)item;
+
+/**
+ * Tells the delegate that a specified cell of row will load its data.
+ */
+- (void)outlineViewManager:(OutlineViewManager *)manager itemView:(NSTableCellView *)itemView willLoadData:(id<ListSupplierProtocol> _Nonnull)data forRow:(NSInteger)row;
 
 /**
  * Returns a Boolean value that indicates whether the a given item is expandable. This method may be called quite often, so it must be efficient.

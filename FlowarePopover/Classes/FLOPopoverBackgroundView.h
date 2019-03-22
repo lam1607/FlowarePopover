@@ -66,7 +66,7 @@
 // describe how big the overall popover should be.
 //
 // contentSize - The size of the content contained within the popover.
-// popoverEdge - The edge that is adjacent to the `positioningRect`.
+// popoverEdge - The edge that is adjacent to the `positioningFrame`.
 //
 // Returns the overall size of the backgroundView as a `CGSize`.
 - (CGSize)sizeForBackgroundViewWithContentSize:(CGSize)contentSize popoverEdge:(NSRectEdge)popoverEdge;
@@ -79,7 +79,7 @@
 // nudging the content to make room for the arrow and a 1px border.
 //
 // frame            - The frame of the `backgroundView`.
-// popoverEdge      - The edge that is adjacent to the `positioningRect`.
+// popoverEdge      - The edge that is adjacent to the `positioningFrame`.
 //
 // Returns the frame of the content relative to the given background view frame
 // as a `NSRect`.
@@ -89,7 +89,7 @@
 // This can be overridden by subclasses if they wish to change the shape of the
 // popover but still use the default drawing of a simple stroke and fill.
 //
-// popoverEdge - The edge that is adjacent to the `positioningRect`.
+// popoverEdge - The edge that is adjacent to the `positioningFrame`.
 // frame       - The frame of the background view.
 //
 // Returns a `CGPathRef` of the outline of the background view.

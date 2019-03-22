@@ -10,6 +10,7 @@
 
 @class CollectionViewManager;
 @class DataProvider;
+@protocol ListSupplierProtocol;
 
 @protocol CollectionViewManagerProtocols <NSObject>
 
@@ -20,6 +21,11 @@
  * Asks the delegate for the identifier of the specified item at index path.
  */
 - (NSUserInterfaceItemIdentifier)collectionViewManager:(CollectionViewManager *)manager makeItemWithIdentifierForItem:(id)item atIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ * Tells the delegate that an item view at specified index path will load its data.
+ */
+- (void)collectionViewManager:(CollectionViewManager *)manager itemView:(NSCollectionViewItem *)itemView willLoadData:(id<ListSupplierProtocol> _Nonnull)data forIndexPath:(NSIndexPath *)indexPath;
 
 /**
  * Asks the delegate to provide the supplementary view at the specified location in a section of the collection view.

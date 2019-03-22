@@ -10,6 +10,7 @@
 
 @class TableViewManager;
 @class DataProvider;
+@protocol ListSupplierProtocol;
 
 @protocol TableViewManagerProtocols <NSObject>
 
@@ -20,6 +21,11 @@
  * Asks the delegate for the item identifier of the specified row.
  */
 - (NSUserInterfaceItemIdentifier)tableViewManager:(TableViewManager *)manager makeViewWithIdentifierForRow:(NSInteger)row byItem:(id)item;
+
+/**
+ * Tells the delegate that a specified cell of row will load its data.
+ */
+- (void)tableViewManager:(TableViewManager *)manager itemView:(NSTableCellView *)itemView willLoadData:(id<ListSupplierProtocol> _Nonnull)data forRow:(NSInteger)row;
 
 /**
  * Asks the delegate for a view to display the specified row.

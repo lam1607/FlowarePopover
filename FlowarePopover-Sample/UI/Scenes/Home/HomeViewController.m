@@ -453,7 +453,7 @@
         
         _popoverComics.tag = WindowLevelGroupTagUtility;
         
-        [_popoverComics setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft animatedInApplicationRect:YES];
+        [_popoverComics setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationRightToLeft animatedInAppFrame:YES];
         
         // MUST call the didContentSizeChange block before popover makes displaying.
         // To update the content view frame before capturing image for animation.

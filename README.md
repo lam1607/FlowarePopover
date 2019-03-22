@@ -225,10 +225,10 @@ After setting the property **`animated`** is **`YES`**, we should use the follow
 or
 
 ```
-  - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType animatedInApplicationRect:(BOOL)animatedInApplicationRect;
+  - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType animatedInAppFrame:(BOOL)animatedInAppFrame;
 ```
 
-**`animatedInApplicationRect`** means that the animation is only performed inside the application frame. Value of **`animatedInApplicationRect`** is set as **`NO`** by default.
+**`animatedInAppFrame`** means that the animation is only performed inside the application frame. Value of **`animatedInAppFrame`** is set as **`NO`** by default.
 
 The **`FLOPopoverAnimationBehaviour`** that is animation behaviour has following types:
 - **`FLOPopoverAnimationBehaviorDefault`** (popover will display with slightly default fade in/out animation)

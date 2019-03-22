@@ -59,7 +59,7 @@
 /**
  * The positioning frame that used in displaying function. (only available for given frame displaying).
  */
-@property (nonatomic, assign, readonly) NSRect initialPositioningRect;
+@property (nonatomic, assign, readonly) NSRect initialPositioningFrame;
 
 
 @property (nonatomic, assign) BOOL alwaysOnTop;
@@ -70,16 +70,16 @@
 
 /**
  * Determine whether the popover should stay in application frame or screen frame.
- * Default value of staysInApplicationRect is NO, it means that the popover will stay inside the screen frame.
+ * Default value of staysInApplicationFrame is NO, it means that the popover will stay inside the screen frame.
  */
-@property (nonatomic, assign) BOOL staysInApplicationRect;
+@property (nonatomic, assign) BOOL staysInApplicationFrame;
 @property (nonatomic, assign) BOOL updatesFrameWhileShowing;
 @property (nonatomic, assign) BOOL shouldRegisterSuperviewObservers;
 @property (nonatomic, assign) BOOL shouldChangeSizeWhenApplicationResizes;
 @property (nonatomic, assign) BOOL closesWhenPopoverResignsKey;
 @property (nonatomic, assign) BOOL closesWhenApplicationBecomesInactive;
 @property (nonatomic, assign) BOOL closesWhenApplicationResizes;
-@property (nonatomic, assign) BOOL closesWhenNotBelongToApplicationFrame;
+@property (nonatomic, assign) BOOL closesWhenNotBelongToContainerFrame;
 @property (nonatomic, assign) NSTimeInterval closesAfterTimeInterval;
 
 /**
@@ -147,7 +147,7 @@
 - (void)setPopoverLevel:(NSWindowLevel)level;
 
 - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType;
-- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType animatedInApplicationRect:(BOOL)animatedInApplicationRect;
+- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType animatedInAppFrame:(BOOL)animatedInAppFrame;
 
 
 /**

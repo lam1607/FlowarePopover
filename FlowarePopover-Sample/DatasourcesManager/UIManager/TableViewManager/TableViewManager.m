@@ -134,7 +134,11 @@
         
         NSTableCellView *cell = [tableView makeViewWithIdentifier:identifier owner:self];
         
-        if ([cell conformsToProtocol:@protocol(ItemCellViewProtocols)] && [(id<ItemCellViewProtocols>)cell respondsToSelector:@selector(itemCellView:updateWithData:atIndex:)])
+        if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:itemView:willLoadData:forRow:)])
+        {
+            [self.protocols tableViewManager:self itemView:cell willLoadData:object forRow:row];
+        }
+        else if ([cell conformsToProtocol:@protocol(ItemCellViewProtocols)] && [(id<ItemCellViewProtocols>)cell respondsToSelector:@selector(itemCellView:updateWithData:atIndex:)])
         {
             [(id<ItemCellViewProtocols>)cell itemCellView:(id<ItemCellViewProtocols>)cell updateWithData:object atIndex:row];
         }

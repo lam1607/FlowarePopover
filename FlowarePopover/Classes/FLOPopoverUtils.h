@@ -33,28 +33,29 @@
 @property (nonatomic, assign) NSVisualEffectBlendingMode arrowVisualEffectBlendingMode;
 @property (nonatomic, assign) NSVisualEffectState arrowVisualEffectState;
 
-@property (nonatomic, assign) BOOL staysInApplicationRect;
+@property (nonatomic, assign) BOOL staysInApplicationFrame;
 
 @property (nonatomic, assign) FLOPopoverAnimationBehaviour animationBehaviour;
 @property (nonatomic, assign) FLOPopoverAnimationType animationType;
-@property (nonatomic, assign) BOOL animatedInApplicationRect;
+@property (nonatomic, assign) BOOL animatedInAppFrame;
 
 @property (nonatomic, assign) BOOL needAutoresizingMask;
 
 @property (nonatomic, strong) NSView *positioningAnchorView;
 @property (nonatomic, strong) NSView *senderView;
 @property (nonatomic, assign) FLOPopoverRelativePositionType relativePositionType;
-@property (nonatomic, assign) NSRect positioningWindowRect;
+@property (nonatomic, assign) NSRect positioningWindowFrame;
 @property (nonatomic, strong) NSMutableArray<NSView *> *anchorSuperviews;
 
 @property (nonatomic, strong) FLOPopoverBackgroundView *backgroundView;
-@property (nonatomic, assign) NSRect positioningRect;
+@property (nonatomic, assign) NSRect positioningFrame;
 @property (nonatomic, strong) NSView *positioningView;
 @property (nonatomic) NSRectEdge preferredEdge;
 @property (nonatomic, assign) CGSize contentSize;
 @property (nonatomic, assign) CGPoint anchorPoint;
 @property (nonatomic, assign) CGSize originalViewSize;
 @property (nonatomic, assign) CGFloat verticalMarginOutOfPopover;
+@property (nonatomic, assign) BOOL containerBoundsChangedByNotification;
 
 
 + (FLOPopoverUtils *)sharedInstance;
@@ -75,15 +76,16 @@
 - (NSVisualEffectView *)contentViewDidContainVisualEffect;
 - (void)addView:(NSView *)view toParent:(NSView *)parentView;
 - (void)setupAutoresizingMaskIfNeeded:(BOOL)needed;
+- (void)resetContainerBoundsChangedByNotification;
 
 #pragma mark - Display utilities
 
 - (void)setPopoverEdgeType:(FLOPopoverEdgeType)edgeType;
 - (void)setupPositioningAnchorWithView:(NSView *)positioningView positioningRect:(NSRect)positioningRect shouldUpdatePosition:(BOOL)shouldUpdatePosition;
-- (NSRect)popoverRectForEdge:(NSRectEdge)popoverEdge;
-- (NSRect)popoverRect;
-- (NSRect)_popoverRectForEdge:(NSRectEdge *)popoverEdge;
-- (NSRect)_popoverRect;
+- (NSRect)popoverFrameForEdge:(NSRectEdge)popoverEdge;
+- (NSRect)popoverFrame;
+- (NSRect)_popoverFrameForEdge:(NSRectEdge *)popoverEdge;
+- (NSRect)_popoverFrame;
 - (void)_backgroundViewShouldUpdate:(BOOL)updated;
 
 @end

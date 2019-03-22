@@ -20,7 +20,7 @@
 /**
  * The positioning frame that used in displaying function. (only available for given frame displaying).
  */
-@property (nonatomic, assign, readonly) NSRect initialPositioningRect;
+@property (nonatomic, assign, readonly) NSRect initialPositioningFrame;
 
 
 @property (nonatomic, assign) BOOL alwaysOnTop;
@@ -28,14 +28,14 @@
 @property (nonatomic, assign) NSSize arrowSize;
 @property (nonatomic, assign) BOOL animated;
 @property (nonatomic, assign) BOOL animatedForwarding;
-@property (nonatomic, assign) BOOL staysInApplicationRect;
+@property (nonatomic, assign) BOOL staysInApplicationFrame;
 @property (nonatomic, assign) BOOL updatesFrameWhileShowing;
 @property (nonatomic, assign) BOOL shouldRegisterSuperviewObservers;
 @property (nonatomic, assign) BOOL shouldChangeSizeWhenApplicationResizes;
 @property (nonatomic, assign) BOOL closesWhenPopoverResignsKey;
 @property (nonatomic, assign) BOOL closesWhenApplicationBecomesInactive;
 @property (nonatomic, assign) BOOL closesWhenApplicationResizes;
-@property (nonatomic, assign) BOOL closesWhenNotBelongToApplicationFrame;
+@property (nonatomic, assign) BOOL closesWhenNotBelongToContainerFrame;
 
 /**
  * Make the popover movable.

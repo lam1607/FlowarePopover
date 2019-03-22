@@ -196,7 +196,11 @@
         
         NSTableCellView *cell = [outlineView makeViewWithIdentifier:identifier owner:self];
         
-        if ([cell conformsToProtocol:@protocol(ItemCellViewProtocols)] && [(id<ItemCellViewProtocols>)cell respondsToSelector:@selector(itemCellView:updateWithData:atIndex:)])
+        if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:itemView:willLoadData:forRow:)])
+        {
+            [self.protocols outlineViewManager:self itemView:cell willLoadData:object forRow:row];
+        }
+        else if ([cell conformsToProtocol:@protocol(ItemCellViewProtocols)] && [(id<ItemCellViewProtocols>)cell respondsToSelector:@selector(itemCellView:updateWithData:atIndex:)])
         {
             [(id<ItemCellViewProtocols>)cell itemCellView:(id<ItemCellViewProtocols>)cell updateWithData:object atIndex:row];
         }
@@ -588,7 +592,7 @@
 //    {
 //        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
 //    }
-//    
+//
 //    return nil;
 //}
 

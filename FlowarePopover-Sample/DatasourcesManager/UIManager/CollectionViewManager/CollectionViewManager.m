@@ -146,7 +146,11 @@
         
         NSCollectionViewItem *itemView = [collectionView makeItemWithIdentifier:identifier forIndexPath:indexPath];
         
-        if ([itemView conformsToProtocol:@protocol(ItemCellViewProtocols)] && [(id<ItemCellViewProtocols>)itemView respondsToSelector:@selector(itemCellView:updateWithData:atIndexPath:)])
+        if (self.protocols && [self.protocols respondsToSelector:@selector(collectionViewManager:itemView:willLoadData:forIndexPath:)])
+        {
+            [self.protocols collectionViewManager:self itemView:itemView willLoadData:object forIndexPath:indexPath];
+        }
+        else if ([itemView conformsToProtocol:@protocol(ItemCellViewProtocols)] && [(id<ItemCellViewProtocols>)itemView respondsToSelector:@selector(itemCellView:updateWithData:atIndexPath:)])
         {
             [(id<ItemCellViewProtocols>)itemView itemCellView:(id<ItemCellViewProtocols>)itemView updateWithData:object atIndexPath:indexPath];
         }

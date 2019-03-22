@@ -90,8 +90,11 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
     _clippingPath = clippingPath;
     CGPathRetain(_clippingPath);
     
-    // @TODO: This line crashes on macOS 10.14
-    //    self.needsDisplay = YES;
+    @try {
+        self.needsDisplay = YES;
+    } @catch (NSException *exception) {
+        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
+    }
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
@@ -275,6 +278,10 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 - (void)shouldShowArrow:(BOOL)needed {
     if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
         [self updateClippingView];
+    } else {
+        self.clippingView.clippingPath = nil;
+        
+        [self.clippingView setupArrowPath];
     }
 }
 

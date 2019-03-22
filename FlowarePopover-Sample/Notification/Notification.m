@@ -24,7 +24,7 @@ struct DataChangeNotification dataChangeNotification =
     [[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:NO];
 }
 
-+ (void)postNotificationName:(NSString *)name userInfo:(NSDictionary *)userInfo
++ (void)postNotificationName:(NSString *)name object:(id)object userInfo:(NSDictionary *)userInfo
 {
     NSNotification *notification = [NSNotification notificationWithName:name object:nil userInfo:userInfo];
     [[NSNotificationCenter defaultCenter] performSelectorOnMainThread:@selector(postNotification:) withObject:notification waitUntilDone:NO];

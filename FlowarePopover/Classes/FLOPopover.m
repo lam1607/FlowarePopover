@@ -129,6 +129,14 @@
     return [self.viewPopup isShown];
 }
 
+- (NSRect)initialPositioningFrame {
+    if (self.type == FLOWindowPopover) {
+        return self.windowPopup.initialPositioningFrame;
+    }
+    
+    return self.viewPopup.initialPositioningFrame;
+}
+
 - (void)setType:(FLOPopoverType)type {
     _type = type;
     
@@ -205,13 +213,13 @@
     }
 }
 
-- (void)setStaysInApplicationRect:(BOOL)staysInApplicationRect {
-    _staysInApplicationRect = staysInApplicationRect;
+- (void)setStaysInApplicationFrame:(BOOL)staysInApplicationFrame {
+    _staysInApplicationFrame = staysInApplicationFrame;
     
     if (self.type == FLOWindowPopover) {
-        self.windowPopup.staysInApplicationRect = staysInApplicationRect;
+        self.windowPopup.staysInApplicationFrame = staysInApplicationFrame;
     } else {
-        self.viewPopup.staysInApplicationRect = staysInApplicationRect;
+        self.viewPopup.staysInApplicationFrame = staysInApplicationFrame;
     }
 }
 
@@ -285,15 +293,15 @@
     }
 }
 
-- (void)setClosesWhenNotBelongToApplicationFrame:(BOOL)closesWhenNotBelongToApplicationFrame {
+- (void)setClosesWhenNotBelongToContainerFrame:(BOOL)closesWhenNotBelongToContainerFrame {
     [self restartPopupIfNeeded];
     
-    _closesWhenNotBelongToApplicationFrame = closesWhenNotBelongToApplicationFrame;
+    _closesWhenNotBelongToContainerFrame = closesWhenNotBelongToContainerFrame;
     
     if (self.type == FLOWindowPopover) {
-        self.windowPopup.closesWhenNotBelongToApplicationFrame = closesWhenNotBelongToApplicationFrame;
+        self.windowPopup.closesWhenNotBelongToContainerFrame = closesWhenNotBelongToContainerFrame;
     } else {
-        self.viewPopup.closesWhenNotBelongToApplicationFrame = closesWhenNotBelongToApplicationFrame;
+        self.viewPopup.closesWhenNotBelongToContainerFrame = closesWhenNotBelongToContainerFrame;
     }
 }
 
@@ -446,14 +454,14 @@
         self.shouldShowArrow = viewPopup.shouldShowArrow;
         self.animated = viewPopup.animated;
         self.animatedForwarding = viewPopup.animatedForwarding;
-        self.staysInApplicationRect = viewPopup.staysInApplicationRect;
+        self.staysInApplicationFrame = viewPopup.staysInApplicationFrame;
         self.updatesFrameWhileShowing = viewPopup.updatesFrameWhileShowing;
         self.shouldRegisterSuperviewObservers = viewPopup.shouldRegisterSuperviewObservers;
         self.shouldChangeSizeWhenApplicationResizes = viewPopup.shouldChangeSizeWhenApplicationResizes;
         self.closesWhenPopoverResignsKey = viewPopup.closesWhenPopoverResignsKey;
         self.closesWhenApplicationBecomesInactive = viewPopup.closesWhenApplicationBecomesInactive;
         self.closesWhenApplicationResizes = viewPopup.closesWhenApplicationResizes;
-        self.closesWhenNotBelongToApplicationFrame = viewPopup.closesWhenNotBelongToApplicationFrame;
+        self.closesWhenNotBelongToContainerFrame = viewPopup.closesWhenNotBelongToContainerFrame;
         self.isMovable = viewPopup.isMovable;
         self.isDetachable = viewPopup.isDetachable;
         self.tag = viewPopup.tag;
@@ -469,14 +477,14 @@
         self.shouldShowArrow = windowPopup.shouldShowArrow;
         self.animated = windowPopup.animated;
         self.animatedForwarding = windowPopup.animatedForwarding;
-        self.staysInApplicationRect = windowPopup.staysInApplicationRect;
+        self.staysInApplicationFrame = windowPopup.staysInApplicationFrame;
         self.updatesFrameWhileShowing = windowPopup.updatesFrameWhileShowing;
         self.shouldRegisterSuperviewObservers = windowPopup.shouldRegisterSuperviewObservers;
         self.shouldChangeSizeWhenApplicationResizes = windowPopup.shouldChangeSizeWhenApplicationResizes;
         self.closesWhenPopoverResignsKey = windowPopup.closesWhenPopoverResignsKey;
         self.closesWhenApplicationBecomesInactive = windowPopup.closesWhenApplicationBecomesInactive;
         self.closesWhenApplicationResizes = windowPopup.closesWhenApplicationResizes;
-        self.closesWhenNotBelongToApplicationFrame = windowPopup.closesWhenNotBelongToApplicationFrame;
+        self.closesWhenNotBelongToContainerFrame = windowPopup.closesWhenNotBelongToContainerFrame;
         self.makesKeyAndOrderFrontOnDisplaying = windowPopup.makesKeyAndOrderFrontOnDisplaying;
         self.isMovable = windowPopup.isMovable;
         self.isDetachable = windowPopup.isDetachable;
@@ -498,14 +506,14 @@
         viewPopup.shouldShowArrow = self.shouldShowArrow;
         viewPopup.animated = self.animated;
         viewPopup.animatedForwarding = self.animatedForwarding;
-        viewPopup.staysInApplicationRect = self.staysInApplicationRect;
+        viewPopup.staysInApplicationFrame = self.staysInApplicationFrame;
         viewPopup.updatesFrameWhileShowing = self.updatesFrameWhileShowing;
         viewPopup.shouldRegisterSuperviewObservers = self.shouldRegisterSuperviewObservers;
         viewPopup.shouldChangeSizeWhenApplicationResizes = self.shouldChangeSizeWhenApplicationResizes;
         viewPopup.closesWhenPopoverResignsKey = self.closesWhenPopoverResignsKey;
         viewPopup.closesWhenApplicationBecomesInactive = self.closesWhenApplicationBecomesInactive;
         viewPopup.closesWhenApplicationResizes = self.closesWhenApplicationResizes;
-        viewPopup.closesWhenNotBelongToApplicationFrame = self.closesWhenNotBelongToApplicationFrame;
+        viewPopup.closesWhenNotBelongToContainerFrame = self.closesWhenNotBelongToContainerFrame;
         viewPopup.isMovable = self.isMovable;
         viewPopup.isDetachable = self.isDetachable;
         viewPopup.tag = self.tag;
@@ -519,14 +527,14 @@
         windowPopup.shouldShowArrow = self.shouldShowArrow;
         windowPopup.animated = self.animated;
         windowPopup.animatedForwarding = self.animatedForwarding;
-        windowPopup.staysInApplicationRect = self.staysInApplicationRect;
+        windowPopup.staysInApplicationFrame = self.staysInApplicationFrame;
         windowPopup.updatesFrameWhileShowing = self.updatesFrameWhileShowing;
         windowPopup.shouldRegisterSuperviewObservers = self.shouldRegisterSuperviewObservers;
         windowPopup.shouldChangeSizeWhenApplicationResizes = self.shouldChangeSizeWhenApplicationResizes;
         windowPopup.closesWhenPopoverResignsKey = self.closesWhenPopoverResignsKey;
         windowPopup.closesWhenApplicationBecomesInactive = self.closesWhenApplicationBecomesInactive;
         windowPopup.closesWhenApplicationResizes = self.closesWhenApplicationResizes;
-        windowPopup.closesWhenNotBelongToApplicationFrame = self.closesWhenNotBelongToApplicationFrame;
+        windowPopup.closesWhenNotBelongToContainerFrame = self.closesWhenNotBelongToContainerFrame;
         windowPopup.makesKeyAndOrderFrontOnDisplaying = self.makesKeyAndOrderFrontOnDisplaying;
         windowPopup.isMovable = self.isMovable;
         windowPopup.isDetachable = self.isDetachable;
@@ -609,16 +617,16 @@
 }
 
 - (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType {
-    [self setAnimationBehaviour:animationBehaviour type:animationType animatedInApplicationRect:NO];
+    [self setAnimationBehaviour:animationBehaviour type:animationType animatedInAppFrame:NO];
 }
 
-- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType animatedInApplicationRect:(BOOL)animatedInApplicationRect {
+- (void)setAnimationBehaviour:(FLOPopoverAnimationBehaviour)animationBehaviour type:(FLOPopoverAnimationType)animationType animatedInAppFrame:(BOOL)animatedInAppFrame {
     [self restartPopupIfNeeded];
     
     if (self.type == FLOWindowPopover) {
-        [self.windowPopup setAnimationBehaviour:animationBehaviour type:animationType animatedInApplicationRect:animatedInApplicationRect];
+        [self.windowPopup setAnimationBehaviour:animationBehaviour type:animationType animatedInAppFrame:animatedInAppFrame];
     } else {
-        [self.viewPopup setAnimationBehaviour:animationBehaviour type:animationType animatedInApplicationRect:animatedInApplicationRect];
+        [self.viewPopup setAnimationBehaviour:animationBehaviour type:animationType animatedInAppFrame:animatedInAppFrame];
     }
 }
 
