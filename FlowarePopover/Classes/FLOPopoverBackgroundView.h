@@ -24,8 +24,9 @@
 @property (nonatomic) CGColorRef pathColor;
 
 - (void)setupArrowVisualEffectViewMaterial:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
-- (void)setupArrowPath;
-- (void)setupArrowPathColor:(CGColorRef)color;
+- (void)setClippingPathColor:(CGColorRef)color;
+- (void)drawClippingPath;
+- (void)clearClippingPath;
 
 @end
 
@@ -34,8 +35,8 @@
 @protocol FLOPopoverBackgroundViewDelegate <NSObject>
 
 @optional
-- (void)didPopoverMakeMovement;
-- (void)didPopoverBecomeDetachable:(NSWindow *)targetWindow;
+- (void)popoverDidMakeMovement;
+- (void)popoverDidMakeDetachable:(NSWindow *)targetWindow;
 
 @end
 
@@ -93,14 +94,14 @@
 // frame       - The frame of the background view.
 //
 // Returns a `CGPathRef` of the outline of the background view.
-- (CGPathRef)newPopoverPathForEdge:(NSRectEdge)popoverEdge inFrame:(NSRect)frame;
+- (CGPathRef)clippingPathForEdge:(NSRectEdge)popoverEdge frame:(NSRect)frame;
 
 
 - (void)makeMovable:(BOOL)movable;
 - (void)makeDetachable:(BOOL)detachable;
-- (void)shouldShowShadow:(BOOL)needed;
-- (void)shouldShowArrow:(BOOL)needed;
-- (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
+- (void)showShadow:(BOOL)needed;
+- (void)showArrow:(BOOL)needed;
+- (void)showArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 - (void)setArrowColor:(CGColorRef)color;
 - (void)setPopoverEdge:(NSRectEdge)popoverEdge;
 - (void)setPopoverOrigin:(NSRect)popoverOrigin;

@@ -398,6 +398,7 @@
     //    _popoverNews.closesWhenPopoverResignsKey = YES;
     //    _popoverNews.closesWhenApplicationBecomesInactive = YES;
     //    _popoverNews.closesAfterTimeInterval = 3.0;
+    //    _popoverNews.cancelClosesAfterTimeIntervalWhenMoving = YES;
     _popoverNews.isMovable = YES;
     _popoverNews.isDetachable = YES;
     

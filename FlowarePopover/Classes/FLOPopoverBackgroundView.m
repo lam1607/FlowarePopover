@@ -68,15 +68,16 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 
 #pragma mark - FLOPopoverClippingView
 
-@interface FLOPopoverClippingView ()
-
-@property (nonatomic, strong) NSVisualEffectView *visualEffectView;
+@interface FLOPopoverClippingView () {
+    NSVisualEffectView *_visualEffectView;
+}
 
 @end
 
 @implementation FLOPopoverClippingView
+
 - (void)dealloc {
-    self.clippingPath = NULL;
+    [self clearClippingPath];
 }
 
 - (NSView *)hitTest:(NSPoint)aPoint {
@@ -100,55 +101,78 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 - (void)drawRect:(NSRect)dirtyRect {
     if (self.clippingPath == NULL) return;
     
-    [self setupArrowPath];
+    [self drawClippingPath];
 }
 
 - (void)setupArrowVisualEffectViewMaterial:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
-    if (self.visualEffectView == nil) {
-        self.visualEffectView = [[NSVisualEffectView alloc] initWithFrame:self.frame];
-        self.visualEffectView.state = state;
-        self.visualEffectView.material = material;
-        self.visualEffectView.blendingMode = blendingMode;
+    if (_visualEffectView == nil) {
+        _visualEffectView = [[NSVisualEffectView alloc] initWithFrame:self.frame];
+        _visualEffectView.state = state;
+        _visualEffectView.material = material;
+        _visualEffectView.blendingMode = blendingMode;
         
-        [self addSubview:self.visualEffectView];
+        [self addSubview:_visualEffectView];
     }
 }
 
-- (void)setupArrowPath {
-    if (self.visualEffectView != nil) {
-        [self.visualEffectView setFrameSize:self.frame.size];
+- (void)setClippingPathColor:(CGColorRef)color {
+    if (color != nil) {
+        self.pathColor = color;
         
-        self.visualEffectView.maskImage = [NSImage imageWithSize:self.frame.size flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
-            NSBezierPath *path = bezierPathWithCGPath(self.clippingPath);
-            [path fill];
-            
-            return YES;
-        }];
-    } else {
-        CGContextRef currentContext = NSGraphicsContext.currentContext.CGContext;
-        
-        if (currentContext != nil) {
-            self.pathColor = ((self.pathColor != nil) && (self.pathColor != [NSColor.clearColor CGColor])) ? self.pathColor : [NSColor.lightGrayColor CGColor];
-            
-            CGContextAddPath(currentContext, self.clippingPath);
-            CGContextSetFillColorWithColor(currentContext, self.pathColor);
-            CGContextFillPath(currentContext);
+        @try {
+            self.needsDisplay = YES;
+        } @catch (NSException *exception) {
+            NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
         }
     }
 }
 
-- (void)setupArrowPathColor:(CGColorRef)color {
-    if (color != nil) {
-        self.pathColor = color;
-        self.needsDisplay = YES;
+- (void)drawClippingPath {
+    @try {
+        if (_visualEffectView != nil) {
+            [_visualEffectView setFrameSize:self.frame.size];
+            
+            _visualEffectView.maskImage = [NSImage imageWithSize:self.frame.size flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+                NSBezierPath *path = bezierPathWithCGPath(self.clippingPath);
+                [path fill];
+                
+                return YES;
+            }];
+        } else {
+            CGContextRef currentContext = NSGraphicsContext.currentContext.CGContext;
+            
+            if (currentContext != nil) {
+                self.pathColor = ((self.pathColor != nil) && (self.pathColor != [NSColor.clearColor CGColor])) ? self.pathColor : [NSColor.lightGrayColor CGColor];
+                
+                CGContextAddPath(currentContext, self.clippingPath);
+                CGContextSetFillColorWithColor(currentContext, self.pathColor);
+                CGContextFillPath(currentContext);
+            }
+        }
+    } @catch (NSException *exception) {
+        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
     }
+}
+
+- (void)clearClippingPath {
+    self.clippingPath = NULL;
 }
 
 @end
 
 #pragma mark - FLOPopoverBackgroundView
 
-@interface FLOPopoverBackgroundView ()
+@interface FLOPopoverBackgroundView () {
+    BOOL _isMovable;
+    BOOL _isDetachable;
+    
+    NSPoint _originalMouseOffset;
+    BOOL _dragging;
+    
+    BOOL _mouseDownEventReceived;
+    
+    BOOL _shouldShowArrowWithVisualEffect;
+}
 
 // The clipping view that's used to shape the popover to the correct path. This
 // property is prefixed because it's private and this class is meant to be
@@ -156,16 +180,6 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 @property (nonatomic, strong, readonly) FLOPopoverClippingView *clippingView;
 @property (nonatomic, assign, readwrite) NSRectEdge popoverEdge;
 @property (nonatomic, assign, readwrite) NSRect popoverOrigin;
-
-@property (nonatomic, assign) BOOL isMovable;
-@property (nonatomic, assign) BOOL isDetachable;
-
-@property (nonatomic, assign) NSPoint originalMouseOffset;
-@property (nonatomic, assign) BOOL dragging;
-
-@property (nonatomic, assign) BOOL isReceivedMouseDownEvent;
-
-@property (nonatomic, assign) BOOL shouldShowArrowWithVisualEffect;
 
 @end
 
@@ -175,7 +189,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
     if (self = [super initWithFrame:frame]) {
         _arrowSize = NSZeroSize;
         _fillColor = NSColor.clearColor;
-        _isReceivedMouseDownEvent = NO;
+        _mouseDownEventReceived = NO;
         _shouldShowArrowWithVisualEffect = NO;
         
         _clippingView = [[FLOPopoverClippingView alloc] initWithFrame:self.bounds];
@@ -191,12 +205,14 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 
 - (void)drawRect:(NSRect)rect {
     [super drawRect:rect];
+    
     [self.fillColor set];
     NSRectFill(rect);
 }
 
 - (void)viewWillDraw {
     [super viewWillDraw];
+    
     [self updateClippingView];
 }
 
@@ -248,7 +264,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 
 - (void)updateClippingView {
     if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
-        CGPathRef clippingPath = [self newPopoverPathForEdge:self.popoverEdge inFrame:self.clippingView.bounds];
+        CGPathRef clippingPath = [self clippingPathForEdge:self.popoverEdge frame:self.clippingView.bounds];
         self.clippingView.clippingPath = clippingPath;
         CGPathRelease(clippingPath);
     }
@@ -257,14 +273,14 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 #pragma mark - Processes
 
 - (void)makeMovable:(BOOL)movable {
-    self.isMovable = movable;
+    _isMovable = movable;
 }
 
 - (void)makeDetachable:(BOOL)detachable {
-    self.isDetachable = detachable;
+    _isDetachable = detachable;
 }
 
-- (void)shouldShowShadow:(BOOL)needed {
+- (void)showShadow:(BOOL)needed {
     if (needed) {
         self.wantsLayer = YES;
         self.layer.masksToBounds = NO;
@@ -275,23 +291,21 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
     }
 }
 
-- (void)shouldShowArrow:(BOOL)needed {
+- (void)showArrow:(BOOL)needed {
     @try {
         if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
-            //        [self updateClippingView];
             self.needsDisplay = YES;
         } else {
-            self.clippingView.clippingPath = nil;
-            
-            [self.clippingView setupArrowPath];
+            [self.clippingView clearClippingPath];
+            [self.clippingView drawClippingPath];
         }
     } @catch (NSException *exception) {
         NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
     }
 }
 
-- (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
-    self.shouldShowArrowWithVisualEffect = needed;
+- (void)showArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
+    _shouldShowArrowWithVisualEffect = needed;
     
     if (needed) {
         [self.clippingView setupArrowVisualEffectViewMaterial:material blendingMode:blendingMode state:state];
@@ -300,7 +314,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 
 - (void)setArrowColor:(CGColorRef)color {
     if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
-        [self.clippingView setupArrowPathColor:color];
+        [self.clippingView setClippingPathColor:color];
     }
 }
 
@@ -383,7 +397,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
     return returnFrame;
 }
 
-- (CGPathRef)newPopoverPathForEdge:(NSRectEdge)popoverEdge inFrame:(NSRect)frame {
+- (CGPathRef)clippingPathForEdge:(NSRectEdge)popoverEdge frame:(NSRect)frame {
     NSRectEdge arrowEdge = [self arrowEdgeForPopoverEdge:popoverEdge];
     
     NSRect contentRect = NSIntegralRect([self contentViewFrameForBackgroundFrame:frame popoverEdge:self.popoverEdge]);
@@ -447,7 +461,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
     
     CGMutablePathRef path = CGPathCreateMutable();
     
-    if (self.shouldShowArrowWithVisualEffect) {
+    if (_shouldShowArrowWithVisualEffect) {
         CGPathMoveToPoint(path, NULL, minX, minCenterpointY);
         
         CGFloat radius = self.borderRadius;
@@ -496,23 +510,23 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 
 - (void)mouseDown:(NSEvent *)event {
     BOOL isFLOPopoverWindow = [event.window isKindOfClass:[FLOPopoverWindow class]];
-    self.originalMouseOffset = isFLOPopoverWindow ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:self.window.contentView];
-    self.dragging = NO;
-    self.isReceivedMouseDownEvent = YES;
+    _originalMouseOffset = isFLOPopoverWindow ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:self.window.contentView];
+    _dragging = NO;
+    _mouseDownEventReceived = YES;
 }
 
 - (void)mouseDragged:(NSEvent *)event {
-    if (self.isReceivedMouseDownEvent && (self.isMovable || self.isDetachable)) {
-        self.dragging = YES;
+    if (_mouseDownEventReceived && (_isMovable || _isDetachable)) {
+        _dragging = YES;
         
-        if ([self.delegate respondsToSelector:@selector(didPopoverMakeMovement)]) {
-            [self.delegate didPopoverMakeMovement];
+        if ([self.delegate respondsToSelector:@selector(popoverDidMakeMovement)]) {
+            [self.delegate popoverDidMakeMovement];
         }
         
         BOOL isFLOPopoverWindow = [event.window isKindOfClass:[FLOPopoverWindow class]];
         
         NSPoint currentMouseOffset = isFLOPopoverWindow ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:event.window.contentView];
-        NSPoint difference = NSMakePoint(currentMouseOffset.x - self.originalMouseOffset.x, currentMouseOffset.y - self.originalMouseOffset.y);
+        NSPoint difference = NSMakePoint(currentMouseOffset.x - _originalMouseOffset.x, currentMouseOffset.y - _originalMouseOffset.y);
         NSPoint currentOrigin = isFLOPopoverWindow ? event.window.frame.origin : self.frame.origin;
         NSPoint nextOrigin = NSMakePoint(currentOrigin.x + difference.x, currentOrigin.y + difference.y);
         
@@ -525,18 +539,18 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 }
 
 - (void)mouseUp:(NSEvent *)event {
-    if (self.isReceivedMouseDownEvent && self.dragging) {
-        if (self.isDetachable) {
-            self.isDetachable = NO;
-            self.isMovable = NO;
+    if (_mouseDownEventReceived && _dragging) {
+        if (_isDetachable) {
+            _isDetachable = NO;
+            _isMovable = NO;
             
-            if ([self.delegate respondsToSelector:@selector(didPopoverBecomeDetachable:)]) {
-                [self.delegate didPopoverBecomeDetachable:event.window];
+            if ([self.delegate respondsToSelector:@selector(popoverDidMakeDetachable:)]) {
+                [self.delegate popoverDidMakeDetachable:event.window];
             }
         }
         
-        self.isReceivedMouseDownEvent = NO;
-        self.dragging = NO;
+        _mouseDownEventReceived = NO;
+        _dragging = NO;
     }
 }
 

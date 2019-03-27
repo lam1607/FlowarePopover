@@ -47,7 +47,9 @@
 
 #pragma mark - FLOPopover
 
-@interface FLOPopover ()
+@interface FLOPopover () {
+    NSTimer *_closesAfterTimeIntervalTimer;
+}
 
 @property (nonatomic, strong) FLOWindowPopup<FLOPopoverService> *windowPopup;
 @property (nonatomic, strong) FLOViewPopup<FLOPopoverService> *viewPopup;
@@ -310,6 +312,7 @@
     
     _closesAfterTimeInterval = closesAfterTimeInterval;
     
+    [self cancelCloseAfterTimeInterval];
     [self closeAfterTimeInterval];
 }
 
@@ -559,8 +562,14 @@
     };
     
     target.didShowBlock = ^(NSResponder *popover) {
-        if ((popover == wtarget) && [wself.delegate respondsToSelector:@selector(floPopoverDidShow:)]) {
-            [wself.delegate floPopoverDidShow:self];
+        if (popover == wtarget) {
+            if (wself.closesAfterTimeInterval > 0) {
+                [wself closeAfterTimeInterval];
+            }
+            
+            if ([wself.delegate respondsToSelector:@selector(floPopoverDidShow:)]) {
+                [wself.delegate floPopoverDidShow:self];
+            }
         }
     };
     
@@ -575,10 +584,18 @@
     };
     
     target.didCloseBlock = ^(NSResponder *popover) {
-        if ((popover == wtarget) && [wself.delegate respondsToSelector:@selector(floPopoverDidClose:)]) {
-            [wself storePopupValues:popover];
+        if (popover == wtarget) {
+            if (wself.closesAfterTimeInterval > 0) {
+                wself.closesAfterTimeInterval = 0.0;
+                
+                [wself resetClosesAfterTimeIntervalTimer];
+            }
             
-            [wself.delegate floPopoverDidClose:self];
+            if ([wself.delegate respondsToSelector:@selector(floPopoverDidClose:)]) {
+                [wself storePopupValues:popover];
+                
+                [wself.delegate floPopoverDidClose:self];
+            }
         }
     };
     
@@ -586,8 +603,10 @@
         if (popover == wtarget) {
             wself.isMoved = YES;
             
-            if (wself.closesAfterTimeInterval > 0) {
+            if (wself.cancelClosesAfterTimeIntervalWhenMoving && (wself.closesAfterTimeInterval > 0)) {
                 wself.closesAfterTimeInterval = 0.0;
+                
+                [wself resetClosesAfterTimeIntervalTimer];
                 
                 [NSObject cancelPreviousPerformRequestsWithTarget:wself selector:@selector(close) object:nil];
             }
@@ -721,7 +740,8 @@
         [self.viewPopup showRelativeToRect:rect ofView:positioningView edgeType:edgeType];
     }
     
-    [self closeAfterTimeInterval];
+    [self resetClosesAfterTimeIntervalTimer];
+    [self cancelCloseAfterTimeInterval];
 }
 
 /**
@@ -791,13 +811,31 @@
         [self.viewPopup showRelativeToView:positioningView withRect:rect sender:sender relativePositionType:relativePositionType edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
     }
     
-    [self closeAfterTimeInterval];
+    [self resetClosesAfterTimeIntervalTimer];
+    [self cancelCloseAfterTimeInterval];
 }
 
 - (void)closeAfterTimeInterval {
     if (self.closesAfterTimeInterval > 0) {
-        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(close) object:nil];
         [self performSelector:@selector(close) withObject:nil afterDelay:self.closesAfterTimeInterval];
+        
+        if (_closesAfterTimeIntervalTimer == nil) {
+            _closesAfterTimeIntervalTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                                             target:self
+                                                                           selector:@selector(closeAfterTimeInterval) userInfo:nil repeats:YES];
+        }
+    }
+}
+
+- (void)cancelCloseAfterTimeInterval {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(close) object:nil];
+}
+
+- (void)resetClosesAfterTimeIntervalTimer {
+    if (_closesAfterTimeIntervalTimer) {
+        [_closesAfterTimeIntervalTimer invalidate];
+        
+        _closesAfterTimeIntervalTimer = nil;
     }
 }
 

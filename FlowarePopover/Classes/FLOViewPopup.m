@@ -246,7 +246,7 @@
             // If the positioningView (the sender where arrow is displayed at) move out of containerFrame, we should hide the arrow of popover.
             if (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView) && (NSEqualSizes(self.arrowSize, NSZeroSize) == NO)) {
                 self.utils.backgroundView.arrowSize = NSZeroSize;
-                [self.utils.backgroundView shouldShowArrow:NO];
+                [self.utils.backgroundView showArrow:NO];
             }
             
             return;
@@ -265,7 +265,7 @@
             self.utils.backgroundView.popoverOrigin = positionScreenFrame;
             self.utils.backgroundView.arrowSize = self.arrowSize;
             
-            [self.utils.backgroundView shouldShowArrow:YES];
+            [self.utils.backgroundView showArrow:YES];
         }
         
         if (NSContainsRect(containerFrame, popoverFrame) == NO) {
@@ -517,15 +517,15 @@
     if (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) {
         self.utils.backgroundView.arrowSize = self.arrowSize;
         
-        [self.utils.backgroundView shouldShowArrow:self.shouldShowArrow];
+        [self.utils.backgroundView showArrow:self.shouldShowArrow];
         [self.utils.backgroundView setArrowColor:self.utils.contentView.layer.backgroundColor];
         
         if (self.utils.shouldShowArrowWithVisualEffect) {
-            [self.utils.backgroundView shouldShowArrowWithVisualEffect:self.utils.shouldShowArrowWithVisualEffect material:self.utils.arrowVisualEffectMaterial blendingMode:self.utils.arrowVisualEffectBlendingMode state:self.utils.arrowVisualEffectState];
+            [self.utils.backgroundView showArrowWithVisualEffect:self.utils.shouldShowArrowWithVisualEffect material:self.utils.arrowVisualEffectMaterial blendingMode:self.utils.arrowVisualEffectBlendingMode state:self.utils.arrowVisualEffectState];
         }
     }
     
-    [self.utils.backgroundView shouldShowShadow:YES];
+    [self.utils.backgroundView showShadow:YES];
     
     if (self.isMovable || self.isDetachable) {
         self.utils.backgroundView.delegate = self;
@@ -1251,7 +1251,7 @@
 
 #pragma mark - FLOPopoverBackgroundViewDelegate
 
-- (void)didPopoverMakeMovement {
+- (void)popoverDidMakeMovement {
     self.utils.popoverMoved = YES;
     
     if (didMoveBlock) {
@@ -1261,7 +1261,7 @@
     }
 }
 
-- (void)didPopoverBecomeDetachable:(NSWindow *)targetWindow {
+- (void)popoverDidMakeDetachable:(NSWindow *)targetWindow {
     if ([self.popoverView isDescendantOf:targetWindow.contentView]) {
         [self removeAllApplicationEvents];
         
