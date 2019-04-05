@@ -82,6 +82,7 @@
 @property (nonatomic, assign) BOOL closesWhenNotBelongToContainerFrame;
 @property (nonatomic, assign) NSTimeInterval closesAfterTimeInterval;
 @property (nonatomic, assign) BOOL cancelClosesAfterTimeIntervalWhenMoving;
+@property (nonatomic, assign) BOOL resignsFieldsOnClosing;
 
 /**
  * Make Popover window become key, order front and also activate the application.

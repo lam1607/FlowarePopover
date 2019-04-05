@@ -36,6 +36,7 @@
 @property (nonatomic, assign) BOOL closesWhenApplicationBecomesInactive;
 @property (nonatomic, assign) BOOL closesWhenApplicationResizes;
 @property (nonatomic, assign) BOOL closesWhenNotBelongToContainerFrame;
+@property (nonatomic, assign) BOOL resignsFieldsOnClosing;
 
 /**
  * Make Popover window become key, order front and also activate the application.

@@ -66,6 +66,7 @@
         _closesWhenApplicationBecomesInactive = NO;
         _closesWhenApplicationResizes = NO;
         _closesWhenNotBelongToContainerFrame = YES;
+        _resignsFieldsOnClosing = YES;
         _makesKeyAndOrderFrontOnDisplaying = YES;
         _isMovable = NO;
         _isDetachable = NO;
@@ -593,6 +594,11 @@
     if (![self isShown]) return;
     
     if ((self.popoverClosing == NO) && (self.popoverShowing == NO)) {
+        if (self.resignsFieldsOnClosing) {
+            // Use this trick for resigning first responder for all NSTextFields of popoverWindow
+            [self.popoverWindow makeFirstResponder:nil];
+        }
+        
         self.popoverClosing = YES;
         
         if (willCloseBlock) willCloseBlock(self);

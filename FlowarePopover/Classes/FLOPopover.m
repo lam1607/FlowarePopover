@@ -316,6 +316,14 @@
     [self closeAfterTimeInterval];
 }
 
+- (void)setResignsFieldsOnClosing:(BOOL)resignsFieldsOnClosing {
+    _resignsFieldsOnClosing = resignsFieldsOnClosing;
+    
+    if (self.type == FLOWindowPopover) {
+        self.windowPopup.resignsFieldsOnClosing = resignsFieldsOnClosing;
+    }
+}
+
 - (void)setMakesKeyAndOrderFrontOnDisplaying:(BOOL)makesKeyAndOrderFrontOnDisplaying {
     [self restartPopupIfNeeded];
     
