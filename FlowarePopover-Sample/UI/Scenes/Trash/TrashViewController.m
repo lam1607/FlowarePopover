@@ -80,7 +80,7 @@
     [_presenter fetchData];
 }
 
-#pragma mark - TableViewManagerProtocols implementation
+#pragma mark - TableViewManagerProtocols UI
 
 - (NSUserInterfaceItemIdentifier)tableViewManager:(TableViewManager *)manager makeViewWithIdentifierForRow:(NSInteger)row byItem:(id)item
 {
@@ -96,6 +96,8 @@
 {
     return 60.0;
 }
+
+#pragma mark - TableViewManagerProtocols Selection
 
 /**
  * Asks the delegate if the user is allowed to change the selection.

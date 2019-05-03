@@ -442,7 +442,7 @@
         //        _popoverComics.animatedForwarding = YES;
         _popoverComics.animatedByMovingFrame = YES;
         _popoverComics.animatedByMovingFrame = YES;
-        _popoverComics.shouldChangeSizeWhenApplicationResizes = NO;
+        _popoverComics.shouldChangeSizeWhenApplicationResizes = YES;
         //        _popoverComics.closesWhenPopoverResignsKey = YES;
         //        _popoverComics.closesWhenApplicationBecomesInactive = YES;
         _popoverComics.isMovable = YES;
@@ -573,7 +573,7 @@
 
 - (void)viewShouldOpenComicsView
 {
-    [self showComicsPopupAtView:self.btnOpenComics option:0];
+    [self showComicsPopupAtView:self.btnOpenComics option:1];
 }
 
 - (void)viewShouldShowSecondBar

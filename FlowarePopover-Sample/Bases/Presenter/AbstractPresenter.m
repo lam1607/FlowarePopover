@@ -169,10 +169,10 @@
                     {
                         for (id<ListSupplierProtocol> item in [self provider].dataSource)
                         {
-                            if ([(id<ListSupplierProtocol>)item respondsToSelector:@selector(childs)])
+                            if ([(id<ListSupplierProtocol>)item respondsToSelector:@selector(lsp_childs)])
                             {
                                 NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.imageUrl MATCHES[c] %@", representedItem.imageUrl];
-                                NSArray *objects = [[(id<ListSupplierProtocol>)item childs] filteredArrayUsingPredicate:predicate];
+                                NSArray *objects = [[(id<ListSupplierProtocol>)item lsp_childs] filteredArrayUsingPredicate:predicate];
                                 
                                 if (objects.count > 0)
                                 {

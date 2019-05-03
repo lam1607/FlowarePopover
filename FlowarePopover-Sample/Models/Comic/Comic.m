@@ -50,12 +50,12 @@
 
 #pragma mark - ListSupplierProtocol implementation
 
-- (__unsafe_unretained id<ListSupplierProtocol>)parent
+- (__unsafe_unretained id<ListSupplierProtocol>)lsp_parent
 {
     return (id<ListSupplierProtocol>)self.parentItem;
 }
 
-- (__unsafe_unretained NSMutableArray<id<ListSupplierProtocol>> *)childs
+- (__unsafe_unretained NSMutableArray<id<ListSupplierProtocol>> *)lsp_childs
 {
     return (NSMutableArray<id<ListSupplierProtocol>> *)self.subItems;
 }

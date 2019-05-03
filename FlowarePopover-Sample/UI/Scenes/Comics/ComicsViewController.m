@@ -139,7 +139,7 @@
     }
 }
 
-#pragma mark - OutlineViewManagerProtocols
+#pragma mark - OutlineViewManagerProtocols UI
 
 - (NSUserInterfaceItemIdentifier)outlineViewManager:(OutlineViewManager *)manager makeViewWithIdentifierForItem:(id)item
 {
@@ -163,22 +163,19 @@
     return 44.0;
 }
 
+#pragma mark - OutlineViewManagerProtocols Selection
+
+- (BOOL)outlineViewManager:(OutlineViewManager *)manager shouldSelectItem:(id)item
+{
+    return YES;
+}
+
 - (void)outlineViewManager:(OutlineViewManager *)manager didSelectItem:(id)item forRow:(NSInteger)row
 {
     //    if ([item isKindOfClass:[Comic class]])
     //    {
     //        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:((Comic *)item).pageUrl]];
     //    }
-}
-
-- (void)outlineViewManager:(OutlineViewManager *)manager itemDidExpand:(NSNotification *)notification
-{
-    [self updateContentSize];
-}
-
-- (void)outlineViewManager:(OutlineViewManager *)manager itemDidCollapse:(NSNotification *)notification
-{
-    [self updateContentSize];
 }
 
 #pragma mark - OutlineViewManagerProtocols Drag/Drop
@@ -257,6 +254,18 @@
     }
     
     return NO;
+}
+
+#pragma mark - OutlineViewManagerProtocols Notifications
+
+- (void)outlineViewManager:(OutlineViewManager *)manager itemDidExpand:(NSNotification *)notification
+{
+    [self updateContentSize];
+}
+
+- (void)outlineViewManager:(OutlineViewManager *)manager itemDidCollapse:(NSNotification *)notification
+{
+    [self updateContentSize];
 }
 
 #pragma mark - ComicsViewProtocols implementation

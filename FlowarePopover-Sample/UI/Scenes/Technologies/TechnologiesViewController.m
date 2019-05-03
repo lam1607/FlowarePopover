@@ -121,7 +121,7 @@
     }
 }
 
-#pragma mark - OutlineViewManagerProtocols
+#pragma mark - OutlineViewManagerProtocols UI
 
 - (NSUserInterfaceItemIdentifier)outlineViewManager:(OutlineViewManager *)manager makeViewWithIdentifierForItem:(id)item
 {
@@ -153,6 +153,13 @@
     }
     
     return 269.0;
+}
+
+#pragma mark - OutlineViewManagerProtocols Selection
+
+- (BOOL)outlineViewManager:(OutlineViewManager *)manager shouldSelectItem:(id)item
+{
+    return YES;
 }
 
 - (void)outlineViewManager:(OutlineViewManager *)manager didSelectItem:(id)item forRow:(NSInteger)row

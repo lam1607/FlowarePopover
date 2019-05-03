@@ -48,36 +48,6 @@
 - (BOOL)outlineViewManager:(OutlineViewManager *)manager shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item;
 
 /**
- * Asks the delegate if the outline view should allow selection of the specified item.
- */
-- (BOOL)outlineViewManager:(OutlineViewManager *)manager shouldSelectItem:(id)item;
-
-/**
- * Asks the delegate to accept or reject the proposed selection.
- */
-- (NSIndexSet *)outlineViewManager:(OutlineViewManager *)manager selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes;
-
-/**
- * Asks the delegate whether the outline view should select a given table column.
- */
-- (BOOL)outlineViewManager:(OutlineViewManager *)manager shouldSelectTableColumn:(nullable NSTableColumn *)tableColumn;
-
-/**
- * Tells the delegate that the mouse button was clicked in the specified table column’s header.
- */
-- (void)outlineViewManager:(OutlineViewManager *)manager mouseDownInHeaderOfTableColumn:(NSTableColumn *)tableColumn;
-
-/**
- * Tells the delegate that the mouse button was clicked in the specified table column, but the column was not dragged.
- */
-- (void)outlineViewManager:(OutlineViewManager *)manager didClickTableColumn:(NSTableColumn *)tableColumn;
-
-/**
- * Tells the delegate that the specified table column was dragged.
- */
-- (void)outlineViewManager:(OutlineViewManager *)manager didDragTableColumn:(NSTableColumn *)tableColumn;
-
-/**
  * Asks the delegate whether the outline view should display tooltip for cell of column for item at specified location.
  */
 - (NSString *)outlineViewManager:(OutlineViewManager *)manager toolTipForCell:(NSCell *)cell rect:(NSRectPointer)rect tableColumn:(nullable NSTableColumn *)tableColumn item:(id)item mouseLocation:(NSPoint)mouseLocation;
@@ -114,10 +84,66 @@
 
 /**
  * Ask the delegate whether the specified item should display the outline cell (the disclosure triangle).
+ * @note NEVER return NO for this delegate, unless the [collapseItem:] method of NSOutlineView will never be called.
+ * If we want to remove the disclosure triangle button, we should create the custom class of NSOutlineView.
+ * @header Example:
+ * @code
+ *  - (NSRect)frameOfOutlineCellAtRow:(NSInteger)row
+ *  {
+ *      return NSZeroRect;
+ *  }
+ * @endcode
  */
 - (BOOL)outlineViewManager:(OutlineViewManager *)manager shouldShowOutlineCellForItem:(id)item;
 
+#pragma mark - Selection
+
+/**
+ * Asks the delegate that whether the outline view should change its selection.
+ */
+- (BOOL)outlineViewManager:(OutlineViewManager *)manager selectionShouldChangeInOutlineView:(NSOutlineView *)outlineView;
+
+/**
+ * Tells the delegate that the mouse button was clicked in the specified table column’s header.
+ */
+- (void)outlineViewManager:(OutlineViewManager *)manager mouseDownInHeaderOfTableColumn:(NSTableColumn *)tableColumn;
+
+/**
+ * Asks the delegate whether the outline view should select a given table column.
+ */
+- (BOOL)outlineViewManager:(OutlineViewManager *)manager shouldSelectTableColumn:(nullable NSTableColumn *)tableColumn;
+
+/**
+ * Tells the delegate that the mouse button was clicked in the specified table column, but the column was not dragged.
+ */
+- (void)outlineViewManager:(OutlineViewManager *)manager didClickTableColumn:(NSTableColumn *)tableColumn;
+
+/**
+ * Asks the delegate if the outline view should allow selection of the specified item.
+ */
+- (BOOL)outlineViewManager:(OutlineViewManager *)manager shouldSelectItem:(id)item;
+
+/**
+ * Asks the delegate to accept or reject the proposed selection.
+ */
+//- (NSIndexSet *)outlineViewManager:(OutlineViewManager *)manager selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes;
+
+/**
+ * Tells the delegate that an item is selected at the specified row.
+ */
+- (void)outlineViewManager:(OutlineViewManager *)manager didSelectItem:(id)item forRow:(NSInteger)row;
+
+/**
+ * Tells the delegate that an unselectable item is selected at the specified row.
+ */
+- (void)outlineViewManager:(OutlineViewManager *)manager didSelectUnselectableItem:(id)item forRow:(NSInteger)row;
+
 #pragma mark - Drag/Drop
+
+/**
+ * Tells the delegate that the specified table column was dragged.
+ */
+- (void)outlineViewManager:(OutlineViewManager *)manager didDragTableColumn:(NSTableColumn *)tableColumn;
 
 /**
  * Ask the delegate to enable the table to be an NSDraggingSource that supports dragging multiple items.
@@ -195,18 +221,6 @@
  * Invoked when the did collapse notification is posted—that is, whenever the user collapses an item in the outline view.
  */
 - (void)outlineViewManager:(OutlineViewManager *)manager itemDidCollapse:(NSNotification *)notification;
-
-#pragma mark - Selection
-
-/**
- * Asks the delegate that whether the outline view should change its selection.
- */
-- (BOOL)outlineViewManager:(OutlineViewManager *)manager selectionShouldChangeInOutlineView:(NSOutlineView *)outlineView;
-
-/**
- * Tells the delegate that an item is selected at the specified row.
- */
-- (void)outlineViewManager:(OutlineViewManager *)manager didSelectItem:(id)item forRow:(NSInteger)row;
 
 @end
 

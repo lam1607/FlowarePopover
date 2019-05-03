@@ -14,8 +14,8 @@
 @protocol ListSupplierProtocol <NSObject>
 
 @optional
-- (__unsafe_unretained id<ListSupplierProtocol>)parent;
-- (__unsafe_unretained NSMutableArray<id<ListSupplierProtocol>> *)childs;
+- (__unsafe_unretained id<ListSupplierProtocol>)lsp_parent;
+- (__unsafe_unretained NSMutableArray<id<ListSupplierProtocol>> *)lsp_childs;
 
 @end
 

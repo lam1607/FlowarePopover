@@ -18,6 +18,7 @@
     __weak NSOutlineView *_outlineView;
     __weak DataProvider *_provider;
     
+    NSMutableArray<NSUserInterfaceItemIdentifier> *_registeredIdentifiers;
     NSCache *_cachedRowHeights;
 }
 
@@ -38,6 +39,7 @@
         {
             _provider = provider;
             _protocols = source;
+            _registeredIdentifiers = [[NSMutableArray alloc] init];
             _cachedRowHeights = [[NSCache alloc] init];
             
             _outlineView = outlineView;
@@ -58,6 +60,18 @@
     return self;
 }
 
+- (void)dealloc
+{
+    _outlineView = nil;
+    _provider = nil;
+    
+    [_registeredIdentifiers removeAllObjects];
+    _registeredIdentifiers = nil;
+    
+    [_cachedRowHeights removeAllObjects];
+    _cachedRowHeights = nil;
+}
+
 #pragma mark - Getter/Setter
 
 - (NSOutlineView *)outlineView
@@ -71,8 +85,10 @@
 {
     @try
     {
-        if ([_outlineView makeViewWithIdentifier:identifier owner:self] == nil)
+        if (![_registeredIdentifiers containsObject:identifier])
         {
+            [_registeredIdentifiers addObject:identifier];
+            
             [_outlineView registerNib:[[NSNib alloc] initWithNibNamed:NSStringFromClass(NSClassFromString(identifier)) bundle:nil] forIdentifier:identifier];
         }
     }
@@ -105,9 +121,9 @@
             return _provider.dataSource.count;
         }
         
-        if ([(id<ListSupplierProtocol>)item respondsToSelector:@selector(childs)])
+        if ([(id<ListSupplierProtocol>)item respondsToSelector:@selector(lsp_childs)])
         {
-            return [(id<ListSupplierProtocol>)item childs].count;
+            return [(id<ListSupplierProtocol>)item lsp_childs].count;
         }
     }
     @catch (NSException *exception)
@@ -130,9 +146,9 @@
             return [_provider.dataSource objectAtIndex:index];
         }
         
-        if ([(id<ListSupplierProtocol>)item respondsToSelector:@selector(childs)])
+        if ([(id<ListSupplierProtocol>)item respondsToSelector:@selector(lsp_childs)])
         {
-            return [[(id<ListSupplierProtocol>)item childs] objectAtIndex:index];
+            return [[(id<ListSupplierProtocol>)item lsp_childs] objectAtIndex:index];
         }
     }
     @catch (NSException *exception)
@@ -155,9 +171,9 @@
             return [self.protocols outlineViewManager:self isItemExpandable:(id<ListSupplierProtocol>)item];
         }
         
-        if ([(id<ListSupplierProtocol>)item respondsToSelector:@selector(childs)])
+        if ([(id<ListSupplierProtocol>)item respondsToSelector:@selector(lsp_childs)])
         {
-            return [(id<ListSupplierProtocol>)item childs].count > 0;
+            return [(id<ListSupplierProtocol>)item lsp_childs].count > 0;
         }
     }
     @catch (NSException *exception)
@@ -168,7 +184,7 @@
     return NO;
 }
 
-#pragma mark - NSOutlineViewDelegate
+#pragma mark - NSOutlineViewDelegate UI
 
 /**
  * Return the view used to display the specified item and column.
@@ -310,85 +326,6 @@
     }
     
     return NO;
-}
-
-/**
- * Optional - Return YES if 'item' should be selected and 'NO' if it should not. For better performance, and greater control, it is recommended that you use outlineView:selectionIndexesForProposedSelection:.
- */
-- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
-{
-    @try
-    {
-        if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:shouldSelectItem:)])
-        {
-            return [self.protocols outlineViewManager:self shouldSelectItem:(id<ListSupplierProtocol>)item];
-        }
-    }
-    @catch (NSException *exception)
-    {
-        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
-    }
-    
-    return YES;
-}
-
-/**
- * Optional - Return a set of new indexes to select when the user changes the selection with the keyboard or mouse. If implemented, this method will be called instead of outlineView:shouldSelectItem:. This method may be called multiple times with one new index added to the existing selection to find out if a particular index can be selected when the user is extending the selection with the keyboard or mouse. Note that 'proposedSelectionIndexes' will contain the entire newly suggested selection, and you can return the existing selection to avoid changing the selection.
- */
-- (NSIndexSet *)outlineView:(NSOutlineView *)outlineView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes
-{
-    if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:selectionIndexesForProposedSelection:)])
-    {
-        return [self.protocols outlineViewManager:self selectionIndexesForProposedSelection:proposedSelectionIndexes];
-    }
-    
-    return proposedSelectionIndexes;
-}
-
-/**
- * Returns a Boolean value that indicates whether the outline view should select a given table column.
- */
-- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectTableColumn:(nullable NSTableColumn *)tableColumn
-{
-    if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:shouldSelectTableColumn:)])
-    {
-        return [self.protocols outlineViewManager:self shouldSelectTableColumn:tableColumn];
-    }
-    
-    return YES;
-}
-
-/**
- * Sent to the delegate whenever the mouse button is clicked in outlineView while the cursor is in a column header tableColumn.
- */
-- (void)outlineView:(NSOutlineView *)outlineView mouseDownInHeaderOfTableColumn:(NSTableColumn *)tableColumn
-{
-    if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:mouseDownInHeaderOfTableColumn:)])
-    {
-        [self.protocols outlineViewManager:self mouseDownInHeaderOfTableColumn:tableColumn];
-    }
-}
-
-/**
- * Sent at the time the mouse button subsequently goes up in outlineView and tableColumn has been “clicked” without having been dragged anywhere.
- */
-- (void)outlineView:(NSOutlineView *)outlineView didClickTableColumn:(NSTableColumn *)tableColumn
-{
-    if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:didClickTableColumn:)])
-    {
-        [self.protocols outlineViewManager:self didClickTableColumn:tableColumn];
-    }
-}
-
-/**
- * Sent at the time the mouse button goes up in outlineView and tableColumn has been dragged during the time the mouse button was down.
- */
-- (void)outlineView:(NSOutlineView *)outlineView didDragTableColumn:(NSTableColumn *)tableColumn
-{
-    if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:didDragTableColumn:)])
-    {
-        [self.protocols outlineViewManager:self didDragTableColumn:tableColumn];
-    }
 }
 
 /**
@@ -574,7 +511,134 @@
     return YES;
 }
 
+#pragma mark - NSOutlineViewDelegate Selection
+
+/**
+ * Returns a Boolean value that indicates whether the outline view should change its selection.
+ */
+- (BOOL)selectionShouldChangeInOutlineView:(NSOutlineView *)outlineView
+{
+    if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:selectionShouldChangeInOutlineView:)])
+    {
+        return [self.protocols outlineViewManager:self selectionShouldChangeInOutlineView:outlineView];
+    }
+    
+    return YES;
+}
+
+/**
+ * Sent to the delegate whenever the mouse button is clicked in outlineView while the cursor is in a column header tableColumn.
+ */
+- (void)outlineView:(NSOutlineView *)outlineView mouseDownInHeaderOfTableColumn:(NSTableColumn *)tableColumn
+{
+    if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:mouseDownInHeaderOfTableColumn:)])
+    {
+        [self.protocols outlineViewManager:self mouseDownInHeaderOfTableColumn:tableColumn];
+    }
+}
+
+/**
+ * Returns a Boolean value that indicates whether the outline view should select a given table column.
+ */
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectTableColumn:(nullable NSTableColumn *)tableColumn
+{
+    if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:shouldSelectTableColumn:)])
+    {
+        return [self.protocols outlineViewManager:self shouldSelectTableColumn:tableColumn];
+    }
+    
+    return YES;
+}
+
+/**
+ * Sent at the time the mouse button subsequently goes up in outlineView and tableColumn has been “clicked” without having been dragged anywhere.
+ */
+- (void)outlineView:(NSOutlineView *)outlineView didClickTableColumn:(NSTableColumn *)tableColumn
+{
+    if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:didClickTableColumn:)])
+    {
+        [self.protocols outlineViewManager:self didClickTableColumn:tableColumn];
+    }
+}
+
+/**
+ * Optional - Return YES if 'item' should be selected and 'NO' if it should not. For better performance, and greater control, it is recommended that you use outlineView:selectionIndexesForProposedSelection:.
+ */
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
+{
+    @try
+    {
+        if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:shouldSelectItem:)])
+        {
+            return [self.protocols outlineViewManager:self shouldSelectItem:(id<ListSupplierProtocol>)item];
+        }
+    }
+    @catch (NSException *exception)
+    {
+        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
+    }
+    
+    return YES;
+}
+
+/**
+ * Optional - Return a set of new indexes to select when the user changes the selection with the keyboard or mouse. If implemented, this method will be called instead of outlineView:shouldSelectItem:. This method may be called multiple times with one new index added to the existing selection to find out if a particular index can be selected when the user is extending the selection with the keyboard or mouse. Note that 'proposedSelectionIndexes' will contain the entire newly suggested selection, and you can return the existing selection to avoid changing the selection.
+ */
+//- (NSIndexSet *)outlineView:(NSOutlineView *)outlineView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes
+//{
+//    if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:selectionIndexesForProposedSelection:)])
+//    {
+//        return [self.protocols outlineViewManager:self selectionIndexesForProposedSelection:proposedSelectionIndexes];
+//    }
+//
+//    return proposedSelectionIndexes;
+//}
+
+- (void)outlineViewDidSelectItem
+{
+    @try
+    {
+        NSInteger row = [self.outlineView clickedRow];
+        id<ListSupplierProtocol> object;
+        
+        if ((row != -1) && (row != NSNotFound))
+        {
+            object = (id<ListSupplierProtocol>)[self.outlineView itemAtRow:row];
+        }
+        
+        if ((object != nil) && (self.protocols != nil))
+        {
+            BOOL isSelectable = [self.outlineView.delegate outlineView:self.outlineView shouldSelectItem:object];
+            
+            if (isSelectable && [self.protocols respondsToSelector:@selector(outlineViewManager:didSelectItem:forRow:)])
+            {
+                [self.protocols outlineViewManager:self didSelectItem:object forRow:row];
+            }
+            else if ((isSelectable == NO) && [self.protocols respondsToSelector:@selector(outlineViewManager:didSelectUnselectableItem:forRow:)])
+            {
+                // For some cases, we want this delegate to perform some special stuffs.
+                [self.protocols outlineViewManager:self didSelectUnselectableItem:object forRow:row];
+            }
+        }
+    }
+    @catch (NSException *exception)
+    {
+        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
+    }
+}
+
 #pragma mark - NSOutlineViewDataSource Drag/Drop
+
+/**
+ * Sent at the time the mouse button goes up in outlineView and tableColumn has been dragged during the time the mouse button was down.
+ */
+- (void)outlineView:(NSOutlineView *)outlineView didDragTableColumn:(NSTableColumn *)tableColumn
+{
+    if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:didDragTableColumn:)])
+    {
+        [self.protocols outlineViewManager:self didDragTableColumn:tableColumn];
+    }
+}
 
 /**
  * Dragging Source Support - Required for multi-image dragging. Implement this method to allow the table to be an NSDraggingSource that supports multiple item dragging. Return a custom object that implements NSPasteboardWriting (or simply use NSPasteboardItem). Return nil to prevent a particular item from being dragged. If this method is implemented, then outlineView:writeItems:toPasteboard: will not be called.
@@ -783,44 +847,6 @@
     if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:itemDidCollapse:)])
     {
         [self.protocols outlineViewManager:self itemDidCollapse:notification];
-    }
-}
-
-#pragma mark - Selection
-
-/**
- * Returns a Boolean value that indicates whether the outline view should change its selection.
- */
-- (BOOL)selectionShouldChangeInOutlineView:(NSOutlineView *)outlineView
-{
-    if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:selectionShouldChangeInOutlineView:)])
-    {
-        return [self.protocols outlineViewManager:self selectionShouldChangeInOutlineView:outlineView];
-    }
-    
-    return YES;
-}
-
-- (void)outlineViewDidSelectItem
-{
-    @try
-    {
-        if (self.protocols && [self.protocols respondsToSelector:@selector(outlineViewManager:didSelectItem:forRow:)])
-        {
-            NSInteger row = [self.outlineView selectedRow];
-            id<ListSupplierProtocol> object;
-            
-            if (row != -1)
-            {
-                object = (id<ListSupplierProtocol>)[self.outlineView itemAtRow:row];
-            }
-            
-            [self.protocols outlineViewManager:self didSelectItem:object forRow:row];
-        }
-    }
-    @catch (NSException *exception)
-    {
-        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
     }
 }
 

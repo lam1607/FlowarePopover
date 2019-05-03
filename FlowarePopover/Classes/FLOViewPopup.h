@@ -28,6 +28,8 @@
 @property (nonatomic, assign) NSSize arrowSize;
 @property (nonatomic, assign) BOOL animated;
 @property (nonatomic, assign) BOOL animatedForwarding;
+@property (nonatomic, assign) CGFloat bottomOffset;
+
 @property (nonatomic, assign) BOOL staysInApplicationFrame;
 @property (nonatomic, assign) BOOL updatesFrameWhileShowing;
 @property (nonatomic, assign) BOOL shouldRegisterSuperviewObservers;

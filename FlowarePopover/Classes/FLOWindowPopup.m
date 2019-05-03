@@ -58,6 +58,7 @@
         _arrowSize = NSZeroSize;
         _animated = NO;
         _animatedForwarding = NO;
+        _bottomOffset = FLO_CONST_POPOVER_BOTTOM_OFFSET;
         _staysInApplicationFrame = NO;
         _updatesFrameWhileShowing = NO;
         _shouldRegisterSuperviewObservers = YES;
@@ -575,7 +576,7 @@
     
     popoverFrame = [self.utils.appMainWindow convertRectFromScreen:popoverFrame];
     
-    self.utils.verticalMarginOutOfPopover = self.utils.appMainWindow.contentView.visibleRect.size.height + FLO_CONST_POPOVER_BOTTOM_OFFSET - NSMaxY(popoverFrame);
+    self.utils.verticalMarginOutOfPopover = self.utils.appMainWindow.contentView.visibleRect.size.height + self.bottomOffset - NSMaxY(popoverFrame);
     self.utils.positioningWindowFrame = [self.utils.positioningView convertRect:self.utils.positioningView.bounds toView:self.utils.positioningView.window.contentView];
     
     if (needed) {
@@ -1258,9 +1259,9 @@
             if (self.shouldChangeSizeWhenApplicationResizes) {
                 CGFloat newHeight = resizedWindow.contentView.visibleRect.size.height - self.utils.verticalMarginOutOfPopover;
                 CGFloat deltaHeight = popoverFrame.size.height - newHeight;
-                CGFloat popoverHeight = (newHeight < self.utils.originalViewSize.height) ? newHeight : self.utils.originalViewSize.height;
+                CGFloat popoverHeight = newHeight;
                 
-                popoverOriginY = popoverFrame.origin.y + ((newHeight < self.utils.originalViewSize.height) ? deltaHeight : 0.0);
+                popoverOriginY = popoverFrame.origin.y + deltaHeight;
                 
                 popoverFrame = NSMakeRect(popoverOriginX, popoverOriginY, popoverFrame.size.width, popoverHeight);
             } else {

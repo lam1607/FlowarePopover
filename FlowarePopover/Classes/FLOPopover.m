@@ -215,6 +215,16 @@
     }
 }
 
+- (void)setBottomOffset:(CGFloat)bottomOffset {
+    _bottomOffset = bottomOffset;
+    
+    if (self.type == FLOWindowPopover) {
+        self.windowPopup.bottomOffset = bottomOffset;
+    } else {
+        self.viewPopup.bottomOffset = bottomOffset;
+    }
+}
+
 - (void)setStaysInApplicationFrame:(BOOL)staysInApplicationFrame {
     _staysInApplicationFrame = staysInApplicationFrame;
     

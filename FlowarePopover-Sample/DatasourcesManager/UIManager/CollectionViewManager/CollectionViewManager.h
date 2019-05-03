@@ -62,6 +62,38 @@
  */
 - (NSSize)collectionViewManager:(CollectionViewManager *)manager layout:(NSCollectionViewLayout *)collectionViewLayout referenceSizeForFooterItem:(id)item inSection:(NSInteger)section;
 
+#pragma mark - Selection
+
+/**
+ * Asks the delegate to approve the pending highlighting of the specified items
+ */
+- (NSSet<NSIndexPath *> *)collectionViewManager:(CollectionViewManager *)manager shouldChangeItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths toHighlightState:(NSCollectionViewItemHighlightState)highlightState;
+
+/**
+ * Notifies the delegate that the highlight state of the specified items changed.
+ */
+- (void)collectionViewManager:(CollectionViewManager *)manager didChangeItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths toHighlightState:(NSCollectionViewItemHighlightState)highlightState;
+
+/**
+ * Asks the delegate to approve the pending selection of items.
+ */
+- (NSSet<NSIndexPath *> *)collectionViewManager:(CollectionViewManager *)manager shouldSelectItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths;
+
+/**
+ * Asks the delegate object to approve the pending deselection of items.
+ */
+- (NSSet<NSIndexPath *> *)collectionViewManager:(CollectionViewManager *)manager shouldDeselectItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths;
+
+/**
+ * Asks the delegate for the identifier of the specified item at index path.
+ */
+- (void)collectionViewManager:(CollectionViewManager *)manager didSelectItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths;
+
+/**
+ * Notifies the delegate object that one or more items were deselected.
+ */
+- (void)collectionViewManager:(CollectionViewManager *)manager didDeselectItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths;
+
 #pragma mark - Drag/Drop
 
 /**
@@ -108,38 +140,6 @@
  * Asks the delegate to update the dragging items during a drag operation.
  */
 - (void)collectionViewManager:(CollectionViewManager *)manager updateDraggingItemsForDrag:(id<NSDraggingInfo>)draggingInfo;
-
-#pragma mark - Selection
-
-/**
- * Asks the delegate to approve the pending highlighting of the specified items
- */
-- (NSSet<NSIndexPath *> *)collectionViewManager:(CollectionViewManager *)manager shouldChangeItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths toHighlightState:(NSCollectionViewItemHighlightState)highlightState;
-
-/**
- * Notifies the delegate that the highlight state of the specified items changed.
- */
-- (void)collectionViewManager:(CollectionViewManager *)manager didChangeItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths toHighlightState:(NSCollectionViewItemHighlightState)highlightState;
-
-/**
- * Asks the delegate to approve the pending selection of items.
- */
-- (NSSet<NSIndexPath *> *)collectionViewManager:(CollectionViewManager *)manager shouldSelectItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths;
-
-/**
- * Asks the delegate object to approve the pending deselection of items.
- */
-- (NSSet<NSIndexPath *> *)collectionViewManager:(CollectionViewManager *)manager shouldDeselectItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths;
-
-/**
- * Asks the delegate for the identifier of the specified item at index path.
- */
-- (void)collectionViewManager:(CollectionViewManager *)manager didSelectItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths;
-
-/**
- * Notifies the delegate object that one or more items were deselected.
- */
-- (void)collectionViewManager:(CollectionViewManager *)manager didDeselectItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths;
 
 @end
 

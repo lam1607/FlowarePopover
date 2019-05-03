@@ -18,6 +18,7 @@
     __weak NSTableView *_tableView;
     __weak DataProvider *_provider;
     
+    NSMutableArray<NSUserInterfaceItemIdentifier> *_registeredIdentifiers;
     NSCache *_cachedRowHeights;
 }
 
@@ -38,6 +39,7 @@
         {
             _provider = provider;
             _protocols = source;
+            _registeredIdentifiers = [[NSMutableArray alloc] init];
             _cachedRowHeights = [[NSCache alloc] init];
             
             _tableView = tableView;
@@ -58,6 +60,18 @@
     return self;
 }
 
+- (void)dealloc
+{
+    _tableView = nil;
+    _provider = nil;
+    
+    [_registeredIdentifiers removeAllObjects];
+    _registeredIdentifiers = nil;
+    
+    [_cachedRowHeights removeAllObjects];
+    _cachedRowHeights = nil;
+}
+
 #pragma mark - Getter/Setter
 
 - (NSTableView *)tableView
@@ -71,8 +85,10 @@
 {
     @try
     {
-        if ([_tableView makeViewWithIdentifier:identifier owner:self] == nil)
+        if (![_registeredIdentifiers containsObject:identifier])
         {
+            [_registeredIdentifiers addObject:identifier];
+            
             [_tableView registerNib:[[NSNib alloc] initWithNibNamed:NSStringFromClass(NSClassFromString(identifier)) bundle:nil] forIdentifier:identifier];
         }
     }
@@ -101,7 +117,7 @@
     return _provider.dataSource.count;
 }
 
-#pragma mark - NSTableViewDelegate
+#pragma mark - NSTableViewDelegate UI
 
 /**
  * View Based TableView:
@@ -225,87 +241,6 @@
 }
 
 /**
- * Optional - Return YES if 'row' should be selected and NO if it should not. For better performance and better control over the selection, you should use tableView:selectionIndexesForProposedSelection:.
- */
-- (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(NSInteger)row
-{
-    @try
-    {
-        if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:shouldSelectRow:byItem:)])
-        {
-            id<ListSupplierProtocol> object = [_provider objectForRow:row];
-            
-            return [self.protocols tableViewManager:self shouldSelectRow:row byItem:object];
-        }
-    }
-    @catch (NSException *exception)
-    {
-        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
-    }
-    
-    return YES;
-}
-
-/**
- * Optional - Return a set of new indexes to select when the user changes the selection with the keyboard or mouse. If implemented, this method will be called instead of tableView:shouldSelectRow:. This method may be called multiple times with one new index added to the existing selection to find out if a particular index can be selected when the user is extending the selection with the keyboard or mouse. Note that 'proposedSelectionIndexes' will contain the entire newly suggested selection, and you can return the exsiting selection to avoid changing the selection.
- */
-- (NSIndexSet *)tableView:(NSTableView *)tableView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes
-{
-    if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:selectionIndexesForProposedSelection:)])
-    {
-        [self.protocols tableViewManager:self selectionIndexesForProposedSelection:proposedSelectionIndexes];
-    }
-    
-    return proposedSelectionIndexes;
-}
-
-/**
- * Asks the delegate whether the specified table column can be selected.
- */
-- (BOOL)tableView:(NSTableView *)tableView shouldSelectTableColumn:(nullable NSTableColumn *)tableColumn
-{
-    if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:shouldSelectTableColumn:)])
-    {
-        return [self.protocols tableViewManager:self shouldSelectTableColumn:tableColumn];
-    }
-    
-    return YES;
-}
-
-/**
- * Tells the delegate that the mouse button was clicked in the specified table column’s header.
- */
-- (void)tableView:(NSTableView *)tableView mouseDownInHeaderOfTableColumn:(NSTableColumn *)tableColumn
-{
-    if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:mouseDownInHeaderOfTableColumn:)])
-    {
-        [self.protocols tableViewManager:self mouseDownInHeaderOfTableColumn:tableColumn];
-    }
-}
-
-/**
- * Tells the delegate that the mouse button was clicked in the specified table column, but the column was not dragged.
- */
-- (void)tableView:(NSTableView *)tableView didClickTableColumn:(NSTableColumn *)tableColumn
-{
-    if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:didClickTableColumn:)])
-    {
-        [self.protocols tableViewManager:self didClickTableColumn:tableColumn];
-    }
-}
-
-/**
- * Tells the delegate that the specified table column was dragged.
- */
-- (void)tableView:(NSTableView *)tableView didDragTableColumn:(NSTableColumn *)tableColumn
-{
-    if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:didDragTableColumn:)])
-    {
-        [self.protocols tableViewManager:self didDragTableColumn:tableColumn];
-    }
-}
-
-/**
  * Optional - Variable Row Heights
  Implement this method to support a table with varying row heights. The height returned by this method should not include intercell spacing and must be greater than zero. Performance Considerations: For large tables in particular, you should make sure that this method is efficient. NSTableView may cache the values this method returns, but this should NOT be depended on, as all values may not be cached. To signal a row height change, call -noteHeightOfRowsWithIndexesChanged:. For a given row, the same row height should always be returned until -noteHeightOfRowsWithIndexesChanged: is called, otherwise unpredicable results will happen. NSTableView automatically invalidates its entire row height cache in -reloadData, and -noteNumberOfRowsChanged.
  */
@@ -365,7 +300,136 @@
     return NO;
 }
 
+#pragma mark - NSTableViewDelegate Selection
+
+/**
+ * Asks the delegate if the user is allowed to change the selection.
+ */
+- (BOOL)selectionShouldChangeInTableView:(NSTableView *)tableView
+{
+    if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:selectionShouldChangeInTableView:)])
+    {
+        return [self.protocols tableViewManager:self selectionShouldChangeInTableView:tableView];
+    }
+    
+    return YES;
+}
+
+/**
+ * Tells the delegate that the mouse button was clicked in the specified table column’s header.
+ */
+- (void)tableView:(NSTableView *)tableView mouseDownInHeaderOfTableColumn:(NSTableColumn *)tableColumn
+{
+    if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:mouseDownInHeaderOfTableColumn:)])
+    {
+        [self.protocols tableViewManager:self mouseDownInHeaderOfTableColumn:tableColumn];
+    }
+}
+
+/**
+ * Asks the delegate whether the specified table column can be selected.
+ */
+- (BOOL)tableView:(NSTableView *)tableView shouldSelectTableColumn:(nullable NSTableColumn *)tableColumn
+{
+    if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:shouldSelectTableColumn:)])
+    {
+        return [self.protocols tableViewManager:self shouldSelectTableColumn:tableColumn];
+    }
+    
+    return YES;
+}
+
+/**
+ * Tells the delegate that the mouse button was clicked in the specified table column, but the column was not dragged.
+ */
+- (void)tableView:(NSTableView *)tableView didClickTableColumn:(NSTableColumn *)tableColumn
+{
+    if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:didClickTableColumn:)])
+    {
+        [self.protocols tableViewManager:self didClickTableColumn:tableColumn];
+    }
+}
+
+/**
+ * Optional - Return YES if 'row' should be selected and NO if it should not. For better performance and better control over the selection, you should use tableView:selectionIndexesForProposedSelection:.
+ */
+- (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(NSInteger)row
+{
+    @try
+    {
+        if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:shouldSelectRow:byItem:)])
+        {
+            id<ListSupplierProtocol> object = [_provider objectForRow:row];
+            
+            return [self.protocols tableViewManager:self shouldSelectRow:row byItem:object];
+        }
+    }
+    @catch (NSException *exception)
+    {
+        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
+    }
+    
+    return YES;
+}
+
+/**
+ * Optional - Return a set of new indexes to select when the user changes the selection with the keyboard or mouse. If implemented, this method will be called instead of tableView:shouldSelectRow:. This method may be called multiple times with one new index added to the existing selection to find out if a particular index can be selected when the user is extending the selection with the keyboard or mouse. Note that 'proposedSelectionIndexes' will contain the entire newly suggested selection, and you can return the exsiting selection to avoid changing the selection.
+ */
+//- (NSIndexSet *)tableView:(NSTableView *)tableView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes
+//{
+//    if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:selectionIndexesForProposedSelection:)])
+//    {
+//        [self.protocols tableViewManager:self selectionIndexesForProposedSelection:proposedSelectionIndexes];
+//    }
+//
+//    return proposedSelectionIndexes;
+//}
+
+- (void)tableViewDidSelectItem
+{
+    @try
+    {
+        NSInteger row = [self.tableView clickedRow];
+        id<ListSupplierProtocol> object;
+        
+        if ((row != -1) && (row != NSNotFound))
+        {
+            object = (id<ListSupplierProtocol>)[_provider objectForRow:row];
+        }
+        
+        if ((object != nil) && (self.protocols != nil))
+        {
+            BOOL isSelectable = [self.tableView.delegate tableView:self.tableView shouldSelectRow:row];
+            
+            if (isSelectable && [self.protocols respondsToSelector:@selector(tableViewManager:didSelectItem:forRow:)])
+            {
+                [self.protocols tableViewManager:self didSelectItem:object forRow:row];
+            }
+            else if ((isSelectable == NO) && [self.protocols respondsToSelector:@selector(tableViewManager:didSelectUnselectableItem:forRow:)])
+            {
+                // For some cases, we want this delegate to perform some special stuffs.
+                [self.protocols tableViewManager:self didSelectUnselectableItem:object forRow:row];
+            }
+        }
+    }
+    @catch (NSException *exception)
+    {
+        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
+    }
+}
+
 #pragma mark - NSTableViewDataSource Drag/Drop
+
+/**
+ * Tells the delegate that the specified table column was dragged.
+ */
+- (void)tableView:(NSTableView *)tableView didDragTableColumn:(NSTableColumn *)tableColumn
+{
+    if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:didDragTableColumn:)])
+    {
+        [self.protocols tableViewManager:self didDragTableColumn:tableColumn];
+    }
+}
 
 /**
  * Dragging Source Support - Required for multi-image dragging. Implement this method to allow the table to be an NSDraggingSource that supports multiple item dragging. Return a custom object that implements NSPasteboardWriting (or simply use NSPasteboardItem). If this method is implemented, then tableView:writeRowsWithIndexes:toPasteboard: will not be called.
@@ -534,44 +598,6 @@
     if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:selectionIsChanging:)])
     {
         [self.protocols tableViewManager:self selectionIsChanging:notification];
-    }
-}
-
-#pragma mark - Selection
-
-/**
- * Asks the delegate if the user is allowed to change the selection.
- */
-- (BOOL)selectionShouldChangeInTableView:(NSTableView *)tableView
-{
-    if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:selectionShouldChangeInTableView:)])
-    {
-        return [self.protocols tableViewManager:self selectionShouldChangeInTableView:tableView];
-    }
-    
-    return YES;
-}
-
-- (void)tableViewDidSelectItem
-{
-    @try
-    {
-        if (self.protocols && [self.protocols respondsToSelector:@selector(tableViewManager:didSelectItem:forRow:)])
-        {
-            NSInteger row = [self.tableView selectedRow];
-            id<ListSupplierProtocol> object;
-            
-            if (row != -1)
-            {
-                object = [_provider objectForRow:row];
-            }
-            
-            [self.protocols tableViewManager:self didSelectItem:object forRow:row];
-        }
-    }
-    @catch (NSException *exception)
-    {
-        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
     }
 }
 

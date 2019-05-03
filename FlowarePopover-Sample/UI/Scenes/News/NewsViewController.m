@@ -114,7 +114,7 @@
     }
 }
 
-#pragma mark - TableViewManagerProtocols implementation
+#pragma mark - TableViewManagerProtocols UI
 
 - (NSUserInterfaceItemIdentifier)tableViewManager:(TableViewManager *)manager makeViewWithIdentifierForRow:(NSInteger)row byItem:(id)item
 {
@@ -146,6 +146,18 @@
     }
     
     return 254.0;
+}
+
+#pragma mark - TableViewManagerProtocols Selection
+
+- (BOOL)tableViewManager:(TableViewManager *)manager shouldSelectRow:(NSInteger)row byItem:(id)item
+{
+    //    if ((row + 1) % 2 == 0)
+    //    {
+    //        return NO;
+    //    }
+    
+    return YES;
 }
 
 - (void)tableViewManager:(TableViewManager *)manager didSelectItem:(id)item forRow:(NSInteger)row

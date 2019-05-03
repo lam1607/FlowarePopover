@@ -131,7 +131,7 @@
     }
 }
 
-#pragma mark - CollectionViewManagerProtocols implementation
+#pragma mark - CollectionViewManagerProtocols UI
 
 - (NSUserInterfaceItemIdentifier)collectionViewManager:(CollectionViewManager *)manager makeItemWithIdentifierForItem:(id)item atIndexPath:(NSIndexPath *)indexPath
 {
@@ -153,20 +153,43 @@
     return _estimatedItemSize;
 }
 
-//- (void)collectionViewManager:(CollectionViewManager *)manager didSelectItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths
-//{
-//    for (id item in items)
-//    {
-//        if ([item isKindOfClass:[Film class]] && (((Film *)item).trailerUrl != nil))
-//        {
-//            [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:((Film *)item).trailerUrl]];
-//        }
-//        else
-//        {
-//            DLog(@"URL of item %@ is unavailable", item);
-//        }
-//    }
-//}
+#pragma mark - CollectionViewManagerProtocols Selection
+
+- (NSSet<NSIndexPath *> *)collectionViewManager:(CollectionViewManager *)manager shouldSelectItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths
+{
+    //    NSIndexPath *indexPath = [[indexPaths allObjects] lastObject];
+    //
+    //    if (indexPath && (indexPath.item % 2 == 0))
+    //    {
+    //        return [NSSet set];
+    //    }
+    
+    return indexPaths;
+}
+
+- (NSSet<NSIndexPath *> *)collectionViewManager:(CollectionViewManager *)manager shouldDeselectItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths
+{
+    return indexPaths;
+}
+
+- (void)collectionViewManager:(CollectionViewManager *)manager didSelectItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths
+{
+    //    for (id item in items)
+    //    {
+    //        if ([item isKindOfClass:[Film class]] && (((Film *)item).trailerUrl != nil))
+    //        {
+    //            [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:((Film *)item).trailerUrl]];
+    //        }
+    //        else
+    //        {
+    //            DLog(@"URL of item %@ is unavailable", item);
+    //        }
+    //    }
+}
+
+- (void)collectionViewManager:(CollectionViewManager *)manager didDeselectItems:(NSArray *)items atIndexPaths:(NSSet<NSIndexPath *> *)indexPaths
+{
+}
 
 #pragma mark - CollectionViewManagerProtocols Drag/Drop
 

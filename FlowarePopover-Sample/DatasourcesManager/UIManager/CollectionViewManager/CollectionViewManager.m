@@ -18,6 +18,7 @@
     __weak NSCollectionView *_collectionView;
     __weak DataProvider *_provider;
     
+    NSMutableArray<NSUserInterfaceItemIdentifier> *_registeredIdentifiers;
     NSCache *_cachedItemSizes;
 }
 
@@ -38,6 +39,7 @@
         {
             _provider = provider;
             _protocols = source;
+            _registeredIdentifiers = [[NSMutableArray alloc] init];
             _cachedItemSizes = [[NSCache alloc] init];
             
             _collectionView = collectionView;
@@ -55,6 +57,18 @@
     return self;
 }
 
+- (void)dealloc
+{
+    _collectionView = nil;
+    _provider = nil;
+    
+    [_registeredIdentifiers removeAllObjects];
+    _registeredIdentifiers = nil;
+    
+    [_cachedItemSizes removeAllObjects];
+    _cachedItemSizes = nil;
+}
+
 #pragma mark - Getter/Setter
 
 - (NSCollectionView *)collectionView
@@ -64,12 +78,14 @@
 
 #pragma mark - Local methods
 
-- (void)registerForRowItemWithIdentifier:(NSUserInterfaceItemIdentifier)identifier atIndexPath:(NSIndexPath *)indexPath
+- (void)registerForRowItemWithIdentifier:(NSUserInterfaceItemIdentifier)identifier
 {
     @try
     {
-        if ([_collectionView makeItemWithIdentifier:identifier forIndexPath:indexPath] == nil)
+        if (![_registeredIdentifiers containsObject:identifier])
         {
+            [_registeredIdentifiers addObject:identifier];
+            
             [_collectionView registerNib:[[NSNib alloc] initWithNibNamed:NSStringFromClass(NSClassFromString(identifier)) bundle:nil] forItemWithIdentifier:identifier];
         }
     }
@@ -102,9 +118,9 @@
             return _provider.dataSource.count;
         }
         
-        if ([[_provider.dataSource objectAtIndex:section] respondsToSelector:@selector(childs)])
+        if ([[_provider.dataSource objectAtIndex:section] respondsToSelector:@selector(lsp_childs)])
         {
-            return [[_provider.dataSource objectAtIndex:section] childs].count;
+            return [[_provider.dataSource objectAtIndex:section] lsp_childs].count;
         }
     }
     @catch (NSException *exception)
@@ -142,7 +158,7 @@
             NSAssert(false, @"%s-[%d] failed", __PRETTY_FUNCTION__, __LINE__);
         }
         
-        [self registerForRowItemWithIdentifier:identifier atIndexPath:indexPath];
+        [self registerForRowItemWithIdentifier:identifier];
         
         NSCollectionViewItem *itemView = [collectionView makeItemWithIdentifier:identifier forIndexPath:indexPath];
         
@@ -306,7 +322,133 @@
     return NSZeroSize;
 }
 
-#pragma mark - NSCollectionViewDelegate
+#pragma mark - NSCollectionViewDelegate Selection
+
+/**
+ * Asks the delegate to approve the pending highlighting of the specified items
+ */
+- (NSSet<NSIndexPath *> *)collectionView:(NSCollectionView *)collectionView shouldChangeItemsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths toHighlightState:(NSCollectionViewItemHighlightState)highlightState
+{
+    @try
+    {
+        if (self.protocols && [self.protocols respondsToSelector:@selector(collectionViewManager:shouldChangeItems:atIndexPaths:toHighlightState:)])
+        {
+            NSArray *items = [_provider objectsForItemAtIndexPaths:indexPaths];
+            
+            return [self.protocols collectionViewManager:self shouldChangeItems:items atIndexPaths:indexPaths toHighlightState:highlightState];
+        }
+    }
+    @catch (NSException *exception)
+    {
+        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
+    }
+    
+    return indexPaths;
+}
+
+/**
+ * Sent during interactive selection or dragging, to inform the delegate that the CollectionView has changed the "highlightState" property of the items at the specified "indexPaths" to the specified "highlightState".
+ */
+- (void)collectionView:(NSCollectionView *)collectionView didChangeItemsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths toHighlightState:(NSCollectionViewItemHighlightState)highlightState
+{
+    @try
+    {
+        if (self.protocols && [self.protocols respondsToSelector:@selector(collectionViewManager:didChangeItems:atIndexPaths:toHighlightState:)])
+        {
+            NSArray *items = [_provider objectsForItemAtIndexPaths:indexPaths];
+            
+            [self.protocols collectionViewManager:self didChangeItems:items atIndexPaths:indexPaths toHighlightState:highlightState];
+        }
+    }
+    @catch (NSException *exception)
+    {
+        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
+    }
+}
+
+/**
+ * Sent during interactive selection, to inform the delegate that the CollectionView would like to select the items at the specified "indexPaths".  In addition to optionally reacting to the proposed change, you can approve it (by returning "indexPaths" as-is), or selectively refuse some or all of the proposed selection changes (by returning a modified autoreleased mutableCopy of indexPaths, or an empty indexPaths instance).
+ */
+- (NSSet<NSIndexPath *> *)collectionView:(NSCollectionView *)collectionView shouldSelectItemsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths
+{
+    @try
+    {
+        if (self.protocols && [self.protocols respondsToSelector:@selector(collectionViewManager:shouldSelectItems:atIndexPaths:)])
+        {
+            NSArray *items = [_provider objectsForItemAtIndexPaths:indexPaths];
+            
+            return [self.protocols collectionViewManager:self shouldSelectItems:items atIndexPaths:indexPaths];
+        }
+    }
+    @catch (NSException *exception)
+    {
+        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
+    }
+    
+    return indexPaths;
+}
+
+/**
+ * Sent during interactive selection, to inform the delegate that the CollectionView would like to de-select the items at the specified "indexPaths".  In addition to optionally reacting to the proposed change, you can approve it (by returning "indexPaths" as-is), or selectively refuse some or all of the proposed selection changes (by returning a modified autoreleased mutableCopy of indexPaths, or an empty indexPaths instance).
+ */
+- (NSSet<NSIndexPath *> *)collectionView:(NSCollectionView *)collectionView shouldDeselectItemsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths
+{
+    @try
+    {
+        if (self.protocols && [self.protocols respondsToSelector:@selector(collectionViewManager:shouldDeselectItems:atIndexPaths:)])
+        {
+            NSArray *items = [_provider objectsForItemAtIndexPaths:indexPaths];
+            
+            return [self.protocols collectionViewManager:self shouldDeselectItems:items atIndexPaths:indexPaths];
+        }
+    }
+    @catch (NSException *exception)
+    {
+        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
+    }
+    
+    return indexPaths;
+}
+
+/**
+ * Sent at the end of interactive selection, to inform the delegate that the CollectionView has selected the items at the specified "indexPaths".
+ */
+- (void)collectionView:(NSCollectionView *)collectionView didSelectItemsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths
+{
+    @try
+    {
+        if (self.protocols && [self.protocols respondsToSelector:@selector(collectionViewManager:didSelectItems:atIndexPaths:)])
+        {
+            NSArray *items = [_provider objectsForItemAtIndexPaths:indexPaths];
+            
+            [self.protocols collectionViewManager:self didSelectItems:items atIndexPaths:indexPaths];
+        }
+    }
+    @catch (NSException *exception)
+    {
+        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
+    }
+}
+
+/**
+ * Sent at the end of interactive selection, to inform the delegate that the CollectionView has de-selected the items at the specified "indexPaths".
+ */
+- (void)collectionView:(NSCollectionView *)collectionView didDeselectItemsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths
+{
+    @try
+    {
+        if (self.protocols && [self.protocols respondsToSelector:@selector(collectionViewManager:didDeselectItems:atIndexPaths:)])
+        {
+            NSArray *items = [_provider objectsForItemAtIndexPaths:indexPaths];
+            
+            [self.protocols collectionViewManager:self didDeselectItems:items atIndexPaths:indexPaths];
+        }
+    }
+    @catch (NSException *exception)
+    {
+        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
+    }
+}
 
 #pragma mark - NSCollectionViewDelegate Drag/Drop
 
@@ -446,134 +588,6 @@
     if (self.protocols && [self.protocols respondsToSelector:@selector(collectionViewManager:updateDraggingItemsForDrag:)])
     {
         [self.protocols collectionViewManager:self updateDraggingItemsForDrag:draggingInfo];
-    }
-}
-
-#pragma mark - Selection
-
-/**
- * Asks the delegate to approve the pending highlighting of the specified items
- */
-- (NSSet<NSIndexPath *> *)collectionView:(NSCollectionView *)collectionView shouldChangeItemsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths toHighlightState:(NSCollectionViewItemHighlightState)highlightState
-{
-    @try
-    {
-        if (self.protocols && [self.protocols respondsToSelector:@selector(collectionViewManager:shouldChangeItems:atIndexPaths:toHighlightState:)])
-        {
-            NSArray *items = [_provider objectsForItemAtIndexPaths:indexPaths];
-            
-            return [self.protocols collectionViewManager:self shouldChangeItems:items atIndexPaths:indexPaths toHighlightState:highlightState];
-        }
-    }
-    @catch (NSException *exception)
-    {
-        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
-    }
-    
-    return indexPaths;
-}
-
-/**
- * Sent during interactive selection or dragging, to inform the delegate that the CollectionView has changed the "highlightState" property of the items at the specified "indexPaths" to the specified "highlightState".
- */
-- (void)collectionView:(NSCollectionView *)collectionView didChangeItemsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths toHighlightState:(NSCollectionViewItemHighlightState)highlightState
-{
-    @try
-    {
-        if (self.protocols && [self.protocols respondsToSelector:@selector(collectionViewManager:didChangeItems:atIndexPaths:toHighlightState:)])
-        {
-            NSArray *items = [_provider objectsForItemAtIndexPaths:indexPaths];
-            
-            [self.protocols collectionViewManager:self didChangeItems:items atIndexPaths:indexPaths toHighlightState:highlightState];
-        }
-    }
-    @catch (NSException *exception)
-    {
-        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
-    }
-}
-
-/**
- * Sent during interactive selection, to inform the delegate that the CollectionView would like to select the items at the specified "indexPaths".  In addition to optionally reacting to the proposed change, you can approve it (by returning "indexPaths" as-is), or selectively refuse some or all of the proposed selection changes (by returning a modified autoreleased mutableCopy of indexPaths, or an empty indexPaths instance).
- */
-- (NSSet<NSIndexPath *> *)collectionView:(NSCollectionView *)collectionView shouldSelectItemsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths
-{
-    @try
-    {
-        if (self.protocols && [self.protocols respondsToSelector:@selector(collectionViewManager:shouldSelectItems:atIndexPaths:)])
-        {
-            NSArray *items = [_provider objectsForItemAtIndexPaths:indexPaths];
-            
-            return [self.protocols collectionViewManager:self shouldSelectItems:items atIndexPaths:indexPaths];
-        }
-    }
-    @catch (NSException *exception)
-    {
-        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
-    }
-    
-    return indexPaths;
-}
-
-/**
- * Sent during interactive selection, to inform the delegate that the CollectionView would like to de-select the items at the specified "indexPaths".  In addition to optionally reacting to the proposed change, you can approve it (by returning "indexPaths" as-is), or selectively refuse some or all of the proposed selection changes (by returning a modified autoreleased mutableCopy of indexPaths, or an empty indexPaths instance).
- */
-- (NSSet<NSIndexPath *> *)collectionView:(NSCollectionView *)collectionView shouldDeselectItemsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths
-{
-    @try
-    {
-        if (self.protocols && [self.protocols respondsToSelector:@selector(collectionViewManager:shouldDeselectItems:atIndexPaths:)])
-        {
-            NSArray *items = [_provider objectsForItemAtIndexPaths:indexPaths];
-            
-            return [self.protocols collectionViewManager:self shouldDeselectItems:items atIndexPaths:indexPaths];
-        }
-    }
-    @catch (NSException *exception)
-    {
-        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
-    }
-    
-    return indexPaths;
-}
-
-/**
- * Sent at the end of interactive selection, to inform the delegate that the CollectionView has selected the items at the specified "indexPaths".
- */
-- (void)collectionView:(NSCollectionView *)collectionView didSelectItemsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths
-{
-    @try
-    {
-        if (self.protocols && [self.protocols respondsToSelector:@selector(collectionViewManager:didSelectItems:atIndexPaths:)])
-        {
-            NSArray *items = [_provider objectsForItemAtIndexPaths:indexPaths];
-            
-            [self.protocols collectionViewManager:self didSelectItems:items atIndexPaths:indexPaths];
-        }
-    }
-    @catch (NSException *exception)
-    {
-        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
-    }
-}
-
-/**
- * Sent at the end of interactive selection, to inform the delegate that the CollectionView has de-selected the items at the specified "indexPaths".
- */
-- (void)collectionView:(NSCollectionView *)collectionView didDeselectItemsAtIndexPaths:(NSSet<NSIndexPath *> *)indexPaths
-{
-    @try
-    {
-        if (self.protocols && [self.protocols respondsToSelector:@selector(collectionViewManager:didDeselectItems:atIndexPaths:)])
-        {
-            NSArray *items = [_provider objectsForItemAtIndexPaths:indexPaths];
-            
-            [self.protocols collectionViewManager:self didDeselectItems:items atIndexPaths:indexPaths];
-        }
-    }
-    @catch (NSException *exception)
-    {
-        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
     }
 }
 

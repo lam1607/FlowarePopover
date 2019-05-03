@@ -67,6 +67,7 @@
 @property (nonatomic, assign) NSSize arrowSize;
 @property (nonatomic, assign) BOOL animated;
 @property (nonatomic, assign) BOOL animatedForwarding;
+@property (nonatomic, assign) CGFloat bottomOffset;
 
 /**
  * Determine whether the popover should stay in application frame or screen frame.
