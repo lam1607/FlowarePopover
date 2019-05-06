@@ -62,11 +62,12 @@
         _staysInApplicationFrame = NO;
         _updatesFrameWhileShowing = NO;
         _shouldRegisterSuperviewObservers = YES;
-        _shouldChangeSizeWhenApplicationResizes = YES;
+        _shouldChangeSizeWhenApplicationResizes = NO;
         _closesWhenPopoverResignsKey = NO;
         _closesWhenApplicationBecomesInactive = NO;
         _closesWhenApplicationResizes = NO;
         _closesWhenNotBelongToContainerFrame = YES;
+        _closesWhenClickOnPopoverSender = NO;
         _isMovable = NO;
         _isDetachable = NO;
         _tag = -1;
@@ -1000,7 +1001,7 @@
             if (self.closesWhenPopoverResignsKey) {
                 // If closesWhenPopoverResignsKey is set as YES and clickedView is the same with self.utils.senderView, DO NOTHING.
                 // Because the event received from self.utils.senderView will be fired very later soon.
-                if (self.utils.senderView && (clickedView != self.utils.senderView)) {
+                if ((self.utils.senderView && (clickedView != self.utils.senderView)) || self.closesWhenClickOnPopoverSender) {
                     if (self.popoverView.window == event.window) {
                         if (!([clickedView isDescendantOf:self.popoverView] || (clickedView == self.popoverView))) {
                             [self close];

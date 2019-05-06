@@ -38,6 +38,7 @@
 @property (nonatomic, assign) BOOL closesWhenApplicationBecomesInactive;
 @property (nonatomic, assign) BOOL closesWhenApplicationResizes;
 @property (nonatomic, assign) BOOL closesWhenNotBelongToContainerFrame;
+@property (nonatomic, assign) BOOL closesWhenClickOnPopoverSender;
 
 /**
  * Make the popover movable.

@@ -317,6 +317,16 @@
     }
 }
 
+- (void)setClosesWhenClickOnPopoverSender:(BOOL)closesWhenClickOnPopoverSender {
+    _closesWhenClickOnPopoverSender = closesWhenClickOnPopoverSender;
+    
+    if (self.type == FLOWindowPopover) {
+        self.windowPopup.closesWhenClickOnPopoverSender = closesWhenClickOnPopoverSender;
+    } else {
+        self.viewPopup.closesWhenClickOnPopoverSender = closesWhenClickOnPopoverSender;
+    }
+}
+
 - (void)setClosesAfterTimeInterval:(NSTimeInterval)closesAfterTimeInterval {
     [self restartPopupIfNeeded];
     

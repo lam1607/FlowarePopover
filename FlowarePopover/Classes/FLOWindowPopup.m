@@ -62,11 +62,12 @@
         _staysInApplicationFrame = NO;
         _updatesFrameWhileShowing = NO;
         _shouldRegisterSuperviewObservers = YES;
-        _shouldChangeSizeWhenApplicationResizes = YES;
+        _shouldChangeSizeWhenApplicationResizes = NO;
         _closesWhenPopoverResignsKey = NO;
         _closesWhenApplicationBecomesInactive = NO;
         _closesWhenApplicationResizes = NO;
         _closesWhenNotBelongToContainerFrame = YES;
+        _closesWhenClickOnPopoverSender = NO;
         _resignsFieldsOnClosing = YES;
         _makesKeyAndOrderFrontOnDisplaying = YES;
         _isMovable = NO;
@@ -1046,7 +1047,7 @@
                 
                 // If closesWhenPopoverResignsKey is set as YES and clickedView is the same with self.utils.senderView, DO NOTHING.
                 // Because the event received from self.utils.senderView will be fired very later soon.
-                if (self.utils.senderView && (clickedView != self.utils.senderView)) {
+                if ((self.utils.senderView && (clickedView != self.utils.senderView)) || self.closesWhenClickOnPopoverSender) {
                     if (self.popoverWindow == event.window) {
                         NSPoint eventPoint = [self.popoverWindow.contentView convertPoint:event.locationInWindow fromView:nil];
                         

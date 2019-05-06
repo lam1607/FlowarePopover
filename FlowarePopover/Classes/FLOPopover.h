@@ -81,6 +81,7 @@
 @property (nonatomic, assign) BOOL closesWhenApplicationBecomesInactive;
 @property (nonatomic, assign) BOOL closesWhenApplicationResizes;
 @property (nonatomic, assign) BOOL closesWhenNotBelongToContainerFrame;
+@property (nonatomic, assign) BOOL closesWhenClickOnPopoverSender;
 @property (nonatomic, assign) NSTimeInterval closesAfterTimeInterval;
 @property (nonatomic, assign) BOOL cancelClosesAfterTimeIntervalWhenMoving;
 @property (nonatomic, assign) BOOL resignsFieldsOnClosing;
