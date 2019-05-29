@@ -317,13 +317,13 @@
     }
 }
 
-- (void)setClosesWhenClickOnPopoverSender:(BOOL)closesWhenClickOnPopoverSender {
-    _closesWhenClickOnPopoverSender = closesWhenClickOnPopoverSender;
+- (void)setClosesWhenReceivesEvent:(BOOL)closesWhenReceivesEvent {
+    _closesWhenReceivesEvent = closesWhenReceivesEvent;
     
     if (self.type == FLOWindowPopover) {
-        self.windowPopup.closesWhenClickOnPopoverSender = closesWhenClickOnPopoverSender;
+        self.windowPopup.closesWhenReceivesEvent = closesWhenReceivesEvent;
     } else {
-        self.viewPopup.closesWhenClickOnPopoverSender = closesWhenClickOnPopoverSender;
+        self.viewPopup.closesWhenReceivesEvent = closesWhenReceivesEvent;
     }
 }
 
@@ -445,15 +445,29 @@
 
 - (void)setupPopupView {
     if (self.viewPopup == nil) {
-        self.viewPopup = [[FLOViewPopup alloc] initWithContentView:self.contentViewController.view];
-        [self bindEventsForPopover:self.viewPopup];
+        if (self.contentView != nil) {
+            self.viewPopup = [[FLOViewPopup alloc] initWithContentView:self.contentView];
+        } else if (self.contentViewController != nil) {
+            self.viewPopup = [[FLOViewPopup alloc] initWithContentViewController:self.contentViewController];
+        }
+        
+        if (self.viewPopup != nil) {
+            [self bindEventsForPopover:self.viewPopup];
+        }
     }
 }
 
 - (void)setupPopupWindow {
     if (self.windowPopup == nil) {
-        self.windowPopup = [[FLOWindowPopup alloc] initWithContentViewController:self.contentViewController];
-        [self bindEventsForPopover:self.windowPopup];
+        if (self.contentView != nil) {
+            self.windowPopup = [[FLOWindowPopup alloc] initWithContentView:self.contentView];
+        } else if (self.contentViewController != nil) {
+            self.windowPopup = [[FLOWindowPopup alloc] initWithContentViewController:self.contentViewController];
+        }
+        
+        if (self.windowPopup != nil) {
+            [self bindEventsForPopover:self.windowPopup];
+        }
     }
 }
 

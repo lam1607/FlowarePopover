@@ -27,6 +27,8 @@
 @property (nonatomic, strong) NSEvent *appEvent;
 @property (nonatomic, strong) FLOPopoverUtils *utils;
 
+@property (nonatomic, assign) NSRect initialFrame;
+
 @property (nonatomic, assign) BOOL popoverShowing;
 @property (nonatomic, assign) BOOL popoverClosing;
 
@@ -67,7 +69,7 @@
         _closesWhenApplicationBecomesInactive = NO;
         _closesWhenApplicationResizes = NO;
         _closesWhenNotBelongToContainerFrame = YES;
-        _closesWhenClickOnPopoverSender = NO;
+        _closesWhenReceivesEvent = NO;
         _resignsFieldsOnClosing = YES;
         _makesKeyAndOrderFrontOnDisplaying = YES;
         _isMovable = NO;
@@ -285,6 +287,24 @@
         
         self.utils.positioningWindowFrame = [self.utils.positioningView convertRect:self.utils.positioningView.bounds toView:self.utils.positioningView.window.contentView];
     }
+}
+
+- (void)removeAnimationProcessIfNeeded:(BOOL)isNeeded {
+    if (!isNeeded) return;
+    
+    if (self.snapshotView != nil) {
+        [self.snapshotView removeFromSuperview];
+        [[self.snapshotView.layer.sublayers lastObject] removeAllAnimations];
+        [[self.snapshotView.layer.sublayers lastObject] removeFromSuperlayer];
+        
+        self.snapshotView = nil;
+    }
+    
+    if (self.popoverWindow.contentView.layer != nil) {
+        [self.popoverWindow.contentView.layer removeAllAnimations];
+    }
+    
+    [self.popoverWindow setFrame:self.initialFrame display:YES];
 }
 
 #pragma mark - Display
@@ -572,6 +592,7 @@
     }
     
     self.utils.originalViewSize = self.utils.backgroundView.frame.size;
+    self.initialFrame = popoverFrame;
     
     [self.popoverWindow setFrame:popoverFrame display:NO];
     
@@ -610,6 +631,22 @@
         [self.utils setupAutoresizingMaskIfNeeded:NO];
         [self removeAllApplicationEvents];
         [self popoverShowing:NO animated:self.animated];
+    }
+}
+
+- (void)closePopoverWhileAnimatingIfNeeded:(BOOL)isNeeded {
+    if (!isNeeded) return;
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    
+    if (self.popoverShowing) {
+        self.popoverShowing = NO;
+        
+        [self removeAnimationProcessIfNeeded:YES];
+        
+        [self performSelector:@selector(close) withObject:nil afterDelay:0.1];
+    } else {
+        [self close];
     }
 }
 
@@ -1047,18 +1084,18 @@
                 
                 // If closesWhenPopoverResignsKey is set as YES and clickedView is the same with self.utils.senderView, DO NOTHING.
                 // Because the event received from self.utils.senderView will be fired very later soon.
-                if ((self.utils.senderView && (clickedView != self.utils.senderView)) || self.closesWhenClickOnPopoverSender) {
+                if ((self.utils.senderView && (clickedView != self.utils.senderView)) || self.closesWhenReceivesEvent) {
                     if (self.popoverWindow == event.window) {
                         NSPoint eventPoint = [self.popoverWindow.contentView convertPoint:event.locationInWindow fromView:nil];
                         
                         if (NSPointInRect(eventPoint, self.popoverWindow.contentView.bounds) == NO) {
-                            [self close];
+                            [self closePopoverWhileAnimatingIfNeeded:YES];
                         }
                     } else {
                         BOOL contained = [self.utils didWindow:self.popoverWindow contain:event.window];
                         
                         if (contained == NO) {
-                            [self close];
+                            [self closePopoverWhileAnimatingIfNeeded:YES];
                         }
                     }
                 }
@@ -1153,6 +1190,8 @@
     self.popoverShowing = NO;
     self.popoverClosing = NO;
     
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self removeAnimationProcessIfNeeded:YES];
     [self close];
 }
 

@@ -435,15 +435,17 @@
             self.comicsViewController = [[ComicsViewController alloc] initWithNibName:NSStringFromClass([ComicsViewController class]) bundle:nil];
             [self.comicsViewController.view setFrame:contentViewRect];
             
-            _popoverComics = [[FLOPopover alloc] initWithContentViewController:self.comicsViewController];
+            //            _popoverComics = [[FLOPopover alloc] initWithContentViewController:self.comicsViewController];
+            //            _popoverComics = [[FLOPopover alloc] initWithContentViewController:self.comicsViewController type:FLOViewPopover];
+            _popoverComics = [[FLOPopover alloc] initWithContentView:self.comicsViewController.view];
+            //            _popoverComics = [[FLOPopover alloc] initWithContentView:self.comicsViewController.view type:FLOViewPopover];
         }
         
         _popoverComics.animated = YES;
         //        _popoverComics.animatedForwarding = YES;
-        _popoverComics.animatedByMovingFrame = YES;
-        _popoverComics.animatedByMovingFrame = YES;
+        //        _popoverComics.animatedByMovingFrame = YES;
         _popoverComics.shouldChangeSizeWhenApplicationResizes = YES;
-        //        _popoverComics.closesWhenPopoverResignsKey = YES;
+        _popoverComics.closesWhenPopoverResignsKey = YES;
         //        _popoverComics.closesWhenApplicationBecomesInactive = YES;
         _popoverComics.isMovable = YES;
         //        _popoverComics.isDetachable = YES;
@@ -483,7 +485,7 @@
         _popoverComics.shouldShowArrow = YES;
         _popoverComics.animated = YES;
         _popoverComics.shouldChangeSizeWhenApplicationResizes = NO;
-        //        _popoverComics.closesWhenPopoverResignsKey = YES;
+        _popoverComics.closesWhenPopoverResignsKey = YES;
         //        _popoverComics.closesWhenApplicationBecomesInactive = YES;
         _popoverComics.isMovable = YES;
         _popoverComics.isDetachable = YES;
