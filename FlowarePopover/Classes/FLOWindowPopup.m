@@ -45,6 +45,31 @@
 
 @implementation FLOWindowPopup
 
+@synthesize alwaysOnTop = _alwaysOnTop;
+@synthesize shouldShowArrow = _shouldShowArrow;
+@synthesize arrowSize = _arrowSize;
+@synthesize animated = _animated;
+@synthesize animatedForwarding = _animatedForwarding;
+@synthesize bottomOffset = _bottomOffset;
+@synthesize staysInApplicationFrame = _staysInApplicationFrame;
+@synthesize updatesFrameWhileShowing = _updatesFrameWhileShowing;
+@synthesize shouldRegisterSuperviewObservers = _shouldRegisterSuperviewObservers;
+@synthesize shouldChangeSizeWhenApplicationResizes = _shouldChangeSizeWhenApplicationResizes;
+@synthesize closesWhenPopoverResignsKey = _closesWhenPopoverResignsKey;
+@synthesize closesWhenApplicationBecomesInactive = _closesWhenApplicationBecomesInactive;
+@synthesize closesWhenApplicationResizes = _closesWhenApplicationResizes;
+@synthesize closesWhenNotBelongToContainerFrame = _closesWhenNotBelongToContainerFrame;
+@synthesize closesWhenReceivesEvent = _closesWhenReceivesEvent;
+@synthesize resignsFieldsOnClosing = _resignsFieldsOnClosing;
+@synthesize makesKeyAndOrderFrontOnDisplaying = _makesKeyAndOrderFrontOnDisplaying;
+@synthesize isMovable = _isMovable;
+@synthesize isDetachable = _isDetachable;
+@synthesize canBecomeKey = _canBecomeKey;
+@synthesize tag = _tag;
+@synthesize animatedByMovingFrame = _animatedByMovingFrame;
+@synthesize animationDuration = _animationDuration;
+@synthesize needAutoresizingMask = _needAutoresizingMask;
+
 @synthesize willShowBlock;
 @synthesize didShowBlock;
 @synthesize willCloseBlock;
@@ -398,17 +423,27 @@
     [self updatePopoverFrame];
 }
 
+- (void)setPopoverPositioningView:(NSView *)positioningView positioningRect:(NSRect)rect {
+    if ((positioningView != nil) && (self.utils.positioningView != positioningView)) {
+        if ((self.utils.positioningAnchorView != nil) && ([self.utils.positioningAnchorView isDescendantOf:self.utils.positioningView])) {
+            [self.utils.positioningAnchorView removeFromSuperview];
+            
+            self.utils.positioningAnchorView = nil;
+        }
+        
+        self.utils.positioningView = positioningView;
+    }
+    
+    [self setPopoverPositioningRect:rect];
+}
+
 - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect {
     if ((NSEqualSizes(newSize, NSZeroSize) == NO) && (NSEqualSizes(newSize, self.utils.contentSize) == NO)) {
         self.utils.originalViewSize = newSize;
         self.utils.contentSize = newSize;
     }
     
-    if (NSEqualRects(rect, NSZeroRect) == NO) {
-        [self setupPositioningAnchorWithView:self.utils.positioningView positioningRect:rect shouldUpdatePosition:YES];
-    }
-    
-    [self updatePopoverFrame];
+    [self setPopoverPositioningRect:rect];
 }
 
 - (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
@@ -583,12 +618,12 @@
         self.utils.animationType = FLOPopoverAnimationDefault;
     }
     
-    NSRect popoverFrame = (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) ? [self.utils _popoverFrame] : [self.utils popoverFrameForEdge:self.utils.preferredEdge];
+    NSRect popoverFrame = (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) ? [self.utils p_popoverFrame] : [self.utils popoverFrame];
     
     // Update arrow edge and content view frame
     if (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) {
         [self.utils.backgroundView setAlphaValue:1.0];
-        [self.utils _backgroundViewShouldUpdate:YES];
+        [self.utils p_backgroundViewShouldUpdate:YES];
     }
     
     self.utils.originalViewSize = self.utils.backgroundView.frame.size;
@@ -1292,7 +1327,7 @@
     if ((self.popoverShowing == NO) && (self.popoverClosing == NO) && [notification.name isEqualToString:NSWindowDidResizeNotification] && (notification.object == self.utils.appMainWindow)) {
         if (self.closesWhenApplicationResizes == NO) {
             NSWindow *resizedWindow = (NSWindow *)notification.object;
-            NSRect popoverFrame = (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) ? [self.utils _popoverFrame] : [self.utils popoverFrameForEdge:self.utils.preferredEdge];
+            NSRect popoverFrame = (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) ? [self.utils p_popoverFrame] : [self.utils popoverFrameForEdge:self.utils.preferredEdge];
             CGFloat popoverOriginX = popoverFrame.origin.x;
             CGFloat popoverOriginY = popoverFrame.origin.y;
             
@@ -1310,7 +1345,7 @@
             
             // Update arrow edge and content view frame
             if (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) {
-                [self.utils _backgroundViewShouldUpdate:YES];
+                [self.utils p_backgroundViewShouldUpdate:YES];
             }
             
             [self.popoverWindow setFrame:popoverFrame display:YES];

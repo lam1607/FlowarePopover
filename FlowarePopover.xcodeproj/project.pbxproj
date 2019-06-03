@@ -105,7 +105,6 @@
 		DEDE465A21534005004E8DEF /* FLOPopover.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE463C21534005004E8DEF /* FLOPopover.h */; };
 		DEDE466B21534005004E8DEF /* FLOWindowPopup.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE464E21534005004E8DEF /* FLOWindowPopup.h */; };
 		DEDE466C21534005004E8DEF /* FLOViewPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464F21534005004E8DEF /* FLOViewPopup.m */; };
-		DEDE466D21534005004E8DEF /* FLOPopoverService.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE465021534005004E8DEF /* FLOPopoverService.h */; };
 		DEDE466E21534005004E8DEF /* FLOPopoverBackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE465121534005004E8DEF /* FLOPopoverBackgroundView.h */; };
 		DEDE467021534005004E8DEF /* FLOPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE465321534005004E8DEF /* FLOPopover.m */; };
 		DEDE467121534005004E8DEF /* FLOPopoverConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE465421534005004E8DEF /* FLOPopoverConstants.h */; };
@@ -279,6 +278,7 @@
 		DED3A40C21E6FDF000B479BF /* TechnologiesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologiesViewController.h; sourceTree = "<group>"; };
 		DED3A40D21E6FDF000B479BF /* TechnologiesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TechnologiesViewController.m; sourceTree = "<group>"; };
 		DED3A40E21E6FDF000B479BF /* TechnologiesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TechnologiesViewController.xib; sourceTree = "<group>"; };
+		DEDE4050229FAC6E00456551 /* FLOPopoverProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOPopoverProtocols.h; sourceTree = "<group>"; };
 		DEDE45F021533F86004E8DEF /* FlowarePopover.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FlowarePopover.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEDE45F321533F86004E8DEF /* FlowarePopover.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlowarePopover.h; sourceTree = "<group>"; };
 		DEDE45F421533F86004E8DEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -289,7 +289,6 @@
 		DEDE463C21534005004E8DEF /* FLOPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLOPopover.h; sourceTree = "<group>"; };
 		DEDE464E21534005004E8DEF /* FLOWindowPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLOWindowPopup.h; sourceTree = "<group>"; };
 		DEDE464F21534005004E8DEF /* FLOViewPopup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLOViewPopup.m; sourceTree = "<group>"; };
-		DEDE465021534005004E8DEF /* FLOPopoverService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLOPopoverService.h; sourceTree = "<group>"; };
 		DEDE465121534005004E8DEF /* FLOPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLOPopoverBackgroundView.h; sourceTree = "<group>"; };
 		DEDE465321534005004E8DEF /* FLOPopover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLOPopover.m; sourceTree = "<group>"; };
 		DEDE465421534005004E8DEF /* FLOPopoverConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLOPopoverConstants.h; sourceTree = "<group>"; };
@@ -1081,9 +1080,9 @@
 			children = (
 				DEDE463E21534005004E8DEF /* Extensions */,
 				DEDE465421534005004E8DEF /* FLOPopoverConstants.h */,
+				DEDE4050229FAC6E00456551 /* FLOPopoverProtocols.h */,
 				DEDE463C21534005004E8DEF /* FLOPopover.h */,
 				DEDE465321534005004E8DEF /* FLOPopover.m */,
-				DEDE465021534005004E8DEF /* FLOPopoverService.h */,
 				DEDE463821534005004E8DEF /* FLOViewPopup.h */,
 				DEDE464F21534005004E8DEF /* FLOViewPopup.m */,
 				DEDE464E21534005004E8DEF /* FLOWindowPopup.h */,
@@ -1250,7 +1249,6 @@
 				DE8E5E8D2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.h in Headers */,
 				DE8E5E852153B69E002AE872 /* FLOExtensionsNSView.h in Headers */,
 				DEDE466E21534005004E8DEF /* FLOPopoverBackgroundView.h in Headers */,
-				DEDE466D21534005004E8DEF /* FLOPopoverService.h in Headers */,
 				DEDE467121534005004E8DEF /* FLOPopoverConstants.h in Headers */,
 				DEDE466B21534005004E8DEF /* FLOWindowPopup.h in Headers */,
 			);

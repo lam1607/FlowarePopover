@@ -271,6 +271,11 @@ When you display popover, if you want you change size, position of the view or v
     - (void)setPopoverPositioningRect:(NSRect)rect;
   ```
 
+- Update positioning view and rect for the popover in some cases if needed (SHOULDN'T use this method for sticking popover).
+  ```
+    - (void)setPopoverPositioningView:(NSView *)positioningView positioningRect:(NSRect)rect;
+  ```
+
 - Update content size for view or view controller in popover and position of popover.
   ```
     - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;

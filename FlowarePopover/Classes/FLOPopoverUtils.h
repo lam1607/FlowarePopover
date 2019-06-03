@@ -84,8 +84,8 @@
 - (void)setupPositioningAnchorWithView:(NSView *)positioningView positioningRect:(NSRect)positioningRect shouldUpdatePosition:(BOOL)shouldUpdatePosition;
 - (NSRect)popoverFrameForEdge:(NSRectEdge)popoverEdge;
 - (NSRect)popoverFrame;
-- (NSRect)_popoverFrameForEdge:(NSRectEdge *)popoverEdge;
-- (NSRect)_popoverFrame;
-- (void)_backgroundViewShouldUpdate:(BOOL)updated;
+- (NSRect)p_popoverFrameForEdge:(NSRectEdge *)popoverEdge;
+- (NSRect)p_popoverFrame;
+- (void)p_backgroundViewShouldUpdate:(BOOL)updated;
 
 @end

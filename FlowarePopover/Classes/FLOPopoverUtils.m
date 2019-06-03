@@ -125,7 +125,11 @@
     _appMainWindowResized = appMainWindowResized;
 }
 
-#pragma mark - Local implementations
+#pragma mark - Local methods
+
+- (NSRect)containerFrame {
+    return (self.staysInApplicationFrame ? [FLOPopoverUtils sharedInstance].appMainWindow.frame : [FLOPopoverUtils sharedInstance].appMainWindow.screen.frame);
+}
 
 - (void)windowDidEndResize {
     _appMainWindowResized = NO;
@@ -735,7 +739,7 @@
 }
 
 - (BOOL)checkPopoverFrameWithEdge:(NSRectEdge)popoverEdge {
-    NSRect containerFrame = self.appMainWindow.frame;
+    NSRect containerFrame = [self containerFrame];
     NSRect frame = [self popoverFrameForEdge:popoverEdge];
     
     return NSContainsRect(containerFrame, frame);
@@ -756,7 +760,7 @@
 }
 
 - (NSRect)fitFrameToContainer:(NSRect)proposedFrame {
-    NSRect containerFrame = self.appMainWindow.frame;
+    NSRect containerFrame = [self containerFrame];
     
     if (proposedFrame.origin.y < NSMinY(containerFrame)) {
         proposedFrame.origin.y = NSMinY(containerFrame);
@@ -777,7 +781,7 @@
 
 - (BOOL)containerFrameContainsEdge:(NSRectEdge)edge {
     NSRect frame = [self popoverFrameForEdge:edge];
-    NSRect containerFrame = self.appMainWindow.frame;
+    NSRect containerFrame = [self containerFrame];
     
     BOOL minYInBounds = (edge == NSRectEdgeMinY) && (NSMinY(frame) >= NSMinY(containerFrame));
     BOOL maxYInBounds = (edge == NSRectEdgeMaxY) && (NSMaxY(frame) <= NSMaxY(containerFrame));
@@ -801,8 +805,8 @@
 
 #pragma mark - Saving edge utilities
 
-- (NSRect)_popoverFrameForEdge:(NSRectEdge *)popoverEdge {
-    NSRect containerFrame = self.staysInApplicationFrame ? [FLOPopoverUtils sharedInstance].appMainWindow.frame : [FLOPopoverUtils sharedInstance].appMainWindow.screen.frame;
+- (NSRect)p_popoverFrameForEdge:(NSRectEdge *)popoverEdge {
+    NSRect containerFrame = [self containerFrame];
     NSRect positionRelativeFrame = [self.positioningAnchorView convertRect:[self.positioningAnchorView alignmentRectForFrame:self.positioningFrame] toView:nil];
     NSRect positionScreenFrame = [self.positioningAnchorView.window convertRectToScreen:positionRelativeFrame];
     
@@ -834,7 +838,7 @@
         if (NSMaxY(frame) < NSMinY(containerFrame)) {
             *popoverEdge = NSRectEdgeMaxY;
             
-            return [self _popoverFrameForEdge:popoverEdge];
+            return [self p_popoverFrameForEdge:popoverEdge];
         }
     } else if (*popoverEdge == NSRectEdgeMaxY) {
         CGFloat x0 = NSMinX(positionScreenFrame);
@@ -846,7 +850,7 @@
         if (NSMinY(frame) > NSMaxY(containerFrame)) {
             *popoverEdge = NSRectEdgeMinY;
             
-            return [self _popoverFrameForEdge:popoverEdge];
+            return [self p_popoverFrameForEdge:popoverEdge];
         }
     } else if (*popoverEdge == NSRectEdgeMinX) {
         CGFloat y0 = NSMinY(positionScreenFrame);
@@ -858,7 +862,7 @@
         if (NSMaxX(frame) < NSMinX(containerFrame)) {
             *popoverEdge = NSRectEdgeMaxX;
             
-            return [self _popoverFrameForEdge:popoverEdge];
+            return [self p_popoverFrameForEdge:popoverEdge];
         }
     } else if (*popoverEdge == NSRectEdgeMaxX) {
         CGFloat y0 = NSMinY(positionScreenFrame);
@@ -870,7 +874,7 @@
         if (NSMinX(frame) > NSMaxX(containerFrame)) {
             *popoverEdge = NSRectEdgeMinX;
             
-            return [self _popoverFrameForEdge:popoverEdge];
+            return [self p_popoverFrameForEdge:popoverEdge];
         }
     } else {
         frame = NSZeroRect;
@@ -879,14 +883,14 @@
     return frame;
 }
 
-- (BOOL)_checkPopoverFrameWithEdge:(NSRectEdge *)popoverEdge {
-    NSRect containerFrame = self.staysInApplicationFrame ? [FLOPopoverUtils sharedInstance].appMainWindow.frame : [FLOPopoverUtils sharedInstance].appMainWindow.screen.frame;
-    NSRect frame = [self _popoverFrameForEdge:popoverEdge];
+- (BOOL)p_checkPopoverFrameWithEdge:(NSRectEdge *)popoverEdge {
+    NSRect containerFrame = [self containerFrame];
+    NSRect frame = [self p_popoverFrameForEdge:popoverEdge];
     
     return NSContainsRect(containerFrame, frame);
 }
 
-- (NSRectEdge)_nextEdgeForEdge:(NSRectEdge)currentEdge {
+- (NSRectEdge)p_nextEdgeForEdge:(NSRectEdge)currentEdge {
     if (currentEdge == NSRectEdgeMaxX) {
         return (self.preferredEdge == NSRectEdgeMinX) ? NSRectEdgeMaxY : NSRectEdgeMinX;
     } else if (currentEdge == NSRectEdgeMinX) {
@@ -900,8 +904,8 @@
     return currentEdge;
 }
 
-- (NSRect)_fitFrameToContainer:(NSRect)proposedFrame {
-    NSRect containerFrame = self.staysInApplicationFrame ? [FLOPopoverUtils sharedInstance].appMainWindow.frame : [FLOPopoverUtils sharedInstance].appMainWindow.screen.frame;
+- (NSRect)p_fitFrameToContainer:(NSRect)proposedFrame {
+    NSRect containerFrame = [self containerFrame];
     
     if (proposedFrame.origin.y < NSMinY(containerFrame)) {
         proposedFrame.origin.y = NSMinY(containerFrame);
@@ -922,9 +926,9 @@
     return proposedFrame;
 }
 
-- (BOOL)_containerFrameContainsEdge:(NSRectEdge)edge {
-    NSRect frame = [self _popoverFrameForEdge:&edge];
-    NSRect containerFrame = self.staysInApplicationFrame ? [FLOPopoverUtils sharedInstance].appMainWindow.frame : [FLOPopoverUtils sharedInstance].appMainWindow.screen.frame;
+- (BOOL)p_containerFrameContainsEdge:(NSRectEdge)edge {
+    NSRect frame = [self p_popoverFrameForEdge:&edge];
+    NSRect containerFrame = [self containerFrame];
     
     BOOL minYInBounds = (edge == NSRectEdgeMinY) && (NSMinY(frame) >= NSMinY(containerFrame));
     BOOL maxYInBounds = (edge == NSRectEdgeMaxY) && (NSMaxY(frame) <= NSMaxY(containerFrame));
@@ -934,13 +938,13 @@
     return minYInBounds || maxYInBounds || minXInBounds || maxXInBounds;
 }
 
-- (NSRect)_popoverFrame {
+- (NSRect)p_popoverFrame {
     NSRectEdge popoverEdge = self.preferredEdge;
     
-    while (![self _checkPopoverFrameWithEdge:&popoverEdge]) {
-        popoverEdge = [self _containerFrameContainsEdge:self.preferredEdge] ? self.preferredEdge : [self _nextEdgeForEdge:self.preferredEdge];
+    while (![self p_checkPopoverFrameWithEdge:&popoverEdge]) {
+        popoverEdge = [self p_containerFrameContainsEdge:self.preferredEdge] ? self.preferredEdge : [self p_nextEdgeForEdge:self.preferredEdge];
         
-        NSRect frame = [self _fitFrameToContainer:[self _popoverFrameForEdge:&popoverEdge]];
+        NSRect frame = [self p_fitFrameToContainer:[self p_popoverFrameForEdge:&popoverEdge]];
         
         if (self.preferredEdge != popoverEdge) {
             self.preferredEdge = popoverEdge;
@@ -950,7 +954,7 @@
         return frame;
     }
     
-    NSRect frame = [self _popoverFrameForEdge:&popoverEdge];
+    NSRect frame = [self p_popoverFrameForEdge:&popoverEdge];
     
     if (self.preferredEdge != popoverEdge) {
         self.preferredEdge = popoverEdge;
@@ -960,7 +964,7 @@
     return frame;
 }
 
-- (void)_backgroundViewShouldUpdate:(BOOL)updated {
+- (void)p_backgroundViewShouldUpdate:(BOOL)updated {
     if (updated) {
         NSRectEdge popoverEdge = self.preferredEdge;
         CGSize size = [self.backgroundView sizeForBackgroundViewWithContentSize:self.contentView.frame.size popoverEdge:popoverEdge];

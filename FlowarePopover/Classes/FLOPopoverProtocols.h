@@ -1,22 +1,77 @@
 //
-//  FLOPopoverService.h
+//  FLOPopoverProtocols.h
 //  FlowarePopover
 //
-//  Created by Hung Truong on 8/20/18.
-//  Copyright © 2018 Floware Inc. All rights reserved.
+//  Created by Lam Nguyen on 5/30/19.
+//  Copyright © 2019 Floware Inc. All rights reserved.
 //
+
+#ifndef FLOPopoverProtocols_h
+#define FLOPopoverProtocols_h
 
 #import <Cocoa/Cocoa.h>
 
-@protocol FLOPopoverService <NSObject>
+@protocol FLOPopoverProtocols <NSObject>
 
-@property (nonatomic, copy) void (^willShowBlock)(NSResponder *popover);
-@property (nonatomic, copy) void (^didShowBlock)(NSResponder *popover);
-@property (nonatomic, copy) void (^willCloseBlock)(NSResponder *popover);
-@property (nonatomic, copy) void (^didCloseBlock)(NSResponder *popover);
+@property (nonatomic, assign, readonly) NSRect frame;
+@property (nonatomic, assign, readonly, getter = isShown) BOOL shown;
 
-@property (nonatomic, copy) void (^didMoveBlock)(NSResponder *popover);
-@property (nonatomic, copy) void (^didDetachBlock)(NSResponder *popover);
+/**
+ * The positioning frame that used in displaying function. (only available for given frame displaying).
+ */
+@property (nonatomic, assign, readonly) NSRect initialPositioningFrame;
+
+
+@property (nonatomic, assign) BOOL alwaysOnTop;
+@property (nonatomic, assign) BOOL shouldShowArrow;
+@property (nonatomic, assign) NSSize arrowSize;
+@property (nonatomic, assign) BOOL animated;
+@property (nonatomic, assign) BOOL animatedForwarding;
+@property (nonatomic, assign) CGFloat bottomOffset;
+
+@property (nonatomic, assign) BOOL staysInApplicationFrame;
+@property (nonatomic, assign) BOOL updatesFrameWhileShowing;
+@property (nonatomic, assign) BOOL shouldRegisterSuperviewObservers;
+@property (nonatomic, assign) BOOL shouldChangeSizeWhenApplicationResizes;
+@property (nonatomic, assign) BOOL closesWhenPopoverResignsKey;
+@property (nonatomic, assign) BOOL closesWhenApplicationBecomesInactive;
+@property (nonatomic, assign) BOOL closesWhenApplicationResizes;
+@property (nonatomic, assign) BOOL closesWhenNotBelongToContainerFrame;
+@property (nonatomic, assign) BOOL closesWhenReceivesEvent;
+
+/**
+ * Make the popover movable.
+ */
+@property (nonatomic, assign) BOOL isMovable;
+
+/**
+ * Make the popover detach from its parent window.
+ */
+@property (nonatomic, assign) BOOL isDetachable;
+
+/**
+ * Set tag for the popover.
+ */
+@property (nonatomic, assign) NSInteger tag;
+
+/**
+ * Make transition animation by moving frame of the popover instead of using CALayer.
+ */
+@property (nonatomic, assign) BOOL animatedByMovingFrame;
+
+@property (nonatomic, assign) NSTimeInterval animationDuration;
+
+@property (nonatomic, assign) BOOL needAutoresizingMask;
+
+#pragma mark - Callback utilities
+
+@property (nonatomic, copy) void (^willShowBlock)(id<FLOPopoverProtocols> popover);
+@property (nonatomic, copy) void (^didShowBlock)(id<FLOPopoverProtocols> popover);
+@property (nonatomic, copy) void (^willCloseBlock)(id<FLOPopoverProtocols> popover);
+@property (nonatomic, copy) void (^didCloseBlock)(id<FLOPopoverProtocols> popover);
+
+@property (nonatomic, copy) void (^didMoveBlock)(id<FLOPopoverProtocols> popover);
+@property (nonatomic, copy) void (^didDetachBlock)(id<FLOPopoverProtocols> popover);
 
 #pragma mark - Initialize
 
@@ -55,6 +110,7 @@
  */
 - (void)setPopoverContentViewSize:(NSSize)newSize;
 - (void)setPopoverPositioningRect:(NSRect)rect;
+- (void)setPopoverPositioningView:(NSView *)positioningView positioningRect:(NSRect)rect;
 - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;
 
 - (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
@@ -90,7 +146,29 @@
 
 - (void)close;
 
-- (IBAction)closePopover:(NSResponder *)sender;
-- (void)closePopover:(NSResponder *)sender completion:(void(^)(void))complete;
+@optional
+/// For FLOWindowPopover only
+///
+@property (nonatomic, assign) BOOL resignsFieldsOnClosing;
+
+/**
+ * Make Popover window become key, order front and also activate the application.
+ * Only available for FLOWindowPopover
+ */
+@property (nonatomic, assign) BOOL makesKeyAndOrderFrontOnDisplaying;
+
+/**
+ * Make the popover become key window. Only apply for FLOWindowPopover type.
+ */
+@property (nonatomic, assign) BOOL canBecomeKey;
+
+/**
+ * Set level for popover. Only used for FLOWindowPopover type.
+ *
+ * @param level the level of window popover.
+ */
+- (void)setPopoverLevel:(NSWindowLevel)level;
 
 @end
+
+#endif /* FLOPopoverProtocols_h */

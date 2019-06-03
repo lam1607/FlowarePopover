@@ -40,7 +40,7 @@ static void CGPathCallback(void *info, const CGPathElement *element) {
         }
         case kCGPathElementAddQuadCurveToPoint: {
             NSPoint qp0 = bezierPath.currentPoint, qp1 = points[0], qp2 = points[1], cp1, cp2;
-            CGFloat m = 0.666666666666667;
+            CGFloat m = 0.67;
             cp1.x = (qp0.x + ((qp1.x - qp0.x) * m));
             cp1.y = (qp0.y + ((qp1.y - qp0.y) * m));
             cp2.x = (qp2.x + ((qp1.x - qp2.x) * m));
