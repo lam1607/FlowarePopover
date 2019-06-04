@@ -16,12 +16,12 @@
 
 #pragma mark - Properties
 
-@property (nonatomic, strong, readonly) NSWindow *appMainWindow;
+@property (nonatomic, strong, readonly) NSWindow *mainWindow;
 
 @property (nonatomic, strong, readonly) NSWindow *topWindow;
 @property (nonatomic, strong, readonly) NSView *topView;
 
-@property (nonatomic, assign, readonly) BOOL appMainWindowResized;
+@property (nonatomic, assign, readonly) BOOL mainWindowResized;
 
 @property (nonatomic, strong) NSView *contentView;
 @property (nonatomic, strong) NSViewController *contentViewController;
@@ -56,7 +56,8 @@
 @property (nonatomic, strong) FLOPopoverBackgroundView *backgroundView;
 @property (nonatomic, assign) NSRect positioningFrame;
 @property (nonatomic, strong) NSView *positioningView;
-@property (nonatomic) NSRectEdge preferredEdge;
+@property (nonatomic, assign) NSRectEdge preferredEdge;
+@property (nonatomic, assign) NSRectEdge originalEdge;
 @property (nonatomic, assign) CGSize contentSize;
 @property (nonatomic, assign) CGPoint anchorPoint;
 @property (nonatomic, assign) CGSize originalViewSize;
@@ -68,7 +69,7 @@
 
 - (void)setTopmostWindow:(NSWindow *)topmostWindow;
 - (void)setTopmostView:(NSView *)topmostView;
-- (void)setAppMainWindowResized:(BOOL)appMainWindowResized;
+- (void)setMainWindowResized:(BOOL)mainWindowResized;
 
 #pragma mark - Utilities
 

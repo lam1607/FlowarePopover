@@ -445,7 +445,7 @@
         //        _popoverComics.animatedForwarding = YES;
         //        _popoverComics.animatedByMovingFrame = YES;
         _popoverComics.shouldChangeSizeWhenApplicationResizes = YES;
-        _popoverComics.closesWhenPopoverResignsKey = YES;
+        //        _popoverComics.closesWhenPopoverResignsKey = YES;
         //        _popoverComics.closesWhenApplicationBecomesInactive = YES;
         _popoverComics.isMovable = YES;
         //        _popoverComics.isDetachable = YES;
@@ -485,10 +485,11 @@
         _popoverComics.shouldShowArrow = YES;
         _popoverComics.animated = YES;
         _popoverComics.shouldChangeSizeWhenApplicationResizes = NO;
-        _popoverComics.closesWhenPopoverResignsKey = YES;
+        //        _popoverComics.closesWhenPopoverResignsKey = YES;
         //        _popoverComics.closesWhenApplicationBecomesInactive = YES;
         _popoverComics.isMovable = YES;
         _popoverComics.isDetachable = YES;
+        //        _popoverComics.staysInApplicationFrame = YES;
         
         _popoverComics.tag = WindowLevelGroupTagUtility;
         
@@ -575,7 +576,7 @@
 
 - (void)viewShouldOpenComicsView
 {
-    [self showComicsPopupAtView:self.btnOpenComics option:1];
+    [self showComicsPopupAtView:self.btnOpenComics option:0];
 }
 
 - (void)viewShouldShowSecondBar

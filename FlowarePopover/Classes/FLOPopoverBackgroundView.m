@@ -219,7 +219,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 #pragma mark - Getter/Setter
 
 - (void)setArrowSize:(CGSize)arrowSize {
-    if (NSEqualSizes(arrowSize, self.arrowSize) && (NSEqualSizes(self.arrowSize, NSZeroSize) == NO)) return;
+    if (NSEqualSizes(arrowSize, self.arrowSize) && !NSEqualSizes(self.arrowSize, NSZeroSize)) return;
     
     _arrowSize = arrowSize;
     
@@ -263,7 +263,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 }
 
 - (void)updateClippingView {
-    if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
+    if (!NSEqualSizes(self.arrowSize, NSZeroSize)) {
         CGPathRef clippingPath = [self clippingPathForEdge:self.popoverEdge frame:self.clippingView.bounds];
         self.clippingView.clippingPath = clippingPath;
         CGPathRelease(clippingPath);
@@ -293,7 +293,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 
 - (void)showArrow:(BOOL)needed {
     @try {
-        if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
+        if (!NSEqualSizes(self.arrowSize, NSZeroSize)) {
             self.needsDisplay = YES;
         } else {
             [self.clippingView clearClippingPath];
@@ -313,7 +313,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 }
 
 - (void)setArrowColor:(CGColorRef)color {
-    if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
+    if (!NSEqualSizes(self.arrowSize, NSZeroSize)) {
         [self.clippingView setClippingPathColor:color];
     }
 }
@@ -344,7 +344,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 - (NSSize)sizeForBackgroundViewWithContentSize:(NSSize)contentSize popoverEdge:(NSRectEdge)popoverEdge {
     NSSize returnSize = contentSize;
     
-    if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
+    if (!NSEqualSizes(self.arrowSize, NSZeroSize)) {
         if (popoverEdge == NSRectEdgeMaxX || popoverEdge == NSRectEdgeMinX) {
             returnSize.width += self.arrowSize.height;
         } else {
@@ -358,7 +358,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 - (NSSize)contentViewSizeForSize:(NSSize)size {
     NSSize returnSize = size;
     
-    if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
+    if (!NSEqualSizes(self.arrowSize, NSZeroSize)) {
         if ((self.popoverEdge == NSRectEdgeMinX) || (self.popoverEdge == NSRectEdgeMaxX)) {
             returnSize.width -= self.arrowSize.height;
         } else {
@@ -372,7 +372,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 - (NSRect)contentViewFrameForBackgroundFrame:(NSRect)backgroundFrame popoverEdge:(NSRectEdge)popoverEdge {
     NSRect returnFrame = NSInsetRect(backgroundFrame, 0.0, 0.0);
     
-    if (NSEqualSizes(self.arrowSize, NSZeroSize) == NO) {
+    if (!NSEqualSizes(self.arrowSize, NSZeroSize)) {
         switch (popoverEdge) {
             case NSRectEdgeMinX:
                 returnFrame.size.width -= self.arrowSize.height;
@@ -406,7 +406,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
     CGFloat minY = NSMinY(contentRect);
     CGFloat maxY = NSMaxY(contentRect);
     
-    NSWindow *window = (self.window != nil) ? self.window : [[FLOPopoverUtils sharedInstance] appMainWindow];
+    NSWindow *window = (self.window != nil) ? self.window : [[FLOPopoverUtils sharedInstance] mainWindow];
     NSRect windowRect = [window convertRectFromScreen:self.popoverOrigin];
     NSRect originRect = [self convertRect:windowRect fromView:nil];
     CGFloat midOriginX = floor(getMedianXFromRects(originRect, contentRect));

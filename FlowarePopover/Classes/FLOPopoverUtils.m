@@ -12,21 +12,21 @@
 
 @interface FLOPopoverUtils () <NSWindowDelegate>
 
-@property (nonatomic, strong, readwrite) NSWindow *appMainWindow;
+@property (nonatomic, strong, readwrite) NSWindow *mainWindow;
 
 @property (nonatomic, strong, readwrite) NSWindow *topWindow;
 @property (nonatomic, strong, readwrite) NSView *topView;
 
-@property (nonatomic, assign, readwrite) BOOL appMainWindowResized;
+@property (nonatomic, assign, readwrite) BOOL mainWindowResized;
 
 @end
 
 @implementation FLOPopoverUtils
 
-@synthesize appMainWindow = _appMainWindow;
+@synthesize mainWindow = _mainWindow;
 @synthesize topWindow = _topWindow;
 @synthesize topView = _topView;
-@synthesize appMainWindowResized = _appMainWindowResized;
+@synthesize mainWindowResized = _mainWindowResized;
 @synthesize presentedWindow = _presentedWindow;
 
 #pragma mark - Singleton
@@ -47,9 +47,9 @@
 - (instancetype)init {
     if (self = [super init]) {
         if ([NSApp mainWindow] != nil) {
-            _appMainWindow = [NSApp mainWindow];
+            _mainWindow = [NSApp mainWindow];
         } else {
-            _appMainWindow = [[[NSApplication sharedApplication] windows] firstObject];
+            _mainWindow = [[[NSApplication sharedApplication] windows] firstObject];
         }
         
         _popoverStyle = FLOPopoverStyleNormal;
@@ -68,14 +68,14 @@
         _anchorPoint = NSMakePoint(0.0, 0.0);
         _containerBoundsChangedByNotification = NO;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidResize:) name:NSWindowDidResizeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventObserver_windowDidResize:) name:NSWindowDidResizeNotification object:nil];
     }
     
     return self;
 }
 
 - (void)dealloc {
-    _appMainWindow = nil;
+    _mainWindow = nil;
     
     self.contentViewController = nil;
     
@@ -100,8 +100,8 @@
 
 #pragma mark - Getter/Setter
 
-- (NSWindow *)appMainWindow {
-    return _appMainWindow;
+- (NSWindow *)mainWindow {
+    return _mainWindow;
 }
 
 - (NSWindow *)topWindow {
@@ -112,8 +112,8 @@
     return _topView;
 }
 
-- (BOOL)appMainWindowResized {
-    return _appMainWindowResized;
+- (BOOL)mainWindowResized {
+    return _mainWindowResized;
 }
 
 - (void)setTopmostWindow:(NSWindow *)topmostWindow {
@@ -124,8 +124,8 @@
     [FLOPopoverUtils sharedInstance].topView = topmostView;
 }
 
-- (void)setAppMainWindowResized:(BOOL)appMainWindowResized {
-    _appMainWindowResized = appMainWindowResized;
+- (void)setMainWindowResized:(BOOL)mainWindowResized {
+    _mainWindowResized = mainWindowResized;
 }
 
 - (void)setPresentedWindow:(NSWindow *)presentedWindow {
@@ -139,11 +139,13 @@
 #pragma mark - Local methods
 
 - (NSRect)containerFrame {
-    return (self.staysInApplicationFrame ? [FLOPopoverUtils sharedInstance].appMainWindow.frame : [FLOPopoverUtils sharedInstance].appMainWindow.screen.frame);
+    NSWindow *appWindow = [FLOPopoverUtils sharedInstance].mainWindow;
+    
+    return (self.staysInApplicationFrame ? appWindow.frame : appWindow.screen.frame);
 }
 
-- (void)windowDidEndResize {
-    _appMainWindowResized = NO;
+- (void)mainWindowDidEndResize {
+    _mainWindowResized = NO;
 }
 
 #pragma mark - Utilities
@@ -488,6 +490,8 @@
             self.anchorPoint = NSMakePoint(1.0, 1.0);
             break;
     }
+    
+    self.originalEdge = self.preferredEdge;
 }
 
 - (NSDictionary *)relativePositionValuesForView:(NSView *)view rect:(NSRect)rect {
@@ -883,10 +887,12 @@
 - (NSRect)popoverFrame {
     NSRectEdge popoverEdge = self.preferredEdge;
     
-    while (![self checkPopoverFrameWithEdge:popoverEdge]) {
-        popoverEdge = [self containerFrameContainsEdge:self.preferredEdge] ? self.preferredEdge : [self nextEdgeForEdge:self.preferredEdge];
-        
-        return [self fitFrameToContainer:[self popoverFrameForEdge:popoverEdge]];
+    if (self.staysInApplicationFrame || !NSEqualSizes(self.backgroundView.arrowSize, NSZeroSize)) {
+        while (![self checkPopoverFrameWithEdge:popoverEdge]) {
+            popoverEdge = [self containerFrameContainsEdge:self.preferredEdge] ? self.preferredEdge : [self nextEdgeForEdge:self.preferredEdge];
+            
+            return [self fitFrameToContainer:[self popoverFrameForEdge:popoverEdge]];
+        }
     }
     
     return [self popoverFrameForEdge:popoverEdge];
@@ -1030,17 +1036,27 @@
 - (NSRect)p_popoverFrame {
     NSRectEdge popoverEdge = self.preferredEdge;
     
-    while (![self p_checkPopoverFrameWithEdge:&popoverEdge]) {
-        popoverEdge = [self p_containerFrameContainsEdge:self.preferredEdge] ? self.preferredEdge : [self p_nextEdgeForEdge:self.preferredEdge];
-        
-        NSRect frame = [self p_fitFrameToContainer:[self p_popoverFrameForEdge:&popoverEdge]];
-        
-        if (self.preferredEdge != popoverEdge) {
-            self.preferredEdge = popoverEdge;
-            self.originalViewSize = frame.size;
+    if (self.staysInApplicationFrame || !NSEqualSizes(self.backgroundView.arrowSize, NSZeroSize)) {
+        while (![self p_checkPopoverFrameWithEdge:&popoverEdge]) {
+            popoverEdge = [self p_containerFrameContainsEdge:self.preferredEdge] ? self.preferredEdge : [self p_nextEdgeForEdge:self.preferredEdge];
+            
+            NSRect frame = [self p_fitFrameToContainer:[self p_popoverFrameForEdge:&popoverEdge]];
+            
+            if (self.preferredEdge != popoverEdge) {
+                self.preferredEdge = popoverEdge;
+                self.originalViewSize = frame.size;
+            }
+            
+            return frame;
         }
         
-        return frame;
+        NSRectEdge originalEdge = self.originalEdge;
+        
+        if ((self.preferredEdge != self.originalEdge) && [self p_checkPopoverFrameWithEdge:&originalEdge]) {
+            self.preferredEdge = self.originalEdge;
+            
+            return [self p_popoverFrame];
+        }
     }
     
     NSRect frame = [self p_popoverFrameForEdge:&popoverEdge];
@@ -1067,15 +1083,15 @@
     }
 }
 
-#pragma mark - NSWindowDelegate
+#pragma mark - Event handling
 
-- (void)windowDidResize:(NSNotification *)notification {
+- (void)eventObserver_windowDidResize:(NSNotification *)notification {
     if ([notification.name isEqualToString:NSWindowDidResizeNotification] && [notification.object isKindOfClass:[NSWindow class]]) {
         NSWindow *resizedWindow = (NSWindow *)notification.object;
         
-        if (resizedWindow == self.appMainWindow) {
-            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(windowDidEndResize) object:nil];
-            [self performSelector:@selector(windowDidEndResize) withObject:nil afterDelay:0.5];
+        if (resizedWindow == self.mainWindow) {
+            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(mainWindowDidEndResize) object:nil];
+            [self performSelector:@selector(mainWindowDidEndResize) withObject:nil afterDelay:0.5];
         }
     }
 }

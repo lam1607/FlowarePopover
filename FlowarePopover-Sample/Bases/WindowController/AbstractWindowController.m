@@ -112,7 +112,8 @@ static AbstractWindowController *_sharedInstance = nil;
     NSRect viewFrame = NSMakeRect(x, y, width, height);
     
     [self.window setFrame:viewFrame display:YES];
-    [self.window setMinSize:NSMakeSize(0.7 * visibleFrame.size.width, 0.8 * visibleFrame.size.height)];
+    //    [self.window setMinSize:NSMakeSize(0.7 * visibleFrame.size.width, 0.8 * visibleFrame.size.height)];
+    [self.window setMinSize:NSMakeSize(0.45 * visibleFrame.size.width, 0.45 * visibleFrame.size.height)];
 }
 
 #pragma mark - Local methods

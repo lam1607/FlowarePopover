@@ -178,6 +178,14 @@
     }
 }
 
+- (void)setArrowSize:(NSSize)arrowSize {
+    if (self.shouldShowArrow) {
+        _arrowSize = arrowSize;
+    } else {
+        _arrowSize = NSZeroSize;
+    }
+}
+
 - (void)setStaysInApplicationFrame:(BOOL)staysInApplicationFrame {
     _staysInApplicationFrame = staysInApplicationFrame;
     
@@ -200,13 +208,13 @@
 
 - (void)setTopMostWindowIfNecessary {
     NSWindow *topWindow = [FLOPopoverUtils sharedInstance].topWindow;
-    NSArray *windowStack = self.utils.appMainWindow.childWindows;
+    NSArray *windowStack = self.utils.mainWindow.childWindows;
     
     if ((topWindow != nil) && [windowStack containsObject:topWindow]) {
         NSWindowLevel topWindowLevel = topWindow.level;
         
-        [self.utils.appMainWindow removeChildWindow:topWindow];
-        [self.utils.appMainWindow addChildWindow:topWindow ordered:NSWindowAbove];
+        [self.utils.mainWindow removeChildWindow:topWindow];
+        [self.utils.mainWindow addChildWindow:topWindow ordered:NSWindowAbove];
         topWindow.level = topWindowLevel;
     }
 }
@@ -298,8 +306,8 @@
             return;
         }
         
-        if (!NSEqualRects(containerFrame, self.utils.appMainWindow.frame)) {
-            CGFloat width = self.utils.appMainWindow.frame.size.width - (containerFrame.origin.x - self.utils.appMainWindow.frame.origin.x);
+        if (!NSEqualRects(containerFrame, self.utils.mainWindow.frame)) {
+            CGFloat width = self.utils.mainWindow.frame.size.width - (containerFrame.origin.x - self.utils.mainWindow.frame.origin.x);
             
             containerFrame = NSMakeRect(containerFrame.origin.x, containerFrame.origin.y, (width > containerFrame.size.width) ? width : containerFrame.size.width, containerFrame.size.height);
         }
@@ -620,7 +628,9 @@
     self.utils.backgroundView.frame = (NSRect){ .size = self.utils.contentView.frame.size };
     
     if (self.popoverWindow == nil) {
-        self.popoverWindow = [[FLOPopoverWindow alloc] initWithContentRect:self.utils.presentedWindow.frame styleMask:NSWindowStyleMaskBorderless backing:NSBackingStoreBuffered defer:YES];
+        NSRect frame = [self.utils.presentedWindow contentRectForFrameRect:self.utils.presentedWindow.frame];
+        
+        self.popoverWindow = [[FLOPopoverWindow alloc] initWithContentRect:frame styleMask:NSWindowStyleMaskBorderless backing:NSBackingStoreBuffered defer:YES];
         self.popoverWindow.hasShadow = NO;
         self.popoverWindow.releasedWhenClosed = NO;
         self.popoverWindow.opaque = NO;
@@ -671,6 +681,8 @@
         if (self.utils.shouldShowArrowWithVisualEffect) {
             [self.utils.backgroundView showArrowWithVisualEffect:self.utils.shouldShowArrowWithVisualEffect material:self.utils.arrowVisualEffectMaterial blendingMode:self.utils.arrowVisualEffectBlendingMode state:self.utils.arrowVisualEffectState];
         }
+    } else {
+        self.arrowSize = NSZeroSize;
     }
     
     if (self.isMovable || self.isDetachable) {
@@ -702,9 +714,9 @@
     
     [self.popoverWindow setFrame:popoverFrame display:NO];
     
-    popoverFrame = [self.utils.appMainWindow convertRectFromScreen:popoverFrame];
+    popoverFrame = [self.utils.mainWindow convertRectFromScreen:popoverFrame];
     
-    self.utils.verticalMarginOutOfPopover = self.utils.appMainWindow.contentView.visibleRect.size.height + self.bottomOffset - NSMaxY(popoverFrame);
+    self.utils.verticalMarginOutOfPopover = self.utils.mainWindow.contentView.visibleRect.size.height + self.bottomOffset - NSMaxY(popoverFrame);
     self.utils.positioningWindowFrame = [self.utils.positioningView convertRect:self.utils.positioningView.bounds toView:self.utils.presentedWindow.contentView];
     
     if (needed) {
@@ -1011,8 +1023,8 @@
         transitionAnimation.toValue = [NSValue valueWithPoint:endPosition];
     }
     
-    if (!self.utils.popoverMoved && self.utils.animatedInAppFrame && !NSContainsRect(self.utils.appMainWindow.frame, transitionFrame)) {
-        NSRect intersectionFrame = NSIntersectionRect(self.utils.appMainWindow.frame, transitionFrame);
+    if (!self.utils.popoverMoved && self.utils.animatedInAppFrame && !NSContainsRect(self.utils.mainWindow.frame, transitionFrame)) {
+        NSRect intersectionFrame = NSIntersectionRect(self.utils.mainWindow.frame, transitionFrame);
         [self.popoverWindow setFrame:intersectionFrame display:YES];
         [self.snapshotView setFrame:NSMakeRect(transitionFrame.origin.x - intersectionFrame.origin.x, transitionFrame.origin.y - intersectionFrame.origin.y, transitionFrame.size.width, transitionFrame.size.height)];
     }
@@ -1065,8 +1077,8 @@
         
         [self.popoverWindow setFrame:transitionFrame display:YES];
         
-        if (!self.utils.popoverMoved && self.utils.animatedInAppFrame && !NSContainsRect(self.utils.appMainWindow.frame, transitionFrame)) {
-            NSRect intersectionFrame = NSIntersectionRect(self.utils.appMainWindow.frame, transitionFrame);
+        if (!self.utils.popoverMoved && self.utils.animatedInAppFrame && !NSContainsRect(self.utils.mainWindow.frame, transitionFrame)) {
+            NSRect intersectionFrame = NSIntersectionRect(self.utils.mainWindow.frame, transitionFrame);
             [self.popoverWindow setFrame:intersectionFrame display:YES];
         }
         
@@ -1253,7 +1265,7 @@
     }
     
     if (self.closesWhenApplicationResizes) {
-        [self.utils.appMainWindow.contentView addObserver:self forKeyPath:@"frame"
+        [self.utils.mainWindow.contentView addObserver:self forKeyPath:@"frame"
                                                   options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
                                                   context:NULL];
     }
@@ -1280,7 +1292,7 @@
     }
     
     if (self.closesWhenApplicationResizes) {
-        [self.utils.appMainWindow.contentView removeObserver:self forKeyPath:@"frame"];
+        [self.utils.mainWindow.contentView removeObserver:self forKeyPath:@"frame"];
     }
 }
 
@@ -1325,13 +1337,13 @@
         }
     }
     
-    if ([self.utils appMainWindowResized]) return;
+    if ([self.utils mainWindowResized]) return;
     
     if ([keyPath isEqualToString:@"frame"] && [object isKindOfClass:[NSView class]]) {
         NSView *view = (NSView *)object;
         
-        if (view == self.utils.appMainWindow.contentView) {
-            [self.utils setAppMainWindowResized:YES];
+        if (view == self.utils.mainWindow.contentView) {
+            [self.utils setMainWindowResized:YES];
             
             if (self.closesWhenPopoverResignsKey || self.closesWhenApplicationResizes) {
                 [self closePopover:nil];
@@ -1347,7 +1359,7 @@
             }
             
             if (!self.popoverShowing && !self.popoverClosing && [self.utils.positioningAnchorView isDescendantOf:view] && !self.utils.containerBoundsChangedByNotification) {
-                [self updatePopoverFrameForContainerFrame:self.utils.appMainWindow.frame];
+                [self updatePopoverFrameForContainerFrame:self.utils.mainWindow.frame];
             }
         }
     }
@@ -1378,10 +1390,13 @@
 - (void)eventObserver_windowDidResize:(NSNotification *)notification {
     if (!self.popoverShowing && !self.popoverClosing && [notification.name isEqualToString:NSWindowDidResizeNotification]) {
         if ((self.utils.popoverStyle == FLOPopoverStyleAlert) && (notification.object == self.utils.presentedWindow)) {
-            [self.popoverWindow setFrame:self.utils.presentedWindow.frame display:YES];
-        } else if ((notification.object == self.utils.appMainWindow) && !self.closesWhenApplicationResizes) {
+            NSRect frame = [self.utils.presentedWindow contentRectForFrameRect:self.utils.presentedWindow.frame];
+            
+            [self.popoverWindow setFrame:frame display:YES];
+        } else if ((notification.object == self.utils.mainWindow) && !self.closesWhenApplicationResizes) {
             NSWindow *resizedWindow = (NSWindow *)notification.object;
-            NSRect popoverFrame = (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) ? [self.utils p_popoverFrame] : [self.utils popoverFrameForEdge:self.utils.preferredEdge];
+            
+            NSRect popoverFrame = (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) ? [self.utils p_popoverFrame] : [self.utils popoverFrame];
             CGFloat popoverOriginX = popoverFrame.origin.x;
             CGFloat popoverOriginY = popoverFrame.origin.y;
             
@@ -1465,18 +1480,18 @@
         [self.utils.presentedWindow removeChildWindow:self.popoverWindow];
         
         NSView *contentView = self.utils.contentView;
-        NSRect windowFrame = NSMakeRect(self.popoverWindow.frame.origin.x, self.popoverWindow.frame.origin.y, contentView.frame.size.width, contentView.frame.size.height);
+        NSRect frame = [self.popoverWindow contentRectForFrameRect:self.popoverWindow.frame];
         NSUInteger styleMask = NSWindowStyleMaskTitled + NSWindowStyleMaskClosable;
+        NSWindow *window = [[NSWindow alloc] initWithContentRect:frame styleMask:styleMask backing:NSBackingStoreBuffered defer:YES];
         
-        NSWindow *temp = [[NSWindow alloc] initWithContentRect:windowFrame styleMask:styleMask backing:NSBackingStoreBuffered defer:YES];
-        NSRect detachableFrame = [temp frameRectForContentRect:windowFrame];
+        frame = [window frameRectForContentRect:frame];
         
         [self.popoverWindow.contentView addSubview:contentView];
         [self.popoverWindow setStyleMask:styleMask];
-        [self.popoverWindow setFrame:detachableFrame display:YES];
+        [self.popoverWindow setFrame:frame display:YES];
         [self.popoverWindow makeKeyAndOrderFront:nil];
         
-        [contentView setFrame:NSMakeRect(0.0, 0.0, contentView.frame.size.width, contentView.frame.size.height)];
+        [contentView setFrameSize:contentView.frame.size];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetContentViewFrame:) name:NSWindowWillCloseNotification object:targetWindow];
     }
