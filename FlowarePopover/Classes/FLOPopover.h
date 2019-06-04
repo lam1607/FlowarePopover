@@ -241,6 +241,13 @@
  */
 - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect sender:(NSView *)sender relativePositionType:(FLOPopoverRelativePositionType)relativePositionType;
 
+/**
+ * Display popover as system alert style for presented window.
+ *
+ * @param presentedWindow the target window that the popover will be alerted on.
+ */
+- (void)showWithAlertStyleForWindow:(NSWindow *)presentedWindow;
+
 - (void)close;
 
 @end

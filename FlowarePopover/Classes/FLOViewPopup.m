@@ -13,11 +13,11 @@
 #import "FLOExtensionsGraphicsContext.h"
 #import "FLOExtensionsNSView.h"
 
-#import "FLOPopover.h"
-
 #import "FLOPopoverBackgroundView.h"
 
 #import "FLOPopoverUtils.h"
+#import "FLOPopover.h"
+
 
 @interface FLOViewPopup () <FLOPopoverBackgroundViewDelegate, NSAnimationDelegate, CAAnimationDelegate>
 
@@ -227,7 +227,7 @@
         [view setPostsBoundsChangedNotifications:YES];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(clipViewBoundsDidChangeNotification:)
+                                                 selector:@selector(eventObserver_viewBoundsDidChange:)
                                                      name:NSViewBoundsDidChangeNotification
                                                    object:view];
     } else {
@@ -236,31 +236,46 @@
     }
 }
 
+- (BOOL)popoverShouldCloseByCheckingView:(NSView *)changedView {
+    if (![changedView.window isVisible]) {
+        return YES;
+    }
+    
+    if ([self.utils.anchorSuperviews containsObject:changedView]) {
+        if ((changedView != self.utils.positioningAnchorView) && ![self.utils.positioningAnchorView isDescendantOf:changedView]) {
+            return YES;
+        }
+        
+        NSInteger index = [self.utils.anchorSuperviews indexOfObject:changedView];
+        
+        if (index < (self.utils.anchorSuperviews.count - 1)) {
+            NSView *anchorSuperview = [self.utils.anchorSuperviews objectAtIndex:(index + 1)];
+            NSView *changingSuperview = [changedView superview];
+            
+            if (anchorSuperview != changingSuperview) {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
 - (void)updatePopoverFrame {
     if ([self isShown]) {
-        if (self.updatesFrameWhileShowing || ((self.popoverShowing == NO) && (self.popoverClosing == NO))) {
+        if (self.updatesFrameWhileShowing || (!self.popoverShowing && !self.popoverClosing)) {
             [self displayWithAnimationProcess:NO];
         } else {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                while (true) {
-                    if ((self.popoverShowing == NO) && (self.popoverClosing == NO)) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self displayWithAnimationProcess:NO];
-                        });
-                        
-                        break;
-                    }
-                }
-            });
+            [self performSelector:@selector(updatePopoverFrame) withObject:nil afterDelay:0.1];
         }
     }
 }
 
 - (void)updatePopoverFrameForContainerFrame:(NSRect)containerFrame {
-    NSRect positionWindowFrame = [self.utils.positioningView convertRect:self.utils.positioningView.bounds toView:self.utils.positioningView.window.contentView];
+    NSRect positionWindowFrame = [self.utils.positioningView convertRect:self.utils.positioningView.bounds toView:self.utils.presentedWindow.contentView];
     
-    if (NSEqualPoints(self.utils.positioningWindowFrame.origin, positionWindowFrame.origin) == NO) {
-        NSRect positionScreenFrame = [self.utils.positioningView.window convertRectToScreen:positionWindowFrame];
+    if (!NSEqualPoints(self.utils.positioningWindowFrame.origin, positionWindowFrame.origin)) {
+        NSRect positionScreenFrame = [self.utils.presentedWindow convertRectToScreen:positionWindowFrame];
         
         positionScreenFrame = NSMakeRect(positionScreenFrame.origin.x, positionScreenFrame.origin.y, 1.0, 1.0);
         
@@ -268,9 +283,9 @@
         
         popoverFrame = (NSRect){ .origin = popoverFrame.origin, .size = self.popoverView.frame.size };
         
-        if (NSContainsRect(containerFrame, positionScreenFrame) == NO) {
+        if (!NSContainsRect(containerFrame, positionScreenFrame)) {
             // If the positioningView (the sender where arrow is displayed at) move out of containerFrame, we should hide the arrow of popover.
-            if (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView) && (NSEqualSizes(self.arrowSize, NSZeroSize) == NO)) {
+            if (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView) && !NSEqualSizes(self.arrowSize, NSZeroSize)) {
                 self.utils.backgroundView.arrowSize = NSZeroSize;
                 [self.utils.backgroundView showArrow:NO];
             }
@@ -278,15 +293,15 @@
             return;
         }
         
-        if (NSEqualRects(containerFrame, self.utils.appMainWindow.frame) == NO) {
+        if (!NSEqualRects(containerFrame, self.utils.appMainWindow.frame)) {
             containerFrame = NSMakeRect(containerFrame.origin.x, containerFrame.origin.y, self.utils.appMainWindow.frame.size.width - (containerFrame.origin.x - self.utils.appMainWindow.frame.origin.x), containerFrame.size.height);
         }
         
         // If the positioningView (the sender where arrow is displayed at) move inside of containerFrame, we should show the arrow of popover.
         // And also update the arrow position respectively to the new popoverOrigin
-        if (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView) && (NSEqualSizes(self.arrowSize, NSZeroSize) == NO)) {
+        if (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView) && !NSEqualSizes(self.arrowSize, NSZeroSize)) {
             NSRect windowRelativeFrame = [self.utils.positioningAnchorView convertRect:[self.utils.positioningAnchorView alignmentRectForFrame:self.utils.positioningFrame] toView:nil];
-            NSRect positionScreenFrame = [self.utils.positioningAnchorView.window convertRectToScreen:windowRelativeFrame];
+            NSRect positionScreenFrame = [self.utils.presentedWindow convertRectToScreen:windowRelativeFrame];
             
             self.utils.backgroundView.popoverOrigin = positionScreenFrame;
             self.utils.backgroundView.arrowSize = self.arrowSize;
@@ -294,7 +309,7 @@
             [self.utils.backgroundView showArrow:YES];
         }
         
-        if (NSContainsRect(containerFrame, popoverFrame) == NO) {
+        if (!NSContainsRect(containerFrame, popoverFrame)) {
             if (self.closesWhenNotBelongToContainerFrame) {
                 [self close];
             }
@@ -302,12 +317,12 @@
             return;
         }
         
-        popoverFrame = [self.utils.positioningAnchorView.window convertRectFromScreen:popoverFrame];
+        popoverFrame = [self.utils.presentedWindow convertRectFromScreen:popoverFrame];
         popoverFrame = (NSRect){ .origin = popoverFrame.origin, .size = self.popoverView.frame.size };
         
         [self.popoverView setFrame:popoverFrame];
         
-        self.utils.positioningWindowFrame = [self.utils.positioningView convertRect:self.utils.positioningView.bounds toView:self.utils.positioningView.window.contentView];
+        self.utils.positioningWindowFrame = [self.utils.positioningView convertRect:self.utils.positioningView.bounds toView:self.utils.presentedWindow.contentView];
     }
 }
 
@@ -343,9 +358,9 @@
  * @param contentView the new content view needs displayed on the popover.
  */
 - (void)setPopoverContentView:(NSView *)contentView {
-    if ([contentView isKindOfClass:[NSView class]] == NO) return;
+    if (![contentView isKindOfClass:[NSView class]]) return;
     
-    if ([self isShown] && (self.popoverShowing == NO) && (self.popoverClosing == NO)) {
+    if ([self isShown] && !self.popoverShowing && !self.popoverClosing) {
         if ([self.utils.contentView isDescendantOf:self.utils.backgroundView]) {
             [self.utils.contentView removeFromSuperview];
         }
@@ -356,18 +371,18 @@
         
         [self.utils.backgroundView addSubview:self.utils.contentView positioned:NSWindowAbove relativeTo:nil];
         
-        if ([self.utils.backgroundView isDescendantOf:self.utils.positioningAnchorView.window.contentView]) {
+        if ([self.utils.backgroundView isDescendantOf:self.utils.presentedWindow.contentView]) {
             [self.utils.backgroundView removeFromSuperview];
         }
         
-        [self.utils.positioningAnchorView.window.contentView addSubview:self.utils.backgroundView positioned:NSWindowAbove relativeTo:self.utils.positioningAnchorView];
+        [self.utils.presentedWindow.contentView addSubview:self.utils.backgroundView positioned:NSWindowAbove relativeTo:self.utils.positioningAnchorView];
     }
 }
 
 - (void)setPopoverContentViewController:(NSViewController *)contentViewController {
-    if ([contentViewController isKindOfClass:[NSViewController class]] == NO) return;
+    if (![contentViewController isKindOfClass:[NSViewController class]]) return;
     
-    if ([self isShown] && (self.popoverShowing == NO) && (self.popoverClosing == NO)) {
+    if ([self isShown] && !self.popoverShowing && !self.popoverClosing) {
         if ([self.utils.contentView isDescendantOf:self.utils.backgroundView]) {
             [self.utils.contentView removeFromSuperview];
         }
@@ -379,11 +394,11 @@
         
         [self.utils.backgroundView addSubview:self.utils.contentView positioned:NSWindowAbove relativeTo:nil];
         
-        if ([self.utils.backgroundView isDescendantOf:self.utils.positioningAnchorView.window.contentView]) {
+        if ([self.utils.backgroundView isDescendantOf:self.utils.presentedWindow.contentView]) {
             [self.utils.backgroundView removeFromSuperview];
         }
         
-        [self.utils.positioningAnchorView.window.contentView addSubview:self.utils.backgroundView positioned:NSWindowAbove relativeTo:self.utils.positioningAnchorView];
+        [self.utils.presentedWindow.contentView addSubview:self.utils.backgroundView positioned:NSWindowAbove relativeTo:self.utils.positioningAnchorView];
     }
 }
 
@@ -395,7 +410,7 @@
 - (void)setPopoverContentViewSize:(NSSize)newSize {
     if (NSEqualSizes(newSize, self.utils.contentSize)) return;
     
-    if (NSEqualSizes(newSize, NSZeroSize) == NO) {
+    if (!NSEqualSizes(newSize, NSZeroSize)) {
         self.utils.originalViewSize = newSize;
         self.utils.contentSize = newSize;
     }
@@ -404,7 +419,7 @@
 }
 
 - (void)setPopoverPositioningRect:(NSRect)rect {
-    if (NSEqualRects(rect, NSZeroRect) == NO) {
+    if (!NSEqualRects(rect, NSZeroRect)) {
         [self setupPositioningAnchorWithView:self.utils.positioningView positioningRect:rect shouldUpdatePosition:YES];
     }
     
@@ -426,7 +441,7 @@
 }
 
 - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect {
-    if ((NSEqualSizes(newSize, NSZeroSize) == NO) && (NSEqualSizes(newSize, self.utils.contentSize) == NO)) {
+    if (!NSEqualSizes(newSize, NSZeroSize) && !NSEqualSizes(newSize, self.utils.contentSize)) {
         self.utils.originalViewSize = newSize;
         self.utils.contentSize = newSize;
     }
@@ -459,7 +474,7 @@
         return;
     }
     
-    if ((self.popoverShowing == NO) && (self.popoverClosing == NO)) {
+    if (!self.popoverShowing && !self.popoverClosing) {
         self.popoverShowing = YES;
         
         if (willShowBlock) willShowBlock(self);
@@ -501,7 +516,7 @@
         return;
     }
     
-    if ((self.popoverShowing == NO) && (self.popoverClosing == NO)) {
+    if (!self.popoverShowing && !self.popoverClosing) {
         self.popoverShowing = YES;
         self.initialPositioningFrame = rect;
         
@@ -530,22 +545,29 @@
 }
 
 - (void)setupPopover {
+    if (self.utils.popoverStyle == FLOPopoverStyleAlert) {
+        [self setupPopoverStyleAlert];
+    } else {
+        [self setupPopoverStyleNormal];
+    }
+}
+
+- (void)setupPopoverStyleNormal {
     self.utils.backgroundView.frame = NSMakeRect(SHRT_MIN, SHRT_MIN, self.utils.contentView.frame.size.width, self.utils.contentView.frame.size.height);
     
     [self.utils.backgroundView setNeedsDisplay:YES];
     [self.utils.backgroundView displayRect:NSMakeRect(SHRT_MIN, SHRT_MIN, self.utils.contentView.frame.size.width, self.utils.contentView.frame.size.height)];
     
-    if (![self.utils.contentView isDescendantOf:self.utils.backgroundView]) {
-        [self.utils addView:self.utils.contentView toParent:self.utils.backgroundView];
-    }
-    
-    if (![self.utils.backgroundView isDescendantOf:self.utils.positioningAnchorView.window.contentView]) {
-        [self.utils addView:self.utils.backgroundView toParent:self.utils.positioningAnchorView.window.contentView];
-    }
+    [self.utils addView:self.utils.contentView toParent:self.utils.backgroundView autoresizingMask:NO];
+    [self.utils addView:self.utils.backgroundView toParent:self.utils.presentedWindow.contentView autoresizingMask:NO];
     
     [self.utils setupAutoresizingMaskIfNeeded:YES];
     
     self.utils.backgroundView.tag = self.tag;
+}
+
+- (void)setupPopoverStyleAlert {
+    // Currently, DO NOTHING for FLOViewPopover
 }
 
 - (void)displayWithAnimationProcess:(BOOL)needed {
@@ -554,7 +576,7 @@
     }
     
     NSRect windowRelativeFrame = [self.utils.positioningAnchorView convertRect:[self.utils.positioningAnchorView alignmentRectForFrame:self.utils.positioningFrame] toView:nil];
-    NSRect positionScreenFrame = [self.utils.positioningAnchorView.window convertRectToScreen:windowRelativeFrame];
+    NSRect positionScreenFrame = [self.utils.presentedWindow convertRectToScreen:windowRelativeFrame];
     
     self.utils.backgroundView.popoverOrigin = positionScreenFrame;
     self.utils.originalViewSize = NSEqualSizes(self.utils.originalViewSize, NSZeroSize) ? self.utils.contentView.frame.size : self.utils.originalViewSize;
@@ -598,7 +620,7 @@
     }
     
     NSRect popoverFrame = (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) ? [self.utils p_popoverFrame] : [self.utils popoverFrame];
-    popoverFrame = [self.utils.positioningAnchorView.window convertRectFromScreen:popoverFrame];
+    popoverFrame = [self.utils.presentedWindow convertRectFromScreen:popoverFrame];
     
     // Update arrow edge and content view frame
     if (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) {
@@ -614,7 +636,7 @@
     self.popoverView = self.utils.backgroundView;
     
     self.utils.verticalMarginOutOfPopover = self.utils.appMainWindow.contentView.visibleRect.size.height + self.bottomOffset - NSMaxY(popoverFrame);
-    self.utils.positioningWindowFrame = [self.utils.positioningView convertRect:self.utils.positioningView.bounds toView:self.utils.positioningView.window.contentView];
+    self.utils.positioningWindowFrame = [self.utils.positioningView convertRect:self.utils.positioningView.bounds toView:self.utils.presentedWindow.contentView];
     
     if (needed) {
         if (self.alwaysOnTop) {
@@ -629,9 +651,9 @@
 - (void)close {
     if (![self isShown]) return;
     
-    if ([self.popoverView isDescendantOf:self.utils.positioningAnchorView.window.contentView] ||
-        (self.utils.positioningAnchorView.window.contentView == nil) || (self.utils.contentView == self.detachableWindow.contentView)) {
-        if ((self.popoverClosing == NO) && (self.popoverShowing == NO)) {
+    if ([self.popoverView isDescendantOf:self.utils.presentedWindow.contentView] ||
+        (self.utils.presentedWindow.contentView == nil) || (self.utils.contentView == self.detachableWindow.contentView)) {
+        if (!self.popoverClosing && !self.popoverShowing) {
             self.popoverClosing = YES;
             
             if (willCloseBlock) willCloseBlock(self);
@@ -664,20 +686,24 @@
 - (void)popoverDidFinishShowing:(BOOL)showing {
     _shown = showing;
     
-    if (showing == YES) {
+    if (showing) {
         self.popoverView.alphaValue = 1.0;
         
         self.popoverShowing = NO;
         
-        [self.utils setupAutoresizingMaskIfNeeded:YES];
+        if (self.utils.popoverStyle == FLOPopoverStyleNormal) {
+            [self.utils setupAutoresizingMaskIfNeeded:YES];
+        }
         
         if (didShowBlock) didShowBlock(self);
     } else {
-        if ([self.popoverView isDescendantOf:self.utils.positioningAnchorView.window.contentView] ||
-            (self.utils.positioningAnchorView.window.contentView == nil) || (self.utils.contentView == self.detachableWindow.contentView)) {
+        if ([self.popoverView isDescendantOf:self.utils.presentedWindow.contentView] ||
+            (self.utils.presentedWindow.contentView == nil) || (self.utils.contentView == self.detachableWindow.contentView)) {
             [self resetContentViewFrame:nil];
             
             self.appEvent = nil;
+            self.utils.contentView.translatesAutoresizingMaskIntoConstraints = NO;
+            self.utils.backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
             self.utils = nil;
             
             [self.popoverView removeFromSuperview];
@@ -800,7 +826,7 @@
             [[self.snapshotView.layer.sublayers lastObject] removeFromSuperlayer];
         }
         
-        if (showing == NO) {
+        if (!showing) {
             self.snapshotView = nil;
         }
         
@@ -923,7 +949,7 @@
             [[self.snapshotView.layer.sublayers lastObject] removeFromSuperlayer];
         }
         
-        if (showing == NO) {
+        if (!showing) {
             self.snapshotView = nil;
         }
         
@@ -953,19 +979,17 @@
         
         [self.popoverView setFrame:fromFrame];
         
-        void(^animationDidStop)(void) = ^{
-            [self.popoverView setFrame:frame];
-            
-            [self popoverDidStopAnimation];
-        };
-        
         if (showing) {
             [self.popoverView displayAnimatedWillBeginAtPoint:beginPoint endAtPoint:endedPoint handler:^{
-                animationDidStop();
+                [self.popoverView setFrame:frame];
+                
+                [self popoverDidStopAnimation];
             }];
         } else {
             [self.popoverView closeAnimatedWillBeginAtPoint:beginPoint endAtPoint:endedPoint handler:^{
-                animationDidStop();
+                [self.popoverView setFrame:frame];
+                
+                [self popoverDidStopAnimation];
             }];
         }
     }
@@ -1034,25 +1058,21 @@
 
 - (void)registerForApplicationEvents {
     [self registerApplicationEventsMonitor];
-    
-    if (self.closesWhenApplicationBecomesInactive) {
-        [self registerApplicationActiveNotification];
-    }
-    
+    [self registerApplicationActiveNotification];
     [self registerSuperviewObserversForPositioningAnchor];
-    [self registerWindowResizeEvent];
+    [self registerWindowEvents];
 }
 
 - (void)removeAllApplicationEvents {
     [self removeApplicationEventsMonitor];
     [self removeApplicationActiveNotification];
     [self unregisterSuperviewObserversForPositioningAnchor];
-    [self removeWindowResizeEvent];
+    [self removeWindowEvents];
 }
 
 - (void)registerApplicationActiveNotification {
     if (self.closesWhenApplicationBecomesInactive) {
-        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(appResignedActive:) name:NSApplicationDidResignActiveNotification object:NSApp];
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(eventObserver_applicationDidResignActive:) name:NSApplicationDidResignActiveNotification object:NSApp];
     }
 }
 
@@ -1078,22 +1098,22 @@
                             [self closePopoverWhileAnimatingIfNeeded:YES];
                         }
                     } else {
-                        BOOL contained = [self.utils didWindow:self.popoverView.window contain:event.window];
+                        BOOL contained = [self.utils window:self.popoverView.window contains:event.window];
                         
-                        if (contained == NO) {
+                        if (!contained) {
                             [self closePopoverWhileAnimatingIfNeeded:YES];
                         }
                     }
                 }
             } else {
-                NSView *frontView = [self.utils.positioningAnchorView.window.contentView.subviews lastObject];
+                NSView *frontView = [self.utils.presentedWindow.contentView.subviews lastObject];
                 
                 if ((frontView != self.popoverView) && ([clickedView isDescendantOf:self.popoverView] || (clickedView == self.popoverView))) {
-                    if ([self.popoverView isDescendantOf:self.utils.positioningAnchorView.window.contentView]) {
+                    if ([self.popoverView isDescendantOf:self.utils.presentedWindow.contentView]) {
                         [self.popoverView removeFromSuperview];
                         
                         // Bring the popoverView to front when focusing on it.
-                        [self.utils.positioningAnchorView.window.contentView addSubview:self.popoverView positioned:NSWindowAbove relativeTo:self.utils.positioningAnchorView];
+                        [self.utils.presentedWindow.contentView addSubview:self.popoverView positioned:NSWindowAbove relativeTo:self.utils.positioningAnchorView];
                     }
                 }
             }
@@ -1162,12 +1182,14 @@
     }
 }
 
-- (void)registerWindowResizeEvent {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidResize:) name:NSWindowDidResizeNotification object:nil];
+- (void)registerWindowEvents {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventObserver_windowDidResize:) name:NSWindowDidResizeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventObserver_windowWillClose:) name:NSWindowWillCloseNotification object:nil];
 }
 
-- (void)removeWindowResizeEvent {
+- (void)removeWindowEvents {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowDidResizeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillCloseNotification object:nil];
 }
 
 #pragma mark - Utilities
@@ -1186,53 +1208,14 @@
     // code ...
 }
 
-- (BOOL)shouldClosePopoverByCheckingChangedView:(NSView *)changedView {
-    if ([changedView.window isVisible] == NO) {
-        return YES;
-    }
-    
-    if ([self.utils.anchorSuperviews containsObject:changedView]) {
-        if ((changedView != self.utils.positioningAnchorView) && ![self.utils.positioningAnchorView isDescendantOf:changedView]) {
-            return YES;
-        }
-        
-        NSInteger index = [self.utils.anchorSuperviews indexOfObject:changedView];
-        
-        if (index < (self.utils.anchorSuperviews.count - 1)) {
-            NSView *anchorSuperview = [self.utils.anchorSuperviews objectAtIndex:(index + 1)];
-            NSView *changingSuperview = [changedView superview];
-            
-            if (anchorSuperview != changingSuperview) {
-                return YES;
-            }
-        }
-    }
-    
-    return NO;
-}
-
-- (void)clipViewBoundsDidChangeNotification:(NSNotification *)notification {
-    if ([notification.name isEqualToString:NSViewBoundsDidChangeNotification] && [notification.object isKindOfClass:[NSClipView class]] && [self.utils.anchorSuperviews containsObject:notification.object]) {
-        NSClipView *clipView = (NSClipView *)notification.object;
-        NSRect clipViewScreenFrame = [clipView.window convertRectToScreen:[clipView convertRect:clipView.bounds toView:clipView.window.contentView]];
-        
-        if ((self.popoverShowing == NO) && (self.popoverClosing == NO) && [self.utils.positioningAnchorView isDescendantOf:clipView]) {
-            self.utils.containerBoundsChangedByNotification = YES;
-            
-            [self updatePopoverFrameForContainerFrame:clipViewScreenFrame];
-            
-            [NSObject cancelPreviousPerformRequestsWithTarget:self.utils selector:@selector(resetContainerBoundsChangedByNotification) object:nil];
-            [self.utils performSelector:@selector(resetContainerBoundsChangedByNotification) withObject:nil afterDelay:1.0];
-        }
-    }
-}
+#pragma mark - Event handling
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (self.shouldRegisterSuperviewObservers) {
         if ([keyPath isEqualToString:@"superview"] && [object isKindOfClass:[NSView class]]) {
             NSView *view = (NSView *)object;
             
-            if ([self shouldClosePopoverByCheckingChangedView:view]) {
+            if ([self popoverShouldCloseByCheckingView:view]) {
                 [self closePopover:nil];
                 return;
             }
@@ -1255,32 +1238,46 @@
         }
         
         if (self.shouldRegisterSuperviewObservers) {
-            if ([self shouldClosePopoverByCheckingChangedView:view]) {
+            if ([self popoverShouldCloseByCheckingView:view]) {
                 [self closePopover:nil];
                 return;
             }
             
-            if ((self.popoverShowing == NO) && (self.popoverClosing == NO) && [self.utils.positioningAnchorView isDescendantOf:view]) {
-                if (self.utils.containerBoundsChangedByNotification == NO) {
-                    [self updatePopoverFrameForContainerFrame:self.utils.appMainWindow.frame];
-                }
+            if (!self.popoverShowing && !self.popoverClosing && [self.utils.positioningAnchorView isDescendantOf:view] && !self.utils.containerBoundsChangedByNotification) {
+                [self updatePopoverFrameForContainerFrame:self.utils.appMainWindow.frame];
             }
         }
     }
 }
 
-- (void)appResignedActive:(NSNotification *)notification {
+- (void)eventObserver_viewBoundsDidChange:(NSNotification *)notification {
+    if ([notification.name isEqualToString:NSViewBoundsDidChangeNotification] && [notification.object isKindOfClass:[NSClipView class]] && [self.utils.anchorSuperviews containsObject:notification.object]) {
+        NSClipView *clipView = (NSClipView *)notification.object;
+        NSRect clipViewScreenFrame = [clipView.window convertRectToScreen:[clipView convertRect:clipView.bounds toView:clipView.window.contentView]];
+        
+        if (!self.popoverShowing && !self.popoverClosing && [self.utils.positioningAnchorView isDescendantOf:clipView]) {
+            self.utils.containerBoundsChangedByNotification = YES;
+            
+            [self updatePopoverFrameForContainerFrame:clipViewScreenFrame];
+            
+            [NSObject cancelPreviousPerformRequestsWithTarget:self.utils selector:@selector(resetContainerBoundsChangedByNotification) object:nil];
+            [self.utils performSelector:@selector(resetContainerBoundsChangedByNotification) withObject:nil afterDelay:1.0];
+        }
+    }
+}
+
+- (void)eventObserver_applicationDidResignActive:(NSNotification *)notification {
     if ([notification.name isEqualToString:NSApplicationDidResignActiveNotification]) {
         [self close];
     }
 }
 
-- (void)windowDidResize:(NSNotification *)notification {
-    if ((self.popoverShowing == NO) && (self.popoverClosing == NO) && [notification.name isEqualToString:NSWindowDidResizeNotification] && (notification.object == self.utils.appMainWindow)) {
-        if (self.closesWhenApplicationResizes == NO) {
+- (void)eventObserver_windowDidResize:(NSNotification *)notification {
+    if (!self.popoverShowing && !self.popoverClosing && [notification.name isEqualToString:NSWindowDidResizeNotification]) {
+        if ((notification.object == self.utils.appMainWindow) && !self.closesWhenApplicationResizes) {
             NSWindow *resizedWindow = (NSWindow *)notification.object;
             NSRect popoverFrame = (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView)) ? [self.utils p_popoverFrame] : [self.utils popoverFrameForEdge:self.utils.preferredEdge];
-            popoverFrame = [self.utils.positioningAnchorView.window convertRectFromScreen:popoverFrame];
+            popoverFrame = [self.utils.presentedWindow convertRectFromScreen:popoverFrame];
             
             CGFloat popoverOriginX = popoverFrame.origin.x;
             CGFloat popoverOriginY = popoverFrame.origin.y;
@@ -1304,7 +1301,7 @@
             
             [self.popoverView setFrame:popoverFrame];
             
-            if (NSEqualSizes(self.utils.backgroundView.arrowSize, NSZeroSize) == NO) {
+            if (!NSEqualSizes(self.utils.backgroundView.arrowSize, NSZeroSize)) {
                 if ((self.utils.preferredEdge == NSRectEdgeMinY) || (self.utils.preferredEdge == NSRectEdgeMaxY)) {
                     self.utils.contentSize = NSMakeSize(self.popoverView.frame.size.width, self.popoverView.frame.size.height - self.utils.backgroundView.arrowSize.height);
                 } else {
@@ -1319,7 +1316,17 @@
                 self.utils.contentView.frame = contentViewFrame;
             }
             
-            self.utils.positioningWindowFrame = [self.utils.positioningView convertRect:self.utils.positioningView.bounds toView:self.utils.positioningView.window.contentView];
+            self.utils.positioningWindowFrame = [self.utils.positioningView convertRect:self.utils.positioningView.bounds toView:self.utils.presentedWindow.contentView];
+        }
+    }
+}
+
+- (void)eventObserver_windowWillClose:(NSNotification *)notification {
+    if ([notification.name isEqualToString:NSWindowWillCloseNotification] && [notification.object isKindOfClass:[NSWindow class]]) {
+        NSWindow *window = (NSWindow *)notification.object;
+        
+        if ([self.utils view:window.contentView contains:self.popoverView]) {
+            [self closePopoverWhileAnimatingIfNeeded:YES];
         }
     }
 }
@@ -1350,7 +1357,7 @@
         [self.utils.contentView removeFromSuperview];
         
         NSView *contentView = self.utils.contentView;
-        NSRect contentViewFrame = [self.utils.positioningAnchorView.window convertRectToScreen:self.popoverView.frame];
+        NSRect contentViewFrame = [self.utils.presentedWindow convertRectToScreen:self.popoverView.frame];
         NSUInteger styleMask = NSWindowStyleMaskTitled + NSWindowStyleMaskClosable;
         
         self.detachableWindow = [[FLOPopoverWindow alloc] initWithContentRect:contentViewFrame styleMask:styleMask backing:NSBackingStoreBuffered defer:YES];

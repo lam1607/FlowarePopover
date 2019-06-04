@@ -21,6 +21,11 @@ typedef NS_ENUM(NSInteger, FLOPopoverType) {
     FLOViewPopover
 };
 
+typedef NS_ENUM(NSInteger, FLOPopoverStyle) {
+    FLOPopoverStyleNormal,
+    FLOPopoverStyleAlert
+};
+
 // NSLayoutAttributeTop
 // NSLayoutAttributeLeading
 // NSLayoutAttributeBottom

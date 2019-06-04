@@ -27,6 +27,7 @@
 @synthesize topWindow = _topWindow;
 @synthesize topView = _topView;
 @synthesize appMainWindowResized = _appMainWindowResized;
+@synthesize presentedWindow = _presentedWindow;
 
 #pragma mark - Singleton
 
@@ -50,6 +51,8 @@
         } else {
             _appMainWindow = [[[NSApplication sharedApplication] windows] firstObject];
         }
+        
+        _popoverStyle = FLOPopoverStyleNormal;
         
         _shouldShowArrowWithVisualEffect = NO;
         _arrowVisualEffectMaterial = NSVisualEffectMaterialLight;
@@ -123,6 +126,14 @@
 
 - (void)setAppMainWindowResized:(BOOL)appMainWindowResized {
     _appMainWindowResized = appMainWindowResized;
+}
+
+- (void)setPresentedWindow:(NSWindow *)presentedWindow {
+    _presentedWindow = presentedWindow;
+}
+
+- (NSWindow *)presentedWindow {
+    return ((_presentedWindow != nil) ? _presentedWindow : self.positioningView.window);
 }
 
 #pragma mark - Local methods
@@ -249,7 +260,7 @@
     }
 }
 
-- (BOOL)didTheTreeOfView:(NSView *)view containPosition:(NSPoint)position {
+- (BOOL)treeOfView:(NSView *)view containsPosition:(NSPoint)position {
     NSRect relativeRect = [view convertRect:[view alignmentRectForFrame:[view bounds]] toView:nil];
     NSRect viewRect = [view.window convertRectToScreen:relativeRect];
     
@@ -257,7 +268,7 @@
         return YES;
     } else {
         for (NSView *item in [view subviews]) {
-            if ([self didTheTreeOfView:item containPosition:position]) {
+            if ([self treeOfView:item containsPosition:position]) {
                 return YES;
             }
         }
@@ -266,16 +277,16 @@
     return NO;
 }
 
-- (BOOL)didView:(NSView *)parent contain:(NSView *)child {
-    return [self didViews:[parent subviews] contain:child];
+- (BOOL)view:(NSView *)parent contains:(NSView *)child {
+    return [self views:[parent subviews] contain:child];
 }
 
-- (BOOL)didViews:(NSArray *)views contain:(NSView *)view {
+- (BOOL)views:(NSArray *)views contain:(NSView *)view {
     if ([views containsObject:view]) {
         return YES;
     } else {
         for (NSView *item in views) {
-            if ([self didViews:[item subviews] contain:view]) {
+            if ([self views:[item subviews] contain:view]) {
                 return YES;
             }
         }
@@ -284,16 +295,16 @@
     return NO;
 }
 
-- (BOOL)didWindow:(NSWindow *)parent contain:(NSWindow *)child {
-    return [self didWindows:parent.childWindows contain:child];
+- (BOOL)window:(NSWindow *)parent contains:(NSWindow *)child {
+    return [self windows:parent.childWindows contain:child];
 }
 
-- (BOOL)didWindows:(NSArray *)windows contain:(NSWindow *)window {
+- (BOOL)windows:(NSArray *)windows contain:(NSWindow *)window {
     if ([windows containsObject:window]) {
         return YES;
     } else {
         for (NSWindow *item in windows) {
-            if ([self didWindows:item.childWindows contain:window]) {
+            if ([self windows:item.childWindows contain:window]) {
                 return YES;
             }
         }
@@ -315,11 +326,89 @@
 - (void)addView:(NSView *)view toParent:(NSView *)parentView {
     if ((view == nil) || (parentView == nil)) return;
     
-    if ([view isDescendantOf:parentView] == NO) {
+    if (![view isDescendantOf:parentView]) {
         [parentView addSubview:view];
         parentView.autoresizesSubviews = YES;
         
         view.translatesAutoresizingMaskIntoConstraints = YES;
+    }
+}
+
+- (void)addView:(NSView *)view toParent:(NSView *)parentView autoresizingMask:(BOOL)isAutoresizingMask {
+    if ((view == nil) || (parentView == nil)) return;
+    
+    if (![view isDescendantOf:parentView]) {
+        [parentView addSubview:view];
+        parentView.autoresizesSubviews = YES;
+        
+        view.translatesAutoresizingMaskIntoConstraints = YES;
+    }
+    
+    if (isAutoresizingMask && [view isDescendantOf:parentView]) {
+        view.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        [parentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view]|"
+                                                                           options:0
+                                                                           metrics:nil
+                                                                             views:NSDictionaryOfVariableBindings(view)]];
+        
+        [parentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|"
+                                                                           options:0
+                                                                           metrics:nil
+                                                                             views:NSDictionaryOfVariableBindings(view)]];
+        
+        [parentView layoutSubtreeIfNeeded];
+    }
+}
+
+- (void)addView:(NSView *)view toParent:(NSView *)parentView centerAutoresizingMask:(BOOL)isCenterAutoresizingMask {
+    if ((view == nil) || (parentView == nil)) return;
+    
+    if (![view isDescendantOf:parentView]) {
+        [parentView addSubview:view];
+        parentView.autoresizesSubviews = YES;
+    }
+    
+    if (isCenterAutoresizingMask && [view isDescendantOf:parentView]) {
+        view.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        [parentView addConstraint:[NSLayoutConstraint constraintWithItem:parentView
+                                                               attribute:NSLayoutAttributeCenterX
+                                                               relatedBy:0
+                                                                  toItem:view
+                                                               attribute:NSLayoutAttributeCenterX
+                                                              multiplier:1
+                                                                constant:0]];
+        
+        [parentView addConstraint:[NSLayoutConstraint constraintWithItem:parentView
+                                                               attribute:NSLayoutAttributeCenterY
+                                                               relatedBy:0
+                                                                  toItem:view
+                                                               attribute:NSLayoutAttributeCenterY
+                                                              multiplier:1
+                                                                constant:0]];
+        
+        NSLayoutConstraint *width = [NSLayoutConstraint constraintWithItem:view
+                                                                 attribute:NSLayoutAttributeWidth
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:nil
+                                                                 attribute:NSLayoutAttributeWidth
+                                                                multiplier:1
+                                                                  constant:CGRectGetWidth(view.frame)];
+        NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:view
+                                                                  attribute:NSLayoutAttributeHeight
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:nil
+                                                                  attribute:NSLayoutAttributeHeight
+                                                                 multiplier:1
+                                                                   constant:CGRectGetHeight(view.frame)];
+        
+        [width setActive:YES];
+        [height setActive:YES];
+        
+        [view addConstraints:@[width, height]];
+        
+        [parentView layoutSubtreeIfNeeded];
     }
 }
 

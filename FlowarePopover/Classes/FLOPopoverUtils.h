@@ -26,6 +26,12 @@
 @property (nonatomic, strong) NSView *contentView;
 @property (nonatomic, strong) NSViewController *contentViewController;
 
+/**
+ * The target window that the popover will be added on.
+ */
+@property (nonatomic, strong) NSWindow *presentedWindow;
+@property (nonatomic, assign) FLOPopoverStyle popoverStyle;
+
 @property (nonatomic, assign) BOOL popoverMoved;
 
 @property (nonatomic, assign) BOOL shouldShowArrowWithVisualEffect;
@@ -68,13 +74,15 @@
 
 - (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame animationType:(FLOPopoverAnimationType)animationType forwarding:(BOOL)forwarding showing:(BOOL)showing;
 - (void)calculateTransitionFrame:(NSRect *)transitionFrame fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame animationType:(FLOPopoverAnimationType)animationType forwarding:(BOOL)forwarding showing:(BOOL)showing;
-- (BOOL)didTheTreeOfView:(NSView *)view containPosition:(NSPoint)position;
-- (BOOL)didView:(NSView *)parent contain:(NSView *)child;
-- (BOOL)didViews:(NSArray *)views contain:(NSView *)view;
-- (BOOL)didWindow:(NSWindow *)parent contain:(NSWindow *)child;
-- (BOOL)didWindows:(NSArray *)windows contain:(NSWindow *)window;
+- (BOOL)treeOfView:(NSView *)view containsPosition:(NSPoint)position;
+- (BOOL)view:(NSView *)parent contains:(NSView *)child;
+- (BOOL)views:(NSArray *)views contain:(NSView *)view;
+- (BOOL)window:(NSWindow *)parent contains:(NSWindow *)child;
+- (BOOL)windows:(NSArray *)windows contain:(NSWindow *)window;
 - (NSVisualEffectView *)contentViewDidContainVisualEffect;
 - (void)addView:(NSView *)view toParent:(NSView *)parentView;
+- (void)addView:(NSView *)view toParent:(NSView *)parentView autoresizingMask:(BOOL)isAutoresizingMask;
+- (void)addView:(NSView *)view toParent:(NSView *)parentView centerAutoresizingMask:(BOOL)isCenterAutoresizingMask;
 - (void)setupAutoresizingMaskIfNeeded:(BOOL)needed;
 - (void)resetContainerBoundsChangedByNotification;
 

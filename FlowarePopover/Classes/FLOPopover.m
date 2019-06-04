@@ -239,18 +239,6 @@
     [self closeAfterTimeInterval];
 }
 
-- (void)setResignsFieldsOnClosing:(BOOL)resignsFieldsOnClosing {
-    _resignsFieldsOnClosing = resignsFieldsOnClosing;
-    
-    self.popover.resignsFieldsOnClosing = resignsFieldsOnClosing;
-}
-
-- (void)setMakesKeyAndOrderFrontOnDisplaying:(BOOL)makesKeyAndOrderFrontOnDisplaying {
-    _makesKeyAndOrderFrontOnDisplaying = makesKeyAndOrderFrontOnDisplaying;
-    
-    self.popover.makesKeyAndOrderFrontOnDisplaying = makesKeyAndOrderFrontOnDisplaying;
-}
-
 - (void)setIsMovable:(BOOL)isMovable {
     _isMovable = isMovable;
     
@@ -262,12 +250,6 @@
     
     self.popover.isMovable = isDetachable;
     self.popover.isDetachable = isDetachable;
-}
-
-- (void)setCanBecomeKey:(BOOL)canBecomeKey {
-    _canBecomeKey = canBecomeKey;
-    
-    self.popover.canBecomeKey = canBecomeKey;
 }
 
 - (void)setTag:(NSInteger)tag {
@@ -295,6 +277,30 @@
     _needAutoresizingMask = needAutoresizingMask;
     
     self.popover.needAutoresizingMask = needAutoresizingMask;
+}
+
+- (void)setResignsFieldsOnClosing:(BOOL)resignsFieldsOnClosing {
+    _resignsFieldsOnClosing = resignsFieldsOnClosing;
+    
+    if ([self.popover respondsToSelector:@selector(setResignsFieldsOnClosing:)]) {
+        self.popover.resignsFieldsOnClosing = resignsFieldsOnClosing;
+    }
+}
+
+- (void)setMakesKeyAndOrderFrontOnDisplaying:(BOOL)makesKeyAndOrderFrontOnDisplaying {
+    _makesKeyAndOrderFrontOnDisplaying = makesKeyAndOrderFrontOnDisplaying;
+    
+    if ([self.popover respondsToSelector:@selector(setMakesKeyAndOrderFrontOnDisplaying:)]) {
+        self.popover.makesKeyAndOrderFrontOnDisplaying = makesKeyAndOrderFrontOnDisplaying;
+    }
+}
+
+- (void)setCanBecomeKey:(BOOL)canBecomeKey {
+    _canBecomeKey = canBecomeKey;
+    
+    if ([self.popover respondsToSelector:@selector(setCanBecomeKey:)]) {
+        self.popover.canBecomeKey = canBecomeKey;
+    }
 }
 
 #pragma mark - Local implementations
@@ -539,6 +545,20 @@
     
     [self resetClosesAfterTimeIntervalTimer];
     [self cancelCloseAfterTimeInterval];
+}
+
+/**
+ * Display popover as system alert style for presented window.
+ *
+ * @param presentedWindow the target window that the popover will be alerted on.
+ */
+- (void)showWithAlertStyleForWindow:(NSWindow *)presentedWindow {
+    if ([self.popover respondsToSelector:@selector(showWithAlertStyleForWindow:)]) {
+        [self.popover showWithAlertStyleForWindow:presentedWindow];
+        
+        [self resetClosesAfterTimeIntervalTimer];
+        [self cancelCloseAfterTimeInterval];
+    }
 }
 
 - (void)closeAfterTimeInterval {

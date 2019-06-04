@@ -169,6 +169,13 @@
  */
 - (void)setPopoverLevel:(NSWindowLevel)level;
 
+/**
+ * Display popover as system alert style for presented window.
+ *
+ * @param presentedWindow the target window that the popover will be alerted on.
+ */
+- (void)showWithAlertStyleForWindow:(NSWindow *)presentedWindow;
+
 @end
 
 #endif /* FLOPopoverProtocols_h */
