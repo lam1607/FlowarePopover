@@ -11,6 +11,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "FLOPopoverUtils.h"
+
 @protocol FLOPopoverProtocols <NSObject>
 
 @property (nonatomic, assign, readonly) NSRect frame;
@@ -21,6 +23,8 @@
  */
 @property (nonatomic, assign, readonly) NSRect initialPositioningFrame;
 
+@property (nonatomic, strong) FLOPopoverUtils *utils;
+@property (nonatomic, assign, readonly) FLOPopoverType type;
 
 @property (nonatomic, assign) BOOL alwaysOnTop;
 @property (nonatomic, assign) BOOL shouldShowArrow;
@@ -28,6 +32,7 @@
 @property (nonatomic, assign) BOOL animated;
 @property (nonatomic, assign) BOOL animatedForwarding;
 @property (nonatomic, assign) CGFloat bottomOffset;
+@property (nonatomic, assign) BOOL displaysInsideClipView;
 
 @property (nonatomic, assign) BOOL staysInApplicationFrame;
 @property (nonatomic, assign) BOOL updatesFrameWhileShowing;
@@ -115,6 +120,7 @@
 
 - (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 
+- (void)updatePopoverFrame:(NSRect)frame;
 
 /**
  * Sticking rect: Display the popover relative to the rect of positioning view
@@ -145,6 +151,8 @@
 - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect sender:(NSView *)sender relativePositionType:(FLOPopoverRelativePositionType)relativePositionType edgeType:(FLOPopoverEdgeType)edgeType;
 
 - (void)close;
+- (void)closePopover:(id<FLOPopoverProtocols>)sender;
+- (void)closePopover:(id<FLOPopoverProtocols>)sender completion:(void(^)(void))complete;
 
 @optional
 /// For FLOWindowPopover only

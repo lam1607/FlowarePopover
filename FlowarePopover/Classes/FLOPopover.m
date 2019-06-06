@@ -137,7 +137,7 @@
             [self setupPopupView];
             break;
         default:
-            // default is FLOViewPopover
+            // default is FLOWindowPopover
             break;
     }
 }
@@ -176,6 +176,12 @@
     _bottomOffset = bottomOffset;
     
     self.popover.bottomOffset = bottomOffset;
+}
+
+- (void)setDisplaysInsideClipView:(BOOL)displaysInsideClipView {
+    _displaysInsideClipView = displaysInsideClipView;
+    
+    self.popover.displaysInsideClipView = displaysInsideClipView;
 }
 
 - (void)setStaysInApplicationFrame:(BOOL)staysInApplicationFrame {

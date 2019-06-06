@@ -68,6 +68,7 @@
 @property (nonatomic, assign) BOOL animated;
 @property (nonatomic, assign) BOOL animatedForwarding;
 @property (nonatomic, assign) CGFloat bottomOffset;
+@property (nonatomic, assign) BOOL displaysInsideClipView;
 
 /**
  * Determine whether the popover should stay in application frame or screen frame.

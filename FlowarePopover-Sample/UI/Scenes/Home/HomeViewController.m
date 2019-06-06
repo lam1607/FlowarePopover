@@ -489,7 +489,7 @@
         //        _popoverComics.closesWhenApplicationBecomesInactive = YES;
         _popoverComics.isMovable = YES;
         _popoverComics.isDetachable = YES;
-        //        _popoverComics.staysInApplicationFrame = YES;
+        _popoverComics.staysInApplicationFrame = YES;
         
         _popoverComics.tag = WindowLevelGroupTagUtility;
         

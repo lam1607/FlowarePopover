@@ -8,6 +8,8 @@
 
 #import "FLOPopoverUtils.h"
 
+#import "FLOPopoverProtocols.h"
+
 #import "FLOPopoverBackgroundView.h"
 
 @interface FLOPopoverUtils () <NSWindowDelegate>
@@ -66,9 +68,17 @@
         _animationType = FLOPopoverAnimationDefault;
         _relativePositionType = FLOPopoverRelativePositionAutomatic;
         _anchorPoint = NSMakePoint(0.0, 0.0);
-        _containerBoundsChangedByNotification = NO;
+        _observerViewBoundsDidChange = NO;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventObserver_windowDidResize:) name:NSWindowDidResizeNotification object:nil];
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithPopover:(id<FLOPopoverProtocols>)popover {
+    if (self = [self init]) {
+        _popover = popover;
     }
     
     return self;
@@ -429,8 +439,290 @@
     }
 }
 
-- (void)resetContainerBoundsChangedByNotification {
-    self.containerBoundsChangedByNotification = NO;
+- (void)resetObserverViewBoundsDidChange {
+    self.observerViewBoundsDidChange = NO;
+}
+
+- (void)addSuperviewObserversForView:(NSView *)view selector:(SEL)selector source:(id)source {
+    if ([source respondsToSelector:selector]) {
+        if ([view isKindOfClass:[NSClipView class]]) {
+            [view setPostsBoundsChangedNotifications:YES];
+            
+            [[NSNotificationCenter defaultCenter] addObserver:source
+                                                     selector:selector
+                                                         name:NSViewBoundsDidChangeNotification
+                                                       object:view];
+        } else {
+            [view addObserver:source forKeyPath:@"frame" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
+            [view addObserver:source forKeyPath:@"superview" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
+        }
+    }
+}
+
+- (BOOL)popoverShouldCloseByCheckingView:(NSView *)changedView {
+    if (![changedView.window isVisible]) {
+        return YES;
+    }
+    
+    if ([self.anchorSuperviews containsObject:changedView]) {
+        if ((changedView != self.positioningAnchorView) && ![self.positioningAnchorView isDescendantOf:changedView]) {
+            return YES;
+        }
+        
+        NSInteger index = [self.anchorSuperviews indexOfObject:changedView];
+        
+        if (index < (self.anchorSuperviews.count - 1)) {
+            NSView *anchorSuperview = [self.anchorSuperviews objectAtIndex:(index + 1)];
+            NSView *changingSuperview = [changedView superview];
+            
+            if (anchorSuperview != changingSuperview) {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
+- (void)updatePopoverFrameForContainerFrame:(NSRect)containerFrame {
+    if (self.popover == nil) return;
+    
+    NSRect positionWindowFrame = [self.positioningView convertRect:self.positioningView.bounds toView:self.presentedWindow.contentView];
+    
+    if (!NSEqualPoints(self.positioningWindowFrame.origin, positionWindowFrame.origin)) {
+        NSRectEdge preferredEdge = self.preferredEdge;
+        NSRect positionScreenFrame = [self.presentedWindow convertRectToScreen:positionWindowFrame];
+        
+        positionScreenFrame = NSMakeRect(positionScreenFrame.origin.x, positionScreenFrame.origin.y, 1.0, 1.0);
+        
+        NSRect popoverFrame = (self.popover.displaysInsideClipView || NSEqualSizes(self.popover.arrowSize, NSZeroSize)) ? [self popoverFrameForEdge:self.preferredEdge] : ((self.popover.shouldShowArrow && (self.positioningView == self.positioningAnchorView) && !NSEqualSizes(self.popover.arrowSize, NSZeroSize)) ? [self p_popoverFrame] : [self popoverFrame]);
+        
+        popoverFrame = (NSRect){ .origin = popoverFrame.origin, .size = self.popover.frame.size };
+        
+        if (self.popover.displaysInsideClipView && !NSContainsRect(containerFrame, positionScreenFrame)) {
+            // If the positioningView (the sender where arrow is displayed at) move out of containerFrame, we should hide the arrow of popover.
+            if (self.popover.shouldShowArrow && (self.positioningView == self.positioningAnchorView) && !NSEqualSizes(self.popover.arrowSize, NSZeroSize)) {
+                self.backgroundView.arrowSize = NSZeroSize;
+                [self.backgroundView showArrow:NO];
+            }
+            
+            return;
+        }
+        
+        if (!NSEqualRects(containerFrame, self.mainWindow.frame)) {
+            if (self.popover.type == FLOViewPopover) {
+                containerFrame = NSMakeRect(containerFrame.origin.x, containerFrame.origin.y, self.mainWindow.frame.size.width - (containerFrame.origin.x - self.mainWindow.frame.origin.x), containerFrame.size.height);
+            } else {
+                CGFloat width = self.mainWindow.frame.size.width - (containerFrame.origin.x - self.mainWindow.frame.origin.x);
+                
+                containerFrame = NSMakeRect(containerFrame.origin.x, containerFrame.origin.y, (width > containerFrame.size.width) ? width : containerFrame.size.width, containerFrame.size.height);
+            }
+        }
+        
+        // If the positioningView (the sender where arrow is displayed at) move inside of containerFrame, we should show the arrow of popover.
+        // And also update the arrow position respectively to the new popoverOrigin
+        if (self.popover.shouldShowArrow && (self.positioningView == self.positioningAnchorView) && !NSEqualSizes(self.popover.arrowSize, NSZeroSize)) {
+            if ((self.popover.displaysInsideClipView) || (preferredEdge == self.preferredEdge)) {
+                NSRect windowRelativeFrame = [self.positioningAnchorView convertRect:[self.positioningAnchorView alignmentRectForFrame:self.positioningFrame] toView:nil];
+                NSRect positionScreenFrame = [self.presentedWindow convertRectToScreen:windowRelativeFrame];
+                
+                self.backgroundView.popoverOrigin = positionScreenFrame;
+                self.backgroundView.arrowSize = self.popover.arrowSize;
+                
+                [self.backgroundView showArrow:YES];
+            } else {
+                self.backgroundView.arrowSize = self.popover.arrowSize;
+                
+                [self p_backgroundViewShouldUpdate:YES];
+            }
+            
+            if (preferredEdge != self.preferredEdge) {
+                popoverFrame = (self.popover.displaysInsideClipView || NSEqualSizes(self.popover.arrowSize, NSZeroSize)) ? [self popoverFrameForEdge:self.preferredEdge] : ((self.popover.shouldShowArrow && (self.positioningView == self.positioningAnchorView) && !NSEqualSizes(self.popover.arrowSize, NSZeroSize)) ? [self p_popoverFrame] : [self popoverFrame]);
+            }
+        }
+        
+        if ((self.popover.displaysInsideClipView || !NSContainsRect(containerFrame, positionScreenFrame)) && !NSContainsRect(containerFrame, popoverFrame)) {
+            if (self.popover.closesWhenNotBelongToContainerFrame) {
+                [self.popover close];
+            }
+            
+            return;
+        }
+        
+        if (self.popover.type == FLOViewPopover) {
+            popoverFrame = [self.presentedWindow convertRectFromScreen:popoverFrame];
+            popoverFrame = (NSRect){ .origin = popoverFrame.origin, .size = self.popover.frame.size };
+        }
+        
+        [self.popover updatePopoverFrame:popoverFrame];
+        
+        self.positioningWindowFrame = [self.positioningView convertRect:self.positioningView.bounds toView:self.presentedWindow.contentView];
+    }
+}
+
+- (void)handleObserverViewBoundsDidChange:(NSNotification *)notification popoverShowing:(BOOL)popoverShowing popoverClosing:(BOOL)popoverClosing {
+    if ([notification.name isEqualToString:NSViewBoundsDidChangeNotification] && [notification.object isKindOfClass:[NSClipView class]] && [self.anchorSuperviews containsObject:notification.object]) {
+        NSClipView *clipView = (NSClipView *)notification.object;
+        NSRect clipViewScreenFrame = [clipView.window convertRectToScreen:[clipView convertRect:clipView.bounds toView:clipView.window.contentView]];
+        
+        if (!popoverShowing && !popoverClosing && [self.positioningAnchorView isDescendantOf:clipView]) {
+            self.observerViewBoundsDidChange = YES;
+            
+            [self updatePopoverFrameForContainerFrame:clipViewScreenFrame];
+            
+            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resetObserverViewBoundsDidChange) object:nil];
+            [self performSelector:@selector(resetObserverViewBoundsDidChange) withObject:nil afterDelay:1.0];
+        }
+    }
+}
+
+- (void)handleObserveValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context popoverShowing:(BOOL)popoverShowing popoverClosing:(BOOL)popoverClosing {
+    if (self.popover == nil) return;
+    if (self.popoverStyle != FLOPopoverStyleNormal) return;
+    
+    if (self.popover.shouldRegisterSuperviewObservers) {
+        if ([keyPath isEqualToString:@"superview"] && [object isKindOfClass:[NSView class]]) {
+            NSView *view = (NSView *)object;
+            
+            if ([self popoverShouldCloseByCheckingView:view]) {
+                [self.popover closePopover:nil];
+                
+                return;
+            }
+        }
+    }
+    
+    if ([self mainWindowResized]) {
+        NSEvent *event = [NSApp currentEvent];
+        
+        if (!((event.type == NSEventTypeLeftMouseDragged) || (event.type == NSEventTypeLeftMouseDragged))) {
+            [self updatePopoverFrameForContainerFrame:self.mainWindow.frame];
+        }
+        
+        return;
+    }
+    
+    if ([keyPath isEqualToString:@"frame"] && [object isKindOfClass:[NSView class]]) {
+        NSView *view = (NSView *)object;
+        
+        if (view == self.mainWindow.contentView) {
+            [self setMainWindowResized:YES];
+            
+            if (self.popover.closesWhenPopoverResignsKey || self.popover.closesWhenApplicationResizes) {
+                [self.popover closePopover:nil];
+            }
+            
+            return;
+        }
+        
+        if (self.popover.shouldRegisterSuperviewObservers) {
+            if ([self popoverShouldCloseByCheckingView:view]) {
+                [self.popover closePopover:nil];
+                
+                return;
+            }
+            
+            if (!popoverShowing && !popoverClosing && [self.positioningAnchorView isDescendantOf:view] && !self.observerViewBoundsDidChange) {
+                [self updatePopoverFrameForContainerFrame:self.mainWindow.frame];
+            }
+        }
+    }
+}
+
+- (NSRect)popoverFrameWithResizingWindow:(NSWindow *)resizedWindow {
+    if (self.popover == nil) return NSZeroRect;
+    
+    NSRect popoverFrame = (self.popover.shouldShowArrow && (self.positioningView == self.positioningAnchorView)) ? [self p_popoverFrame] : [self popoverFrame];
+    
+    if (self.popover.type == FLOViewPopover) {
+        popoverFrame = [self.presentedWindow convertRectFromScreen:popoverFrame];
+    }
+    
+    CGFloat popoverOriginX = popoverFrame.origin.x;
+    CGFloat popoverOriginY = popoverFrame.origin.y;
+    
+    if (self.popover.shouldChangeSizeWhenApplicationResizes) {
+        CGFloat newHeight = resizedWindow.contentView.visibleRect.size.height - self.verticalMarginOutOfPopover;
+        CGFloat deltaHeight = popoverFrame.size.height - newHeight;
+        CGFloat popoverHeight = newHeight;
+        
+        popoverOriginY = popoverFrame.origin.y + deltaHeight;
+        
+        popoverFrame = NSMakeRect(popoverOriginX, popoverOriginY, popoverFrame.size.width, popoverHeight);
+    } else {
+        popoverFrame = NSMakeRect(popoverOriginX, popoverOriginY, self.originalViewSize.width, self.originalViewSize.height);
+    }
+    
+    return popoverFrame;
+}
+
+- (void)handleObserverWindowDidResize:(NSNotification *)notification popoverShowing:(BOOL)popoverShowing popoverClosing:(BOOL)popoverClosing {
+    if (self.popover == nil) return;
+    
+    if (!popoverShowing && !popoverClosing && [notification.name isEqualToString:NSWindowDidResizeNotification]) {
+        if ((self.popoverStyle == FLOPopoverStyleAlert) && (notification.object == self.presentedWindow)) {
+            if (self.popover.type == FLOWindowPopover) {
+                NSRect frame = [self.presentedWindow contentRectForFrameRect:self.presentedWindow.frame];
+                
+                [self.popover updatePopoverFrame:frame];
+            }
+        } else if ((notification.object == self.mainWindow) && !self.popover.closesWhenApplicationResizes) {
+            NSWindow *resizedWindow = (NSWindow *)notification.object;
+            NSRectEdge preferredEdge = self.preferredEdge;
+            
+            NSRect popoverFrame = [self popoverFrameWithResizingWindow:resizedWindow];
+            
+            // Update arrow edge and content view frame
+            if (self.popover.shouldShowArrow && (self.positioningView == self.positioningAnchorView)) {
+                NSRect positionWindowFrame = [self.positioningView convertRect:self.positioningView.bounds toView:self.presentedWindow.contentView];
+                NSRect positionScreenFrame = [self.presentedWindow convertRectToScreen:positionWindowFrame];
+                
+                positionScreenFrame = NSMakeRect(positionScreenFrame.origin.x, positionScreenFrame.origin.y, 1.0, 1.0);
+                
+                if (self.popover.displaysInsideClipView && !NSContainsRect(resizedWindow.frame, positionScreenFrame)) {
+                    // If the positioningView (the sender where arrow is displayed at) move out of containerFrame, we should hide the arrow of popover.
+                    if (self.popover.shouldShowArrow && (self.positioningView == self.positioningAnchorView) && !NSEqualSizes(self.popover.arrowSize, NSZeroSize)) {
+                        self.backgroundView.arrowSize = NSZeroSize;
+                        [self.backgroundView showArrow:NO];
+                    }
+                } else {
+                    self.backgroundView.arrowSize = self.popover.arrowSize;
+                    
+                    [self p_backgroundViewShouldUpdate:YES];
+                    
+                    if (preferredEdge != self.preferredEdge) {
+                        self.originalViewSize = self.backgroundView.frame.size;
+                        
+                        popoverFrame = [self popoverFrameWithResizingWindow:resizedWindow];
+                    }
+                }
+            }
+            
+            [self.popover updatePopoverFrame:popoverFrame];
+            
+            [self updatePopoverContentSizeWhenWindowResizing];
+            
+            self.positioningWindowFrame = [self.positioningView convertRect:self.positioningView.bounds toView:self.presentedWindow.contentView];
+        }
+    }
+}
+
+- (void)updatePopoverContentSizeWhenWindowResizing {
+    if (self.popover == nil) return;
+    
+    if (NSEqualSizes(self.backgroundView.arrowSize, NSZeroSize)) {
+        self.contentSize = self.popover.frame.size;
+    }
+    
+    if (!(self.popover.shouldShowArrow && (self.positioningView == self.positioningAnchorView))) {
+        if (self.popover.type == FLOWindowPopover) {
+            CGSize size = [self.backgroundView sizeForBackgroundViewWithContentSize:self.contentSize popoverEdge:self.preferredEdge];
+            self.backgroundView.frame = (NSRect){ .size = size };
+        }
+        
+        NSRect contentViewFrame = [self.backgroundView contentViewFrameForBackgroundFrame:self.backgroundView.bounds popoverEdge:self.preferredEdge];
+        self.contentView.frame = contentViewFrame;
+    }
 }
 
 #pragma mark - Display utilities
@@ -778,7 +1070,67 @@
     [self.positioningAnchorView setHidden:NO];
 }
 
-#pragma mark - Normal display utilities
+#pragma mark - Shared edge utilities
+
+- (NSRect)fitFrameToContainer:(NSRect)proposedFrame {
+    NSRect containerFrame = [self containerFrame];
+    
+    if (proposedFrame.origin.y < NSMinY(containerFrame)) {
+        proposedFrame.origin.y = NSMinY(containerFrame);
+    }
+    if (proposedFrame.origin.x < NSMinX(containerFrame)) {
+        proposedFrame.origin.x = NSMinX(containerFrame);
+    }
+    
+    if (NSMaxY(proposedFrame) > NSMaxY(containerFrame)) {
+        proposedFrame.origin.y = NSMaxY(containerFrame) - NSHeight(proposedFrame);
+    }
+    if (NSMaxX(proposedFrame) > NSMaxX(containerFrame)) {
+        proposedFrame.origin.x = NSMaxX(containerFrame) - NSWidth(proposedFrame);
+    }
+    
+    return proposedFrame;
+}
+
+- (BOOL)containerFrameContainsEdge:(NSRectEdge)edge {
+    NSRect frame = [self popoverFrameForEdge:edge];
+    NSRect containerFrame = [self containerFrame];
+    
+    BOOL minYInBounds = (edge == NSRectEdgeMinY) && (NSMinY(frame) >= NSMinY(containerFrame));
+    BOOL maxYInBounds = (edge == NSRectEdgeMaxY) && (NSMaxY(frame) <= NSMaxY(containerFrame));
+    BOOL minXInBounds = (edge == NSRectEdgeMinX) && (NSMinX(frame) >= NSMinX(containerFrame));
+    BOOL maxXInBounds = (edge == NSRectEdgeMaxX) && (NSMaxX(frame) <= NSMaxX(containerFrame));
+    
+    return minYInBounds || maxYInBounds || minXInBounds || maxXInBounds;
+}
+
+- (NSRectEdge)nextEdgeForEdge:(NSRectEdge)popoverEdge {
+    NSRectEdge nextEdge = popoverEdge;
+    NSRectEdge edges[] = {NSRectEdgeMinX, NSRectEdgeMaxX, NSRectEdgeMinY, NSRectEdgeMaxY};
+    NSInteger edgesNumber = sizeof(edges) / sizeof(NSRectEdgeMinX);
+    
+    for (NSInteger idx = 0; idx < edgesNumber; ++idx) {
+        NSRectEdge edge = edges[idx];
+        
+        if (edge == popoverEdge) continue;
+        
+        if ([self containerFrameContainsEdge:edge]) {
+            nextEdge = edge;
+            break;
+        }
+    }
+    
+    return nextEdge;
+}
+
+#pragma mark - Normal edge utilities
+
+- (BOOL)checkPopoverFrameWithEdge:(NSRectEdge)popoverEdge {
+    NSRect containerFrame = [self containerFrame];
+    NSRect frame = [self popoverFrameForEdge:popoverEdge];
+    
+    return NSContainsRect(containerFrame, frame);
+}
 
 - (NSRect)popoverFrameForEdge:(NSRectEdge)popoverEdge {
     NSRect positionRelativeFrame = [self.positioningAnchorView convertRect:[self.positioningAnchorView alignmentRectForFrame:self.positioningFrame] toView:nil];
@@ -831,59 +1183,6 @@
     return frame;
 }
 
-- (BOOL)checkPopoverFrameWithEdge:(NSRectEdge)popoverEdge {
-    NSRect containerFrame = [self containerFrame];
-    NSRect frame = [self popoverFrameForEdge:popoverEdge];
-    
-    return NSContainsRect(containerFrame, frame);
-}
-
-- (NSRectEdge)nextEdgeForEdge:(NSRectEdge)currentEdge {
-    if (currentEdge == NSRectEdgeMaxX) {
-        return (self.preferredEdge == NSRectEdgeMinX) ? NSRectEdgeMaxY : NSRectEdgeMinX;
-    } else if (currentEdge == NSRectEdgeMinX) {
-        return (self.preferredEdge == NSRectEdgeMaxX) ? NSRectEdgeMaxY : NSRectEdgeMaxX;
-    } else if (currentEdge == NSRectEdgeMaxY) {
-        return (self.preferredEdge == NSRectEdgeMinY) ? NSRectEdgeMaxX : NSRectEdgeMinY;
-    } else if (currentEdge == NSRectEdgeMinY) {
-        return (self.preferredEdge == NSRectEdgeMaxY) ? NSRectEdgeMaxX : NSRectEdgeMaxY;
-    }
-    
-    return currentEdge;
-}
-
-- (NSRect)fitFrameToContainer:(NSRect)proposedFrame {
-    NSRect containerFrame = [self containerFrame];
-    
-    if (proposedFrame.origin.y < NSMinY(containerFrame)) {
-        proposedFrame.origin.y = NSMinY(containerFrame);
-    }
-    if (proposedFrame.origin.x < NSMinX(containerFrame)) {
-        proposedFrame.origin.x = NSMinX(containerFrame);
-    }
-    
-    if (NSMaxY(proposedFrame) > NSMaxY(containerFrame)) {
-        proposedFrame.origin.y = NSMaxY(containerFrame) - NSHeight(proposedFrame);
-    }
-    if (NSMaxX(proposedFrame) > NSMaxX(containerFrame)) {
-        proposedFrame.origin.x = NSMaxX(containerFrame) - NSWidth(proposedFrame);
-    }
-    
-    return proposedFrame;
-}
-
-- (BOOL)containerFrameContainsEdge:(NSRectEdge)edge {
-    NSRect frame = [self popoverFrameForEdge:edge];
-    NSRect containerFrame = [self containerFrame];
-    
-    BOOL minYInBounds = (edge == NSRectEdgeMinY) && (NSMinY(frame) >= NSMinY(containerFrame));
-    BOOL maxYInBounds = (edge == NSRectEdgeMaxY) && (NSMaxY(frame) <= NSMaxY(containerFrame));
-    BOOL minXInBounds = (edge == NSRectEdgeMinX) && (NSMinX(frame) >= NSMinX(containerFrame));
-    BOOL maxXInBounds = (edge == NSRectEdgeMaxX) && (NSMaxX(frame) <= NSMaxX(containerFrame));
-    
-    return minYInBounds || maxYInBounds || minXInBounds || maxXInBounds;
-}
-
 - (NSRect)popoverFrame {
     NSRectEdge popoverEdge = self.preferredEdge;
     
@@ -899,6 +1198,25 @@
 }
 
 #pragma mark - Saving edge utilities
+
+- (void)updatePreferredEdgeForEdge:(NSRectEdge)popoverEdge {
+    if ((!self.mainWindowResized || (self.mainWindowResized && [self containerFrameContainsEdge:popoverEdge])) && (self.preferredEdge != popoverEdge)) {
+        self.preferredEdge = popoverEdge;
+        
+        if (self.popover.shouldShowArrow && (self.positioningView == self.positioningAnchorView)) {
+            [self p_backgroundViewShouldUpdate:YES];
+            
+            self.originalViewSize = self.backgroundView.frame.size;
+        }
+    }
+}
+
+- (BOOL)p_checkPopoverFrameWithEdge:(NSRectEdge *)popoverEdge {
+    NSRect containerFrame = [self containerFrame];
+    NSRect frame = [self p_popoverFrameForEdge:popoverEdge];
+    
+    return NSContainsRect(containerFrame, frame);
+}
 
 - (NSRect)p_popoverFrameForEdge:(NSRectEdge *)popoverEdge {
     NSRect containerFrame = [self containerFrame];
@@ -931,9 +1249,13 @@
         frame.origin.y = NSMinY(positionScreenFrame) - popoverSize.height;
         
         if (NSMaxY(frame) < NSMinY(containerFrame)) {
-            *popoverEdge = NSRectEdgeMaxY;
+            NSRectEdge nextEdge = [self nextEdgeForEdge:*popoverEdge];
             
-            return [self p_popoverFrameForEdge:popoverEdge];
+            if (nextEdge != *popoverEdge) {
+                *popoverEdge = nextEdge;
+                
+                return [self p_popoverFrameForEdge:popoverEdge];
+            }
         }
     } else if (*popoverEdge == NSRectEdgeMaxY) {
         CGFloat x0 = NSMinX(positionScreenFrame);
@@ -943,9 +1265,13 @@
         frame.origin.y = NSMaxY(positionScreenFrame);
         
         if (NSMinY(frame) > NSMaxY(containerFrame)) {
-            *popoverEdge = NSRectEdgeMinY;
+            NSRectEdge nextEdge = [self nextEdgeForEdge:*popoverEdge];
             
-            return [self p_popoverFrameForEdge:popoverEdge];
+            if (nextEdge != *popoverEdge) {
+                *popoverEdge = nextEdge;
+                
+                return [self p_popoverFrameForEdge:popoverEdge];
+            }
         }
     } else if (*popoverEdge == NSRectEdgeMinX) {
         CGFloat y0 = NSMinY(positionScreenFrame);
@@ -955,9 +1281,13 @@
         frame.origin.y = y0 + floor((y1 - y0) * anchorPoint.y);
         
         if (NSMaxX(frame) < NSMinX(containerFrame)) {
-            *popoverEdge = NSRectEdgeMaxX;
+            NSRectEdge nextEdge = [self nextEdgeForEdge:*popoverEdge];
             
-            return [self p_popoverFrameForEdge:popoverEdge];
+            if (nextEdge != *popoverEdge) {
+                *popoverEdge = nextEdge;
+                
+                return [self p_popoverFrameForEdge:popoverEdge];
+            }
         }
     } else if (*popoverEdge == NSRectEdgeMaxX) {
         CGFloat y0 = NSMinY(positionScreenFrame);
@@ -967,9 +1297,13 @@
         frame.origin.y = y0 + floor((y1 - y0) * anchorPoint.y);
         
         if (NSMinX(frame) > NSMaxX(containerFrame)) {
-            *popoverEdge = NSRectEdgeMinX;
+            NSRectEdge nextEdge = [self nextEdgeForEdge:*popoverEdge];
             
-            return [self p_popoverFrameForEdge:popoverEdge];
+            if (nextEdge != *popoverEdge) {
+                *popoverEdge = nextEdge;
+                
+                return [self p_popoverFrameForEdge:popoverEdge];
+            }
         }
     } else {
         frame = NSZeroRect;
@@ -978,81 +1312,23 @@
     return frame;
 }
 
-- (BOOL)p_checkPopoverFrameWithEdge:(NSRectEdge *)popoverEdge {
-    NSRect containerFrame = [self containerFrame];
-    NSRect frame = [self p_popoverFrameForEdge:popoverEdge];
-    
-    return NSContainsRect(containerFrame, frame);
-}
-
-- (NSRectEdge)p_nextEdgeForEdge:(NSRectEdge)currentEdge {
-    if (currentEdge == NSRectEdgeMaxX) {
-        return (self.preferredEdge == NSRectEdgeMinX) ? NSRectEdgeMaxY : NSRectEdgeMinX;
-    } else if (currentEdge == NSRectEdgeMinX) {
-        return (self.preferredEdge == NSRectEdgeMaxX) ? NSRectEdgeMaxY : NSRectEdgeMaxX;
-    } else if (currentEdge == NSRectEdgeMaxY) {
-        return (self.preferredEdge == NSRectEdgeMinY) ? NSRectEdgeMaxX : NSRectEdgeMinY;
-    } else if (currentEdge == NSRectEdgeMinY) {
-        return (self.preferredEdge == NSRectEdgeMaxY) ? NSRectEdgeMaxX : NSRectEdgeMaxY;
-    }
-    
-    return currentEdge;
-}
-
-- (NSRect)p_fitFrameToContainer:(NSRect)proposedFrame {
-    NSRect containerFrame = [self containerFrame];
-    
-    if (proposedFrame.origin.y < NSMinY(containerFrame)) {
-        proposedFrame.origin.y = NSMinY(containerFrame);
-    }
-    
-    if (proposedFrame.origin.x < NSMinX(containerFrame)) {
-        proposedFrame.origin.x = NSMinX(containerFrame);
-    }
-    
-    if (NSMaxY(proposedFrame) > NSMaxY(containerFrame)) {
-        proposedFrame.origin.y = NSMaxY(containerFrame) - NSHeight(proposedFrame);
-    }
-    
-    if (NSMaxX(proposedFrame) > NSMaxX(containerFrame)) {
-        proposedFrame.origin.x = NSMaxX(containerFrame) - NSWidth(proposedFrame);
-    }
-    
-    return proposedFrame;
-}
-
-- (BOOL)p_containerFrameContainsEdge:(NSRectEdge)edge {
-    NSRect frame = [self p_popoverFrameForEdge:&edge];
-    NSRect containerFrame = [self containerFrame];
-    
-    BOOL minYInBounds = (edge == NSRectEdgeMinY) && (NSMinY(frame) >= NSMinY(containerFrame));
-    BOOL maxYInBounds = (edge == NSRectEdgeMaxY) && (NSMaxY(frame) <= NSMaxY(containerFrame));
-    BOOL minXInBounds = (edge == NSRectEdgeMinX) && (NSMinX(frame) >= NSMinX(containerFrame));
-    BOOL maxXInBounds = (edge == NSRectEdgeMaxX) && (NSMaxX(frame) <= NSMaxX(containerFrame));
-    
-    return minYInBounds || maxYInBounds || minXInBounds || maxXInBounds;
-}
-
 - (NSRect)p_popoverFrame {
     NSRectEdge popoverEdge = self.preferredEdge;
     
     if (self.staysInApplicationFrame || !NSEqualSizes(self.backgroundView.arrowSize, NSZeroSize)) {
-        while (![self p_checkPopoverFrameWithEdge:&popoverEdge]) {
-            popoverEdge = [self p_containerFrameContainsEdge:self.preferredEdge] ? self.preferredEdge : [self p_nextEdgeForEdge:self.preferredEdge];
+        while (![self checkPopoverFrameWithEdge:popoverEdge]) {
+            popoverEdge = [self containerFrameContainsEdge:self.preferredEdge] ? (((self.preferredEdge != self.originalEdge) && [self checkPopoverFrameWithEdge:self.originalEdge]) ? self.originalEdge : self.preferredEdge) : [self nextEdgeForEdge:self.preferredEdge];
             
-            NSRect frame = [self p_fitFrameToContainer:[self p_popoverFrameForEdge:&popoverEdge]];
+            NSRect frame = [self fitFrameToContainer:[self p_popoverFrameForEdge:&popoverEdge]];
             
-            if (self.preferredEdge != popoverEdge) {
-                self.preferredEdge = popoverEdge;
-                self.originalViewSize = frame.size;
-            }
+            [self updatePreferredEdgeForEdge:popoverEdge];
             
             return frame;
         }
         
         NSRectEdge originalEdge = self.originalEdge;
         
-        if ((self.preferredEdge != self.originalEdge) && [self p_checkPopoverFrameWithEdge:&originalEdge]) {
+        if ((self.preferredEdge != self.originalEdge) && [self checkPopoverFrameWithEdge:originalEdge]) {
             self.preferredEdge = self.originalEdge;
             
             return [self p_popoverFrame];
@@ -1061,10 +1337,7 @@
     
     NSRect frame = [self p_popoverFrameForEdge:&popoverEdge];
     
-    if (self.preferredEdge != popoverEdge) {
-        self.preferredEdge = popoverEdge;
-        self.originalViewSize = frame.size;
-    }
+    [self updatePreferredEdgeForEdge:popoverEdge];
     
     return frame;
 }

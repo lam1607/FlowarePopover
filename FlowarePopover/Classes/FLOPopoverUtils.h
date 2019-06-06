@@ -10,11 +10,14 @@
 
 #import "FLOPopoverConstants.h"
 
+@protocol FLOPopoverProtocols;
 @class FLOPopoverBackgroundView;
 
 @interface FLOPopoverUtils : NSObject
 
 #pragma mark - Properties
+
+@property (nonatomic, weak) id<FLOPopoverProtocols> popover;
 
 @property (nonatomic, strong, readonly) NSWindow *mainWindow;
 
@@ -62,10 +65,11 @@
 @property (nonatomic, assign) CGPoint anchorPoint;
 @property (nonatomic, assign) CGSize originalViewSize;
 @property (nonatomic, assign) CGFloat verticalMarginOutOfPopover;
-@property (nonatomic, assign) BOOL containerBoundsChangedByNotification;
+@property (nonatomic, assign) BOOL observerViewBoundsDidChange;
 
 
 + (FLOPopoverUtils *)sharedInstance;
+- (instancetype)initWithPopover:(id<FLOPopoverProtocols>)popover;
 
 - (void)setTopmostWindow:(NSWindow *)topmostWindow;
 - (void)setTopmostView:(NSView *)topmostView;
@@ -85,7 +89,15 @@
 - (void)addView:(NSView *)view toParent:(NSView *)parentView autoresizingMask:(BOOL)isAutoresizingMask;
 - (void)addView:(NSView *)view toParent:(NSView *)parentView centerAutoresizingMask:(BOOL)isCenterAutoresizingMask;
 - (void)setupAutoresizingMaskIfNeeded:(BOOL)needed;
-- (void)resetContainerBoundsChangedByNotification;
+- (void)resetObserverViewBoundsDidChange;
+
+- (void)addSuperviewObserversForView:(NSView *)view selector:(SEL)selector source:(id)source;
+- (BOOL)popoverShouldCloseByCheckingView:(NSView *)changedView;
+- (void)handleObserverViewBoundsDidChange:(NSNotification *)notification popoverShowing:(BOOL)popoverShowing popoverClosing:(BOOL)popoverClosing;
+- (void)handleObserveValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context popoverShowing:(BOOL)popoverShowing popoverClosing:(BOOL)popoverClosing;
+- (NSRect)popoverFrameWithResizingWindow:(NSWindow *)resizedWindow;
+- (void)handleObserverWindowDidResize:(NSNotification *)notification popoverShowing:(BOOL)popoverShowing popoverClosing:(BOOL)popoverClosing;
+- (void)updatePopoverContentSizeWhenWindowResizing;
 
 #pragma mark - Display utilities
 
