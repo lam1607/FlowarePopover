@@ -254,19 +254,19 @@
     }
 }
 
-- (void)setMakesKeyAndOrderFrontOnDisplaying:(BOOL)makesKeyAndOrderFrontOnDisplaying {
-    _makesKeyAndOrderFrontOnDisplaying = makesKeyAndOrderFrontOnDisplaying;
+- (void)setBecomesKeyAfterDisplaying:(BOOL)becomesKeyAfterDisplaying {
+    _becomesKeyAfterDisplaying = becomesKeyAfterDisplaying;
     
-    if ([self.popover respondsToSelector:@selector(setMakesKeyAndOrderFrontOnDisplaying:)]) {
-        self.popover.makesKeyAndOrderFrontOnDisplaying = makesKeyAndOrderFrontOnDisplaying;
+    if ([self.popover respondsToSelector:@selector(setBecomesKeyAfterDisplaying:)]) {
+        self.popover.becomesKeyAfterDisplaying = becomesKeyAfterDisplaying;
     }
 }
 
-- (void)setMakesKeyAndOrderFrontOnMouseHover:(BOOL)makesKeyAndOrderFrontOnMouseHover {
-    _makesKeyAndOrderFrontOnMouseHover = makesKeyAndOrderFrontOnMouseHover;
+- (void)setBecomesKeyOnMouseOver:(BOOL)becomesKeyOnMouseOver {
+    _becomesKeyOnMouseOver = becomesKeyOnMouseOver;
     
-    if ([self.popover respondsToSelector:@selector(setMakesKeyAndOrderFrontOnMouseHover:)]) {
-        self.popover.makesKeyAndOrderFrontOnMouseHover = makesKeyAndOrderFrontOnMouseHover;
+    if ([self.popover respondsToSelector:@selector(setBecomesKeyOnMouseOver:)]) {
+        self.popover.becomesKeyOnMouseOver = becomesKeyOnMouseOver;
     }
 }
 

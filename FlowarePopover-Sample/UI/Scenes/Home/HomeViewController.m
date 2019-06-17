@@ -360,6 +360,7 @@
     _popoverFilms.animated = YES;
     _popoverFilms.closesWhenPopoverResignsKey = YES;
     //    _popoverFilms.closesWhenApplicationBecomesInactive = YES;
+    _popoverFilms.becomesKeyOnMouseOver = YES;
     _popoverFilms.isMovable = YES;
     _popoverFilms.isDetachable = YES;
     
@@ -399,6 +400,7 @@
     //    _popoverNews.closesWhenApplicationBecomesInactive = YES;
     //    _popoverNews.closesAfterTimeInterval = 3.0;
     //    _popoverNews.cancelClosesAfterTimeIntervalWhenMoving = YES;
+    _popoverNews.becomesKeyOnMouseOver = YES;
     _popoverNews.isMovable = YES;
     _popoverNews.isDetachable = YES;
     

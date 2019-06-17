@@ -59,6 +59,7 @@
 @synthesize closesWhenApplicationResizes = _closesWhenApplicationResizes;
 @synthesize closesWhenNotBelongToContainerFrame = _closesWhenNotBelongToContainerFrame;
 @synthesize closesWhenReceivesEvent = _closesWhenReceivesEvent;
+@synthesize becomesKeyOnMouseOver = _becomesKeyOnMouseOver;
 @synthesize isMovable = _isMovable;
 @synthesize isDetachable = _isDetachable;
 @synthesize tag = _tag;
@@ -195,6 +196,10 @@
     if ([self isShown]) {
         self.popoverView.tag = tag;
     }
+}
+
+- (void)setBecomesKeyOnMouseOver:(BOOL)becomesKeyOnMouseOver {
+    self.utils.backgroundView.becomesKeyOnMouseOver = becomesKeyOnMouseOver;
 }
 
 #pragma mark - Local methods

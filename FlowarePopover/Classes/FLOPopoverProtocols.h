@@ -40,6 +40,11 @@
 @property (nonatomic, assign) BOOL closesWhenReceivesEvent;
 
 /**
+ * Make popover become key, order front when mouse hovers the popover
+ */
+@property (nonatomic, assign) BOOL becomesKeyOnMouseOver;
+
+/**
  * Make the popover movable.
  */
 @property (nonatomic, assign) BOOL isMovable;
@@ -159,12 +164,7 @@
  * Make Popover window become key, order front and also activate the application.
  * Only available for FLOWindowPopover
  */
-@property (nonatomic, assign) BOOL makesKeyAndOrderFrontOnDisplaying;
-
-/**
- * Make popover become key, order front when mouse hovers the popover
- */
-@property (nonatomic, assign) BOOL makesKeyAndOrderFrontOnMouseHover;
+@property (nonatomic, assign) BOOL becomesKeyAfterDisplaying;
 
 /**
  * Make the popover become key window. Only apply for FLOWindowPopover type.

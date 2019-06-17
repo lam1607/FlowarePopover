@@ -46,7 +46,7 @@
 /**
  * Make popover become key, order front when mouse hovers the popover
  */
-@property (nonatomic, assign) BOOL makesKeyAndOrderFrontOnMouseHover;
+@property (nonatomic, assign) BOOL becomesKeyOnMouseOver;
 
 // Given a size of the content this should be overridden by subclasses to
 // describe how big the overall popover should be.

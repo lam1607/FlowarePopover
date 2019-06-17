@@ -59,8 +59,8 @@
 @synthesize closesWhenNotBelongToContainerFrame = _closesWhenNotBelongToContainerFrame;
 @synthesize closesWhenReceivesEvent = _closesWhenReceivesEvent;
 @synthesize resignsFieldsOnClosing = _resignsFieldsOnClosing;
-@synthesize makesKeyAndOrderFrontOnDisplaying = _makesKeyAndOrderFrontOnDisplaying;
-@synthesize makesKeyAndOrderFrontOnMouseHover = _makesKeyAndOrderFrontOnMouseHover;
+@synthesize becomesKeyAfterDisplaying = _becomesKeyAfterDisplaying;
+@synthesize becomesKeyOnMouseOver = _becomesKeyOnMouseOver;
 @synthesize isMovable = _isMovable;
 @synthesize isDetachable = _isDetachable;
 @synthesize canBecomeKey = _canBecomeKey;
@@ -96,7 +96,7 @@
         _closesWhenNotBelongToContainerFrame = YES;
         _closesWhenReceivesEvent = NO;
         _resignsFieldsOnClosing = YES;
-        _makesKeyAndOrderFrontOnDisplaying = YES;
+        _becomesKeyAfterDisplaying = YES;
         _isMovable = NO;
         _isDetachable = NO;
         _canBecomeKey = YES;
@@ -203,7 +203,8 @@
     }
 }
 
-- (void)setMakesKeyAndOrderFrontOnMouseHover:(BOOL)makesKeyAndOrderFrontOnMouseHover {
+- (void)setBecomesKeyOnMouseOver:(BOOL)becomesKeyOnMouseOver {
+    self.utils.backgroundView.becomesKeyOnMouseOver = becomesKeyOnMouseOver;
 }
 
 #pragma mark - Local methods
@@ -690,7 +691,7 @@
 
 - (void)popoverDidFinishShowing:(BOOL)showing {
     if (showing) {
-        if (self.makesKeyAndOrderFrontOnDisplaying) {
+        if (self.becomesKeyAfterDisplaying) {
             [self.popoverWindow makeKeyAndOrderFront:nil];
         }
         

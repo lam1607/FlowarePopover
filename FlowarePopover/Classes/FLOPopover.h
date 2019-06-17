@@ -69,12 +69,12 @@
  * Make Popover window become key, order front and also activate the application.
  * Only available for FLOWindowPopover
  */
-@property (nonatomic, assign) BOOL makesKeyAndOrderFrontOnDisplaying;
+@property (nonatomic, assign) BOOL becomesKeyAfterDisplaying;
 
 /**
  * Make popover become key, order front when mouse hovers the popover
  */
-@property (nonatomic, assign) BOOL makesKeyAndOrderFrontOnMouseHover;
+@property (nonatomic, assign) BOOL becomesKeyOnMouseOver;
 
 /**
  * Make the popover movable.

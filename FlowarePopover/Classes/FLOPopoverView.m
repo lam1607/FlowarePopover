@@ -65,7 +65,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
         _mouseEnteredEventReceived = NO;
         _shouldShowArrowWithVisualEffect = NO;
         _userInteractionEnable = YES;
-        _makesKeyAndOrderFrontOnMouseHover = NO;
+        _becomesKeyOnMouseOver = NO;
         
         _clippingView = [[FLOPopoverClippingView alloc] initWithFrame:self.bounds];
         
@@ -87,7 +87,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
         _mouseEnteredEventReceived = NO;
         _shouldShowArrowWithVisualEffect = NO;
         _userInteractionEnable = YES;
-        _makesKeyAndOrderFrontOnMouseHover = NO;
+        _becomesKeyOnMouseOver = NO;
         
         _clippingView = [[FLOPopoverClippingView alloc] initWithFrame:self.bounds];
         
@@ -417,26 +417,24 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 - (void)updateTrackingAreas {
     [super updateTrackingAreas];
     
-    if (!self.makesKeyAndOrderFrontOnMouseHover) return;
+    if (!self.becomesKeyOnMouseOver) return;
     
-    if ([self.window isKindOfClass:[FLOPopoverWindow class]]) {
-        if (_trackingArea != nil) {
-            [self removeTrackingArea:_trackingArea];
-            _trackingArea = nil;
-        }
-        
-        NSInteger opts = (NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveAlways);
-        _trackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds] options:opts owner:self userInfo:nil];
-        [self addTrackingArea:_trackingArea];
+    if (_trackingArea != nil) {
+        [self removeTrackingArea:_trackingArea];
+        _trackingArea = nil;
     }
+    
+    NSInteger opts = (NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveAlways);
+    _trackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds] options:opts owner:self userInfo:nil];
+    [self addTrackingArea:_trackingArea];
 }
 
 - (void)mouseEntered:(NSEvent *)event {
     if (![[NSApplication sharedApplication] isActive]) return;
-    if (!self.makesKeyAndOrderFrontOnMouseHover) return;
+    if (!self.becomesKeyOnMouseOver) return;
     if (!self.userInteractionEnable) return;
     
-    if ([event.window isKindOfClass:[FLOPopoverWindow class]] && (event.window == self.window) && ![event.window isKeyWindow]) {
+    if ((event.window == self.window) && ![event.window isKeyWindow]) {
         _mouseEnteredEventReceived = YES;
         
         [event.window makeKeyAndOrderFront:nil];
@@ -445,10 +443,10 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 - (void)mouseExited:(NSEvent *)event {
     if (![[NSApplication sharedApplication] isActive]) return;
-    if (!self.makesKeyAndOrderFrontOnMouseHover) return;
+    if (!self.becomesKeyOnMouseOver) return;
     if (!self.userInteractionEnable) return;
     
-    if ([event.window isKindOfClass:[FLOPopoverWindow class]] && (event.window == self.window)) {
+    if (event.window == self.window) {
         _mouseEnteredEventReceived = NO;
         
         [event.window makeKeyAndOrderFront:nil];
@@ -457,11 +455,11 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 - (void)mouseMoved:(NSEvent *)event {
     if (![[NSApplication sharedApplication] isActive]) return;
-    if (!self.makesKeyAndOrderFrontOnMouseHover) return;
+    if (!self.becomesKeyOnMouseOver) return;
     if (!self.userInteractionEnable) return;
     if (!_mouseEnteredEventReceived) return;
     
-    if ([event.window isKindOfClass:[FLOPopoverWindow class]] && (event.window == self.window) && ![event.window isKeyWindow]) {
+    if ((event.window == self.window) && ![event.window isKeyWindow]) {
         [event.window makeKeyAndOrderFront:nil];
     }
 }
