@@ -13,15 +13,15 @@
 #import "FLOExtensionsGraphicsContext.h"
 #import "FLOExtensionsNSView.h"
 
-#import "FLOPopoverBackgroundView.h"
+#import "FLOPopoverView.h"
+#import "FLOPopoverWindow.h"
 
-#import "FLOPopover.h"
 
-
-@interface FLOViewPopup () <FLOPopoverBackgroundViewDelegate, NSAnimationDelegate, CAAnimationDelegate>
+@interface FLOViewPopup () <FLOPopoverViewDelegate, NSAnimationDelegate, CAAnimationDelegate> {
+    FLOPopoverView *_popover;
+}
 
 @property (nonatomic, assign, readwrite) BOOL shown;
-@property (nonatomic, assign, readwrite) NSRect initialPositioningFrame;
 
 @property (nonatomic, strong) NSEvent *appEvent;
 
@@ -30,8 +30,7 @@
 @property (nonatomic, assign) BOOL popoverShowing;
 @property (nonatomic, assign) BOOL popoverClosing;
 
-@property (nonatomic, strong) NSView *popoverTempView;
-@property (nonatomic, strong) FLOPopoverBackgroundView *popoverView;
+@property (nonatomic, strong) FLOPopoverView *popoverView;
 @property (nonatomic, strong) FLOPopoverWindow *detachableWindow;
 
 /**
@@ -113,7 +112,7 @@
 - (instancetype)initWithContentView:(NSView *)contentView {
     if (self = [self init]) {
         _utils.contentView = contentView;
-        _utils.backgroundView = [[FLOPopoverBackgroundView alloc] initWithFrame:contentView.frame];
+        _utils.backgroundView = [[FLOPopoverView alloc] initWithFrame:contentView.frame];
     }
     
     return self;
@@ -129,7 +128,7 @@
     if (self = [self init]) {
         _utils.contentViewController = contentViewController;
         _utils.contentView = contentViewController.view;
-        _utils.backgroundView = [[FLOPopoverBackgroundView alloc] initWithFrame:contentViewController.view.frame];
+        _utils.backgroundView = [[FLOPopoverView alloc] initWithFrame:contentViewController.view.frame];
     }
     
     return self;
@@ -368,6 +367,10 @@
     [self setPopoverPositioningRect:rect];
 }
 
+- (void)setUserInteractionEnable:(BOOL)isEnable {
+    [self.utils setUserInteractionEnable:isEnable];
+}
+
 - (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
     self.utils.shouldShowArrowWithVisualEffect = needed;
     self.utils.arrowVisualEffectMaterial = material;
@@ -441,7 +444,6 @@
     
     if (!self.popoverShowing && !self.popoverClosing) {
         self.popoverShowing = YES;
-        self.initialPositioningFrame = rect;
         
         if (willShowBlock) willShowBlock(self);
         
@@ -953,15 +955,15 @@
 }
 
 - (void)popoverDidStopAnimation {
-    BOOL isShown = self.popoverTempView == nil;
+    BOOL isShown = _popover == nil;
     
     if (isShown) {
         [self.popoverView setAlphaValue:1.0];
         [self.utils.contentView setAlphaValue:1.0];
         
-        self.popoverTempView = self.popoverView;
+        _popover = self.popoverView;
     } else {
-        self.popoverTempView = nil;
+        _popover = nil;
     }
     
     [self popoverDidFinishShowing:isShown];
@@ -1012,6 +1014,8 @@
 - (void)registerApplicationEventsMonitor {
     if (!self.appEvent) {
         self.appEvent = [NSEvent addLocalMonitorForEventsMatchingMask:(NSEventMaskLeftMouseDown | NSEventMaskRightMouseDown) handler:^(NSEvent* event) {
+            if (!self.utils.userInteractionEnable) return event;
+            
             NSView *clickedView = [event.window.contentView hitTest:event.locationInWindow];
             
             if (self.closesWhenPopoverResignsKey) {
@@ -1163,7 +1167,7 @@
     }
 }
 
-#pragma mark - FLOPopoverBackgroundViewDelegate
+#pragma mark - FLOPopoverViewDelegate
 
 - (void)popoverDidMakeMovement {
     self.utils.popoverMoved = YES;

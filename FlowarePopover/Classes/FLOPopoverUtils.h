@@ -11,7 +11,7 @@
 #import "FLOPopoverConstants.h"
 
 @protocol FLOPopoverProtocols;
-@class FLOPopoverBackgroundView;
+@class FLOPopoverView;
 
 @interface FLOPopoverUtils : NSObject
 
@@ -28,6 +28,8 @@
 
 @property (nonatomic, strong) NSView *contentView;
 @property (nonatomic, strong) NSViewController *contentViewController;
+
+@property (nonatomic, assign) BOOL userInteractionEnable;
 
 /**
  * The target window that the popover will be added on.
@@ -56,7 +58,7 @@
 @property (nonatomic, assign) NSRect positioningWindowFrame;
 @property (nonatomic, strong) NSMutableArray<NSView *> *anchorSuperviews;
 
-@property (nonatomic, strong) FLOPopoverBackgroundView *backgroundView;
+@property (nonatomic, strong) FLOPopoverView *backgroundView;
 @property (nonatomic, assign) NSRect positioningFrame;
 @property (nonatomic, strong) NSView *positioningView;
 @property (nonatomic, assign) NSRectEdge preferredEdge;
@@ -101,6 +103,7 @@
 
 #pragma mark - Display utilities
 
+- (void)setUserInteractionEnable:(BOOL)isEnable;
 - (void)setPopoverEdgeType:(FLOPopoverEdgeType)edgeType;
 - (void)setupPositioningAnchorWithView:(NSView *)positioningView positioningRect:(NSRect)positioningRect shouldUpdatePosition:(BOOL)shouldUpdatePosition;
 - (NSRect)popoverFrameForEdge:(NSRectEdge)popoverEdge;

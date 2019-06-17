@@ -10,7 +10,10 @@
 
 #import "FLOPopoverProtocols.h"
 
-#import "FLOPopoverBackgroundView.h"
+#import "FLOPopoverView.h"
+
+#import "FLOVirtualInteractionView.h"
+
 
 @interface FLOPopoverUtils () <NSWindowDelegate>
 
@@ -20,6 +23,8 @@
 @property (nonatomic, strong, readwrite) NSView *topView;
 
 @property (nonatomic, assign, readwrite) BOOL mainWindowResized;
+
+@property (nonatomic, strong) FLOVirtualInteractionView *virtualInteractionView;
 
 @end
 
@@ -54,6 +59,7 @@
             _mainWindow = [[[NSApplication sharedApplication] windows] firstObject];
         }
         
+        _userInteractionEnable = YES;
         _popoverStyle = FLOPopoverStyleNormal;
         
         _shouldShowArrowWithVisualEffect = NO;
@@ -726,6 +732,30 @@
 }
 
 #pragma mark - Display utilities
+
+- (void)setUserInteractionEnable:(BOOL)isEnable {
+    _userInteractionEnable = isEnable;
+    
+    self.backgroundView.userInteractionEnable = isEnable;
+    
+    if (isEnable) {
+        if ([self.virtualInteractionView isDescendantOf:self.backgroundView]) {
+            [self.virtualInteractionView removeFromSuperview];
+            self.virtualInteractionView = nil;
+        }
+    } else {
+        
+        if (self.virtualInteractionView == nil) {
+            self.virtualInteractionView = [[FLOVirtualInteractionView alloc] initWithFrame:self.backgroundView.frame];
+            [self.virtualInteractionView setWantsLayer:YES];
+            [self.virtualInteractionView.layer setBackgroundColor:[[NSColor.blackColor colorWithAlphaComponent:0.01] CGColor]];
+        }
+        
+        if (![self.virtualInteractionView isDescendantOf:self.backgroundView]) {
+            [self.backgroundView addSubview:self.virtualInteractionView];
+        }
+    }
+}
 
 - (void)setPopoverEdgeType:(FLOPopoverEdgeType)edgeType {
     switch (edgeType) {

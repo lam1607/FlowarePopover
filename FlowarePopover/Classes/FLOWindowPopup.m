@@ -14,16 +14,13 @@
 #import "FLOExtensionsNSView.h"
 #import "FLOExtensionsNSWindow.h"
 
-#import "FLOPopoverBackgroundView.h"
+#import "FLOPopoverView.h"
+#import "FLOPopoverWindow.h"
 
-#import "FLOPopover.h"
 
-
-@interface FLOWindowPopup () <FLOPopoverBackgroundViewDelegate, NSAnimationDelegate, CAAnimationDelegate> {
+@interface FLOWindowPopup () <FLOPopoverViewDelegate, NSAnimationDelegate, CAAnimationDelegate> {
     FLOPopoverWindow *_popover;
 }
-
-@property (nonatomic, assign, readwrite) NSRect initialPositioningFrame;
 
 @property (nonatomic, strong) NSEvent *appEvent;
 
@@ -63,6 +60,7 @@
 @synthesize closesWhenReceivesEvent = _closesWhenReceivesEvent;
 @synthesize resignsFieldsOnClosing = _resignsFieldsOnClosing;
 @synthesize makesKeyAndOrderFrontOnDisplaying = _makesKeyAndOrderFrontOnDisplaying;
+@synthesize makesKeyAndOrderFrontOnMouseHover = _makesKeyAndOrderFrontOnMouseHover;
 @synthesize isMovable = _isMovable;
 @synthesize isDetachable = _isDetachable;
 @synthesize canBecomeKey = _canBecomeKey;
@@ -120,7 +118,7 @@
 - (instancetype)initWithContentView:(NSView *)contentView {
     if (self = [self init]) {
         _utils.contentView = contentView;
-        _utils.backgroundView = [[FLOPopoverBackgroundView alloc] initWithFrame:contentView.frame];
+        _utils.backgroundView = [[FLOPopoverView alloc] initWithFrame:contentView.frame];
     }
     
     return self;
@@ -136,7 +134,7 @@
     if (self = [self init]) {
         _utils.contentViewController = contentViewController;
         _utils.contentView = contentViewController.view;
-        _utils.backgroundView = [[FLOPopoverBackgroundView alloc] initWithFrame:contentViewController.view.frame];
+        _utils.backgroundView = [[FLOPopoverView alloc] initWithFrame:contentViewController.view.frame];
     }
     
     return self;
@@ -203,6 +201,9 @@
     if ([self isShown]) {
         self.popoverWindow.tag = tag;
     }
+}
+
+- (void)setMakesKeyAndOrderFrontOnMouseHover:(BOOL)makesKeyAndOrderFrontOnMouseHover {
 }
 
 #pragma mark - Local methods
@@ -382,6 +383,10 @@
     [self setPopoverPositioningRect:rect];
 }
 
+- (void)setUserInteractionEnable:(BOOL)isEnable {
+    [self.utils setUserInteractionEnable:isEnable];
+}
+
 - (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
     self.utils.shouldShowArrowWithVisualEffect = needed;
     self.utils.arrowVisualEffectMaterial = material;
@@ -455,7 +460,6 @@
     
     if (!self.popoverShowing && !self.popoverClosing) {
         self.popoverShowing = YES;
-        self.initialPositioningFrame = rect;
         
         if (willShowBlock) willShowBlock(self);
         
@@ -1111,6 +1115,8 @@
 - (void)registerApplicationEventsMonitor {
     if (!self.appEvent) {
         self.appEvent = [NSEvent addLocalMonitorForEventsMatchingMask:(NSEventMaskLeftMouseDown | NSEventMaskRightMouseDown) handler:^(NSEvent* event) {
+            if (!self.utils.userInteractionEnable) return event;
+            
             if (self.closesWhenPopoverResignsKey) {
                 NSView *clickedView = [event.window.contentView hitTest:event.locationInWindow];
                 
@@ -1267,7 +1273,7 @@
     }
 }
 
-#pragma mark - FLOPopoverBackgroundViewDelegate
+#pragma mark - FLOPopoverViewDelegate
 
 - (void)popoverDidMakeMovement {
     self.utils.popoverMoved = YES;

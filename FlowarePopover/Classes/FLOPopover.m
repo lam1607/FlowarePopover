@@ -12,41 +12,6 @@
 #import "FLOViewPopup.h"
 #import "FLOWindowPopup.h"
 
-#pragma mark - FLOPopoverView
-
-@implementation FLOPopoverView
-
-@synthesize tag = _tag;
-
-- (instancetype)init {
-    if (self = [super init]) {
-        _tag = -1;
-    }
-    
-    return self;
-}
-
-@end
-
-#pragma mark - FLOPopoverWindow
-
-@implementation FLOPopoverWindow
-
-- (instancetype)init {
-    if (self = [super init]) {
-        _tag = -1;
-    }
-    
-    return self;
-}
-
-- (BOOL)canBecomeKeyWindow {
-    return self.canBecomeKey;
-}
-
-@end
-
-#pragma mark - FLOPopover
 
 @interface FLOPopover () {
     NSTimer *_closesAfterTimeIntervalTimer;
@@ -120,10 +85,6 @@
 
 - (BOOL)isShown {
     return [self.popover isShown];
-}
-
-- (NSRect)initialPositioningFrame {
-    return self.popover.initialPositioningFrame;
 }
 
 - (void)setType:(FLOPopoverType)type {
@@ -301,6 +262,14 @@
     }
 }
 
+- (void)setMakesKeyAndOrderFrontOnMouseHover:(BOOL)makesKeyAndOrderFrontOnMouseHover {
+    _makesKeyAndOrderFrontOnMouseHover = makesKeyAndOrderFrontOnMouseHover;
+    
+    if ([self.popover respondsToSelector:@selector(setMakesKeyAndOrderFrontOnMouseHover:)]) {
+        self.popover.makesKeyAndOrderFrontOnMouseHover = makesKeyAndOrderFrontOnMouseHover;
+    }
+}
+
 - (void)setCanBecomeKey:(BOOL)canBecomeKey {
     _canBecomeKey = canBecomeKey;
     
@@ -465,6 +434,12 @@
 
 - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect {
     [self.popover setPopoverContentViewSize:newSize positioningRect:rect];
+}
+
+- (void)setUserInteractionEnable:(BOOL)isEnable {
+    if ([self.popover respondsToSelector:@selector(setUserInteractionEnable:)]) {
+        [self.popover setUserInteractionEnable:isEnable];
+    }
 }
 
 - (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {

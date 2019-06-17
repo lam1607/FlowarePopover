@@ -63,7 +63,6 @@
 		DE8E5E732153512C002AE872 /* FLOViewPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464F21534005004E8DEF /* FLOViewPopup.m */; };
 		DE8E5E7421535132002AE872 /* FLOWindowPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE463921534005004E8DEF /* FLOWindowPopup.m */; };
 		DE8E5E7621535154002AE872 /* FLOPopoverUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE463B21534005004E8DEF /* FLOPopoverUtils.m */; };
-		DE8E5E772153515C002AE872 /* FLOPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE463A21534005004E8DEF /* FLOPopoverBackgroundView.m */; };
 		DE8E5E812153B62B002AE872 /* FLOExtensionsNSWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = DE8E5E7F2153B62B002AE872 /* FLOExtensionsNSWindow.h */; };
 		DE8E5E822153B62B002AE872 /* FLOExtensionsNSWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E802153B62B002AE872 /* FLOExtensionsNSWindow.m */; };
 		DE8E5E852153B69E002AE872 /* FLOExtensionsNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = DE8E5E832153B69E002AE872 /* FLOExtensionsNSView.h */; };
@@ -100,12 +99,10 @@
 		DEDE45F521533F86004E8DEF /* FlowarePopover.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE45F321533F86004E8DEF /* FlowarePopover.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DEDE465621534005004E8DEF /* FLOViewPopup.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE463821534005004E8DEF /* FLOViewPopup.h */; };
 		DEDE465721534005004E8DEF /* FLOWindowPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE463921534005004E8DEF /* FLOWindowPopup.m */; };
-		DEDE465821534005004E8DEF /* FLOPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE463A21534005004E8DEF /* FLOPopoverBackgroundView.m */; };
 		DEDE465921534005004E8DEF /* FLOPopoverUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE463B21534005004E8DEF /* FLOPopoverUtils.m */; };
 		DEDE465A21534005004E8DEF /* FLOPopover.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE463C21534005004E8DEF /* FLOPopover.h */; };
 		DEDE466B21534005004E8DEF /* FLOWindowPopup.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE464E21534005004E8DEF /* FLOWindowPopup.h */; };
 		DEDE466C21534005004E8DEF /* FLOViewPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464F21534005004E8DEF /* FLOViewPopup.m */; };
-		DEDE466E21534005004E8DEF /* FLOPopoverBackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE465121534005004E8DEF /* FLOPopoverBackgroundView.h */; };
 		DEDE467021534005004E8DEF /* FLOPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE465321534005004E8DEF /* FLOPopover.m */; };
 		DEDE467121534005004E8DEF /* FLOPopoverConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE465421534005004E8DEF /* FLOPopoverConstants.h */; };
 		DEDE467221534005004E8DEF /* FLOPopoverUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE465521534005004E8DEF /* FLOPopoverUtils.h */; };
@@ -120,6 +117,18 @@
 		DEF15EBC21DDCBD400FDE038 /* AbstractService.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EB321DDCBD400FDE038 /* AbstractService.m */; };
 		DEF15EBD21DDCBD400FDE038 /* AbstractViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EB621DDCBD400FDE038 /* AbstractViewController.m */; };
 		DEF15EC221DDCC8400FDE038 /* NSColor+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EC121DDCC8400FDE038 /* NSColor+Custom.m */; };
+		DEF1F87A22B78FBE00D54049 /* FLOPopoverView.h in Headers */ = {isa = PBXBuildFile; fileRef = DEF1F87822B78FBE00D54049 /* FLOPopoverView.h */; };
+		DEF1F87B22B78FBE00D54049 /* FLOPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF1F87922B78FBE00D54049 /* FLOPopoverView.m */; };
+		DEF1F87E22B7900500D54049 /* FLOPopoverWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = DEF1F87C22B7900500D54049 /* FLOPopoverWindow.h */; };
+		DEF1F87F22B7900500D54049 /* FLOPopoverWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF1F87D22B7900500D54049 /* FLOPopoverWindow.m */; };
+		DEF1F88022B7916D00D54049 /* FLOPopoverWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF1F87D22B7900500D54049 /* FLOPopoverWindow.m */; };
+		DEF1F88122B7916F00D54049 /* FLOPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF1F87922B78FBE00D54049 /* FLOPopoverView.m */; };
+		DEF1F88422B792A300D54049 /* FLOVirtualInteractionView.h in Headers */ = {isa = PBXBuildFile; fileRef = DEF1F88222B792A300D54049 /* FLOVirtualInteractionView.h */; };
+		DEF1F88522B792A300D54049 /* FLOVirtualInteractionView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF1F88322B792A300D54049 /* FLOVirtualInteractionView.m */; };
+		DEF1F88622B7941300D54049 /* FLOVirtualInteractionView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF1F88322B792A300D54049 /* FLOVirtualInteractionView.m */; };
+		DEF1F89622B79BB800D54049 /* FLOPopoverClippingView.h in Headers */ = {isa = PBXBuildFile; fileRef = DEF1F89422B79BB800D54049 /* FLOPopoverClippingView.h */; };
+		DEF1F89722B79BB800D54049 /* FLOPopoverClippingView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF1F89522B79BB800D54049 /* FLOPopoverClippingView.m */; };
+		DEF1F89822B79D9C00D54049 /* FLOPopoverClippingView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF1F89522B79BB800D54049 /* FLOPopoverClippingView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -284,12 +293,10 @@
 		DEDE45F421533F86004E8DEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DEDE463821534005004E8DEF /* FLOViewPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLOViewPopup.h; sourceTree = "<group>"; };
 		DEDE463921534005004E8DEF /* FLOWindowPopup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLOWindowPopup.m; sourceTree = "<group>"; };
-		DEDE463A21534005004E8DEF /* FLOPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLOPopoverBackgroundView.m; sourceTree = "<group>"; };
 		DEDE463B21534005004E8DEF /* FLOPopoverUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLOPopoverUtils.m; sourceTree = "<group>"; };
 		DEDE463C21534005004E8DEF /* FLOPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLOPopover.h; sourceTree = "<group>"; };
 		DEDE464E21534005004E8DEF /* FLOWindowPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLOWindowPopup.h; sourceTree = "<group>"; };
 		DEDE464F21534005004E8DEF /* FLOViewPopup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLOViewPopup.m; sourceTree = "<group>"; };
-		DEDE465121534005004E8DEF /* FLOPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLOPopoverBackgroundView.h; sourceTree = "<group>"; };
 		DEDE465321534005004E8DEF /* FLOPopover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLOPopover.m; sourceTree = "<group>"; };
 		DEDE465421534005004E8DEF /* FLOPopoverConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLOPopoverConstants.h; sourceTree = "<group>"; };
 		DEDE465521534005004E8DEF /* FLOPopoverUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLOPopoverUtils.h; sourceTree = "<group>"; };
@@ -315,6 +322,14 @@
 		DEF15EB621DDCBD400FDE038 /* AbstractViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractViewController.m; sourceTree = "<group>"; };
 		DEF15EC021DDCC8400FDE038 /* NSColor+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+Custom.h"; sourceTree = "<group>"; };
 		DEF15EC121DDCC8400FDE038 /* NSColor+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Custom.m"; sourceTree = "<group>"; };
+		DEF1F87822B78FBE00D54049 /* FLOPopoverView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOPopoverView.h; sourceTree = "<group>"; };
+		DEF1F87922B78FBE00D54049 /* FLOPopoverView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOPopoverView.m; sourceTree = "<group>"; };
+		DEF1F87C22B7900500D54049 /* FLOPopoverWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOPopoverWindow.h; sourceTree = "<group>"; };
+		DEF1F87D22B7900500D54049 /* FLOPopoverWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOPopoverWindow.m; sourceTree = "<group>"; };
+		DEF1F88222B792A300D54049 /* FLOVirtualInteractionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOVirtualInteractionView.h; sourceTree = "<group>"; };
+		DEF1F88322B792A300D54049 /* FLOVirtualInteractionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOVirtualInteractionView.m; sourceTree = "<group>"; };
+		DEF1F89422B79BB800D54049 /* FLOPopoverClippingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOPopoverClippingView.h; sourceTree = "<group>"; };
+		DEF1F89522B79BB800D54049 /* FLOPopoverClippingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOPopoverClippingView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1089,8 +1104,14 @@
 				DEDE463921534005004E8DEF /* FLOWindowPopup.m */,
 				DEDE465521534005004E8DEF /* FLOPopoverUtils.h */,
 				DEDE463B21534005004E8DEF /* FLOPopoverUtils.m */,
-				DEDE465121534005004E8DEF /* FLOPopoverBackgroundView.h */,
-				DEDE463A21534005004E8DEF /* FLOPopoverBackgroundView.m */,
+				DEF1F87822B78FBE00D54049 /* FLOPopoverView.h */,
+				DEF1F87922B78FBE00D54049 /* FLOPopoverView.m */,
+				DEF1F87C22B7900500D54049 /* FLOPopoverWindow.h */,
+				DEF1F87D22B7900500D54049 /* FLOPopoverWindow.m */,
+				DEF1F89422B79BB800D54049 /* FLOPopoverClippingView.h */,
+				DEF1F89522B79BB800D54049 /* FLOPopoverClippingView.m */,
+				DEF1F88222B792A300D54049 /* FLOVirtualInteractionView.h */,
+				DEF1F88322B792A300D54049 /* FLOVirtualInteractionView.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1242,15 +1263,18 @@
 				DE8E5E952153BAAC002AE872 /* FLOExtensionsGraphicsContext.h in Headers */,
 				DE8E5E892153B7AF002AE872 /* FLOExtensionsCABasicAnimation.h in Headers */,
 				DE8E5E912153B8C1002AE872 /* FLOExtensionsNSValue.h in Headers */,
+				DEF1F89622B79BB800D54049 /* FLOPopoverClippingView.h in Headers */,
+				DEF1F88422B792A300D54049 /* FLOVirtualInteractionView.h in Headers */,
+				DEF1F87E22B7900500D54049 /* FLOPopoverWindow.h in Headers */,
 				DEDE465621534005004E8DEF /* FLOViewPopup.h in Headers */,
 				DEDE467221534005004E8DEF /* FLOPopoverUtils.h in Headers */,
 				DEDE465A21534005004E8DEF /* FLOPopover.h in Headers */,
 				DEDE45F521533F86004E8DEF /* FlowarePopover.h in Headers */,
 				DE8E5E8D2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.h in Headers */,
 				DE8E5E852153B69E002AE872 /* FLOExtensionsNSView.h in Headers */,
-				DEDE466E21534005004E8DEF /* FLOPopoverBackgroundView.h in Headers */,
 				DEDE467121534005004E8DEF /* FLOPopoverConstants.h in Headers */,
 				DEDE466B21534005004E8DEF /* FLOWindowPopup.h in Headers */,
+				DEF1F87A22B78FBE00D54049 /* FLOPopoverView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1376,12 +1400,13 @@
 				DE05760B223670FE00B94B81 /* Notification.m in Sources */,
 				DE0575F8223641DE00B94B81 /* TrashCellView.m in Sources */,
 				DE8E5E9B2153BD29002AE872 /* FLOExtensionsCABasicAnimation.m in Sources */,
-				DE8E5E772153515C002AE872 /* FLOPopoverBackgroundView.m in Sources */,
+				DEF1F88022B7916D00D54049 /* FLOPopoverWindow.m in Sources */,
 				DE8E5E7621535154002AE872 /* FLOPopoverUtils.m in Sources */,
 				DE8E5E7421535132002AE872 /* FLOWindowPopup.m in Sources */,
 				DE8E5E732153512C002AE872 /* FLOViewPopup.m in Sources */,
 				DE8E5E712153510A002AE872 /* FLOPopover.m in Sources */,
 				DE8E5E4D215348EF002AE872 /* ComicsPresenter.m in Sources */,
+				DEF1F88622B7941300D54049 /* FLOVirtualInteractionView.m in Sources */,
 				DE05760722366F1C00B94B81 /* NotificationService.m in Sources */,
 				DE8E5E45215348EF002AE872 /* NewsRepository.m in Sources */,
 				DE8E5E67215348EF002AE872 /* FilmCellView.m in Sources */,
@@ -1409,9 +1434,11 @@
 				DED3A40321E6EC9A00B479BF /* TechnologyCellPresenter.m in Sources */,
 				DE8E5C8221534822002AE872 /* main.m in Sources */,
 				DE8E5E5A215348EF002AE872 /* HomeViewController.m in Sources */,
+				DEF1F88122B7916F00D54049 /* FLOPopoverView.m in Sources */,
 				DED3A3FB21E6EB3B00B479BF /* TechnologyCellView.m in Sources */,
 				DE8E5E5B215348EF002AE872 /* HomePresenter.m in Sources */,
 				DEF15EC221DDCC8400FDE038 /* NSColor+Custom.m in Sources */,
+				DEF1F89822B79D9C00D54049 /* FLOPopoverClippingView.m in Sources */,
 				DEF15EBA21DDCBD400FDE038 /* AbstractPresenter.m in Sources */,
 				DE8E5E54215348EF002AE872 /* FilmsPresenter.m in Sources */,
 				DE8E5E4B215348EF002AE872 /* Utils.m in Sources */,
@@ -1440,15 +1467,18 @@
 			files = (
 				DEDE465921534005004E8DEF /* FLOPopoverUtils.m in Sources */,
 				DE8E5E8A2153B7AF002AE872 /* FLOExtensionsCABasicAnimation.m in Sources */,
+				DEF1F87B22B78FBE00D54049 /* FLOPopoverView.m in Sources */,
 				DE8E5E922153B8C1002AE872 /* FLOExtensionsNSValue.m in Sources */,
-				DEDE465821534005004E8DEF /* FLOPopoverBackgroundView.m in Sources */,
 				DEDE467021534005004E8DEF /* FLOPopover.m in Sources */,
+				DEF1F87F22B7900500D54049 /* FLOPopoverWindow.m in Sources */,
+				DEF1F88522B792A300D54049 /* FLOVirtualInteractionView.m in Sources */,
 				DEDE465721534005004E8DEF /* FLOWindowPopup.m in Sources */,
 				DE8E5E962153BAAC002AE872 /* FLOExtensionsGraphicsContext.m in Sources */,
 				DE8E5E822153B62B002AE872 /* FLOExtensionsNSWindow.m in Sources */,
 				DE8E5E8E2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.m in Sources */,
 				DEDE466C21534005004E8DEF /* FLOViewPopup.m in Sources */,
 				DE8E5E862153B69E002AE872 /* FLOExtensionsNSView.m in Sources */,
+				DEF1F89722B79BB800D54049 /* FLOPopoverClippingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

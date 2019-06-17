@@ -9,27 +9,10 @@
 #import <Cocoa/Cocoa.h>
 
 #import "FLOPopoverConstants.h"
+#import "FLOPopoverView.h"
+#import "FLOPopoverWindow.h"
 
 @class FLOPopover;
-
-#pragma mark - FLOPopoverView
-
-@interface FLOPopoverView : NSView
-
-@property (nonatomic, assign, readwrite) NSInteger tag;
-
-@end
-
-#pragma mark - FLOPopoverWindow
-
-@interface FLOPopoverWindow : NSWindow
-
-@property (nonatomic, assign) BOOL canBecomeKey;
-@property (nonatomic, assign) NSInteger tag;
-
-@end
-
-#pragma mark - FLOPopover
 
 @protocol FLOPopoverDelegate <NSObject>
 
@@ -55,11 +38,6 @@
 @property (nonatomic, assign, readonly) NSRect frame;
 @property (nonatomic, assign, readonly, getter = isShown) BOOL shown;
 @property (nonatomic, assign, readonly) BOOL isMoved;
-
-/**
- * The positioning frame that used in displaying function. (only available for given frame displaying).
- */
-@property (nonatomic, assign, readonly) NSRect initialPositioningFrame;
 
 
 @property (nonatomic, assign) BOOL alwaysOnTop;
@@ -92,6 +70,11 @@
  * Only available for FLOWindowPopover
  */
 @property (nonatomic, assign) BOOL makesKeyAndOrderFrontOnDisplaying;
+
+/**
+ * Make popover become key, order front when mouse hovers the popover
+ */
+@property (nonatomic, assign) BOOL makesKeyAndOrderFrontOnMouseHover;
 
 /**
  * Make the popover movable.
@@ -172,6 +155,7 @@
 - (void)setPopoverPositioningRect:(NSRect)rect;
 - (void)setPopoverPositioningView:(NSView *)positioningView positioningRect:(NSRect)rect;
 - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;
+- (void)setUserInteractionEnable:(BOOL)isEnable;
 
 - (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 

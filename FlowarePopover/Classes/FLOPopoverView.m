@@ -1,12 +1,15 @@
 //
-//  FLOPopoverBackgroundView.m
+//  FLOPopoverView.m
 //  FlowarePopover
 //
-//  Created by lamnguyen on 8/21/18.
-//  Copyright © 2018 Floware Inc. All rights reserved.
+//  Created by Lam Nguyen on 6/17/19.
+//  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
-#import "FLOPopoverBackgroundView.h"
+#import "FLOPopoverView.h"
+
+#import "FLOPopoverClippingView.h"
+#import "FLOPopoverWindow.h"
 
 #import "FLOPopoverUtils.h"
 
@@ -25,144 +28,9 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     return (minY + maxY) / 2;
 }
 
-static void CGPathCallback(void *info, const CGPathElement *element) {
-    NSBezierPath *bezierPath = (__bridge NSBezierPath *)info;
-    CGPoint *points = element->points;
+@interface FLOPopoverView () {
+    NSTrackingArea *_trackingArea;
     
-    switch (element->type) {
-        case kCGPathElementMoveToPoint: {
-            [bezierPath moveToPoint:points[0]];
-            break;
-        }
-        case kCGPathElementAddLineToPoint: {
-            [bezierPath lineToPoint:points[0]];
-            break;
-        }
-        case kCGPathElementAddQuadCurveToPoint: {
-            NSPoint qp0 = bezierPath.currentPoint, qp1 = points[0], qp2 = points[1], cp1, cp2;
-            CGFloat m = 0.67;
-            cp1.x = (qp0.x + ((qp1.x - qp0.x) * m));
-            cp1.y = (qp0.y + ((qp1.y - qp0.y) * m));
-            cp2.x = (qp2.x + ((qp1.x - qp2.x) * m));
-            cp2.y = (qp2.y + ((qp1.y - qp2.y) * m));
-            [bezierPath curveToPoint:qp2 controlPoint1:cp1 controlPoint2:cp2];
-            break;
-        }
-        case kCGPathElementAddCurveToPoint: {
-            [bezierPath curveToPoint:points[2] controlPoint1:points[0] controlPoint2:points[1]];
-            break;
-        }
-        case kCGPathElementCloseSubpath: {
-            [bezierPath closePath];
-            break;
-        }
-    }
-}
-
-static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
-    NSBezierPath *bezierPath = [NSBezierPath bezierPath];
-    CGPathApply(cgPath, (__bridge void *)bezierPath, CGPathCallback);
-    
-    return bezierPath;
-}
-
-#pragma mark - FLOPopoverClippingView
-
-@interface FLOPopoverClippingView () {
-    NSVisualEffectView *_visualEffectView;
-}
-
-@end
-
-@implementation FLOPopoverClippingView
-
-- (void)dealloc {
-    [self clearClippingPath];
-}
-
-- (NSView *)hitTest:(NSPoint)aPoint {
-    return nil;
-}
-
-- (void)setClippingPath:(CGPathRef)clippingPath {
-    if (clippingPath == _clippingPath) return;
-    
-    CGPathRelease(_clippingPath);
-    _clippingPath = clippingPath;
-    CGPathRetain(_clippingPath);
-    
-    @try {
-        self.needsDisplay = YES;
-    } @catch (NSException *exception) {
-        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
-    }
-}
-
-- (void)drawRect:(NSRect)dirtyRect {
-    if (self.clippingPath == NULL) return;
-    
-    [self drawClippingPath];
-}
-
-- (void)setupArrowVisualEffectViewMaterial:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
-    if (_visualEffectView == nil) {
-        _visualEffectView = [[NSVisualEffectView alloc] initWithFrame:self.frame];
-        _visualEffectView.state = state;
-        _visualEffectView.material = material;
-        _visualEffectView.blendingMode = blendingMode;
-        
-        [self addSubview:_visualEffectView];
-    }
-}
-
-- (void)setClippingPathColor:(CGColorRef)color {
-    if (color != nil) {
-        self.pathColor = color;
-        
-        @try {
-            self.needsDisplay = YES;
-        } @catch (NSException *exception) {
-            NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
-        }
-    }
-}
-
-- (void)drawClippingPath {
-    @try {
-        if (_visualEffectView != nil) {
-            [_visualEffectView setFrameSize:self.frame.size];
-            
-            _visualEffectView.maskImage = [NSImage imageWithSize:self.frame.size flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
-                NSBezierPath *path = bezierPathWithCGPath(self.clippingPath);
-                [path fill];
-                
-                return YES;
-            }];
-        } else {
-            CGContextRef currentContext = NSGraphicsContext.currentContext.CGContext;
-            
-            if (currentContext != nil) {
-                self.pathColor = ((self.pathColor != nil) && (self.pathColor != [NSColor.clearColor CGColor])) ? self.pathColor : [NSColor.lightGrayColor CGColor];
-                
-                CGContextAddPath(currentContext, self.clippingPath);
-                CGContextSetFillColorWithColor(currentContext, self.pathColor);
-                CGContextFillPath(currentContext);
-            }
-        }
-    } @catch (NSException *exception) {
-        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
-    }
-}
-
-- (void)clearClippingPath {
-    self.clippingPath = NULL;
-}
-
-@end
-
-#pragma mark - FLOPopoverBackgroundView
-
-@interface FLOPopoverBackgroundView () {
     BOOL _isMovable;
     BOOL _isDetachable;
     
@@ -170,6 +38,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
     BOOL _dragging;
     
     BOOL _mouseDownEventReceived;
+    BOOL _mouseEnteredEventReceived;
     
     BOOL _shouldShowArrowWithVisualEffect;
 }
@@ -183,14 +52,20 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 
 @end
 
-@implementation FLOPopoverBackgroundView
+@implementation FLOPopoverView
 
-- (instancetype)initWithFrame:(NSRect)frame {
-    if (self = [super initWithFrame:frame]) {
+@synthesize tag = _tag;
+
+- (instancetype)init {
+    if (self = [super init]) {
+        _tag = -1;
         _arrowSize = NSZeroSize;
         _fillColor = NSColor.clearColor;
         _mouseDownEventReceived = NO;
+        _mouseEnteredEventReceived = NO;
         _shouldShowArrowWithVisualEffect = NO;
+        _userInteractionEnable = YES;
+        _makesKeyAndOrderFrontOnMouseHover = NO;
         
         _clippingView = [[FLOPopoverClippingView alloc] initWithFrame:self.bounds];
         
@@ -202,6 +77,37 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
     
     return self;
 }
+
+- (instancetype)initWithFrame:(NSRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        _tag = -1;
+        _arrowSize = NSZeroSize;
+        _fillColor = NSColor.clearColor;
+        _mouseDownEventReceived = NO;
+        _mouseEnteredEventReceived = NO;
+        _shouldShowArrowWithVisualEffect = NO;
+        _userInteractionEnable = YES;
+        _makesKeyAndOrderFrontOnMouseHover = NO;
+        
+        _clippingView = [[FLOPopoverClippingView alloc] initWithFrame:self.bounds];
+        
+        _clippingView.translatesAutoresizingMaskIntoConstraints = YES;
+        _clippingView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable | NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin | NSViewMaxYMargin;
+        
+        [self addSubview:_clippingView];
+    }
+    
+    return self;
+}
+
+- (void)dealloc {
+    if (_trackingArea != nil) {
+        [self removeTrackingArea:_trackingArea];
+        _trackingArea = nil;
+    }
+}
+
+#pragma mark - Override methods
 
 - (void)drawRect:(NSRect)rect {
     [super drawRect:rect];
@@ -508,7 +414,61 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 
 #pragma mark - Mouse events
 
+- (void)updateTrackingAreas {
+    [super updateTrackingAreas];
+    
+    if (!self.makesKeyAndOrderFrontOnMouseHover) return;
+    
+    if ([self.window isKindOfClass:[FLOPopoverWindow class]]) {
+        if (_trackingArea != nil) {
+            [self removeTrackingArea:_trackingArea];
+            _trackingArea = nil;
+        }
+        
+        NSInteger opts = (NSTrackingMouseEnteredAndExited | NSTrackingMouseMoved | NSTrackingActiveAlways);
+        _trackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds] options:opts owner:self userInfo:nil];
+        [self addTrackingArea:_trackingArea];
+    }
+}
+
+- (void)mouseEntered:(NSEvent *)event {
+    if (![[NSApplication sharedApplication] isActive]) return;
+    if (!self.makesKeyAndOrderFrontOnMouseHover) return;
+    if (!self.userInteractionEnable) return;
+    
+    if ([event.window isKindOfClass:[FLOPopoverWindow class]] && (event.window == self.window) && ![event.window isKeyWindow]) {
+        _mouseEnteredEventReceived = YES;
+        
+        [event.window makeKeyAndOrderFront:nil];
+    }
+}
+
+- (void)mouseExited:(NSEvent *)event {
+    if (![[NSApplication sharedApplication] isActive]) return;
+    if (!self.makesKeyAndOrderFrontOnMouseHover) return;
+    if (!self.userInteractionEnable) return;
+    
+    if ([event.window isKindOfClass:[FLOPopoverWindow class]] && (event.window == self.window)) {
+        _mouseEnteredEventReceived = NO;
+        
+        [event.window makeKeyAndOrderFront:nil];
+    }
+}
+
+- (void)mouseMoved:(NSEvent *)event {
+    if (![[NSApplication sharedApplication] isActive]) return;
+    if (!self.makesKeyAndOrderFrontOnMouseHover) return;
+    if (!self.userInteractionEnable) return;
+    if (!_mouseEnteredEventReceived) return;
+    
+    if ([event.window isKindOfClass:[FLOPopoverWindow class]] && (event.window == self.window) && ![event.window isKeyWindow]) {
+        [event.window makeKeyAndOrderFront:nil];
+    }
+}
+
 - (void)mouseDown:(NSEvent *)event {
+    if (!self.userInteractionEnable) return;
+    
     BOOL isFLOPopoverWindow = [event.window isKindOfClass:[FLOPopoverWindow class]];
     _originalMouseOffset = isFLOPopoverWindow ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:self.window.contentView];
     _dragging = NO;
@@ -516,6 +476,8 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 }
 
 - (void)mouseDragged:(NSEvent *)event {
+    if (!self.userInteractionEnable) return;
+    
     if (_mouseDownEventReceived && (_isMovable || _isDetachable)) {
         _dragging = YES;
         
@@ -539,6 +501,8 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 }
 
 - (void)mouseUp:(NSEvent *)event {
+    if (!self.userInteractionEnable) return;
+    
     if (_mouseDownEventReceived && _dragging) {
         if (_isDetachable) {
             _isDetachable = NO;

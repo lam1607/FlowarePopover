@@ -1,38 +1,14 @@
 //
-//  FLOPopoverBackgroundView.h
+//  FLOPopoverView.h
 //  FlowarePopover
 //
-//  Created by lamnguyen on 8/21/18.
-//  Copyright © 2018 Floware Inc. All rights reserved.
+//  Created by Lam Nguyen on 6/17/19.
+//  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
 
-#import "FLOPopover.h"
-
-#pragma mark - FLOPopoverClippingView
-
-// A class which forcably draws `NSClearColor.clearColor` around a given path,
-// effectively clipping any views to the path. You can think of it like a
-// `maskLayer` on a `CALayer`.
-@interface FLOPopoverClippingView : NSView
-
-// The path which the view will clip to. The clippingPath will be retained and
-// released automatically.
-@property (nonatomic) CGPathRef clippingPath;
-
-@property (nonatomic) CGColorRef pathColor;
-
-- (void)setupArrowVisualEffectViewMaterial:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
-- (void)setClippingPathColor:(CGColorRef)color;
-- (void)drawClippingPath;
-- (void)clearClippingPath;
-
-@end
-
-#pragma mark - FLOPopoverBackgroundView
-
-@protocol FLOPopoverBackgroundViewDelegate <NSObject>
+@protocol FLOPopoverViewDelegate <NSObject>
 
 @optional
 - (void)popoverDidMakeMovement;
@@ -40,9 +16,11 @@
 
 @end
 
-@interface FLOPopoverBackgroundView : FLOPopoverView
+@interface FLOPopoverView : NSView
 
-@property (nonatomic, weak) id<FLOPopoverBackgroundViewDelegate> delegate;
+@property (nonatomic, assign, readwrite) NSInteger tag;
+
+@property (nonatomic, weak) id<FLOPopoverViewDelegate> delegate;
 
 // The edge of the target view which the popover is appearing next to. This will
 // be set by the popover.
@@ -62,6 +40,13 @@
 @property (nonatomic, strong) NSColor *fillColor;
 
 @property (nonatomic, assign) CGFloat borderRadius;
+
+@property (nonatomic, assign) BOOL userInteractionEnable;
+
+/**
+ * Make popover become key, order front when mouse hovers the popover
+ */
+@property (nonatomic, assign) BOOL makesKeyAndOrderFrontOnMouseHover;
 
 // Given a size of the content this should be overridden by subclasses to
 // describe how big the overall popover should be.

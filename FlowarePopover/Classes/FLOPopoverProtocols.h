@@ -18,11 +18,6 @@
 @property (nonatomic, assign, readonly) NSRect frame;
 @property (nonatomic, assign, readonly, getter = isShown) BOOL shown;
 
-/**
- * The positioning frame that used in displaying function. (only available for given frame displaying).
- */
-@property (nonatomic, assign, readonly) NSRect initialPositioningFrame;
-
 @property (nonatomic, strong) FLOPopoverUtils *utils;
 @property (nonatomic, assign, readonly) FLOPopoverType type;
 
@@ -117,6 +112,7 @@
 - (void)setPopoverPositioningRect:(NSRect)rect;
 - (void)setPopoverPositioningView:(NSView *)positioningView positioningRect:(NSRect)rect;
 - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;
+- (void)setUserInteractionEnable:(BOOL)isEnable;
 
 - (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 
@@ -164,6 +160,11 @@
  * Only available for FLOWindowPopover
  */
 @property (nonatomic, assign) BOOL makesKeyAndOrderFrontOnDisplaying;
+
+/**
+ * Make popover become key, order front when mouse hovers the popover
+ */
+@property (nonatomic, assign) BOOL makesKeyAndOrderFrontOnMouseHover;
 
 /**
  * Make the popover become key window. Only apply for FLOWindowPopover type.
