@@ -12,5 +12,6 @@
 
 @property (nonatomic, assign) BOOL canBecomeKey;
 @property (nonatomic, assign) NSInteger tag;
+@property (nonatomic, assign) BOOL userInteractionEnable;
 
 @end

@@ -385,6 +385,8 @@
 }
 
 - (void)setUserInteractionEnable:(BOOL)isEnable {
+    self.popoverWindow.userInteractionEnable = isEnable;
+    
     [self.utils setUserInteractionEnable:isEnable];
 }
 

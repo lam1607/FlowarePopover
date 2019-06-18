@@ -10,18 +10,26 @@
 
 @implementation FLOPopoverWindow
 
-@synthesize tag = _tag;
-
 - (instancetype)init {
     if (self = [super init]) {
         _tag = -1;
+        _userInteractionEnable = YES;
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithContentRect:(NSRect)contentRect styleMask:(NSWindowStyleMask)style backing:(NSBackingStoreType)backingStoreType defer:(BOOL)flag {
+    if (self = [super initWithContentRect:contentRect styleMask:style backing:backingStoreType defer:flag]) {
+        _tag = -1;
+        _userInteractionEnable = YES;
     }
     
     return self;
 }
 
 - (BOOL)canBecomeKeyWindow {
-    return self.canBecomeKey;
+    return (self.userInteractionEnable ? self.canBecomeKey : NO);
 }
 
 @end
