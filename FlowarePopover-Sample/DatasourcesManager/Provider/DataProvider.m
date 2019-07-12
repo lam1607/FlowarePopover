@@ -128,7 +128,7 @@
 
 - (NSInteger)numberOfSections
 {
-    if (_numberOfSectionsUpdated == NO) return _numberOfSections;
+    if (!_numberOfSectionsUpdated) return _numberOfSections;
     
     _numberOfSectionsUpdated = NO;
     

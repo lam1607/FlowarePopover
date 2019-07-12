@@ -103,12 +103,6 @@
     }
 }
 
-- (void)setAlwaysOnTop:(BOOL)alwaysOnTop {
-    _alwaysOnTop = alwaysOnTop;
-    
-    self.popover.alwaysOnTop = alwaysOnTop;
-}
-
 - (void)setShouldShowArrow:(BOOL)needed {
     _shouldShowArrow = needed;
     
@@ -139,10 +133,10 @@
     self.popover.bottomOffset = bottomOffset;
 }
 
-- (void)setDisplaysInsideClipView:(BOOL)displaysInsideClipView {
-    _displaysInsideClipView = displaysInsideClipView;
+- (void)setStopsAtContainerBounds:(BOOL)stopsAtContainerBounds {
+    _stopsAtContainerBounds = stopsAtContainerBounds;
     
-    self.popover.displaysInsideClipView = displaysInsideClipView;
+    self.popover.stopsAtContainerBounds = stopsAtContainerBounds;
 }
 
 - (void)setStaysInApplicationFrame:(BOOL)staysInApplicationFrame {
@@ -187,10 +181,10 @@
     self.popover.closesWhenApplicationResizes = closesWhenApplicationResizes;
 }
 
-- (void)setClosesWhenNotBelongToContainerFrame:(BOOL)closesWhenNotBelongToContainerFrame {
-    _closesWhenNotBelongToContainerFrame = closesWhenNotBelongToContainerFrame;
+- (void)setClosesWhenNotBelongToContainer:(BOOL)closesWhenNotBelongToContainer {
+    _closesWhenNotBelongToContainer = closesWhenNotBelongToContainer;
     
-    self.popover.closesWhenNotBelongToContainerFrame = closesWhenNotBelongToContainerFrame;
+    self.popover.closesWhenNotBelongToContainer = closesWhenNotBelongToContainer;
 }
 
 - (void)setClosesWhenReceivesEvent:(BOOL)closesWhenReceivesEvent {

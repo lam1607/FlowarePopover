@@ -94,7 +94,7 @@
         }
         else
         {
-            if ([self.openedBundleIdentifiers containsObject:app.bundleIdentifier] == NO)
+            if (![self.openedBundleIdentifiers containsObject:app.bundleIdentifier])
             {
                 [self.openedBundleIdentifiers addObject:app.bundleIdentifier];
             }
@@ -133,9 +133,9 @@
     
     if (obj != nil)
     {
-        BOOL status = [obj boolValue];
+        BOOL active = [obj boolValue];
         
-        if (status == NO)
+        if (!active)
         {
             [self.entitlementAppStatuses setObject:[NSNumber numberWithBool:YES] forKey:bundleId];
         }
@@ -150,9 +150,9 @@
     
     if (obj != nil)
     {
-        BOOL status = [obj boolValue];
+        BOOL active = [obj boolValue];
         
-        if (status == YES)
+        if (active)
         {
             [self.entitlementAppStatuses setObject:[NSNumber numberWithBool:NO] forKey:bundleId];
         }
@@ -189,7 +189,7 @@
 
 - (BOOL)isFinderAppFocused
 {
-    return [self.lastBundleIdentifier isEqualToString:FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER];
+    return [self.lastBundleIdentifier isEqualToString:kFlowarePopover_BundleIdentifier_Finder];
 }
 
 - (void)validateChildWindowsFloating

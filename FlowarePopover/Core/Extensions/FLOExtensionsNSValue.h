@@ -6,8 +6,7 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <AppKit/AppKit.h>
+#import <Cocoa/Cocoa.h>
 
 typedef NS_ENUM(NSInteger, FLOValueType) {
     FLOValueTypeNumber,

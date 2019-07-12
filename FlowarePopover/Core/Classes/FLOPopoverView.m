@@ -11,8 +11,6 @@
 #import "FLOPopoverClippingView.h"
 #import "FLOPopoverWindow.h"
 
-#import "FLOPopoverUtils.h"
-
 static CGFloat getMedianXFromRects(NSRect r1, NSRect r2) {
     CGFloat minX = fmax(NSMinX(r1), NSMinX(r2));
     CGFloat maxX = fmin(NSMaxX(r1), NSMaxX(r2));
@@ -312,8 +310,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     CGFloat minY = NSMinY(contentRect);
     CGFloat maxY = NSMaxY(contentRect);
     
-    NSWindow *window = (self.window != nil) ? self.window : [[FLOPopoverUtils sharedInstance] mainWindow];
-    NSRect windowRect = [window convertRectFromScreen:self.popoverOrigin];
+    NSRect windowRect = [self.window convertRectFromScreen:self.popoverOrigin];
     NSRect originRect = [self convertRect:windowRect fromView:nil];
     CGFloat midOriginX = floor(getMedianXFromRects(originRect, contentRect));
     CGFloat midOriginY = floor(getMedianYFromRects(originRect, contentRect));

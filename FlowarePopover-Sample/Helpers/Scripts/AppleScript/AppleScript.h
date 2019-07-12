@@ -27,15 +27,16 @@ extern void script_positionApp(NSString *appName, float x, float y);
 extern void script_showApp(NSString *app);
 extern void script_hideApp(NSString *bundleIdentifier);
 extern void script_hideAllAppsExcept(NSString *bundleIdentifier1, NSString *bundleIdentifier2);
-extern void script_hideAllApps(void);
+extern void script_hideAllApps();
 extern void script_autoHideDock(BOOL hidden);
-extern BOOL script_checkDockAutoHidden(void);
-extern void script_openApp(NSString *appName);
-extern void script_openMSAppWithNewDocument(NSString *appName);
-extern void script_openAccessibilityPreference(void);
+extern BOOL script_checkDockAutoHidden();
+extern int script_openApp(NSString *appName, BOOL shouldActive);
+extern void script_openMSApp(NSString *appName, BOOL openNewDocument);
+extern void script_openAccessibilityPreference();
 
-extern int script_presentDocument(NSString *appName, NSString *title, NSString *siblingTitle, float x, float y, float w, float h, BOOL needResize);
+extern void script_positionApp2(NSString *appName, float x, float y, float width, float height);
 extern int script_presentApp(NSString *appName, NSString *bundle, float x, float y, float maxWidth, float maxHeight, BOOL needResize);
+extern int script_presentDocument(NSString *appName, NSString *title, NSString *siblingTitle, float x, float y, float w, float h, BOOL needResize);
 extern void script_activateApplication(NSString *appName);
 
 @interface AppleScript : NSObject

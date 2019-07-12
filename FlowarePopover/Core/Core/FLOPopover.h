@@ -40,13 +40,13 @@
 @property (nonatomic, assign, readonly) BOOL isMoved;
 
 
-@property (nonatomic, assign) BOOL alwaysOnTop;
 @property (nonatomic, assign) BOOL shouldShowArrow;
 @property (nonatomic, assign) NSSize arrowSize;
 @property (nonatomic, assign) BOOL animated;
 @property (nonatomic, assign) BOOL animatedForwarding;
 @property (nonatomic, assign) CGFloat bottomOffset;
-@property (nonatomic, assign) BOOL displaysInsideClipView;
+
+@property (nonatomic, assign) BOOL stopsAtContainerBounds;
 
 /**
  * Determine whether the popover should stay in application frame or screen frame.
@@ -59,7 +59,7 @@
 @property (nonatomic, assign) BOOL closesWhenPopoverResignsKey;
 @property (nonatomic, assign) BOOL closesWhenApplicationBecomesInactive;
 @property (nonatomic, assign) BOOL closesWhenApplicationResizes;
-@property (nonatomic, assign) BOOL closesWhenNotBelongToContainerFrame;
+@property (nonatomic, assign) BOOL closesWhenNotBelongToContainer;
 @property (nonatomic, assign) BOOL closesWhenReceivesEvent;
 @property (nonatomic, assign) NSTimeInterval closesAfterTimeInterval;
 @property (nonatomic, assign) BOOL cancelClosesAfterTimeIntervalWhenMoving;
@@ -72,7 +72,7 @@
 @property (nonatomic, assign) BOOL becomesKeyAfterDisplaying;
 
 /**
- * Make popover become key, order front when mouse hovers the popover
+ * Make popover become key, order front when mouse hovers the popover.
  */
 @property (nonatomic, assign) BOOL becomesKeyOnMouseOver;
 
@@ -97,7 +97,7 @@
 @property (nonatomic, assign) NSInteger tag;
 
 /**
- * Make transition animation by moving frame of the popover instead of using CALayer.
+ * Make transition animation by moving frame of the popover instead of using CABasicAnimation.
  */
 @property (nonatomic, assign) BOOL animatedByMovingFrame;
 

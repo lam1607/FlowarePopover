@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "FlowarePopover"
-  s.version      = "0.2.9"
+  s.version      = "0.2.10"
   s.summary      = "The custom popover using to display the popup."
 
   # This description is used to generate tags and improve search results.
@@ -93,9 +93,10 @@ The custom popover based on NSPopover using to display the NSWindow, NSView as p
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "Classes", "FlowarePopover/Classes/**/*.{h,m}"
-  s.exclude_files = "Classes/Exclude"
+  s.source_files  = "Core", "FlowarePopover/Core/**/*.{h,m}"
+  s.public_header_files = "*.h"
 
+  # s.exclude_files = "Classes/Exclude"
   # s.public_header_files = "Classes/**/*.h"
 
 

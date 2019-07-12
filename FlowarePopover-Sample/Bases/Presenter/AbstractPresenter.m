@@ -297,7 +297,7 @@
 {
     for (id object in objects)
     {
-        if ([object isKindOfClass:[self targetObjectClass]] == NO)
+        if (![object isKindOfClass:[self targetObjectClass]])
         {
             return NO;
         }

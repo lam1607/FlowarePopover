@@ -9,13 +9,13 @@
 #ifndef Constants_h
 #define Constants_h
 
-#define SHOULD_USE_ASSET_COLORS
+#define kFlowarePopover_UseAssetColors
 
-#define FLO_NOTIFICATION_WINDOW_WILL_CHANGE_MODE                                            @"FLO_Notification_WindowWillChangeMode"
-#define FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE                                             @"FLO_Notification_WindowDidChangeMode"
+#define kFlowarePopover_WindowWillChangeMode                @"kFlowarePopover_WindowWillChangeMode"
+#define kFlowarePopover_WindowDidChangeMode                 @"kFlowarePopover_WindowDidChangeMode"
 
-#define FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER                                               @"com.apple.finder"
-#define FLO_ENTITLEMENT_APP_IDENTIFIER_SAFARI                                               @"com.apple.Safari"
+#define kFlowarePopover_BundleIdentifier_Finder             @"com.apple.finder"
+#define kFlowarePopover_BundleIdentifier_Safari             @"com.apple.Safari"
 
 typedef NS_ENUM(NSInteger, FLOWindowMode) {
     FLOWindowModeNormal,

@@ -11,7 +11,10 @@
 
 #import <Foundation/Foundation.h>
 
+#import <FlowarePopover/FlowarePopover.h>
+
 #import "Constants.h"
+#import "NSObject+Extensions.h"
 #import "NSColor+Custom.h"
 
 #import "Utils.h"

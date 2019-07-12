@@ -18,8 +18,6 @@
 
 #import "DragDroppableView.h"
 
-#import "FLOPopover.h"
-
 #import "AppDelegate.h"
 
 #import "AppleScript.h"
@@ -101,7 +99,7 @@
     _presenter = [[HomePresenter alloc] init];
     [_presenter attachView:self];
     
-    _entitlementAppBundles = [[NSArray alloc] initWithObjects: FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER, FLO_ENTITLEMENT_APP_IDENTIFIER_SAFARI, nil];
+    _entitlementAppBundles = [[NSArray alloc] initWithObjects:kFlowarePopover_BundleIdentifier_Finder, kFlowarePopover_BundleIdentifier_Safari, nil];
 }
 
 #pragma mark - Setup UI
@@ -123,7 +121,7 @@
         self.trashViewController = [[TrashViewController alloc] initWithNibName:NSStringFromClass([TrashViewController class]) bundle:nil];
     }
     
-    if ([self.trashViewController.view isDescendantOf:self.viewContainerTrash] == NO)
+    if (![self.trashViewController.view isDescendantOf:self.viewContainerTrash])
     {
         [self addView:self.trashViewController.view toParent:self.viewContainerTrash];
     }
@@ -135,7 +133,7 @@
     {
         [super refreshUIColors];
         
-#ifdef SHOULD_USE_ASSET_COLORS
+#ifdef kFlowarePopover_UseAssetColors
         [Utils setBackgroundColor:[NSColor _backgroundColor] forView:self.viewMenu];
         
         [Utils setBackgroundColor:[NSColor _grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerMode];
@@ -188,7 +186,7 @@
 - (void)changeWindowMode
 {
     [[AbstractWindowController sharedInstance] setMode];
-    [[NSNotificationCenter defaultCenter] postNotificationName:FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE object:nil userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kFlowarePopover_WindowDidChangeMode object:nil userInfo:nil];
 }
 
 - (void)openEntitlementApplicationWithIdentifier:(NSString *)appIdentifier
@@ -199,7 +197,7 @@
     if (![[NSWorkspace sharedWorkspace] launchApplicationAtURL:appUrl options:NSWorkspaceLaunchDefault configuration:[NSDictionary dictionary] error:NULL]) {
         // If the application cannot be launched, then re-launch it by script
         NSString *appName = [Utils getAppNameWithIdentifier:appIdentifier];
-        script_openApp(appName);
+        script_openApp(appName, YES);
         
         [appDelegate activateEntitlementForBundleId:appIdentifier];
     }
@@ -558,12 +556,12 @@
 
 - (void)viewShouldOpenFinder
 {
-    [self openEntitlementApplicationWithIdentifier:FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER];
+    [self openEntitlementApplicationWithIdentifier:kFlowarePopover_BundleIdentifier_Finder];
 }
 
 - (void)viewShouldOpenSafari
 {
-    [self openEntitlementApplicationWithIdentifier:FLO_ENTITLEMENT_APP_IDENTIFIER_SAFARI];
+    [self openEntitlementApplicationWithIdentifier:kFlowarePopover_BundleIdentifier_Safari];
 }
 
 - (void)viewShouldOpenFilmsView

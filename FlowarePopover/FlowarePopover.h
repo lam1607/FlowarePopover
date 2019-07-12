@@ -6,14 +6,10 @@
 //  Copyright © 2018 Floware Inc Inc. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#ifndef FlowarePopover_h
+#define FlowarePopover_h
 
-//! Project version number for FlowarePopover.
-FOUNDATION_EXPORT double FlowarePopoverVersionNumber;
+#import <FlowarePopover/FLOPopoverConstants.h>
+#import <FlowarePopover/FLOPopover.h>
 
-//! Project version string for FlowarePopover.
-FOUNDATION_EXPORT const unsigned char FlowarePopoverVersionString[];
-
-// In this header, you should import all the public headers of your framework using statements like #import <FlowarePopover/PublicHeader.h>
-
-
+#endif /* FlowarePopover_h */

@@ -405,7 +405,7 @@
             {
                 [self.protocols tableViewManager:self didSelectItem:object forRow:row];
             }
-            else if ((isSelectable == NO) && [self.protocols respondsToSelector:@selector(tableViewManager:didSelectUnselectableItem:forRow:)])
+            else if (!isSelectable && [self.protocols respondsToSelector:@selector(tableViewManager:didSelectUnselectableItem:forRow:)])
             {
                 // For some cases, we want this delegate to perform some special stuffs.
                 [self.protocols tableViewManager:self didSelectUnselectableItem:object forRow:row];

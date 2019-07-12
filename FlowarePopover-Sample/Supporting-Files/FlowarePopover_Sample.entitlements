@@ -12,6 +12,7 @@
 	<true/>
 	<key>com.apple.security.temporary-exception.apple-events</key>
 	<array>
+		<string>com.apple.ActivityMonitor</string>
 		<string>com.apple.SystemEvents</string>
 		<string>com.apple.finder</string>
 		<string>com.apple.Safari</string>

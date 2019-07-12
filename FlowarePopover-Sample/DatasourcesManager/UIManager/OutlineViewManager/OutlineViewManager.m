@@ -614,7 +614,7 @@
             {
                 [self.protocols outlineViewManager:self didSelectItem:object forRow:row];
             }
-            else if ((isSelectable == NO) && [self.protocols respondsToSelector:@selector(outlineViewManager:didSelectUnselectableItem:forRow:)])
+            else if (!isSelectable && [self.protocols respondsToSelector:@selector(outlineViewManager:didSelectUnselectableItem:forRow:)])
             {
                 // For some cases, we want this delegate to perform some special stuffs.
                 [self.protocols outlineViewManager:self didSelectUnselectableItem:object forRow:row];

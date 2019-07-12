@@ -44,7 +44,7 @@
 {
     if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name])
     {
-#ifdef SHOULD_USE_ASSET_COLORS
+#ifdef kFlowarePopover_UseAssetColors
         [Utils setBackgroundColor:[NSColor _backgroundColor] forView:self.view];
 #else
         [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.view];

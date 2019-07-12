@@ -28,7 +28,7 @@
         NSView *containerView = [[[self.subviews firstObject] subviews] firstObject];
         NSRect selectionRect = [containerView convertRect:containerView.bounds toView:self];
         
-#ifdef SHOULD_USE_ASSET_COLORS
+#ifdef kFlowarePopover_UseAssetColors
         [[NSColor _blueColor] setStroke];
         [[NSColor _backgroundColor] setFill];
 #else

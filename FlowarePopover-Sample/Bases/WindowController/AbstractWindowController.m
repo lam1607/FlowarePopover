@@ -8,8 +8,6 @@
 
 #import "AbstractWindowController.h"
 
-#import "FLOPopover.h"
-
 #import "AppDelegate.h"
 
 #import "AppleScript.h"
@@ -218,21 +216,21 @@ static AbstractWindowController *_sharedInstance = nil;
     }
     
     // If none of childWindows floats on other active application. But we want to keep childWindow orders.
-    if ((shouldChildWindowsFloat == NO) && shouldOrderChildWindows)
+    if (!shouldChildWindowsFloat && shouldOrderChildWindows)
     {
     }
 }
 
 - (void)hideOtherAppsExceptThoseInside
 {
-    script_hideAllAppsExcept(FLO_ENTITLEMENT_APP_IDENTIFIER_FINDER, FLO_ENTITLEMENT_APP_IDENTIFIER_SAFARI);
+    script_hideAllAppsExcept(kFlowarePopover_BundleIdentifier_Finder, kFlowarePopover_BundleIdentifier_Safari);
 }
 
 #pragma mark - Event handles
 
 - (void)windowDidChangeMode:(NSNotification *)notification
 {
-    if ([notification.name isEqualToString:FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE])
+    if ([notification.name isEqualToString:kFlowarePopover_WindowDidChangeMode])
     {
         if (self.mode == FLOWindowModeDesktop)
         {
@@ -264,12 +262,12 @@ static AbstractWindowController *_sharedInstance = nil;
 
 - (void)registerWindowChangeModeEvent
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidChangeMode:) name:FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidChangeMode:) name:kFlowarePopover_WindowDidChangeMode object:nil];
 }
 
 - (void)removeWindowChangeModeEvent
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:FLO_NOTIFICATION_WINDOW_DID_CHANGE_MODE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kFlowarePopover_WindowDidChangeMode object:nil];
 }
 
 - (void)registerApplicationAppearanceNotification

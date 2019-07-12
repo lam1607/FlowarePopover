@@ -9,6 +9,8 @@
 #ifndef FLOPopoverConstants_h
 #define FLOPopoverConstants_h
 
+#import <Foundation/Foundation.h>
+
 #define FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD                                          0.2
 #define FLO_CONST_POPOVER_BOTTOM_OFFSET                                                     5.0
 

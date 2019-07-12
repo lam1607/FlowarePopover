@@ -39,7 +39,7 @@
 {
     NSShadow *dropShadow = [[NSShadow alloc] init];
     
-#ifdef SHOULD_USE_ASSET_COLORS
+#ifdef kFlowarePopover_UseAssetColors
     [dropShadow setShadowColor:[NSColor _shadowColor]];
 #else
     [dropShadow setShadowColor:[NSColor shadowColor]];

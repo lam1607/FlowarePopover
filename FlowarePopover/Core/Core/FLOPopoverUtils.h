@@ -6,7 +6,7 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 #import "FLOPopoverConstants.h"
 
@@ -20,10 +20,6 @@
 @property (nonatomic, weak) id<FLOPopoverProtocols> popover;
 
 @property (nonatomic, strong, readonly) NSWindow *mainWindow;
-
-@property (nonatomic, strong, readonly) NSWindow *topWindow;
-@property (nonatomic, strong, readonly) NSView *topView;
-
 @property (nonatomic, assign, readonly) BOOL mainWindowResized;
 
 @property (nonatomic, strong) NSView *contentView;
@@ -38,12 +34,6 @@
 @property (nonatomic, assign) FLOPopoverStyle popoverStyle;
 
 @property (nonatomic, assign) BOOL popoverMoved;
-
-@property (nonatomic, assign) BOOL shouldShowArrowWithVisualEffect;
-@property (nonatomic, assign) NSVisualEffectMaterial arrowVisualEffectMaterial;
-@property (nonatomic, assign) NSVisualEffectBlendingMode arrowVisualEffectBlendingMode;
-@property (nonatomic, assign) NSVisualEffectState arrowVisualEffectState;
-
 @property (nonatomic, assign) BOOL staysInApplicationFrame;
 
 @property (nonatomic, assign) FLOPopoverAnimationBehaviour animationBehaviour;
@@ -55,27 +45,16 @@
 @property (nonatomic, strong) NSView *positioningAnchorView;
 @property (nonatomic, strong) NSView *senderView;
 @property (nonatomic, assign) FLOPopoverRelativePositionType relativePositionType;
-@property (nonatomic, assign) NSRect positioningWindowFrame;
-@property (nonatomic, strong) NSMutableArray<NSView *> *anchorSuperviews;
 
 @property (nonatomic, strong) FLOPopoverView *backgroundView;
 @property (nonatomic, assign) NSRect positioningFrame;
 @property (nonatomic, strong) NSView *positioningView;
-@property (nonatomic, assign) NSRectEdge preferredEdge;
-@property (nonatomic, assign) NSRectEdge originalEdge;
 @property (nonatomic, assign) CGSize contentSize;
-@property (nonatomic, assign) CGPoint anchorPoint;
 @property (nonatomic, assign) CGSize originalViewSize;
-@property (nonatomic, assign) CGFloat verticalMarginOutOfPopover;
-@property (nonatomic, assign) BOOL observerViewBoundsDidChange;
 
+#pragma mark - Initialize
 
-+ (FLOPopoverUtils *)sharedInstance;
 - (instancetype)initWithPopover:(id<FLOPopoverProtocols>)popover;
-
-- (void)setTopmostWindow:(NSWindow *)topmostWindow;
-- (void)setTopmostView:(NSView *)topmostView;
-- (void)setMainWindowResized:(BOOL)mainWindowResized;
 
 #pragma mark - Utilities
 
@@ -91,25 +70,28 @@
 - (void)addView:(NSView *)view toParent:(NSView *)parentView autoresizingMask:(BOOL)isAutoresizingMask;
 - (void)addView:(NSView *)view toParent:(NSView *)parentView centerAutoresizingMask:(BOOL)isCenterAutoresizingMask;
 - (void)setupAutoresizingMaskIfNeeded:(BOOL)needed;
-- (void)resetObserverViewBoundsDidChange;
-
-- (void)addSuperviewObserversForView:(NSView *)view selector:(SEL)selector source:(id)source;
-- (BOOL)popoverShouldCloseByCheckingView:(NSView *)changedView;
-- (void)handleObserverViewBoundsDidChange:(NSNotification *)notification popoverShowing:(BOOL)popoverShowing popoverClosing:(BOOL)popoverClosing;
-- (void)handleObserveValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context popoverShowing:(BOOL)popoverShowing popoverClosing:(BOOL)popoverClosing;
-- (NSRect)popoverFrameWithResizingWindow:(NSWindow *)resizedWindow;
-- (void)handleObserverWindowDidResize:(NSNotification *)notification popoverShowing:(BOOL)popoverShowing popoverClosing:(BOOL)popoverClosing;
-- (void)updatePopoverContentSizeWhenWindowResizing;
+- (void)registerObserverForClipViews;
 
 #pragma mark - Display utilities
 
-- (void)setUserInteractionEnable:(BOOL)isEnable;
+- (void)setupComponentsForPopover;
 - (void)setPopoverEdgeType:(FLOPopoverEdgeType)edgeType;
+- (void)setUserInteractionEnable:(BOOL)isEnable;
+- (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 - (void)setupPositioningAnchorWithView:(NSView *)positioningView positioningRect:(NSRect)positioningRect shouldUpdatePosition:(BOOL)shouldUpdatePosition;
 - (NSRect)popoverFrameForEdge:(NSRectEdge)popoverEdge;
 - (NSRect)popoverFrame;
 - (NSRect)p_popoverFrameForEdge:(NSRectEdge *)popoverEdge;
 - (NSRect)p_popoverFrame;
 - (void)p_backgroundViewShouldUpdate:(BOOL)updated;
+
+#pragma mark - Event monitor
+
+- (void)registerApplicationActiveNotification;
+- (void)removeApplicationActiveNotification;
+- (void)registerSuperviewObservers;
+- (void)unregisterSuperviewObservers;
+- (void)registerWindowEvents;
+- (void)removeWindowEvents;
 
 @end

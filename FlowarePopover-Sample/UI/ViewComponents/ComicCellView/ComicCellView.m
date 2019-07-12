@@ -50,7 +50,7 @@
     {
         [Utils setShadowForView:self.vContainer];
         
-#ifdef SHOULD_USE_ASSET_COLORS
+#ifdef kFlowarePopover_UseAssetColors
         [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] borderWidth:0.0 borderColor:[NSColor _blueColor] forView:self.vContainer];
         
         [Utils setTitle:self.lblTitle.stringValue color:[NSColor _textGrayColor] fontSize:16.0 forControl:self.lblTitle];

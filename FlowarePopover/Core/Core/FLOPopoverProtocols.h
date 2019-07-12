@@ -15,19 +15,27 @@
 
 @protocol FLOPopoverProtocols <NSObject>
 
+@property (nonatomic, strong, readonly) NSResponder *representedObject;
+
 @property (nonatomic, assign, readonly) NSRect frame;
 @property (nonatomic, assign, readonly, getter = isShown) BOOL shown;
 
+@property (nonatomic, assign) NSRect initialFrame;
+
 @property (nonatomic, strong) FLOPopoverUtils *utils;
 @property (nonatomic, assign, readonly) FLOPopoverType type;
+@property (nonatomic, assign, readonly) BOOL containsArrow;
 
-@property (nonatomic, assign) BOOL alwaysOnTop;
+@property (nonatomic, assign) BOOL popoverShowing;
+@property (nonatomic, assign) BOOL popoverClosing;
+
 @property (nonatomic, assign) BOOL shouldShowArrow;
 @property (nonatomic, assign) NSSize arrowSize;
 @property (nonatomic, assign) BOOL animated;
 @property (nonatomic, assign) BOOL animatedForwarding;
 @property (nonatomic, assign) CGFloat bottomOffset;
-@property (nonatomic, assign) BOOL displaysInsideClipView;
+
+@property (nonatomic, assign) BOOL stopsAtContainerBounds;
 
 @property (nonatomic, assign) BOOL staysInApplicationFrame;
 @property (nonatomic, assign) BOOL updatesFrameWhileShowing;
@@ -36,7 +44,7 @@
 @property (nonatomic, assign) BOOL closesWhenPopoverResignsKey;
 @property (nonatomic, assign) BOOL closesWhenApplicationBecomesInactive;
 @property (nonatomic, assign) BOOL closesWhenApplicationResizes;
-@property (nonatomic, assign) BOOL closesWhenNotBelongToContainerFrame;
+@property (nonatomic, assign) BOOL closesWhenNotBelongToContainer;
 @property (nonatomic, assign) BOOL closesWhenReceivesEvent;
 
 /**
@@ -154,6 +162,7 @@
 - (void)close;
 - (void)closePopover:(id<FLOPopoverProtocols>)sender;
 - (void)closePopover:(id<FLOPopoverProtocols>)sender completion:(void(^)(void))complete;
+- (void)closePopoverWhileAnimatingIfNeeded:(BOOL)isNeeded;
 
 @optional
 /// For FLOWindowPopover only

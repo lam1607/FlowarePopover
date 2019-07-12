@@ -27,7 +27,13 @@
         {
             objc_property_t property = properties[i];
             const char *name = property_getName(property);
-            [propertyList addObject:[NSString stringWithUTF8String:name]];
+            const char *attributes = property_getAttributes(property);
+            
+            // Don't get readonly property
+            if (![[NSString stringWithUTF8String:attributes] containsString:@"R"])
+            {
+                [propertyList addObject:[NSString stringWithUTF8String:name]];
+            }
         }
         
         free(properties);
@@ -45,7 +51,13 @@
     {
         objc_property_t property = properties[i];
         const char *name = property_getName(property);
-        [*propertyList addObject:[NSString stringWithUTF8String:name]];
+        const char *attributes = property_getAttributes(property);
+        
+        // Don't get readonly property
+        if (![[NSString stringWithUTF8String:attributes] containsString:@"R"])
+        {
+            [*propertyList addObject:[NSString stringWithUTF8String:name]];
+        }
     }
     
     free(properties);
@@ -239,9 +251,8 @@
         {
             NSString *string = (NSString *)object;
             
-            if (string.length == 0 || [string isKindOfClass:[NSNull class]] || (string == nil) ||
+            if (string.length == 0 ||
                 [string isEqualToString:@"(null)"] || [string isEqualToString:@"<null>" ] || [string isEqualToString:@"null"] ||
-                [string isEqualToString:@""] ||
                 [[string stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""])
             {
                 return YES;

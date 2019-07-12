@@ -97,7 +97,7 @@
     
     if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name])
     {
-#ifdef SHOULD_USE_ASSET_COLORS
+#ifdef kFlowarePopover_UseAssetColors
         [Utils setBackgroundColor:[NSColor _tealColor] forView:self.vHeader];
 #else
         [Utils setBackgroundColor:[NSColor tealColor] forView:self.vHeader];
@@ -130,7 +130,7 @@
     CGFloat height = [self getContentSizeHeight];
     NSSize newSize = NSMakeSize(350.0, height);
     
-    if (NSEqualSizes(self.view.frame.size, newSize) == NO)
+    if (!NSEqualSizes(self.view.frame.size, newSize))
     {
         if (self.didContentSizeChange)
         {

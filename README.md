@@ -84,7 +84,6 @@ The default initialization of FLOPopover type is **`FLOWindowPopover`**
 - **type (readonly)** : Type of popover.
 - **frame (readonly)** : Frame of popover.
 - **shown (getter = isShown) (readonly)** : Check whether the popover is shown or not.
-- **alwaysOnTop** : Make the popover always on top. If there is more than one popover is set as top, only the last one is top most
 - **shouldShowArrow** : Show arrow at popover (**only available when displaying popover at sender view**)
 - **animated** : Show popover with animation
 - **animatedForwarding** : Animation with forwarding direction
@@ -316,7 +315,7 @@ The popover have following delegations with protocol `FLOPopoverDelegate`:
 Select the target screen in your project, then add the following line:
 
 ```
-#import <FlowarePopover/FLOPopover.h>
+#import <FlowarePopover/FlowarePopover.h>
 ```
 
 For more detail about usages, please take a deep look at sample in github repository.

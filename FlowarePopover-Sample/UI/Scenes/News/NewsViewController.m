@@ -91,7 +91,7 @@
     
     if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name])
     {
-#ifdef SHOULD_USE_ASSET_COLORS
+#ifdef kFlowarePopover_UseAssetColors
         [Utils setBackgroundColor:[NSColor _tealColor] forView:self.vHeader];
 #else
         [Utils setBackgroundColor:[NSColor tealColor] forView:self.vHeader];
