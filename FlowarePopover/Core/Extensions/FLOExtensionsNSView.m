@@ -14,8 +14,6 @@
 #import "FLOExtensionsCAKeyframeAnimation.h"
 #import "FLOExtensionsGraphicsContext.h"
 
-#import "FLOPopoverConstants.h"
-
 typedef NS_ENUM(NSInteger, AXIS_XY) {
     axis_x = 1,
     axis_y
@@ -226,7 +224,7 @@ static CALayer *subLayer;
     opacityAnimation.toValue = @(1.0);
     
     [CATransaction begin];
-    [CATransaction setAnimationDuration:FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD];
+    [CATransaction setAnimationDuration:0.2];
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
     [CATransaction setCompletionBlock:^{
         [self.layer removeAllAnimations];
@@ -269,7 +267,7 @@ static CALayer *subLayer;
     self.alphaValue = 0.0;
     
     [CATransaction begin];
-    [CATransaction setAnimationDuration:FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD];
+    [CATransaction setAnimationDuration:0.2];
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
     [CATransaction setCompletionBlock:^{
         self.alphaValue = 1.0;
@@ -297,7 +295,7 @@ static CALayer *subLayer;
 }
 
 - (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame source:(id)source {
-    [self showingAnimated:showing fromFrame:fromFrame toFrame:toFrame duration:FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD source:source];
+    [self showingAnimated:showing fromFrame:fromFrame toFrame:toFrame duration:0.2 source:source];
 }
 
 - (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame duration:(NSTimeInterval)duration source:(id)source {
@@ -338,7 +336,7 @@ static CALayer *subLayer;
 }
 
 - (void)showingAnimated:(BOOL)showing fromPosition:(NSPoint)fromPosition toPosition:(NSPoint)toPosition completionHandler:(void(^)(void))complete {
-    [self showingAnimated:showing fromPosition:fromPosition toPosition:toPosition duration:FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD completionHandler:complete];
+    [self showingAnimated:showing fromPosition:fromPosition toPosition:toPosition duration:0.2 completionHandler:complete];
 }
 
 - (void)showingAnimated:(BOOL)showing fromPosition:(NSPoint)fromPosition toPosition:(NSPoint)toPosition duration:(NSTimeInterval)duration completionHandler:(void(^)(void))complete {

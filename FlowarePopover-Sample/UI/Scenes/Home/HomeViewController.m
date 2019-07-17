@@ -397,7 +397,7 @@
     //    _popoverNews.closesWhenPopoverResignsKey = YES;
     //    _popoverNews.closesWhenApplicationBecomesInactive = YES;
     //    _popoverNews.closesAfterTimeInterval = 3.0;
-    //    _popoverNews.cancelClosesAfterTimeIntervalWhenMoving = YES;
+    //    _popoverNews.disableTimeIntervalOnMoving = YES;
     _popoverNews.becomesKeyOnMouseOver = YES;
     _popoverNews.isMovable = YES;
     _popoverNews.isDetachable = YES;
@@ -448,7 +448,7 @@
         //        _popoverComics.closesWhenPopoverResignsKey = YES;
         //        _popoverComics.closesWhenApplicationBecomesInactive = YES;
         _popoverComics.isMovable = YES;
-        //        _popoverComics.isDetachable = YES;
+        _popoverComics.isDetachable = YES;
         
         CGFloat positioningRectX = visibleRect.size.width - contentViewRect.size.width - verticalMargin / 2;
         CGFloat positioningRectY = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin / 2;
@@ -489,7 +489,7 @@
         //        _popoverComics.closesWhenApplicationBecomesInactive = YES;
         _popoverComics.isMovable = YES;
         _popoverComics.isDetachable = YES;
-        _popoverComics.staysInApplicationFrame = YES;
+        _popoverComics.staysInContainer = YES;
         
         _popoverComics.tag = WindowLevelGroupTagUtility;
         

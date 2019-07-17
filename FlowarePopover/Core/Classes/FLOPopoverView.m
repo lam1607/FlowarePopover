@@ -9,7 +9,6 @@
 #import "FLOPopoverView.h"
 
 #import "FLOPopoverClippingView.h"
-#import "FLOPopoverWindow.h"
 
 static CGFloat getMedianXFromRects(NSRect r1, NSRect r2) {
     CGFloat minX = fmax(NSMinX(r1), NSMinX(r2));
@@ -126,8 +125,6 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     if (NSEqualSizes(arrowSize, self.arrowSize) && !NSEqualSizes(self.arrowSize, NSZeroSize)) return;
     
     _arrowSize = arrowSize;
-    
-    self.needsDisplay = YES;
 }
 
 - (void)setFillColor:(NSColor *)fillColor {
@@ -142,10 +139,11 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     self.layer.cornerRadius = borderRadius;
 }
 
-#pragma mark - Others
+#pragma mark - Local methods
 
 - (NSRectEdge)arrowEdgeForPopoverEdge:(NSRectEdge)popoverEdge {
     NSRectEdge arrowEdge = NSRectEdgeMinY;
+    
     switch (popoverEdge) {
         case NSRectEdgeMaxX:
             arrowEdge = NSRectEdgeMinX;
@@ -174,17 +172,17 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     }
 }
 
-#pragma mark - Processes
+#pragma mark - FLOPopoverView methods
 
-- (void)makeMovable:(BOOL)movable {
+- (void)setMovable:(BOOL)movable {
     _isMovable = movable;
 }
 
-- (void)makeDetachable:(BOOL)detachable {
+- (void)setDetachable:(BOOL)detachable {
     _isDetachable = detachable;
 }
 
-- (void)showShadow:(BOOL)needed {
+- (void)setShadow:(BOOL)needed {
     if (needed) {
         self.wantsLayer = YES;
         self.layer.masksToBounds = NO;
@@ -195,30 +193,26 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     }
 }
 
-- (void)showArrow:(BOOL)needed {
-    @try {
-        if (!NSEqualSizes(self.arrowSize, NSZeroSize)) {
-            self.needsDisplay = YES;
-        } else {
-            [self.clippingView clearClippingPath];
-            [self.clippingView drawClippingPath];
-        }
-    } @catch (NSException *exception) {
-        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
+- (void)setArrow:(BOOL)needed {
+    if (needed && !NSEqualSizes(self.arrowSize, NSZeroSize)) {
+        self.needsDisplay = YES;
+    } else {
+        [self.clippingView clearClippingPath];
+        [self.clippingView drawClippingPath];
     }
 }
 
-- (void)showArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
+- (void)setVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
     _shouldShowArrowWithVisualEffect = needed;
     
     if (needed) {
-        [self.clippingView setupArrowVisualEffectViewMaterial:material blendingMode:blendingMode state:state];
+        [self.clippingView setVisualEffectMaterial:material blendingMode:blendingMode state:state];
     }
 }
 
 - (void)setArrowColor:(CGColorRef)color {
-    if (!NSEqualSizes(self.arrowSize, NSZeroSize)) {
-        [self.clippingView setClippingPathColor:color];
+    if (!NSEqualSizes(self.arrowSize, NSZeroSize) && (color != NULL)) {
+        [self.clippingView setPathColor:color];
     }
 }
 
@@ -228,21 +222,18 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 - (void)setFrame:(NSRect)frameRect {
     [super setFrame:frameRect];
-    self.needsDisplay = YES;
 }
 
 - (void)setPopoverEdge:(NSRectEdge)popoverEdge {
     if (popoverEdge == self.popoverEdge) return;
     
     _popoverEdge = popoverEdge;
-    self.needsDisplay = YES;
 }
 
 - (void)setPopoverOrigin:(NSRect)popoverOrigin {
     if (NSEqualRects(popoverOrigin, self.popoverOrigin)) return;
     
     _popoverOrigin = popoverOrigin;
-    self.needsDisplay = YES;
 }
 
 - (NSSize)sizeForBackgroundViewWithContentSize:(NSSize)contentSize popoverEdge:(NSRectEdge)popoverEdge {
@@ -302,6 +293,9 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 }
 
 - (CGPathRef)clippingPathForEdge:(NSRectEdge)popoverEdge frame:(NSRect)frame {
+    CGFloat arrowWidth = self.arrowSize.width;
+    CGFloat arrowHeight = self.arrowSize.height;
+    CGFloat borderRadius = self.borderRadius;
     NSRectEdge arrowEdge = [self arrowEdgeForPopoverEdge:popoverEdge];
     
     NSRect contentRect = NSIntegralRect([self contentViewFrameForBackgroundFrame:frame popoverEdge:self.popoverEdge]);
@@ -315,8 +309,8 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     CGFloat midOriginX = floor(getMedianXFromRects(originRect, contentRect));
     CGFloat midOriginY = floor(getMedianYFromRects(originRect, contentRect));
     
-    CGFloat maxArrowX = 0.0;
     CGFloat minArrowX = 0.0;
+    CGFloat maxArrowX = 0.0;
     CGFloat minArrowY = 0.0;
     CGFloat maxArrowY = 0.0;
     
@@ -325,81 +319,84 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     // If we have to nudge it then we have to shrink the arrow as otherwise it looks all wonky and weird.
     // That is what this complete mess below does.
     if (arrowEdge == NSRectEdgeMinY || arrowEdge == NSRectEdgeMaxY) {
-        maxArrowX = floor(midOriginX + (self.arrowSize.width / 2.0));
-        CGFloat maxPossible = (NSMaxX(contentRect) - self.borderRadius);
+        maxArrowX = floor(midOriginX + (arrowWidth / 2));
+        CGFloat maxPossible = (NSMaxX(contentRect) - borderRadius);
         
         if (maxArrowX > maxPossible) {
             maxArrowX = maxPossible;
-            minArrowX = maxArrowX - self.arrowSize.width;
+            minArrowX = maxArrowX - arrowWidth;
         } else {
-            minArrowX = floor(midOriginX - (self.arrowSize.width / 2.0));
+            minArrowX = floor(midOriginX - (arrowWidth / 2));
             
-            if (minArrowX < self.borderRadius) {
-                minArrowX = self.borderRadius;
-                maxArrowX = minArrowX + self.arrowSize.width;
+            if (minArrowX < borderRadius) {
+                minArrowX = borderRadius;
+                maxArrowX = minArrowX + arrowWidth;
             }
         }
     } else {
-        minArrowY = floor(midOriginY - (self.arrowSize.width / 2.0));
+        minArrowY = floor(midOriginY - (arrowWidth / 2));
         
-        if (minArrowY < self.borderRadius) {
-            minArrowY = self.borderRadius;
-            maxArrowY = minArrowY + self.arrowSize.width;
+        if (minArrowY < borderRadius) {
+            minArrowY = borderRadius;
+            maxArrowY = minArrowY + arrowWidth;
         } else {
-            maxArrowY = floor(midOriginY + (self.arrowSize.width / 2.0));
-            CGFloat maxPossible = (NSMaxY(contentRect) - self.borderRadius);
+            maxArrowY = floor(midOriginY + (arrowWidth / 2));
+            CGFloat maxPossible = (NSMaxY(contentRect) - borderRadius);
             
             if (maxArrowY > maxPossible) {
                 maxArrowY = maxPossible;
-                minArrowY = maxArrowY - self.arrowSize.width;
+                minArrowY = maxArrowY - arrowWidth;
             }
         }
     }
     
-    // These represent the centerpoints of the popover's corner arcs.
-    CGFloat minCenterpointX = floor(minX + self.borderRadius);
-    CGFloat maxCenterpointX = floor(maxX - self.borderRadius);
-    CGFloat minCenterpointY = floor(minY + self.borderRadius);
-    CGFloat maxCenterpointY = floor(maxY - self.borderRadius);
-    
-    CGMutablePathRef path = CGPathCreateMutable();
-    
-    if (_shouldShowArrowWithVisualEffect) {
-        CGPathMoveToPoint(path, NULL, minX, minCenterpointY);
-        
-        CGFloat radius = self.borderRadius;
-        
-        CGPathAddArc(path, NULL, minCenterpointX, maxCenterpointY, radius, M_PI, M_PI_2, true);
-        CGPathAddArc(path, NULL, maxCenterpointX, maxCenterpointY, radius, M_PI_2, 0, true);
-        CGPathAddArc(path, NULL, maxCenterpointX, minCenterpointY, radius, 0, -M_PI_2, true);
-        CGPathAddArc(path, NULL, minCenterpointX, minCenterpointY, radius, -M_PI_2, M_PI, true);
-    }
-    
-    CGPoint minBasePoint, tipPoint, maxBasePoint;
+    NSPoint minBasePoint, tipPoint, maxBasePoint;
     
     switch (arrowEdge) {
         case NSRectEdgeMinX:
             minBasePoint = NSMakePoint(minX, minArrowY);
-            tipPoint = NSMakePoint(floor(minX - self.arrowSize.height), floor((minArrowY + maxArrowY) / 2));
+            tipPoint = NSMakePoint(floor(minX - arrowHeight), floor((minArrowY + maxArrowY) / 2));
             maxBasePoint = NSMakePoint(minX, maxArrowY);
             break;
         case NSRectEdgeMaxY:
             minBasePoint = NSMakePoint(minArrowX, maxY);
-            tipPoint = NSMakePoint(floor((minArrowX + maxArrowX) / 2), floor(maxY + self.arrowSize.height));
+            tipPoint = NSMakePoint(floor((minArrowX + maxArrowX) / 2), floor(maxY + arrowHeight));
             maxBasePoint = NSMakePoint(maxArrowX, maxY);
             break;
         case NSRectEdgeMaxX:
             minBasePoint = NSMakePoint(maxX, minArrowY);
-            tipPoint = NSMakePoint(floor(maxX + self.arrowSize.height), floor((minArrowY + maxArrowY) / 2));
+            tipPoint = NSMakePoint(floor(maxX + arrowHeight), floor((minArrowY + maxArrowY) / 2));
             maxBasePoint = NSMakePoint(maxX, maxArrowY);
             break;
         case NSRectEdgeMinY:
             minBasePoint = NSMakePoint(minArrowX, minY);
-            tipPoint = NSMakePoint(floor((minArrowX + maxArrowX) / 2), floor(minY - self.arrowSize.height));
+            tipPoint = NSMakePoint(floor((minArrowX + maxArrowX) / 2), floor(minY - arrowHeight));
             maxBasePoint = NSMakePoint(maxArrowX, minY);
             break;
         default:
             break;
+    }
+    
+    CGMutablePathRef path = CGPathCreateMutable();
+    
+    if (_shouldShowArrowWithVisualEffect) {
+        CGFloat minX = NSMinX(contentRect);
+        CGFloat maxX = NSMaxX(contentRect);
+        CGFloat minY = NSMinY(contentRect);
+        CGFloat maxY = NSMaxY(contentRect);
+        
+        // These represent the centerpoints of the popover's corner arcs.
+        CGFloat minCenterpointX = floor(minX + borderRadius);
+        CGFloat maxCenterpointX = floor(maxX - borderRadius);
+        CGFloat minCenterpointY = floor(minY + borderRadius);
+        CGFloat maxCenterpointY = floor(maxY - borderRadius);
+        
+        CGPathMoveToPoint(path, NULL, minX, minCenterpointY);
+        
+        CGPathAddArc(path, NULL, minCenterpointX, maxCenterpointY, borderRadius, M_PI, M_PI_2, true);
+        CGPathAddArc(path, NULL, maxCenterpointX, maxCenterpointY, borderRadius, M_PI_2, 0, true);
+        CGPathAddArc(path, NULL, maxCenterpointX, minCenterpointY, borderRadius, 0, -M_PI_2, true);
+        CGPathAddArc(path, NULL, minCenterpointX, minCenterpointY, borderRadius, -M_PI_2, M_PI, true);
     }
     
     CGPathMoveToPoint(path, NULL, minBasePoint.x, minBasePoint.y);
@@ -464,8 +461,8 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 - (void)mouseDown:(NSEvent *)event {
     if (!self.userInteractionEnable) return;
     
-    BOOL isFLOPopoverWindow = [event.window isKindOfClass:[FLOPopoverWindow class]];
-    _originalMouseOffset = isFLOPopoverWindow ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:self.window.contentView];
+    BOOL isPopover = [event.window respondsToSelector:@selector(tag)];
+    _originalMouseOffset = isPopover ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:self.window.contentView];
     _dragging = NO;
     _mouseDownEventReceived = YES;
 }
@@ -480,14 +477,14 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
             [self.delegate popoverDidMakeMovement];
         }
         
-        BOOL isFLOPopoverWindow = [event.window isKindOfClass:[FLOPopoverWindow class]];
+        BOOL isPopover = [event.window respondsToSelector:@selector(tag)];
         
-        NSPoint currentMouseOffset = isFLOPopoverWindow ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:event.window.contentView];
+        NSPoint currentMouseOffset = isPopover ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:event.window.contentView];
         NSPoint difference = NSMakePoint(currentMouseOffset.x - _originalMouseOffset.x, currentMouseOffset.y - _originalMouseOffset.y);
-        NSPoint currentOrigin = isFLOPopoverWindow ? event.window.frame.origin : self.frame.origin;
+        NSPoint currentOrigin = isPopover ? event.window.frame.origin : self.frame.origin;
         NSPoint nextOrigin = NSMakePoint(currentOrigin.x + difference.x, currentOrigin.y + difference.y);
         
-        if (isFLOPopoverWindow) {
+        if (isPopover) {
             [event.window setFrameOrigin:nextOrigin];
         } else {
             [self setFrameOrigin:nextOrigin];

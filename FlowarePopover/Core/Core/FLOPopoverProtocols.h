@@ -37,7 +37,7 @@
 
 @property (nonatomic, assign) BOOL stopsAtContainerBounds;
 
-@property (nonatomic, assign) BOOL staysInApplicationFrame;
+@property (nonatomic, assign) BOOL staysInContainer;
 @property (nonatomic, assign) BOOL updatesFrameWhileShowing;
 @property (nonatomic, assign) BOOL shouldRegisterSuperviewObservers;
 @property (nonatomic, assign) BOOL shouldChangeSizeWhenApplicationResizes;
@@ -63,6 +63,11 @@
 @property (nonatomic, assign) BOOL isDetachable;
 
 /**
+ * Set the styleMask for detachable window.
+ */
+@property (nonatomic, assign) NSWindowStyleMask detachableStyleMask;
+
+/**
  * Set tag for the popover.
  */
 @property (nonatomic, assign) NSInteger tag;
@@ -74,7 +79,7 @@
 
 @property (nonatomic, assign) NSTimeInterval animationDuration;
 
-@property (nonatomic, assign) BOOL needAutoresizingMask;
+@property (nonatomic, assign) BOOL needsAutoresizingMask;
 
 #pragma mark - Callback utilities
 

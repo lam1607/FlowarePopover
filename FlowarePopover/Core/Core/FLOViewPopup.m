@@ -26,7 +26,7 @@
 @property (nonatomic, strong) NSEvent *appEvent;
 
 @property (nonatomic, strong) FLOPopoverView *popoverView;
-@property (nonatomic, strong) FLOPopoverWindow *detachableWindow;
+@property (nonatomic, strong) FLOPopoverWindow *popoverWindow;
 
 /**
  * View that used for making animation with an animated layer.
@@ -47,7 +47,7 @@
 @synthesize animatedForwarding = _animatedForwarding;
 @synthesize bottomOffset = _bottomOffset;
 @synthesize stopsAtContainerBounds = _stopsAtContainerBounds;
-@synthesize staysInApplicationFrame = _staysInApplicationFrame;
+@synthesize staysInContainer = _staysInContainer;
 @synthesize updatesFrameWhileShowing = _updatesFrameWhileShowing;
 @synthesize shouldRegisterSuperviewObservers = _shouldRegisterSuperviewObservers;
 @synthesize shouldChangeSizeWhenApplicationResizes = _shouldChangeSizeWhenApplicationResizes;
@@ -59,10 +59,11 @@
 @synthesize becomesKeyOnMouseOver = _becomesKeyOnMouseOver;
 @synthesize isMovable = _isMovable;
 @synthesize isDetachable = _isDetachable;
+@synthesize detachableStyleMask = _detachableStyleMask;
 @synthesize tag = _tag;
 @synthesize animatedByMovingFrame = _animatedByMovingFrame;
 @synthesize animationDuration = _animationDuration;
-@synthesize needAutoresizingMask = _needAutoresizingMask;
+@synthesize needsAutoresizingMask = _needsAutoresizingMask;
 
 @synthesize willShowBlock;
 @synthesize didShowBlock;
@@ -78,9 +79,9 @@
         _arrowSize = NSZeroSize;
         _animated = NO;
         _animatedForwarding = NO;
-        _bottomOffset = FLO_CONST_POPOVER_BOTTOM_OFFSET;
+        _bottomOffset = kFlowarePopover_BottomOffset;
         _stopsAtContainerBounds = YES;
-        _staysInApplicationFrame = NO;
+        _staysInContainer = NO;
         _updatesFrameWhileShowing = NO;
         _shouldRegisterSuperviewObservers = YES;
         _shouldChangeSizeWhenApplicationResizes = NO;
@@ -91,10 +92,11 @@
         _closesWhenReceivesEvent = NO;
         _isMovable = NO;
         _isDetachable = NO;
+        _detachableStyleMask = NSNotFound;
         _tag = -1;
         _animatedByMovingFrame = NO;
         _animationDuration = 0.0;
-        _needAutoresizingMask = NO;
+        _needsAutoresizingMask = NO;
     }
     
     return self;
@@ -188,10 +190,8 @@
     }
 }
 
-- (void)setStaysInApplicationFrame:(BOOL)staysInApplicationFrame {
-    _staysInApplicationFrame = staysInApplicationFrame;
-    
-    self.utils.staysInApplicationFrame = staysInApplicationFrame;
+- (void)setStaysInContainer:(BOOL)staysInContainer {
+    _staysInContainer = staysInContainer;
 }
 
 - (void)setTag:(NSInteger)tag {
@@ -217,15 +217,15 @@
     
     self.utils.contentView.frame = NSMakeRect(self.utils.contentView.frame.origin.x, self.utils.contentView.frame.origin.y, contentSize.width, contentSize.height);
     
-    if ([notification.name isEqualToString:NSWindowWillCloseNotification] && (self.detachableWindow == notification.object)) {
+    if ([notification.name isEqualToString:NSWindowWillCloseNotification] && (self.popoverWindow == notification.object)) {
         [self close];
         
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillCloseNotification object:self.detachableWindow];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillCloseNotification object:self.popoverWindow];
     }
     
-    if (self.detachableWindow) {
-        [self.detachableWindow close];
-        self.detachableWindow = nil;
+    if (self.popoverWindow) {
+        [self.popoverWindow close];
+        self.popoverWindow = nil;
     }
 }
 
@@ -385,7 +385,7 @@
  * @param positioningView is the view that popover will be displayed relatively to.
  * @param edgeType 'position' that the popover should be displayed.
  *
- * @note rect is bounds of positioningView.
+ * @note rect is bounds of positioningView (should be visibleRect of positioningView).
  * @note positioningView is also a sender that sends event for showing the popover (positioningView ≡ sender).
  */
 - (void)showRelativeToRect:(NSRect)rect ofView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType {
@@ -405,7 +405,7 @@
         self.utils.positioningView = positioningView;
         self.utils.positioningAnchorView = positioningView;
         self.utils.senderView = positioningView;
-        self.utils.needAutoresizingMask = self.needAutoresizingMask;
+        self.utils.needsAutoresizingMask = self.needsAutoresizingMask;
         
         [self setPopoverEdgeType:edgeType];
         [self setupPopover];
@@ -450,7 +450,7 @@
         self.utils.positioningFrame = [self.utils.positioningAnchorView bounds];
         self.utils.positioningView = positioningView;
         self.utils.senderView = sender;
-        self.utils.needAutoresizingMask = self.needAutoresizingMask;
+        self.utils.needsAutoresizingMask = self.needsAutoresizingMask;
         
         [self setPopoverEdgeType:edgeType];
         [self setupPopover];
@@ -494,7 +494,7 @@
 - (void)displayWithAnimationProcess:(BOOL)displayAnimated {
     self.popoverView = self.utils.backgroundView;
     
-    [self.utils setupComponentsForPopover];
+    [self.utils setupComponentsForPopover:displayAnimated];
     
     if (displayAnimated) {
         [self popoverShowing:YES animated:self.animated];
@@ -503,19 +503,16 @@
 
 - (void)close {
     if (![self isShown]) return;
+    if (self.popoverClosing || self.popoverShowing) return;
+    if (!([self.popoverView isDescendantOf:self.utils.presentedWindow.contentView] || (self.utils.presentedWindow.contentView == nil) || [self.utils.contentView isDescendantOf:self.popoverWindow.contentView])) return;
     
-    if ([self.popoverView isDescendantOf:self.utils.presentedWindow.contentView] ||
-        (self.utils.presentedWindow.contentView == nil) || (self.utils.contentView == self.detachableWindow.contentView)) {
-        if (!self.popoverClosing && !self.popoverShowing) {
-            self.popoverClosing = YES;
-            
-            if (willCloseBlock) willCloseBlock(self);
-            
-            [self.utils setupAutoresizingMaskIfNeeded:NO];
-            [self removeAllApplicationEvents];
-            [self popoverShowing:NO animated:self.animated];
-        }
-    }
+    self.popoverClosing = YES;
+    
+    if (willCloseBlock) willCloseBlock(self);
+    
+    [self.utils setupAutoresizingMaskIfNeeded:NO];
+    [self removeAllApplicationEvents];
+    [self popoverShowing:NO animated:self.animated];
 }
 
 - (void)popoverDidFinishShowing:(BOOL)showing {
@@ -525,16 +522,13 @@
         self.popoverShowing = NO;
         self.popoverView.alphaValue = 1.0;
         
-        [self.utils registerObserverForClipViews];
-        
         if (self.utils.popoverStyle == FLOPopoverStyleNormal) {
             [self.utils setupAutoresizingMaskIfNeeded:YES];
         }
         
         if (didShowBlock) didShowBlock(self);
     } else {
-        if ([self.popoverView isDescendantOf:self.utils.presentedWindow.contentView] ||
-            (self.utils.presentedWindow.contentView == nil) || (self.utils.contentView == self.detachableWindow.contentView)) {
+        if ([self.popoverView isDescendantOf:self.utils.presentedWindow.contentView] || (self.utils.presentedWindow.contentView == nil) || [self.utils.contentView isDescendantOf:self.popoverWindow.contentView]) {
             [self resetContentViewFrame:nil];
             
             self.appEvent = nil;
@@ -645,7 +639,7 @@
     transformAnimation.fromValue = showing ? [NSValue valueWithCATransform3D:CATransform3DMakeScale(scaleFactor, scaleFactor, 1.0)] : [NSValue valueWithCATransform3D:CATransform3DIdentity];
     transformAnimation.toValue = showing ? [NSValue valueWithCATransform3D:CATransform3DIdentity] : [NSValue valueWithCATransform3D:CATransform3DMakeScale(scaleFactor, scaleFactor, 1.0)];
     
-    NSTimeInterval duration = showing ? FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD : 0.15;
+    NSTimeInterval duration = showing ? kFlowarePopover_AnimationTimeInterval : 0.15;
     
     if (self.animationDuration > 0) {
         duration = self.animationDuration;
@@ -768,7 +762,7 @@
         transitionAnimation.toValue = [NSValue valueWithPoint:endPosition];
     }
     
-    NSTimeInterval duration = FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD;
+    NSTimeInterval duration = kFlowarePopover_AnimationTimeInterval;
     
     if (self.animationDuration > 0) {
         duration = self.animationDuration;
@@ -958,12 +952,16 @@
 #pragma mark - Utilities
 
 - (void)closePopover:(id<FLOPopoverProtocols>)sender {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    
+    if (self.popoverShowing || self.popoverClosing) {
+        [self removeAnimationProcessIfNeeded:YES];
+    }
+    
     _shown = YES;
     self.popoverShowing = NO;
     self.popoverClosing = NO;
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [self removeAnimationProcessIfNeeded:YES];
     [self close];
 }
 
@@ -1011,32 +1009,30 @@
             didDetachBlock = nil;
         }
         
+        NSView *contentView = self.utils.contentView;
+        NSRect contentFrame = [contentView.window contentRectForFrameRect:[contentView.window convertRectToScreen:[contentView convertRect:contentView.bounds toView:contentView.window.contentView]]];
+        NSWindowStyleMask styleMask = (self.detachableStyleMask != NSNotFound) ? self.detachableStyleMask : (NSWindowStyleMaskTitled + NSWindowStyleMaskClosable);
+        FLOPopoverWindow *window = [[FLOPopoverWindow alloc] initWithContentRect:contentFrame styleMask:styleMask backing:NSBackingStoreBuffered defer:YES];
+        NSRect frame = [window frameRectForContentRect:contentFrame];
+        
         [self.utils.backgroundView removeFromSuperview];
         [self.utils.contentView removeFromSuperview];
         
-        NSView *contentView = self.utils.contentView;
-        NSRect frame = [self.utils.presentedWindow convertRectToScreen:self.popoverView.frame];
-        NSUInteger styleMask = NSWindowStyleMaskTitled + NSWindowStyleMaskClosable;
+        window.hasShadow = YES;
+        window.releasedWhenClosed = NO;
+        window.opaque = NO;
+        window.backgroundColor = NSColor.clearColor;
+        window.canBecomeKey = YES;
         
-        self.detachableWindow = [[FLOPopoverWindow alloc] initWithContentRect:frame styleMask:styleMask backing:NSBackingStoreBuffered defer:YES];
-        frame = [self.detachableWindow frameRectForContentRect:frame];
+        [self.utils addView:contentView toParent:window.contentView autoresizingMask:YES];
         
-        self.detachableWindow.hasShadow = YES;
-        self.detachableWindow.releasedWhenClosed = NO;
-        self.detachableWindow.opaque = NO;
-        self.detachableWindow.backgroundColor = NSColor.clearColor;
-        self.detachableWindow.contentView = contentView;
+        // Should make window key and order front before setting its frame.
+        [window makeKeyAndOrderFront:nil];
+        [window setFrame:frame display:YES];
         
-        [contentView setNeedsUpdateConstraints:YES];
-        [contentView updateConstraints];
-        [contentView updateConstraintsForSubtreeIfNeeded];
-        [contentView layoutSubtreeIfNeeded];
+        self.popoverWindow = window;
         
-        self.detachableWindow.canBecomeKey = YES;
-        [self.detachableWindow makeKeyAndOrderFront:nil];
-        [self.detachableWindow setFrame:frame display:YES];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetContentViewFrame:) name:NSWindowWillCloseNotification object:self.detachableWindow];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetContentViewFrame:) name:NSWindowWillCloseNotification object:self.popoverWindow];
     }
 }
 

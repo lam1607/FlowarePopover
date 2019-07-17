@@ -12,8 +12,6 @@
 
 #import "FLOExtensionsGraphicsContext.h"
 
-#import "FLOPopoverConstants.h"
-
 @implementation NSWindow (FLOExtensionsNSWindow)
 
 - (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame {
@@ -21,7 +19,7 @@
 }
 
 - (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame source:(id)source {
-    [self showingAnimated:showing fromFrame:fromFrame toFrame:toFrame duration:FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD source:source];
+    [self showingAnimated:showing fromFrame:fromFrame toFrame:toFrame duration:0.2 source:source];
 }
 
 - (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame duration:(NSTimeInterval)duration source:(id)source {
@@ -53,7 +51,7 @@
 }
 
 - (void)showingAnimated:(BOOL)showing fromPosition:(NSPoint)fromPosition toPosition:(NSPoint)toPosition completionHandler:(void(^)(void))complete {
-    [self showingAnimated:showing fromPosition:fromPosition toPosition:toPosition duration:FLO_CONST_ANIMATION_TIME_INTERVAL_STANDARD completionHandler:complete];
+    [self showingAnimated:showing fromPosition:fromPosition toPosition:toPosition duration:0.2 completionHandler:complete];
 }
 
 - (void)showingAnimated:(BOOL)showing fromPosition:(NSPoint)fromPosition toPosition:(NSPoint)toPosition duration:(NSTimeInterval)duration completionHandler:(void(^)(void))complete {

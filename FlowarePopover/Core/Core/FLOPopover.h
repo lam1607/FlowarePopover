@@ -9,11 +9,11 @@
 #import <Cocoa/Cocoa.h>
 
 #import "FLOPopoverConstants.h"
-#import "FLOPopoverView.h"
-#import "FLOPopoverWindow.h"
 
 @class FLOPopover;
 
+/// FLOPopoverDelegate
+///
 @protocol FLOPopoverDelegate <NSObject>
 
 @optional
@@ -24,8 +24,8 @@
 
 @end
 
-@protocol FLOPopoverDelegate;
-
+/// FLOPopover
+///
 @interface FLOPopover : NSResponder
 
 @property (weak, readwrite) id<FLOPopoverDelegate> delegate;
@@ -49,10 +49,10 @@
 @property (nonatomic, assign) BOOL stopsAtContainerBounds;
 
 /**
- * Determine whether the popover should stay in application frame or screen frame.
- * Default value of staysInApplicationFrame is NO, it means that the popover will stay inside the screen frame.
+ * Determine whether the popover should stay in parent or application or screen.
+ * Default value of staysInContainer is NO, it means that the popover will stay inside the screen.
  */
-@property (nonatomic, assign) BOOL staysInApplicationFrame;
+@property (nonatomic, assign) BOOL staysInContainer;
 @property (nonatomic, assign) BOOL updatesFrameWhileShowing;
 @property (nonatomic, assign) BOOL shouldRegisterSuperviewObservers;
 @property (nonatomic, assign) BOOL shouldChangeSizeWhenApplicationResizes;
@@ -62,7 +62,7 @@
 @property (nonatomic, assign) BOOL closesWhenNotBelongToContainer;
 @property (nonatomic, assign) BOOL closesWhenReceivesEvent;
 @property (nonatomic, assign) NSTimeInterval closesAfterTimeInterval;
-@property (nonatomic, assign) BOOL cancelClosesAfterTimeIntervalWhenMoving;
+@property (nonatomic, assign) BOOL disableTimeIntervalOnMoving;
 @property (nonatomic, assign) BOOL resignsFieldsOnClosing;
 
 /**
@@ -87,6 +87,11 @@
 @property (nonatomic, assign) BOOL isDetachable;
 
 /**
+ * Set the styleMask for detachable window.
+ */
+@property (nonatomic, assign) NSWindowStyleMask detachableStyleMask;
+
+/**
  * Make the popover become key window. Only apply for FLOWindowPopover type.
  */
 @property (nonatomic, assign) BOOL canBecomeKey;
@@ -103,7 +108,7 @@
 
 @property (nonatomic, assign) NSTimeInterval animationDuration;
 
-@property (nonatomic, assign) BOOL needAutoresizingMask;
+@property (nonatomic, assign) BOOL needsAutoresizingMask;
 
 #pragma mark - Initialize
 
@@ -167,7 +172,7 @@
  * @param positioningView is the view that popover will be displayed relatively to.
  * @param edgeType 'position' that the popover should be displayed.
  *
- * @note rect is bounds of positioningView.
+ * @note rect is bounds of positioningView (should be visibleRect of positioningView).
  * @note positioningView is also a sender that sends event for showing the popover (positioningView ≡ sender).
  */
 - (void)showRelativeToRect:(NSRect)rect ofView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType;

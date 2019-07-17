@@ -82,11 +82,11 @@
 - (CGPathRef)clippingPathForEdge:(NSRectEdge)popoverEdge frame:(NSRect)frame;
 
 
-- (void)makeMovable:(BOOL)movable;
-- (void)makeDetachable:(BOOL)detachable;
-- (void)showShadow:(BOOL)needed;
-- (void)showArrow:(BOOL)needed;
-- (void)showArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
+- (void)setMovable:(BOOL)movable;
+- (void)setDetachable:(BOOL)detachable;
+- (void)setShadow:(BOOL)needed;
+- (void)setArrow:(BOOL)needed;
+- (void)setVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 - (void)setArrowColor:(CGColorRef)color;
 - (void)setPopoverEdge:(NSRectEdge)popoverEdge;
 - (void)setPopoverOrigin:(NSRect)popoverOrigin;

@@ -19,8 +19,7 @@
 
 @property (nonatomic) CGColorRef pathColor;
 
-- (void)setupArrowVisualEffectViewMaterial:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
-- (void)setClippingPathColor:(CGColorRef)color;
+- (void)setVisualEffectMaterial:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 - (void)drawClippingPath;
 - (void)clearClippingPath;
 

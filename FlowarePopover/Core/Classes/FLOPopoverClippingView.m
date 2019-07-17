@@ -23,7 +23,7 @@ static void CGPathCallback(void *info, const CGPathElement *element) {
         }
         case kCGPathElementAddQuadCurveToPoint: {
             NSPoint qp0 = bezierPath.currentPoint, qp1 = points[0], qp2 = points[1], cp1, cp2;
-            CGFloat m = 0.67;
+            CGFloat m = 0.666666666666667;
             cp1.x = (qp0.x + ((qp1.x - qp0.x) * m));
             cp1.y = (qp0.y + ((qp1.y - qp0.y) * m));
             cp2.x = (qp2.x + ((qp1.x - qp2.x) * m));
@@ -61,9 +61,17 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
     [self clearClippingPath];
 }
 
+- (void)drawRect:(NSRect)dirtyRect {
+    if (self.clippingPath == NULL) return;
+    
+    [self drawClippingPath];
+}
+
 - (NSView *)hitTest:(NSPoint)aPoint {
     return nil;
 }
+
+#pragma mark - Getter/Setter
 
 - (void)setClippingPath:(CGPathRef)clippingPath {
     if (clippingPath == _clippingPath) return;
@@ -72,20 +80,18 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
     _clippingPath = clippingPath;
     CGPathRetain(_clippingPath);
     
-    @try {
-        self.needsDisplay = YES;
-    } @catch (NSException *exception) {
-        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
+    self.needsDisplay = YES;
+}
+
+- (void)setPathColor:(CGColorRef)pathColor {
+    if (pathColor != NULL) {
+        _pathColor = pathColor;
     }
 }
 
-- (void)drawRect:(NSRect)dirtyRect {
-    if (self.clippingPath == NULL) return;
-    
-    [self drawClippingPath];
-}
+#pragma mark - FLOPopoverClippingView methods
 
-- (void)setupArrowVisualEffectViewMaterial:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
+- (void)setVisualEffectMaterial:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
     if (_visualEffectView == nil) {
         _visualEffectView = [[NSVisualEffectView alloc] initWithFrame:self.frame];
         _visualEffectView.state = state;
@@ -96,42 +102,26 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
     }
 }
 
-- (void)setClippingPathColor:(CGColorRef)color {
-    if (color != nil) {
-        self.pathColor = color;
-        
-        @try {
-            self.needsDisplay = YES;
-        } @catch (NSException *exception) {
-            NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
-        }
-    }
-}
-
 - (void)drawClippingPath {
-    @try {
-        if (_visualEffectView != nil) {
-            [_visualEffectView setFrameSize:self.frame.size];
+    if (_visualEffectView != nil) {
+        [_visualEffectView setFrameSize:self.frame.size];
+        
+        _visualEffectView.maskImage = [NSImage imageWithSize:self.frame.size flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+            NSBezierPath *path = bezierPathWithCGPath(self.clippingPath);
+            [path fill];
             
-            _visualEffectView.maskImage = [NSImage imageWithSize:self.frame.size flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
-                NSBezierPath *path = bezierPathWithCGPath(self.clippingPath);
-                [path fill];
-                
-                return YES;
-            }];
-        } else {
-            CGContextRef currentContext = NSGraphicsContext.currentContext.CGContext;
+            return YES;
+        }];
+    } else {
+        CGContextRef currentContext = NSGraphicsContext.currentContext.CGContext;
+        
+        if (currentContext != NULL) {
+            self.pathColor = ((self.pathColor != NULL) && (self.pathColor != [NSColor.clearColor CGColor])) ? self.pathColor : [NSColor.lightGrayColor CGColor];
             
-            if (currentContext != nil) {
-                self.pathColor = ((self.pathColor != nil) && (self.pathColor != [NSColor.clearColor CGColor])) ? self.pathColor : [NSColor.lightGrayColor CGColor];
-                
-                CGContextAddPath(currentContext, self.clippingPath);
-                CGContextSetFillColorWithColor(currentContext, self.pathColor);
-                CGContextFillPath(currentContext);
-            }
+            CGContextAddPath(currentContext, self.clippingPath);
+            CGContextSetFillColorWithColor(currentContext, self.pathColor);
+            CGContextFillPath(currentContext);
         }
-    } @catch (NSException *exception) {
-        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
     }
 }
 

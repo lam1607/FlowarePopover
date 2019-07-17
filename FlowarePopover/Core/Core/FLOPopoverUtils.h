@@ -17,10 +17,7 @@
 
 #pragma mark - Properties
 
-@property (nonatomic, weak) id<FLOPopoverProtocols> popover;
-
 @property (nonatomic, strong, readonly) NSWindow *mainWindow;
-@property (nonatomic, assign, readonly) BOOL mainWindowResized;
 
 @property (nonatomic, strong) NSView *contentView;
 @property (nonatomic, strong) NSViewController *contentViewController;
@@ -34,13 +31,12 @@
 @property (nonatomic, assign) FLOPopoverStyle popoverStyle;
 
 @property (nonatomic, assign) BOOL popoverMoved;
-@property (nonatomic, assign) BOOL staysInApplicationFrame;
 
 @property (nonatomic, assign) FLOPopoverAnimationBehaviour animationBehaviour;
 @property (nonatomic, assign) FLOPopoverAnimationType animationType;
 @property (nonatomic, assign) BOOL animatedInAppFrame;
 
-@property (nonatomic, assign) BOOL needAutoresizingMask;
+@property (nonatomic, assign) BOOL needsAutoresizingMask;
 
 @property (nonatomic, strong) NSView *positioningAnchorView;
 @property (nonatomic, strong) NSView *senderView;
@@ -70,20 +66,15 @@
 - (void)addView:(NSView *)view toParent:(NSView *)parentView autoresizingMask:(BOOL)isAutoresizingMask;
 - (void)addView:(NSView *)view toParent:(NSView *)parentView centerAutoresizingMask:(BOOL)isCenterAutoresizingMask;
 - (void)setupAutoresizingMaskIfNeeded:(BOOL)needed;
-- (void)registerObserverForClipViews;
 
 #pragma mark - Display utilities
 
-- (void)setupComponentsForPopover;
+- (void)setupComponentsForPopover:(BOOL)observerNeeded;
 - (void)setPopoverEdgeType:(FLOPopoverEdgeType)edgeType;
 - (void)setUserInteractionEnable:(BOOL)isEnable;
 - (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 - (void)setupPositioningAnchorWithView:(NSView *)positioningView positioningRect:(NSRect)positioningRect shouldUpdatePosition:(BOOL)shouldUpdatePosition;
-- (NSRect)popoverFrameForEdge:(NSRectEdge)popoverEdge;
 - (NSRect)popoverFrame;
-- (NSRect)p_popoverFrameForEdge:(NSRectEdge *)popoverEdge;
-- (NSRect)p_popoverFrame;
-- (void)p_backgroundViewShouldUpdate:(BOOL)updated;
 
 #pragma mark - Event monitor
 
