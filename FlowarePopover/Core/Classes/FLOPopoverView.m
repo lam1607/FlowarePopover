@@ -8,6 +8,7 @@
 
 #import "FLOPopoverView.h"
 
+#import "FLOPopoverProtocols.h"
 #import "FLOPopoverClippingView.h"
 
 static CGFloat getMedianXFromRects(NSRect r1, NSRect r2) {
@@ -26,6 +27,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 }
 
 @interface FLOPopoverView () {
+    __weak id<FLOPopoverProtocols> _responder;
     NSTrackingArea *_trackingArea;
     
     BOOL _isMovable;
@@ -173,6 +175,14 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 }
 
 #pragma mark - FLOPopoverView methods
+
+- (void)setResponder:(id<FLOPopoverProtocols>)responder {
+    _responder = responder;
+}
+
+- (id<FLOPopoverProtocols>)responder {
+    return _responder;
+}
 
 - (void)setMovable:(BOOL)movable {
     _isMovable = movable;

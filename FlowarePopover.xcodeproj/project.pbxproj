@@ -17,6 +17,8 @@
 		DE05760722366F1C00B94B81 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = DE05760622366F1C00B94B81 /* NotificationService.m */; };
 		DE05760B223670FE00B94B81 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = DE05760A223670FE00B94B81 /* Notification.m */; };
 		DE0BF080219BB9E800FF3AD6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE0BF07F219BB9E800FF3AD6 /* Colors.xcassets */; };
+		DE7A697722E16A850046FEA8 /* FLOVirtualView.h in Headers */ = {isa = PBXBuildFile; fileRef = DE7A697522E16A850046FEA8 /* FLOVirtualView.h */; };
+		DE7A697822E16A850046FEA8 /* FLOVirtualView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7A697622E16A850046FEA8 /* FLOVirtualView.m */; };
 		DE8E5C7121534233002AE872 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE8E5C7021534233002AE872 /* AppleScriptObjC.framework */; };
 		DE8E5C7A21534821002AE872 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5C7921534821002AE872 /* AppDelegate.m */; };
 		DE8E5C7C21534822002AE872 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE8E5C7B21534822002AE872 /* Assets.xcassets */; };
@@ -91,7 +93,6 @@
 		DEE3FBC622D6D2D600E1C5C9 /* FLOPopoverView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEF1F87822B78FBE00D54049 /* FLOPopoverView.h */; };
 		DEE3FBC722D6D2D600E1C5C9 /* FLOPopoverWindow.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEF1F87C22B7900500D54049 /* FLOPopoverWindow.h */; };
 		DEE3FBC822D6D2D600E1C5C9 /* FLOPopoverClippingView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEF1F89422B79BB800D54049 /* FLOPopoverClippingView.h */; };
-		DEE3FBC922D6D2D600E1C5C9 /* FLOVirtualInteractionView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEF1F88222B792A300D54049 /* FLOVirtualInteractionView.h */; };
 		DEE3FBCA22D6D2DD00E1C5C9 /* FLOPopoverConstants.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE465421534005004E8DEF /* FLOPopoverConstants.h */; };
 		DEE3FBCB22D6D2DD00E1C5C9 /* FLOPopoverProtocols.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE4050229FAC6E00456551 /* FLOPopoverProtocols.h */; };
 		DEE3FBCC22D6D2DD00E1C5C9 /* FLOPopover.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE463C21534005004E8DEF /* FLOPopover.h */; };
@@ -115,7 +116,6 @@
 		DEF15EC221DDCC8400FDE038 /* NSColor+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EC121DDCC8400FDE038 /* NSColor+Custom.m */; };
 		DEF1F87B22B78FBE00D54049 /* FLOPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF1F87922B78FBE00D54049 /* FLOPopoverView.m */; };
 		DEF1F87F22B7900500D54049 /* FLOPopoverWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF1F87D22B7900500D54049 /* FLOPopoverWindow.m */; };
-		DEF1F88522B792A300D54049 /* FLOVirtualInteractionView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF1F88322B792A300D54049 /* FLOVirtualInteractionView.m */; };
 		DEF1F89722B79BB800D54049 /* FLOPopoverClippingView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF1F89522B79BB800D54049 /* FLOPopoverClippingView.m */; };
 /* End PBXBuildFile section */
 
@@ -142,7 +142,6 @@
 				DEE3FBC622D6D2D600E1C5C9 /* FLOPopoverView.h in CopyFiles */,
 				DEE3FBC722D6D2D600E1C5C9 /* FLOPopoverWindow.h in CopyFiles */,
 				DEE3FBC822D6D2D600E1C5C9 /* FLOPopoverClippingView.h in CopyFiles */,
-				DEE3FBC922D6D2D600E1C5C9 /* FLOVirtualInteractionView.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,6 +169,8 @@
 		DE05760922366FA500B94B81 /* Notification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
 		DE05760A223670FE00B94B81 /* Notification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
 		DE0BF07F219BB9E800FF3AD6 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		DE7A697522E16A850046FEA8 /* FLOVirtualView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOVirtualView.h; sourceTree = "<group>"; };
+		DE7A697622E16A850046FEA8 /* FLOVirtualView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOVirtualView.m; sourceTree = "<group>"; };
 		DE8E5C7021534233002AE872 /* AppleScriptObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptObjC.framework; path = System/Library/Frameworks/AppleScriptObjC.framework; sourceTree = SDKROOT; };
 		DE8E5C7621534821002AE872 /* FlowarePopover-Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FlowarePopover-Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE8E5C7821534821002AE872 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -343,8 +344,6 @@
 		DEF1F87922B78FBE00D54049 /* FLOPopoverView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOPopoverView.m; sourceTree = "<group>"; };
 		DEF1F87C22B7900500D54049 /* FLOPopoverWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOPopoverWindow.h; sourceTree = "<group>"; };
 		DEF1F87D22B7900500D54049 /* FLOPopoverWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOPopoverWindow.m; sourceTree = "<group>"; };
-		DEF1F88222B792A300D54049 /* FLOVirtualInteractionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOVirtualInteractionView.h; sourceTree = "<group>"; };
-		DEF1F88322B792A300D54049 /* FLOVirtualInteractionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOVirtualInteractionView.m; sourceTree = "<group>"; };
 		DEF1F89422B79BB800D54049 /* FLOPopoverClippingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOPopoverClippingView.h; sourceTree = "<group>"; };
 		DEF1F89522B79BB800D54049 /* FLOPopoverClippingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOPopoverClippingView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1175,8 +1174,8 @@
 				DEF1F87D22B7900500D54049 /* FLOPopoverWindow.m */,
 				DEF1F89422B79BB800D54049 /* FLOPopoverClippingView.h */,
 				DEF1F89522B79BB800D54049 /* FLOPopoverClippingView.m */,
-				DEF1F88222B792A300D54049 /* FLOVirtualInteractionView.h */,
-				DEF1F88322B792A300D54049 /* FLOVirtualInteractionView.m */,
+				DE7A697522E16A850046FEA8 /* FLOVirtualView.h */,
+				DE7A697622E16A850046FEA8 /* FLOVirtualView.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1293,6 +1292,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE7A697722E16A850046FEA8 /* FLOVirtualView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1472,11 +1472,11 @@
 			files = (
 				DEDE465921534005004E8DEF /* FLOPopoverUtils.m in Sources */,
 				DE8E5E8A2153B7AF002AE872 /* FLOExtensionsCABasicAnimation.m in Sources */,
+				DE7A697822E16A850046FEA8 /* FLOVirtualView.m in Sources */,
 				DEF1F87B22B78FBE00D54049 /* FLOPopoverView.m in Sources */,
 				DE8E5E922153B8C1002AE872 /* FLOExtensionsNSValue.m in Sources */,
 				DEDE467021534005004E8DEF /* FLOPopover.m in Sources */,
 				DEF1F87F22B7900500D54049 /* FLOPopoverWindow.m in Sources */,
-				DEF1F88522B792A300D54049 /* FLOVirtualInteractionView.m in Sources */,
 				DEDE465721534005004E8DEF /* FLOWindowPopup.m in Sources */,
 				DE8E5E962153BAAC002AE872 /* FLOExtensionsGraphicsContext.m in Sources */,
 				DE8E5E822153B62B002AE872 /* FLOExtensionsNSWindow.m in Sources */,

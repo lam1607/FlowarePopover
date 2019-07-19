@@ -19,12 +19,13 @@
 
 @property (nonatomic, assign, readonly) NSRect frame;
 @property (nonatomic, assign, readonly, getter = isShown) BOOL shown;
+@property (nonatomic, assign, readonly) FLOPopoverType type;
+@property (nonatomic, assign, readonly) BOOL containsArrow;
+@property (nonatomic, weak, readonly) NSMutableArray<NSClipView *> *observerClipViews;
 
 @property (nonatomic, assign) NSRect initialFrame;
 
 @property (nonatomic, strong) FLOPopoverUtils *utils;
-@property (nonatomic, assign, readonly) FLOPopoverType type;
-@property (nonatomic, assign, readonly) BOOL containsArrow;
 
 @property (nonatomic, assign) BOOL popoverShowing;
 @property (nonatomic, assign) BOOL popoverClosing;
@@ -167,7 +168,6 @@
 - (void)close;
 - (void)closePopover:(id<FLOPopoverProtocols>)sender;
 - (void)closePopover:(id<FLOPopoverProtocols>)sender completion:(void(^)(void))complete;
-- (void)closePopoverWhileAnimatingIfNeeded:(BOOL)isNeeded;
 
 @optional
 /// For FLOWindowPopover only

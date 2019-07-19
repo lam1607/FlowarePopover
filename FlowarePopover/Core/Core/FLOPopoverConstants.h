@@ -28,6 +28,13 @@ typedef NS_ENUM(NSInteger, FLOPopoverStyle) {
     FLOPopoverStyleAlert
 };
 
+typedef NS_ENUM(NSInteger, FLOVirtualViewType) {
+    FLOVirtualViewNone,
+    FLOVirtualViewShadow,
+    FLOVirtualViewAnimation,
+    FLOVirtualViewDisable
+};
+
 // NSLayoutAttributeTop
 // NSLayoutAttributeLeading
 // NSLayoutAttributeBottom

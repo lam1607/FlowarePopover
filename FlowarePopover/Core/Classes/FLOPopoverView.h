@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@protocol FLOPopoverProtocols;
+
 @protocol FLOPopoverViewDelegate <NSObject>
 
 @optional
@@ -17,6 +19,8 @@
 @end
 
 @interface FLOPopoverView : NSView
+
+@property (nonatomic, weak, readonly) id<FLOPopoverProtocols> responder;
 
 @property (nonatomic, assign, readwrite) NSInteger tag;
 
@@ -82,6 +86,7 @@
 - (CGPathRef)clippingPathForEdge:(NSRectEdge)popoverEdge frame:(NSRect)frame;
 
 
+- (void)setResponder:(id<FLOPopoverProtocols>)responder;
 - (void)setMovable:(BOOL)movable;
 - (void)setDetachable:(BOOL)detachable;
 - (void)setShadow:(BOOL)needed;

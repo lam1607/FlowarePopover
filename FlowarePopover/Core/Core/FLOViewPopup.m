@@ -15,6 +15,7 @@
 
 #import "FLOPopoverView.h"
 #import "FLOPopoverWindow.h"
+#import "FLOVirtualView.h"
 
 
 @interface FLOViewPopup () <FLOPopoverViewDelegate, NSAnimationDelegate, CAAnimationDelegate> {
@@ -31,7 +32,7 @@
 /**
  * View that used for making animation with an animated layer.
  */
-@property (nonatomic, strong) NSView *snapshotView;
+@property (nonatomic, strong) FLOVirtualView *snapshotView;
 
 @end
 
@@ -170,6 +171,10 @@
 
 - (BOOL)containsArrow {
     return (self.shouldShowArrow && (self.utils.positioningView == self.utils.positioningAnchorView) && !NSEqualSizes(self.arrowSize, NSZeroSize));
+}
+
+- (NSMutableArray<NSClipView *> *)observerClipViews {
+    return [_utils observerClipViews];
 }
 
 - (void)setShouldShowArrow:(BOOL)shouldShowArrow {
@@ -471,6 +476,8 @@
     } else {
         [self setupPopoverStyleNormal];
     }
+    
+    [self.utils setResponder];
 }
 
 - (void)setupPopoverStyleNormal {
@@ -488,7 +495,7 @@
 }
 
 - (void)setupPopoverStyleAlert {
-    // Currently, DO NOTHING for FLOViewPopover
+    // Currently do nothing for FLOViewPopover.
 }
 
 - (void)displayWithAnimationProcess:(BOOL)displayAnimated {
@@ -618,7 +625,7 @@
     animatedLayer.frame = layerFrame;
     
     if (self.snapshotView == nil) {
-        self.snapshotView = [[NSView alloc] initWithFrame:scalingFrame];
+        self.snapshotView = [[FLOVirtualView alloc] initWithFrame:scalingFrame type:FLOVirtualViewAnimation];
     }
     
     self.snapshotView.wantsLayer = YES;
@@ -718,7 +725,7 @@
     animatedLayer.frame = layerFrame;
     
     if (self.snapshotView == nil) {
-        self.snapshotView = [[NSView alloc] initWithFrame:transitionFrame];
+        self.snapshotView = [[FLOVirtualView alloc] initWithFrame:transitionFrame type:FLOVirtualViewAnimation];
     }
     
     self.snapshotView.wantsLayer = YES;
@@ -888,16 +895,12 @@
 
 - (void)registerForApplicationEvents {
     [self registerApplicationEventsMonitor];
-    [self.utils registerApplicationActiveNotification];
-    [self.utils registerSuperviewObservers];
-    [self.utils registerWindowEvents];
+    [self.utils registerForApplicationEvents];
 }
 
 - (void)removeAllApplicationEvents {
     [self removeApplicationEventsMonitor];
-    [self.utils removeApplicationActiveNotification];
-    [self.utils unregisterSuperviewObservers];
-    [self.utils removeWindowEvents];
+    [self.utils removeAllApplicationEvents];
 }
 
 - (void)registerApplicationEventsMonitor {
@@ -908,20 +911,20 @@
             NSView *clickedView = [event.window.contentView hitTest:event.locationInWindow];
             
             if (self.closesWhenPopoverResignsKey) {
+                if (!((self.utils.senderView && (clickedView != self.utils.senderView)) || self.closesWhenReceivesEvent)) return event;
+                
                 // If closesWhenPopoverResignsKey is set as YES and clickedView is the same with self.utils.senderView, DO NOTHING.
                 // Because the event received from self.utils.senderView will be fired very later soon.
-                if ((self.utils.senderView && (clickedView != self.utils.senderView)) || self.closesWhenReceivesEvent) {
-                    if (self.popoverView.window == event.window) {
-                        if (!([clickedView isDescendantOf:self.popoverView] || (clickedView == self.popoverView))) {
-                            [self closePopoverWhileAnimatingIfNeeded:YES];
-                        }
-                    } else {
-                        BOOL contained = [self.utils window:self.popoverView.window contains:event.window];
-                        
-                        if (!contained) {
-                            [self closePopoverWhileAnimatingIfNeeded:YES];
-                        }
-                    }
+                BOOL closeNeeded = NO;
+                
+                if (self.popoverView.window == event.window) {
+                    closeNeeded = !([clickedView isDescendantOf:self.popoverView] || (clickedView == self.popoverView));
+                } else {
+                    closeNeeded = ![self.utils window:self.popoverView.window contains:event.window];
+                }
+                
+                if (closeNeeded) {
+                    [self.utils closePopoverWithTimerIfNeeded];
                 }
             } else {
                 NSView *frontView = [self.utils.presentedWindow.contentView.subviews lastObject];
@@ -967,24 +970,6 @@
 
 - (void)closePopover:(id<FLOPopoverProtocols>)sender completion:(void(^)(void))complete {
     // code ...
-}
-
-- (void)closePopoverWhileAnimatingIfNeeded:(BOOL)isNeeded {
-    if (!isNeeded) return;
-    
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    
-    if (self.popoverShowing) {
-        _shown = YES;
-        
-        self.popoverShowing = NO;
-        
-        [self removeAnimationProcessIfNeeded:YES];
-        
-        [self performSelector:@selector(close) withObject:nil afterDelay:0.1];
-    } else {
-        [self close];
-    }
 }
 
 #pragma mark - FLOPopoverViewDelegate

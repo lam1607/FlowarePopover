@@ -54,6 +54,7 @@
 
 #pragma mark - Utilities
 
+- (NSMutableArray<NSClipView *> *)observerClipViews;
 - (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame animationType:(FLOPopoverAnimationType)animationType forwarding:(BOOL)forwarding showing:(BOOL)showing;
 - (void)calculateTransitionFrame:(NSRect *)transitionFrame fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame animationType:(FLOPopoverAnimationType)animationType forwarding:(BOOL)forwarding showing:(BOOL)showing;
 - (BOOL)treeOfView:(NSView *)view containsPosition:(NSPoint)position;
@@ -66,9 +67,11 @@
 - (void)addView:(NSView *)view toParent:(NSView *)parentView autoresizingMask:(BOOL)isAutoresizingMask;
 - (void)addView:(NSView *)view toParent:(NSView *)parentView centerAutoresizingMask:(BOOL)isCenterAutoresizingMask;
 - (void)setupAutoresizingMaskIfNeeded:(BOOL)needed;
+- (void)closePopoverWithTimerIfNeeded;
 
 #pragma mark - Display utilities
 
+- (void)setResponder;
 - (void)setupComponentsForPopover:(BOOL)observerNeeded;
 - (void)setPopoverEdgeType:(FLOPopoverEdgeType)edgeType;
 - (void)setUserInteractionEnable:(BOOL)isEnable;
@@ -78,11 +81,7 @@
 
 #pragma mark - Event monitor
 
-- (void)registerApplicationActiveNotification;
-- (void)removeApplicationActiveNotification;
-- (void)registerSuperviewObservers;
-- (void)unregisterSuperviewObservers;
-- (void)registerWindowEvents;
-- (void)removeWindowEvents;
+- (void)registerForApplicationEvents;
+- (void)removeAllApplicationEvents;
 
 @end
