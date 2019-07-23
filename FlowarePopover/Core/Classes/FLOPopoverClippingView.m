@@ -80,7 +80,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
     _clippingPath = clippingPath;
     CGPathRetain(_clippingPath);
     
-    self.needsDisplay = YES;
+    [self setNeedsDisplay:YES];
 }
 
 - (void)setPathColor:(CGColorRef)pathColor {
@@ -94,9 +94,9 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 - (void)setVisualEffectMaterial:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
     if (_visualEffectView == nil) {
         _visualEffectView = [[NSVisualEffectView alloc] initWithFrame:self.frame];
-        _visualEffectView.state = state;
-        _visualEffectView.material = material;
-        _visualEffectView.blendingMode = blendingMode;
+        [_visualEffectView setState:state];
+        [_visualEffectView setMaterial:material];
+        [_visualEffectView setBlendingMode:blendingMode];
         
         [self addSubview:_visualEffectView];
     }
@@ -105,18 +105,17 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 - (void)drawClippingPath {
     if (_visualEffectView != nil) {
         [_visualEffectView setFrameSize:self.frame.size];
-        
-        _visualEffectView.maskImage = [NSImage imageWithSize:self.frame.size flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+        [_visualEffectView setMaskImage:[NSImage imageWithSize:self.frame.size flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
             NSBezierPath *path = bezierPathWithCGPath(self.clippingPath);
             [path fill];
             
             return YES;
-        }];
+        }]];
     } else {
-        CGContextRef currentContext = NSGraphicsContext.currentContext.CGContext;
+        CGContextRef currentContext = [[NSGraphicsContext currentContext] CGContext];
         
         if (currentContext != NULL) {
-            self.pathColor = ((self.pathColor != NULL) && (self.pathColor != [NSColor.clearColor CGColor])) ? self.pathColor : [NSColor.lightGrayColor CGColor];
+            self.pathColor = ((self.pathColor != NULL) && (self.pathColor != [[NSColor clearColor] CGColor])) ? self.pathColor : [[NSColor lightGrayColor] CGColor];
             
             CGContextAddPath(currentContext, self.clippingPath);
             CGContextSetFillColorWithColor(currentContext, self.pathColor);

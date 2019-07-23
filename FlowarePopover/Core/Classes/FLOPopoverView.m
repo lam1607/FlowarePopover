@@ -30,6 +30,8 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     __weak id<FLOPopoverProtocols> _responder;
     NSTrackingArea *_trackingArea;
     
+    BOOL _arrowVisible;
+    
     BOOL _isMovable;
     BOOL _isDetachable;
     
@@ -59,19 +61,30 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     if (self = [super init]) {
         _tag = -1;
         _arrowSize = NSZeroSize;
-        _fillColor = NSColor.clearColor;
+        _fillColor = [NSColor clearColor];
         _mouseDownEventReceived = NO;
         _mouseEnteredEventReceived = NO;
         _shouldShowArrowWithVisualEffect = NO;
         _userInteractionEnable = YES;
         _becomesKeyOnMouseOver = NO;
         
-        _clippingView = [[FLOPopoverClippingView alloc] initWithFrame:self.bounds];
+        FLOPopoverClippingView *clippingView = [[FLOPopoverClippingView alloc] initWithFrame:[self bounds]];
         
-        _clippingView.translatesAutoresizingMaskIntoConstraints = YES;
-        _clippingView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable | NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin | NSViewMaxYMargin;
+        [self addSubview:clippingView];
         
-        [self addSubview:_clippingView];
+        [clippingView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[clippingView]|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:NSDictionaryOfVariableBindings(clippingView)]];
+        
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[clippingView]|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:NSDictionaryOfVariableBindings(clippingView)]];
+        
+        _clippingView = clippingView;
     }
     
     return self;
@@ -81,19 +94,30 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     if (self = [super initWithFrame:frame]) {
         _tag = -1;
         _arrowSize = NSZeroSize;
-        _fillColor = NSColor.clearColor;
+        _fillColor = [NSColor clearColor];
         _mouseDownEventReceived = NO;
         _mouseEnteredEventReceived = NO;
         _shouldShowArrowWithVisualEffect = NO;
         _userInteractionEnable = YES;
         _becomesKeyOnMouseOver = NO;
         
-        _clippingView = [[FLOPopoverClippingView alloc] initWithFrame:self.bounds];
+        FLOPopoverClippingView *clippingView = [[FLOPopoverClippingView alloc] initWithFrame:[self bounds]];
         
-        _clippingView.translatesAutoresizingMaskIntoConstraints = YES;
-        _clippingView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable | NSViewMinXMargin | NSViewMaxXMargin | NSViewMinYMargin | NSViewMaxYMargin;
+        [self addSubview:clippingView];
         
-        [self addSubview:_clippingView];
+        [clippingView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[clippingView]|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:NSDictionaryOfVariableBindings(clippingView)]];
+        
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[clippingView]|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:NSDictionaryOfVariableBindings(clippingView)]];
+        
+        _clippingView = clippingView;
     }
     
     return self;
@@ -137,8 +161,8 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 - (void)setBorderRadius:(CGFloat)borderRadius {
     _borderRadius = borderRadius;
     
-    self.wantsLayer = YES;
-    self.layer.cornerRadius = borderRadius;
+    [self setWantsLayer:YES];
+    [[self layer] setCornerRadius:borderRadius];
 }
 
 #pragma mark - Local methods
@@ -168,7 +192,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 - (void)updateClippingView {
     if (!NSEqualSizes(self.arrowSize, NSZeroSize)) {
-        CGPathRef clippingPath = [self clippingPathForEdge:self.popoverEdge frame:self.clippingView.bounds];
+        CGPathRef clippingPath = [self clippingPathForEdge:self.popoverEdge frame:[self.clippingView bounds]];
         self.clippingView.clippingPath = clippingPath;
         CGPathRelease(clippingPath);
     }
@@ -194,21 +218,26 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 - (void)setShadow:(BOOL)needed {
     if (needed) {
-        self.wantsLayer = YES;
-        self.layer.masksToBounds = NO;
-        self.layer.shadowColor = [NSColor.shadowColor CGColor];
-        self.layer.shadowOpacity = 0.5;
-        self.layer.shadowOffset = CGSizeMake(-0.5, 0.5);
-        self.layer.shadowRadius = 3.0;
+        [[self superview] setWantsLayer:YES];
+        [self setWantsLayer:YES];
+        [[self layer] setMasksToBounds:NO];
+        [[self layer] setShadowColor:[[NSColor blackColor] CGColor]];
+        [[self layer] setShadowOpacity:0.5];
+        // Shadow on top, left
+        //        [[self layer] setShadowOffset:NSMakeSize(-5.0, -5.0)];
+        // Shadow on bottom, right
+        //        [[self layer] setShadowOffset:NSMakeSize(5.0, 5.0)];
+        // Shadow for all sides top, left, bottom, right
+        [[self layer] setShadowOffset:NSZeroSize];
+        [[self layer] setShadowRadius:kFlowarePopover_ShadowRadius];
     }
 }
 
 - (void)setArrow:(BOOL)needed {
-    if (needed && !NSEqualSizes(self.arrowSize, NSZeroSize)) {
-        self.needsDisplay = YES;
-    } else {
-        [self.clippingView clearClippingPath];
-        [self.clippingView drawClippingPath];
+    _arrowVisible = needed;
+    
+    if (!NSEqualSizes(self.arrowSize, NSZeroSize)) {
+        [self setNeedsDisplay:YES];
     }
 }
 
@@ -303,8 +332,8 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 }
 
 - (CGPathRef)clippingPathForEdge:(NSRectEdge)popoverEdge frame:(NSRect)frame {
-    CGFloat arrowWidth = self.arrowSize.width;
-    CGFloat arrowHeight = self.arrowSize.height;
+    CGFloat arrowWidth = (_arrowVisible ? self.arrowSize.width : 0.0);
+    CGFloat arrowHeight = (_arrowVisible ? self.arrowSize.height : 0.0);
     CGFloat borderRadius = self.borderRadius;
     NSRectEdge arrowEdge = [self arrowEdgeForPopoverEdge:popoverEdge];
     
@@ -472,7 +501,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     if (!self.userInteractionEnable) return;
     
     BOOL isPopover = [event.window respondsToSelector:@selector(tag)];
-    _originalMouseOffset = isPopover ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:self.window.contentView];
+    _originalMouseOffset = isPopover ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:[self.window contentView]];
     _dragging = NO;
     _mouseDownEventReceived = YES;
 }
@@ -489,7 +518,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
         
         BOOL isPopover = [event.window respondsToSelector:@selector(tag)];
         
-        NSPoint currentMouseOffset = isPopover ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:event.window.contentView];
+        NSPoint currentMouseOffset = isPopover ? event.locationInWindow : [self convertPoint:event.locationInWindow fromView:[event.window contentView]];
         NSPoint difference = NSMakePoint(currentMouseOffset.x - _originalMouseOffset.x, currentMouseOffset.y - _originalMouseOffset.y);
         NSPoint currentOrigin = isPopover ? event.window.frame.origin : self.frame.origin;
         NSPoint nextOrigin = NSMakePoint(currentOrigin.x + difference.x, currentOrigin.y + difference.y);

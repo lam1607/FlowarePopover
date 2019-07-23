@@ -18,6 +18,7 @@
 #pragma mark - Properties
 
 @property (nonatomic, strong, readonly) NSWindow *mainWindow;
+@property (nonatomic, assign, readonly) BOOL isCloseEventReceived;
 
 @property (nonatomic, strong) NSView *contentView;
 @property (nonatomic, strong) NSViewController *contentViewController;

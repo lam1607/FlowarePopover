@@ -21,14 +21,15 @@
 @property (nonatomic, assign, readonly, getter = isShown) BOOL shown;
 @property (nonatomic, assign, readonly) FLOPopoverType type;
 @property (nonatomic, assign, readonly) BOOL containsArrow;
+@property (nonatomic, assign, readonly) BOOL isCloseEventReceived;
 @property (nonatomic, weak, readonly) NSMutableArray<NSClipView *> *observerClipViews;
 
 @property (nonatomic, assign) NSRect initialFrame;
 
 @property (nonatomic, strong) FLOPopoverUtils *utils;
 
-@property (nonatomic, assign) BOOL popoverShowing;
-@property (nonatomic, assign) BOOL popoverClosing;
+@property (nonatomic, assign) BOOL isShowing;
+@property (nonatomic, assign) BOOL isClosing;
 
 @property (nonatomic, assign) BOOL shouldShowArrow;
 @property (nonatomic, assign) NSSize arrowSize;
@@ -135,7 +136,8 @@
 
 - (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 
-- (void)updatePopoverFrame:(NSRect)frame;
+- (void)updateFrame:(NSRect)frame;
+- (void)invalidateShadow;
 
 /**
  * Sticking rect: Display the popover relative to the rect of positioning view

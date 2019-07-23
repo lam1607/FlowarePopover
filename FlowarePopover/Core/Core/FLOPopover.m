@@ -87,6 +87,10 @@
     return [_popover isShown];
 }
 
+- (BOOL)isCloseEventReceived {
+    return _popover.isCloseEventReceived;
+}
+
 - (void)setType:(FLOPopoverType)type {
     _type = type;
     

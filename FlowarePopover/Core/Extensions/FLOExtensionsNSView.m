@@ -299,7 +299,7 @@ static CALayer *subLayer;
 }
 
 - (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame duration:(NSTimeInterval)duration source:(id)source {
-    self.wantsLayer = YES;
+    [self setWantsLayer:YES];
     [self setFrame:fromFrame];
     
     CABasicAnimation *fadeAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];

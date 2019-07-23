@@ -11,12 +11,14 @@
 
 #import <Foundation/Foundation.h>
 
-#define kFlowarePopover_AnimationTimeInterval               0.2
-#define kFlowarePopover_BottomOffset                        5.0
+static const NSTimeInterval kFlowarePopover_AnimationTimeInterval   = 0.2;
+static const CGFloat kFlowarePopover_BottomOffset                   = 5.0;
 
-static CGFloat const PopoverBackgroundViewBorderRadius      = 5.0;
-static CGFloat const PopoverBackgroundViewArrowWidth        = 17.0;
-static CGFloat const PopoverBackgroundViewArrowHeight       = 12.0;
+static const CGFloat kFlowarePopover_ShadowRadius                   = 5.0;
+
+static const CGFloat kFlowarePopover_BorderRadius                   = 5.0;
+static const CGFloat kFlowarePopover_ArrowWidth                     = 17.0;
+static const CGFloat kFlowarePopover_ArrowHeight                    = 12.0;
 
 typedef NS_ENUM(NSInteger, FLOPopoverType) {
     FLOWindowPopover,

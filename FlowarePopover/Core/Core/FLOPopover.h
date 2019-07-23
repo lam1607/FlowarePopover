@@ -38,6 +38,7 @@
 @property (nonatomic, assign, readonly) NSRect frame;
 @property (nonatomic, assign, readonly, getter = isShown) BOOL shown;
 @property (nonatomic, assign, readonly) BOOL isMoved;
+@property (nonatomic, assign, readonly) BOOL isCloseEventReceived;
 
 
 @property (nonatomic, assign) BOOL shouldShowArrow;

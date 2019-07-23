@@ -31,7 +31,7 @@
 }
 
 - (NSView *)hitTest:(NSPoint)aPoint {
-    return (self.type != FLOVirtualViewAnimation) ? [super hitTest:aPoint] : nil;
+    return (self.type == FLOVirtualViewDisable) ? [super hitTest:aPoint] : nil;
 }
 
 #pragma mark - Local methods
@@ -39,7 +39,8 @@
 - (void)setupUI {
     if (self.type == FLOVirtualViewDisable) {
         [self setWantsLayer:YES];
-        [self.layer setBackgroundColor:[[NSColor.whiteColor colorWithAlphaComponent:0.01] CGColor]];
+        [[self layer] setMasksToBounds:NO];
+        [[self layer] setBackgroundColor:[[[NSColor whiteColor] colorWithAlphaComponent:0.01] CGColor]];
     }
 }
 
