@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "FlowarePopover"
-  s.version      = "0.2.16"
+  s.version      = "0.2.17"
   s.summary      = "The custom popover using to display the popup."
 
   # This description is used to generate tags and improve search results.
@@ -93,9 +93,8 @@ The custom popover based on NSPopover using to display the NSWindow, NSView as p
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "FlowarePopover", "FlowarePopover/**/*.{h,m}", "FlowarePopover.framework/FlowarePopover.h", "FlowarePopover.framework/Core/Core/{FLOPopoverConstants.h, FLOPopover.h}", "FlowarePopover.framework/Core/Classes/FLOPopoverView.h, FLOPopoverWindow.h}"
-  s.public_header_files = "FlowarePopover.framework/FlowarePopover.h", "FlowarePopover.framework/Core/Core/{FLOPopoverConstants.h, FLOPopover.h}", "FlowarePopover.framework/Core/Classes/FLOPopoverView.h, FLOPopoverWindow.h}"
-  s.vendored_frameworks = "FlowarePopover.framework"
+  s.source_files  = "FlowarePopover", "FlowarePopover/**/*.{h,m}", "FlowarePopover/FlowarePopover.h", "FlowarePopover/Core/Core/{FLOPopoverConstants.h, FLOPopover.h}", "FlowarePopover/Core/Classes/{FLOPopoverView.h, FLOPopoverWindow.h}"
+  s.public_header_files = "FlowarePopover/FlowarePopover.h", "FlowarePopover/Core/Core/{FLOPopoverConstants.h, FLOPopover.h}", "FlowarePopover/Core/Classes/{FLOPopoverView.h, FLOPopoverWindow.h}"
 
   # s.exclude_files = "Classes/Exclude"
   # s.public_header_files = "Classes/**/*.h"
