@@ -84,6 +84,11 @@
 		DEAFD15222E7FAC0004FE158 /* FLOExtensionsNSView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE8E5E832153B69E002AE872 /* FLOExtensionsNSView.h */; };
 		DEAFD15322E7FAC0004FE158 /* FLOExtensionsNSWindow.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE8E5E7F2153B62B002AE872 /* FLOExtensionsNSWindow.h */; };
 		DEAFD15422E7FAC5004FE158 /* FlowarePopover.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE45F321533F86004E8DEF /* FlowarePopover.h */; };
+		DEAFD15522E7FBCD004FE158 /* FLOPopoverWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = DEF1F87C22B7900500D54049 /* FLOPopoverWindow.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DEAFD15622E7FBD6004FE158 /* FLOPopoverView.h in Headers */ = {isa = PBXBuildFile; fileRef = DEF1F87822B78FBE00D54049 /* FLOPopoverView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DEAFD15722E7FBE3004FE158 /* FLOPopover.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE463C21534005004E8DEF /* FLOPopover.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DEAFD15822E7FBE9004FE158 /* FLOPopoverConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE465421534005004E8DEF /* FLOPopoverConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DEAFD15922E7FBF0004FE158 /* FlowarePopover.h in Headers */ = {isa = PBXBuildFile; fileRef = DEDE45F321533F86004E8DEF /* FlowarePopover.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DEBBA69E223207C400811EFE /* NSObject+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBBA69D223207C400811EFE /* NSObject+Extensions.m */; };
 		DEBD6EB6222E714F000E1FE3 /* DataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBD6EB5222E714F000E1FE3 /* DataProvider.m */; };
 		DED3A3C621E6E52500B479BF /* TechnologyService.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A3C521E6E52500B479BF /* TechnologyService.m */; };
@@ -1293,6 +1298,11 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEAFD15922E7FBF0004FE158 /* FlowarePopover.h in Headers */,
+				DEAFD15822E7FBE9004FE158 /* FLOPopoverConstants.h in Headers */,
+				DEAFD15722E7FBE3004FE158 /* FLOPopover.h in Headers */,
+				DEAFD15622E7FBD6004FE158 /* FLOPopoverView.h in Headers */,
+				DEAFD15522E7FBCD004FE158 /* FLOPopoverWindow.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
