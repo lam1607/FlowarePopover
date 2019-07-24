@@ -17,7 +17,6 @@
 		DE05760722366F1C00B94B81 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = DE05760622366F1C00B94B81 /* NotificationService.m */; };
 		DE05760B223670FE00B94B81 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = DE05760A223670FE00B94B81 /* Notification.m */; };
 		DE0BF080219BB9E800FF3AD6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE0BF07F219BB9E800FF3AD6 /* Colors.xcassets */; };
-		DE7A697722E16A850046FEA8 /* FLOVirtualView.h in Headers */ = {isa = PBXBuildFile; fileRef = DE7A697522E16A850046FEA8 /* FLOVirtualView.h */; };
 		DE7A697822E16A850046FEA8 /* FLOVirtualView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7A697622E16A850046FEA8 /* FLOVirtualView.m */; };
 		DE8E5C7121534233002AE872 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE8E5C7021534233002AE872 /* AppleScriptObjC.framework */; };
 		DE8E5C7A21534821002AE872 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5C7921534821002AE872 /* AppDelegate.m */; };
@@ -68,6 +67,23 @@
 		DE8E5E922153B8C1002AE872 /* FLOExtensionsNSValue.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E902153B8C1002AE872 /* FLOExtensionsNSValue.m */; };
 		DE8E5E962153BAAC002AE872 /* FLOExtensionsGraphicsContext.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5E942153BAAC002AE872 /* FLOExtensionsGraphicsContext.m */; };
 		DE8F742F2238DC7500291F69 /* TableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8F742E2238DC7500291F69 /* TableRowView.m */; };
+		DEAFD14422E7FAAC004FE158 /* FLOPopoverView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEF1F87822B78FBE00D54049 /* FLOPopoverView.h */; };
+		DEAFD14522E7FAAC004FE158 /* FLOPopoverWindow.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEF1F87C22B7900500D54049 /* FLOPopoverWindow.h */; };
+		DEAFD14622E7FAAC004FE158 /* FLOPopoverClippingView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEF1F89422B79BB800D54049 /* FLOPopoverClippingView.h */; };
+		DEAFD14722E7FAAC004FE158 /* FLOVirtualView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE7A697522E16A850046FEA8 /* FLOVirtualView.h */; };
+		DEAFD14822E7FAB8004FE158 /* FLOPopoverConstants.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE465421534005004E8DEF /* FLOPopoverConstants.h */; };
+		DEAFD14922E7FAB8004FE158 /* FLOPopoverProtocols.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE4050229FAC6E00456551 /* FLOPopoverProtocols.h */; };
+		DEAFD14A22E7FAB8004FE158 /* FLOPopover.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE463C21534005004E8DEF /* FLOPopover.h */; };
+		DEAFD14B22E7FAB8004FE158 /* FLOViewPopup.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE463821534005004E8DEF /* FLOViewPopup.h */; };
+		DEAFD14C22E7FAB8004FE158 /* FLOWindowPopup.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE464E21534005004E8DEF /* FLOWindowPopup.h */; };
+		DEAFD14D22E7FAB8004FE158 /* FLOPopoverUtils.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE465521534005004E8DEF /* FLOPopoverUtils.h */; };
+		DEAFD14E22E7FAC0004FE158 /* FLOExtensionsCABasicAnimation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE8E5E872153B7AF002AE872 /* FLOExtensionsCABasicAnimation.h */; };
+		DEAFD14F22E7FAC0004FE158 /* FLOExtensionsCAKeyframeAnimation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE8E5E8B2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.h */; };
+		DEAFD15022E7FAC0004FE158 /* FLOExtensionsGraphicsContext.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE8E5E932153BAAC002AE872 /* FLOExtensionsGraphicsContext.h */; };
+		DEAFD15122E7FAC0004FE158 /* FLOExtensionsNSValue.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE8E5E8F2153B8C1002AE872 /* FLOExtensionsNSValue.h */; };
+		DEAFD15222E7FAC0004FE158 /* FLOExtensionsNSView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE8E5E832153B69E002AE872 /* FLOExtensionsNSView.h */; };
+		DEAFD15322E7FAC0004FE158 /* FLOExtensionsNSWindow.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE8E5E7F2153B62B002AE872 /* FLOExtensionsNSWindow.h */; };
+		DEAFD15422E7FAC5004FE158 /* FlowarePopover.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE45F321533F86004E8DEF /* FlowarePopover.h */; };
 		DEBBA69E223207C400811EFE /* NSObject+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBBA69D223207C400811EFE /* NSObject+Extensions.m */; };
 		DEBD6EB6222E714F000E1FE3 /* DataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = DEBD6EB5222E714F000E1FE3 /* DataProvider.m */; };
 		DED3A3C621E6E52500B479BF /* TechnologyService.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A3C521E6E52500B479BF /* TechnologyService.m */; };
@@ -90,22 +106,6 @@
 		DEDE467721534068004E8DEF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEDE467621534068004E8DEF /* Cocoa.framework */; };
 		DEDE46792153406C004E8DEF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEDE46782153406C004E8DEF /* QuartzCore.framework */; };
 		DEDE467B21534119004E8DEF /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEDE467A21534119004E8DEF /* AppKit.framework */; };
-		DEE3FBC622D6D2D600E1C5C9 /* FLOPopoverView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEF1F87822B78FBE00D54049 /* FLOPopoverView.h */; };
-		DEE3FBC722D6D2D600E1C5C9 /* FLOPopoverWindow.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEF1F87C22B7900500D54049 /* FLOPopoverWindow.h */; };
-		DEE3FBC822D6D2D600E1C5C9 /* FLOPopoverClippingView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEF1F89422B79BB800D54049 /* FLOPopoverClippingView.h */; };
-		DEE3FBCA22D6D2DD00E1C5C9 /* FLOPopoverConstants.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE465421534005004E8DEF /* FLOPopoverConstants.h */; };
-		DEE3FBCB22D6D2DD00E1C5C9 /* FLOPopoverProtocols.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE4050229FAC6E00456551 /* FLOPopoverProtocols.h */; };
-		DEE3FBCC22D6D2DD00E1C5C9 /* FLOPopover.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE463C21534005004E8DEF /* FLOPopover.h */; };
-		DEE3FBCD22D6D2DD00E1C5C9 /* FLOViewPopup.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE463821534005004E8DEF /* FLOViewPopup.h */; };
-		DEE3FBCE22D6D2DD00E1C5C9 /* FLOWindowPopup.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE464E21534005004E8DEF /* FLOWindowPopup.h */; };
-		DEE3FBCF22D6D2DD00E1C5C9 /* FLOPopoverUtils.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE465521534005004E8DEF /* FLOPopoverUtils.h */; };
-		DEE3FBD022D6D2E400E1C5C9 /* FLOExtensionsCABasicAnimation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE8E5E872153B7AF002AE872 /* FLOExtensionsCABasicAnimation.h */; };
-		DEE3FBD122D6D2E400E1C5C9 /* FLOExtensionsCAKeyframeAnimation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE8E5E8B2153B878002AE872 /* FLOExtensionsCAKeyframeAnimation.h */; };
-		DEE3FBD222D6D2E400E1C5C9 /* FLOExtensionsGraphicsContext.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE8E5E932153BAAC002AE872 /* FLOExtensionsGraphicsContext.h */; };
-		DEE3FBD322D6D2E400E1C5C9 /* FLOExtensionsNSValue.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE8E5E8F2153B8C1002AE872 /* FLOExtensionsNSValue.h */; };
-		DEE3FBD422D6D2E400E1C5C9 /* FLOExtensionsNSView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE8E5E832153B69E002AE872 /* FLOExtensionsNSView.h */; };
-		DEE3FBD522D6D2E400E1C5C9 /* FLOExtensionsNSWindow.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DE8E5E7F2153B62B002AE872 /* FLOExtensionsNSWindow.h */; };
-		DEE3FBD622D6D2EA00E1C5C9 /* FlowarePopover.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DEDE45F321533F86004E8DEF /* FlowarePopover.h */; };
 		DEEB1C3422D3413F0019985C /* FlowarePopover.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEDE45F021533F86004E8DEF /* FlowarePopover.framework */; };
 		DEF15EB721DDCBD400FDE038 /* AbstractRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EA121DDCBD400FDE038 /* AbstractRepository.m */; };
 		DEF15EB921DDCBD400FDE038 /* AbstractWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EA421DDCBD400FDE038 /* AbstractWindowController.m */; };
@@ -126,22 +126,23 @@
 			dstPath = include/FlowarePopover;
 			dstSubfolderSpec = 16;
 			files = (
-				DEE3FBD622D6D2EA00E1C5C9 /* FlowarePopover.h in CopyFiles */,
-				DEE3FBD022D6D2E400E1C5C9 /* FLOExtensionsCABasicAnimation.h in CopyFiles */,
-				DEE3FBD122D6D2E400E1C5C9 /* FLOExtensionsCAKeyframeAnimation.h in CopyFiles */,
-				DEE3FBD222D6D2E400E1C5C9 /* FLOExtensionsGraphicsContext.h in CopyFiles */,
-				DEE3FBD322D6D2E400E1C5C9 /* FLOExtensionsNSValue.h in CopyFiles */,
-				DEE3FBD422D6D2E400E1C5C9 /* FLOExtensionsNSView.h in CopyFiles */,
-				DEE3FBD522D6D2E400E1C5C9 /* FLOExtensionsNSWindow.h in CopyFiles */,
-				DEE3FBCA22D6D2DD00E1C5C9 /* FLOPopoverConstants.h in CopyFiles */,
-				DEE3FBCB22D6D2DD00E1C5C9 /* FLOPopoverProtocols.h in CopyFiles */,
-				DEE3FBCC22D6D2DD00E1C5C9 /* FLOPopover.h in CopyFiles */,
-				DEE3FBCD22D6D2DD00E1C5C9 /* FLOViewPopup.h in CopyFiles */,
-				DEE3FBCE22D6D2DD00E1C5C9 /* FLOWindowPopup.h in CopyFiles */,
-				DEE3FBCF22D6D2DD00E1C5C9 /* FLOPopoverUtils.h in CopyFiles */,
-				DEE3FBC622D6D2D600E1C5C9 /* FLOPopoverView.h in CopyFiles */,
-				DEE3FBC722D6D2D600E1C5C9 /* FLOPopoverWindow.h in CopyFiles */,
-				DEE3FBC822D6D2D600E1C5C9 /* FLOPopoverClippingView.h in CopyFiles */,
+				DEAFD15422E7FAC5004FE158 /* FlowarePopover.h in CopyFiles */,
+				DEAFD14E22E7FAC0004FE158 /* FLOExtensionsCABasicAnimation.h in CopyFiles */,
+				DEAFD14F22E7FAC0004FE158 /* FLOExtensionsCAKeyframeAnimation.h in CopyFiles */,
+				DEAFD15022E7FAC0004FE158 /* FLOExtensionsGraphicsContext.h in CopyFiles */,
+				DEAFD15122E7FAC0004FE158 /* FLOExtensionsNSValue.h in CopyFiles */,
+				DEAFD15222E7FAC0004FE158 /* FLOExtensionsNSView.h in CopyFiles */,
+				DEAFD15322E7FAC0004FE158 /* FLOExtensionsNSWindow.h in CopyFiles */,
+				DEAFD14822E7FAB8004FE158 /* FLOPopoverConstants.h in CopyFiles */,
+				DEAFD14922E7FAB8004FE158 /* FLOPopoverProtocols.h in CopyFiles */,
+				DEAFD14A22E7FAB8004FE158 /* FLOPopover.h in CopyFiles */,
+				DEAFD14B22E7FAB8004FE158 /* FLOViewPopup.h in CopyFiles */,
+				DEAFD14C22E7FAB8004FE158 /* FLOWindowPopup.h in CopyFiles */,
+				DEAFD14D22E7FAB8004FE158 /* FLOPopoverUtils.h in CopyFiles */,
+				DEAFD14422E7FAAC004FE158 /* FLOPopoverView.h in CopyFiles */,
+				DEAFD14522E7FAAC004FE158 /* FLOPopoverWindow.h in CopyFiles */,
+				DEAFD14622E7FAAC004FE158 /* FLOPopoverClippingView.h in CopyFiles */,
+				DEAFD14722E7FAAC004FE158 /* FLOVirtualView.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1292,7 +1293,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE7A697722E16A850046FEA8 /* FLOVirtualView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
