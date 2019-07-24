@@ -207,7 +207,7 @@
     _tag = tag;
     
     if ([self isShown]) {
-        self.popoverView.tag = tag;
+        [self.popoverView setTag:tag];
     }
 }
 
@@ -493,6 +493,7 @@
     [self.utils.backgroundView setFrame:NSMakeRect(SHRT_MIN, SHRT_MIN, self.utils.contentView.frame.size.width, self.utils.contentView.frame.size.height)];
     [self.utils.backgroundView setNeedsDisplay:YES];
     [self.utils.backgroundView displayRect:NSMakeRect(SHRT_MIN, SHRT_MIN, self.utils.contentView.frame.size.width, self.utils.contentView.frame.size.height)];
+    [self.utils.backgroundView setTag:self.tag];
     
     [self.utils addView:self.utils.contentView toParent:self.utils.backgroundView autoresizingMask:NO];
     [self.utils addView:self.utils.backgroundView toParent:[self.utils.presentedWindow contentView] autoresizingMask:NO];
@@ -501,8 +502,6 @@
     [[[self.utils.presentedWindow contentView] layer] setMasksToBounds:NO];
     
     [self.utils setupAutoresizingMaskIfNeeded:YES];
-    
-    self.utils.backgroundView.tag = self.tag;
 }
 
 - (void)setupPopoverStyleAlert {

@@ -212,7 +212,7 @@
     _tag = tag;
     
     if ([self isShown]) {
-        self.popoverWindow.tag = tag;
+        [self.popoverWindow setTag:tag];
     }
 }
 
@@ -542,6 +542,7 @@
         [self.popoverWindow setReleasedWhenClosed:NO];
         [self.popoverWindow setOpaque:NO];
         [self.popoverWindow setBackgroundColor:[NSColor clearColor]];
+        [self.popoverWindow setTag:self.tag];
     }
     
     [self.utils addView:self.utils.contentView toParent:self.utils.backgroundView autoresizingMask:NO];
@@ -554,7 +555,6 @@
     [self.utils setupAutoresizingMaskIfNeeded:YES];
     
     [self.popoverWindow setCanBecomeKey:self.canBecomeKey];
-    [self.popoverWindow setTag:self.tag];
     [self.popoverWindow setLevel:self.popoverWindowLevel];
 }
 
@@ -569,6 +569,7 @@
         [self.popoverWindow setReleasedWhenClosed:NO];
         [self.popoverWindow setOpaque:NO];
         [self.popoverWindow setBackgroundColor:[NSColor clearColor]];
+        [self.popoverWindow setTag:self.tag];
         [[self.popoverWindow contentView] setWantsLayer:YES];
         [[[self.popoverWindow contentView] layer] setBackgroundColor:[[[NSColor whiteColor] colorWithAlphaComponent:0.01] CGColor]];
     }
@@ -581,7 +582,6 @@
     }
     
     [self.popoverWindow setCanBecomeKey:self.canBecomeKey];
-    [self.popoverWindow setTag:self.tag];
     [self.popoverWindow setLevel:self.popoverWindowLevel];
 }
 
