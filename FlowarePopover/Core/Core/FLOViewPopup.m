@@ -247,6 +247,7 @@
         if (self.updatesFrameWhileShowing || (!self.isShowing && !self.isClosing)) {
             [self displayWithAnimationProcess:NO];
         } else {
+            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updatePopoverFrame) object:nil];
             [self performSelector:@selector(updatePopoverFrame) withObject:nil afterDelay:0.1];
         }
     }

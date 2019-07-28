@@ -250,7 +250,7 @@
     NSRect popoverFrame = _popover.frame;
     
     for (NSClipView *observerView in _observerClipViews) {
-        NSRect observerViewFrame = [observerView.window convertRectToScreen:[observerView convertRect:observerView.bounds toView:[observerView.window contentView]]];
+        NSRect observerViewFrame = [observerView.window convertRectToScreen:[observerView convertRect:observerView.visibleRect toView:[observerView.window contentView]]];
         
         [self setObserverFrame:observerViewFrame forView:observerView];
         [self setObserverState:NSContainsRect(observerViewFrame, popoverFrame) forView:observerView];
@@ -832,6 +832,9 @@
     
     [_popover setInitialFrame:popoverFrame];
     [_popover updateFrame:popoverFrame];
+    // Should [invalidateShadow] here in case of calling this [setupComponentsForPopover:] method
+    // from [updatePopoverFrame]
+    [_popover invalidateShadow];
     
     _verticallyAvailableMargin = [[self.mainWindow contentView] visibleRect].size.height + _popover.bottomOffset - NSMaxY([self.mainWindow convertRectFromScreen:popoverFrame]);
     
