@@ -15,8 +15,8 @@
 
 @interface NewsCellView ()
 {
-    NewsRepository *_repository;
-    NewsCellPresenter *_presenter;
+    id<NewsRepositoryProtocols> _repository;
+    id<NewsCellPresenterProtocols> _presenter;
 }
 
 /// IBOutlet

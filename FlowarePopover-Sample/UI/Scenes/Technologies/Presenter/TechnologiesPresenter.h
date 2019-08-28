@@ -6,9 +6,9 @@
 //  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
-#import "TechnologiesPresenterProtocols.h"
-
 #import "AbstractPresenter.h"
+
+#import "TechnologiesViewProtocols.h"
 
 @interface TechnologiesPresenter : AbstractPresenter <TechnologiesPresenterProtocols>
 

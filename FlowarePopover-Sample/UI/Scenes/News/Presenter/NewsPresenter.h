@@ -6,9 +6,9 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "NewsPresenterProtocols.h"
-
 #import "AbstractPresenter.h"
+
+#import "NewsViewProtocols.h"
 
 @interface NewsPresenter : AbstractPresenter <NewsPresenterProtocols>
 

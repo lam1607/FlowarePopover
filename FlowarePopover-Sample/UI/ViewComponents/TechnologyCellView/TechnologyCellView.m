@@ -15,8 +15,8 @@
 
 @interface TechnologyCellView ()
 {
-    TechnologyRepository *_repository;
-    TechnologyCellPresenter *_presenter;
+    id<TechnologyRepositoryProtocols> _repository;
+    id<TechnologyCellPresenterProtocols> _presenter;
 }
 
 /// IBOutlet

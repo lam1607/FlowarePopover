@@ -20,8 +20,8 @@
 
 @interface ComicsViewController () <OutlineViewManagerProtocols>
 {
-    ComicRepository *_repository;
-    ComicsPresenter *_presenter;
+    id<ComicRepositoryProtocols> _repository;
+    id<ComicsPresenterProtocols> _presenter;
     
     OutlineViewManager *_outlineManager;
 }

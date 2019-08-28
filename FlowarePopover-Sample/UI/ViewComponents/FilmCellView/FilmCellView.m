@@ -15,8 +15,8 @@
 
 @interface FilmCellView ()
 {
-    FilmRepository *_repository;
-    FilmCellPresenter *_presenter;
+    id<FilmRepositoryProtocols> _repository;
+    id<FilmCellPresenterProtocols> _presenter;
 }
 
 /// IBOutlet

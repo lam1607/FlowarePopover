@@ -8,7 +8,6 @@
 
 #import "FilmsPresenter.h"
 
-#import "FilmsViewProtocols.h"
 #import "FilmRepositoryProtocols.h"
 
 #import "Film.h"

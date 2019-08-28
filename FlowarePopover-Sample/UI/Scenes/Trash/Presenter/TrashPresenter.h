@@ -6,9 +6,9 @@
 //  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
-#import "TrashPresenterProtocols.h"
-
 #import "AbstractPresenter.h"
+
+#import "TrashViewProtocols.h"
 
 @interface TrashPresenter : AbstractPresenter <TrashPresenterProtocols>
 

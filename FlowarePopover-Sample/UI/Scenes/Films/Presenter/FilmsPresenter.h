@@ -6,9 +6,9 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "FilmsPresenterProtocols.h"
-
 #import "AbstractPresenter.h"
+
+#import "FilmsViewProtocols.h"
 
 @interface FilmsPresenter : AbstractPresenter <FilmsPresenterProtocols>
 

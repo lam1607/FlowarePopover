@@ -6,9 +6,9 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "ComicsPresenterProtocols.h"
-
 #import "AbstractPresenter.h"
+
+#import "ComicsViewProtocols.h"
 
 @interface ComicsPresenter : AbstractPresenter <ComicsPresenterProtocols>
 

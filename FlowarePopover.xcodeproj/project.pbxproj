@@ -160,7 +160,6 @@
 		DE0575EC223638E200B94B81 /* TrashViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrashViewController.m; sourceTree = "<group>"; };
 		DE0575ED223638E200B94B81 /* TrashViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TrashViewController.xib; sourceTree = "<group>"; };
 		DE0575F0223638F500B94B81 /* TrashViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrashViewProtocols.h; sourceTree = "<group>"; };
-		DE0575F12236390200B94B81 /* TrashPresenterProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrashPresenterProtocols.h; sourceTree = "<group>"; };
 		DE0575F22236391100B94B81 /* TrashPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrashPresenter.h; sourceTree = "<group>"; };
 		DE0575F32236391100B94B81 /* TrashPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrashPresenter.m; sourceTree = "<group>"; };
 		DE0575F6223641DE00B94B81 /* TrashCellView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrashCellView.h; sourceTree = "<group>"; };
@@ -222,34 +221,29 @@
 		DE8E5DC9215348EE002AE872 /* ComicsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComicsViewController.h; sourceTree = "<group>"; };
 		DE8E5DCB215348EE002AE872 /* ComicsPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComicsPresenter.m; sourceTree = "<group>"; };
 		DE8E5DCC215348EE002AE872 /* ComicsPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComicsPresenter.h; sourceTree = "<group>"; };
-		DE8E5DCD215348EE002AE872 /* ComicsPresenterProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComicsPresenterProtocols.h; sourceTree = "<group>"; };
 		DE8E5DCE215348EE002AE872 /* ComicsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComicsViewController.xib; sourceTree = "<group>"; };
 		DE8E5DCF215348EE002AE872 /* ComicsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComicsViewController.m; sourceTree = "<group>"; };
 		DE8E5DD3215348EE002AE872 /* NewsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsViewController.m; sourceTree = "<group>"; };
 		DE8E5DD5215348EE002AE872 /* NewsViewProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsViewProtocols.h; sourceTree = "<group>"; };
 		DE8E5DD6215348EE002AE872 /* NewsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewsViewController.xib; sourceTree = "<group>"; };
-		DE8E5DD8215348EE002AE872 /* NewsPresenterProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsPresenterProtocols.h; sourceTree = "<group>"; };
 		DE8E5DD9215348EE002AE872 /* NewsPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsPresenter.m; sourceTree = "<group>"; };
 		DE8E5DDA215348EE002AE872 /* NewsPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsPresenter.h; sourceTree = "<group>"; };
 		DE8E5DDB215348EE002AE872 /* NewsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsViewController.h; sourceTree = "<group>"; };
 		DE8E5DDE215348EE002AE872 /* FilmsViewProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilmsViewProtocols.h; sourceTree = "<group>"; };
 		DE8E5DDF215348EE002AE872 /* FilmsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilmsViewController.h; sourceTree = "<group>"; };
 		DE8E5DE1215348EE002AE872 /* FilmsPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilmsPresenter.h; sourceTree = "<group>"; };
-		DE8E5DE2215348EE002AE872 /* FilmsPresenterProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilmsPresenterProtocols.h; sourceTree = "<group>"; };
 		DE8E5DE3215348EE002AE872 /* FilmsPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilmsPresenter.m; sourceTree = "<group>"; };
 		DE8E5DE4215348EE002AE872 /* FilmsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilmsViewController.m; sourceTree = "<group>"; };
 		DE8E5DE5215348EE002AE872 /* FilmsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilmsViewController.xib; sourceTree = "<group>"; };
 		DE8E5DF2215348EE002AE872 /* HomeViewProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewProtocols.h; sourceTree = "<group>"; };
 		DE8E5DF3215348EE002AE872 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		DE8E5DF5215348EE002AE872 /* HomePresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomePresenter.h; sourceTree = "<group>"; };
-		DE8E5DF6215348EE002AE872 /* HomePresenterProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomePresenterProtocols.h; sourceTree = "<group>"; };
 		DE8E5DF7215348EE002AE872 /* HomePresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomePresenter.m; sourceTree = "<group>"; };
 		DE8E5DF8215348EE002AE872 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		DE8E5E08215348EE002AE872 /* NewsCellViewProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCellViewProtocols.h; sourceTree = "<group>"; };
 		DE8E5E09215348EE002AE872 /* NewsCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCellView.h; sourceTree = "<group>"; };
 		DE8E5E0B215348EE002AE872 /* NewsCellPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCellPresenter.h; sourceTree = "<group>"; };
 		DE8E5E0C215348EE002AE872 /* NewsCellPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCellPresenter.m; sourceTree = "<group>"; };
-		DE8E5E0D215348EE002AE872 /* NewsCellPresenterProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCellPresenterProtocols.h; sourceTree = "<group>"; };
 		DE8E5E0E215348EE002AE872 /* NewsCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCellView.m; sourceTree = "<group>"; };
 		DE8E5E0F215348EE002AE872 /* NewsCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewsCellView.xib; sourceTree = "<group>"; };
 		DE8E5E11215348EE002AE872 /* ComicCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComicCellView.m; sourceTree = "<group>"; };
@@ -257,7 +251,6 @@
 		DE8E5E13215348EE002AE872 /* ComicCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComicCellView.xib; sourceTree = "<group>"; };
 		DE8E5E16215348EE002AE872 /* FilmCellViewProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilmCellViewProtocols.h; sourceTree = "<group>"; };
 		DE8E5E17215348EE002AE872 /* FilmCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilmCellView.xib; sourceTree = "<group>"; };
-		DE8E5E19215348EE002AE872 /* FilmCellPresenterProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilmCellPresenterProtocols.h; sourceTree = "<group>"; };
 		DE8E5E1A215348EE002AE872 /* FilmCellPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilmCellPresenter.m; sourceTree = "<group>"; };
 		DE8E5E1B215348EE002AE872 /* FilmCellPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilmCellPresenter.h; sourceTree = "<group>"; };
 		DE8E5E1C215348EE002AE872 /* FilmCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilmCellView.m; sourceTree = "<group>"; };
@@ -301,11 +294,9 @@
 		DED3A3FA21E6EB3B00B479BF /* TechnologyCellView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TechnologyCellView.m; sourceTree = "<group>"; };
 		DED3A3FD21E6EB5700B479BF /* TechnologyCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TechnologyCellView.xib; sourceTree = "<group>"; };
 		DED3A3FF21E6EC5300B479BF /* TechnologyCellViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologyCellViewProtocols.h; sourceTree = "<group>"; };
-		DED3A40021E6EC7A00B479BF /* TechnologyCellPresenterProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologyCellPresenterProtocols.h; sourceTree = "<group>"; };
 		DED3A40121E6EC9A00B479BF /* TechnologyCellPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologyCellPresenter.h; sourceTree = "<group>"; };
 		DED3A40221E6EC9A00B479BF /* TechnologyCellPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TechnologyCellPresenter.m; sourceTree = "<group>"; };
 		DED3A40721E6F94100B479BF /* TechnologiesViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologiesViewProtocols.h; sourceTree = "<group>"; };
-		DED3A40821E6F96700B479BF /* TechnologiesPresenterProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologiesPresenterProtocols.h; sourceTree = "<group>"; };
 		DED3A40921E6F97300B479BF /* TechnologiesPresenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologiesPresenter.h; sourceTree = "<group>"; };
 		DED3A40A21E6F97300B479BF /* TechnologiesPresenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TechnologiesPresenter.m; sourceTree = "<group>"; };
 		DED3A40C21E6FDF000B479BF /* TechnologiesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologiesViewController.h; sourceTree = "<group>"; };
@@ -386,8 +377,8 @@
 		DE0575E8223638B600B94B81 /* Trash */ = {
 			isa = PBXGroup;
 			children = (
-				DE0575E9223638C700B94B81 /* ViewProtocols */,
 				DE0575EA223638CD00B94B81 /* Presenter */,
+				DE0575F0223638F500B94B81 /* TrashViewProtocols.h */,
 				DE0575EB223638E200B94B81 /* TrashViewController.h */,
 				DE0575EC223638E200B94B81 /* TrashViewController.m */,
 				DE0575ED223638E200B94B81 /* TrashViewController.xib */,
@@ -395,18 +386,9 @@
 			path = Trash;
 			sourceTree = "<group>";
 		};
-		DE0575E9223638C700B94B81 /* ViewProtocols */ = {
-			isa = PBXGroup;
-			children = (
-				DE0575F0223638F500B94B81 /* TrashViewProtocols.h */,
-			);
-			path = ViewProtocols;
-			sourceTree = "<group>";
-		};
 		DE0575EA223638CD00B94B81 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				DE0575F12236390200B94B81 /* TrashPresenterProtocols.h */,
 				DE0575F22236391100B94B81 /* TrashPresenter.h */,
 				DE0575F32236391100B94B81 /* TrashPresenter.m */,
 			);
@@ -695,8 +677,8 @@
 		DE8E5DC6215348EE002AE872 /* Comics */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DC7215348EE002AE872 /* ViewProtocols */,
 				DE8E5DCA215348EE002AE872 /* Presenter */,
+				DE8E5DC8215348EE002AE872 /* ComicsViewProtocols.h */,
 				DE8E5DC9215348EE002AE872 /* ComicsViewController.h */,
 				DE8E5DCF215348EE002AE872 /* ComicsViewController.m */,
 				DE8E5DCE215348EE002AE872 /* ComicsViewController.xib */,
@@ -704,18 +686,9 @@
 			path = Comics;
 			sourceTree = "<group>";
 		};
-		DE8E5DC7215348EE002AE872 /* ViewProtocols */ = {
-			isa = PBXGroup;
-			children = (
-				DE8E5DC8215348EE002AE872 /* ComicsViewProtocols.h */,
-			);
-			path = ViewProtocols;
-			sourceTree = "<group>";
-		};
 		DE8E5DCA215348EE002AE872 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DCD215348EE002AE872 /* ComicsPresenterProtocols.h */,
 				DE8E5DCC215348EE002AE872 /* ComicsPresenter.h */,
 				DE8E5DCB215348EE002AE872 /* ComicsPresenter.m */,
 			);
@@ -725,8 +698,8 @@
 		DE8E5DD2215348EE002AE872 /* News */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DD4215348EE002AE872 /* ViewProtocols */,
 				DE8E5DD7215348EE002AE872 /* Presenter */,
+				DE8E5DD5215348EE002AE872 /* NewsViewProtocols.h */,
 				DE8E5DDB215348EE002AE872 /* NewsViewController.h */,
 				DE8E5DD3215348EE002AE872 /* NewsViewController.m */,
 				DE8E5DD6215348EE002AE872 /* NewsViewController.xib */,
@@ -734,18 +707,9 @@
 			path = News;
 			sourceTree = "<group>";
 		};
-		DE8E5DD4215348EE002AE872 /* ViewProtocols */ = {
-			isa = PBXGroup;
-			children = (
-				DE8E5DD5215348EE002AE872 /* NewsViewProtocols.h */,
-			);
-			path = ViewProtocols;
-			sourceTree = "<group>";
-		};
 		DE8E5DD7215348EE002AE872 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DD8215348EE002AE872 /* NewsPresenterProtocols.h */,
 				DE8E5DDA215348EE002AE872 /* NewsPresenter.h */,
 				DE8E5DD9215348EE002AE872 /* NewsPresenter.m */,
 			);
@@ -755,8 +719,8 @@
 		DE8E5DDC215348EE002AE872 /* Films */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DDD215348EE002AE872 /* ViewProtocols */,
 				DE8E5DE0215348EE002AE872 /* Presenter */,
+				DE8E5DDE215348EE002AE872 /* FilmsViewProtocols.h */,
 				DE8E5DDF215348EE002AE872 /* FilmsViewController.h */,
 				DE8E5DE4215348EE002AE872 /* FilmsViewController.m */,
 				DE8E5DE5215348EE002AE872 /* FilmsViewController.xib */,
@@ -764,18 +728,9 @@
 			path = Films;
 			sourceTree = "<group>";
 		};
-		DE8E5DDD215348EE002AE872 /* ViewProtocols */ = {
-			isa = PBXGroup;
-			children = (
-				DE8E5DDE215348EE002AE872 /* FilmsViewProtocols.h */,
-			);
-			path = ViewProtocols;
-			sourceTree = "<group>";
-		};
 		DE8E5DE0215348EE002AE872 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DE2215348EE002AE872 /* FilmsPresenterProtocols.h */,
 				DE8E5DE1215348EE002AE872 /* FilmsPresenter.h */,
 				DE8E5DE3215348EE002AE872 /* FilmsPresenter.m */,
 			);
@@ -785,26 +740,17 @@
 		DE8E5DF0215348EE002AE872 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DF1215348EE002AE872 /* ViewProtocols */,
 				DE8E5DF4215348EE002AE872 /* Presenter */,
+				DE8E5DF2215348EE002AE872 /* HomeViewProtocols.h */,
 				DE8E5DF8215348EE002AE872 /* HomeViewController.h */,
 				DE8E5DF3215348EE002AE872 /* HomeViewController.m */,
 			);
 			path = Home;
 			sourceTree = "<group>";
 		};
-		DE8E5DF1215348EE002AE872 /* ViewProtocols */ = {
-			isa = PBXGroup;
-			children = (
-				DE8E5DF2215348EE002AE872 /* HomeViewProtocols.h */,
-			);
-			path = ViewProtocols;
-			sourceTree = "<group>";
-		};
 		DE8E5DF4215348EE002AE872 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5DF6215348EE002AE872 /* HomePresenterProtocols.h */,
 				DE8E5DF5215348EE002AE872 /* HomePresenter.h */,
 				DE8E5DF7215348EE002AE872 /* HomePresenter.m */,
 			);
@@ -844,8 +790,8 @@
 		DE8E5E06215348EE002AE872 /* NewsCellView */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5E07215348EE002AE872 /* ViewProtocols */,
 				DE8E5E0A215348EE002AE872 /* Presenter */,
+				DE8E5E08215348EE002AE872 /* NewsCellViewProtocols.h */,
 				DE8E5E09215348EE002AE872 /* NewsCellView.h */,
 				DE8E5E0E215348EE002AE872 /* NewsCellView.m */,
 				DE8E5E0F215348EE002AE872 /* NewsCellView.xib */,
@@ -853,18 +799,9 @@
 			path = NewsCellView;
 			sourceTree = "<group>";
 		};
-		DE8E5E07215348EE002AE872 /* ViewProtocols */ = {
-			isa = PBXGroup;
-			children = (
-				DE8E5E08215348EE002AE872 /* NewsCellViewProtocols.h */,
-			);
-			path = ViewProtocols;
-			sourceTree = "<group>";
-		};
 		DE8E5E0A215348EE002AE872 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5E0D215348EE002AE872 /* NewsCellPresenterProtocols.h */,
 				DE8E5E0B215348EE002AE872 /* NewsCellPresenter.h */,
 				DE8E5E0C215348EE002AE872 /* NewsCellPresenter.m */,
 			);
@@ -884,8 +821,8 @@
 		DE8E5E14215348EE002AE872 /* FilmCellView */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5E15215348EE002AE872 /* ViewProtocols */,
 				DE8E5E18215348EE002AE872 /* Presenter */,
+				DE8E5E16215348EE002AE872 /* FilmCellViewProtocols.h */,
 				DE8E5E1D215348EE002AE872 /* FilmCellView.h */,
 				DE8E5E1C215348EE002AE872 /* FilmCellView.m */,
 				DE8E5E17215348EE002AE872 /* FilmCellView.xib */,
@@ -893,18 +830,9 @@
 			path = FilmCellView;
 			sourceTree = "<group>";
 		};
-		DE8E5E15215348EE002AE872 /* ViewProtocols */ = {
-			isa = PBXGroup;
-			children = (
-				DE8E5E16215348EE002AE872 /* FilmCellViewProtocols.h */,
-			);
-			path = ViewProtocols;
-			sourceTree = "<group>";
-		};
 		DE8E5E18215348EE002AE872 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				DE8E5E19215348EE002AE872 /* FilmCellPresenterProtocols.h */,
 				DE8E5E1B215348EE002AE872 /* FilmCellPresenter.h */,
 				DE8E5E1A215348EE002AE872 /* FilmCellPresenter.m */,
 			);
@@ -1027,8 +955,8 @@
 		DED3A3F621E6EAF900B479BF /* TechnologyCellView */ = {
 			isa = PBXGroup;
 			children = (
-				DED3A3F821E6EB1800B479BF /* ViewProtocols */,
 				DED3A3F721E6EB1200B479BF /* Presenter */,
+				DED3A3FF21E6EC5300B479BF /* TechnologyCellViewProtocols.h */,
 				DED3A3F921E6EB3B00B479BF /* TechnologyCellView.h */,
 				DED3A3FA21E6EB3B00B479BF /* TechnologyCellView.m */,
 				DED3A3FD21E6EB5700B479BF /* TechnologyCellView.xib */,
@@ -1039,26 +967,17 @@
 		DED3A3F721E6EB1200B479BF /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				DED3A40021E6EC7A00B479BF /* TechnologyCellPresenterProtocols.h */,
 				DED3A40121E6EC9A00B479BF /* TechnologyCellPresenter.h */,
 				DED3A40221E6EC9A00B479BF /* TechnologyCellPresenter.m */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
 		};
-		DED3A3F821E6EB1800B479BF /* ViewProtocols */ = {
-			isa = PBXGroup;
-			children = (
-				DED3A3FF21E6EC5300B479BF /* TechnologyCellViewProtocols.h */,
-			);
-			path = ViewProtocols;
-			sourceTree = "<group>";
-		};
 		DED3A40421E6F90800B479BF /* Technologies */ = {
 			isa = PBXGroup;
 			children = (
-				DED3A40621E6F92400B479BF /* ViewProtocols */,
 				DED3A40521E6F91500B479BF /* Presenter */,
+				DED3A40721E6F94100B479BF /* TechnologiesViewProtocols.h */,
 				DED3A40C21E6FDF000B479BF /* TechnologiesViewController.h */,
 				DED3A40D21E6FDF000B479BF /* TechnologiesViewController.m */,
 				DED3A40E21E6FDF000B479BF /* TechnologiesViewController.xib */,
@@ -1069,19 +988,10 @@
 		DED3A40521E6F91500B479BF /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
-				DED3A40821E6F96700B479BF /* TechnologiesPresenterProtocols.h */,
 				DED3A40921E6F97300B479BF /* TechnologiesPresenter.h */,
 				DED3A40A21E6F97300B479BF /* TechnologiesPresenter.m */,
 			);
 			path = Presenter;
-			sourceTree = "<group>";
-		};
-		DED3A40621E6F92400B479BF /* ViewProtocols */ = {
-			isa = PBXGroup;
-			children = (
-				DED3A40721E6F94100B479BF /* TechnologiesViewProtocols.h */,
-			);
-			path = ViewProtocols;
 			sourceTree = "<group>";
 		};
 		DEDE45E621533F86004E8DEF = {

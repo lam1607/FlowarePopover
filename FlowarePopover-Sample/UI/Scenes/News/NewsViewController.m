@@ -20,8 +20,8 @@
 
 @interface NewsViewController () <TableViewManagerProtocols>
 {
-    NewsRepository *_repository;
-    NewsPresenter *_presenter;
+    id<NewsRepositoryProtocols> _repository;
+    id<NewsPresenterProtocols> _presenter;
     
     TableViewManager *_tableManager;
 }

@@ -8,7 +8,6 @@
 
 #import "NewsPresenter.h"
 
-#import "NewsViewProtocols.h"
 #import "NewsRepositoryProtocols.h"
 
 #import "News.h"

@@ -8,7 +8,6 @@
 
 #import "TechnologyCellPresenter.h"
 
-#import "TechnologyCellViewProtocols.h"
 #import "TechnologyRepositoryProtocols.h"
 
 @implementation TechnologyCellPresenter

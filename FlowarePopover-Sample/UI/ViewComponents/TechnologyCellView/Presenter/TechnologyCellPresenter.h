@@ -6,9 +6,9 @@
 //  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
-#import "TechnologyCellPresenterProtocols.h"
-
 #import "AbstractPresenter.h"
+
+#import "TechnologyCellViewProtocols.h"
 
 @interface TechnologyCellPresenter : AbstractPresenter <TechnologyCellPresenterProtocols>
 

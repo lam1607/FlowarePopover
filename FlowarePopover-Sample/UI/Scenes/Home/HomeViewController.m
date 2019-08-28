@@ -26,7 +26,7 @@
 
 @interface HomeViewController () <FLOPopoverDelegate, DragDropTrackingDelegate>
 {
-    HomePresenter *_presenter;
+    id<HomePresenterProtocols> _presenter;
     
     FLOPopover *_popoverFilms;
     FLOPopover *_popoverNews;
@@ -554,37 +554,37 @@
     [self changeWindowMode];
 }
 
-- (void)viewShouldOpenFinder
+- (void)viewOpensFinder
 {
     [self openEntitlementApplicationWithIdentifier:kFlowarePopover_BundleIdentifier_Finder];
 }
 
-- (void)viewShouldOpenSafari
+- (void)viewOpensSafari
 {
     [self openEntitlementApplicationWithIdentifier:kFlowarePopover_BundleIdentifier_Safari];
 }
 
-- (void)viewShouldOpenFilmsView
+- (void)viewOpensFilmsView
 {
     [self showFilmsPopupAtView:self.btnOpenFilms];
 }
 
-- (void)viewShouldOpenNewsView
+- (void)viewOpensNewsView
 {
     [self showNewsPopupAtView:self.btnOpenNews];
 }
 
-- (void)viewShouldOpenComicsView
+- (void)viewOpensComicsView
 {
-    [self showComicsPopupAtView:self.btnOpenComics option:0];
+    [self showComicsPopupAtView:self.btnOpenComics option:1];
 }
 
-- (void)viewShouldShowSecondBar
+- (void)viewShowsSecondBar
 {
     [self handleShowSecondBar];
 }
 
-- (void)viewShouldShowTrashView
+- (void)viewShowsTrashView
 {
     [self setTrashViewHidden:!self.viewContainerTrash.isHidden];
 }

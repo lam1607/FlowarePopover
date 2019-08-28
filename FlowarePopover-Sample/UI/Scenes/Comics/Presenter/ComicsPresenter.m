@@ -8,7 +8,6 @@
 
 #import "ComicsPresenter.h"
 
-#import "ComicsViewProtocols.h"
 #import "ComicRepositoryProtocols.h"
 
 #import "Comic.h"

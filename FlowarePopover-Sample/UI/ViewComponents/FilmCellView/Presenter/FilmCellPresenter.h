@@ -6,9 +6,9 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "FilmCellPresenterProtocols.h"
-
 #import "AbstractPresenter.h"
+
+#import "FilmCellViewProtocols.h"
 
 @interface FilmCellPresenter : AbstractPresenter <FilmCellPresenterProtocols>
 

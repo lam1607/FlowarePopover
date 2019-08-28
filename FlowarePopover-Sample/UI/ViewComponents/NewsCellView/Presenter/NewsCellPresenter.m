@@ -8,7 +8,6 @@
 
 #import "NewsCellPresenter.h"
 
-#import "NewsCellViewProtocols.h"
 #import "NewsRepositoryProtocols.h"
 
 @implementation NewsCellPresenter

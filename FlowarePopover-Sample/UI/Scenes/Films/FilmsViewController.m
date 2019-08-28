@@ -19,8 +19,8 @@
 
 @interface FilmsViewController () <CollectionViewManagerProtocols>
 {
-    FilmRepository *_repository;
-    FilmsPresenter *_presenter;
+    id<FilmRepositoryProtocols> _repository;
+    id<FilmsPresenterProtocols> _presenter;
     
     CollectionViewManager *_collectionManager;
     

@@ -20,8 +20,8 @@
 
 @interface TechnologiesViewController () <OutlineViewManagerProtocols>
 {
-    TechnologyRepository *_repository;
-    TechnologiesPresenter *_presenter;
+    id<TechnologyRepositoryProtocols> _repository;
+    id<TechnologiesPresenterProtocols> _presenter;
     
     OutlineViewManager *_outlineManager;
 }

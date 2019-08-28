@@ -8,8 +8,6 @@
 
 #import "TrashPresenter.h"
 
-#import "TrashViewProtocols.h"
-
 #import "AbstractData.h"
 
 #import "Notification.h"

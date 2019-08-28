@@ -6,9 +6,9 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import "HomePresenterProtocols.h"
-
 #import "AbstractPresenter.h"
+
+#import "HomeViewProtocols.h"
 
 @interface HomePresenter : AbstractPresenter <HomePresenterProtocols>
 

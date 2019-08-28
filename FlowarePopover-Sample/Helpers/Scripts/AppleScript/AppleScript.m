@@ -1,9 +1,9 @@
 //
 //  AppleScript.m
-//  Flow
+//  FlowarePopover-Sample
 //
-//  Created by Trung Nguyen on 4/13/15.
-//  Copyright (c) 2015 LCL. All rights reserved.
+//  Created by lamnguyen on 9/13/18.
+//  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
 #import "AppleScript.h"

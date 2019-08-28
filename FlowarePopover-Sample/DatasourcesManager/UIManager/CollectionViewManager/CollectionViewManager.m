@@ -1,6 +1,6 @@
 //
 //  CollectionViewManager.m
-//  DatasourceDemo
+//  FlowarePopover-Sample
 //
 //  Created by Lam Nguyen on 1/4/19.
 //  Copyright © 2019 Floware Inc. All rights reserved.

@@ -8,7 +8,6 @@
 
 #import "TechnologiesPresenter.h"
 
-#import "TechnologiesViewProtocols.h"
 #import "TechnologyRepositoryProtocols.h"
 
 #import "Technology.h"

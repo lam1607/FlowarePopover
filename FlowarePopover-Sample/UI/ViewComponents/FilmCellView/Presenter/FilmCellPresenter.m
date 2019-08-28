@@ -8,7 +8,6 @@
 
 #import "FilmCellPresenter.h"
 
-#import "FilmCellViewProtocols.h"
 #import "FilmRepositoryProtocols.h"
 
 @implementation FilmCellPresenter

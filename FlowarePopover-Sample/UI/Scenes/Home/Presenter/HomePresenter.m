@@ -8,8 +8,6 @@
 
 #import "HomePresenter.h"
 
-#import "HomeViewProtocols.h"
-
 @implementation HomePresenter
 
 #pragma mark - HomePresenterProtocols implementation
@@ -26,7 +24,7 @@
 {
     if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
     {
-        [(id<HomeViewProtocols>)self.view viewShouldOpenFinder];
+        [(id<HomeViewProtocols>)self.view viewOpensFinder];
     }
 }
 
@@ -34,7 +32,7 @@
 {
     if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
     {
-        [(id<HomeViewProtocols>)self.view viewShouldOpenSafari];
+        [(id<HomeViewProtocols>)self.view viewOpensSafari];
     }
 }
 
@@ -42,7 +40,7 @@
 {
     if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
     {
-        [(id<HomeViewProtocols>)self.view viewShouldOpenFilmsView];
+        [(id<HomeViewProtocols>)self.view viewOpensFilmsView];
     }
 }
 
@@ -50,7 +48,7 @@
 {
     if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
     {
-        [(id<HomeViewProtocols>)self.view viewShouldOpenNewsView];
+        [(id<HomeViewProtocols>)self.view viewOpensNewsView];
     }
 }
 
@@ -58,7 +56,7 @@
 {
     if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
     {
-        [(id<HomeViewProtocols>)self.view viewShouldOpenComicsView];
+        [(id<HomeViewProtocols>)self.view viewOpensComicsView];
     }
 }
 
@@ -66,7 +64,7 @@
 {
     if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
     {
-        [(id<HomeViewProtocols>)self.view viewShouldShowSecondBar];
+        [(id<HomeViewProtocols>)self.view viewShowsSecondBar];
     }
 }
 
@@ -74,7 +72,7 @@
 {
     if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
     {
-        [(id<HomeViewProtocols>)self.view viewShouldShowTrashView];
+        [(id<HomeViewProtocols>)self.view viewShowsTrashView];
     }
 }
 

@@ -18,7 +18,7 @@
 
 @interface TrashViewController () <TableViewManagerProtocols>
 {
-    TrashPresenter *_presenter;
+    id<TrashPresenterProtocols> _presenter;
     
     TableViewManager *_tableManager;
 }
