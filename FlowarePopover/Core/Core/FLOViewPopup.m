@@ -380,8 +380,8 @@
     [self.utils setUserInteractionEnable:isEnable];
 }
 
-- (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
-    [self.utils shouldShowArrowWithVisualEffect:needed material:material blendingMode:blendingMode state:state];
+- (void)showWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
+    [self.utils showWithVisualEffect:needed material:material blendingMode:blendingMode state:state];
 }
 
 - (void)updateFrame:(NSRect)frame {
@@ -423,7 +423,8 @@
         self.utils.needsAutoresizingMask = self.needsAutoresizingMask;
         
         [self setPopoverEdgeType:edgeType];
-        [self setupPopover];
+        [self setupPopoverStyleNormal];
+        [self.utils setResponder];
         
         // Wait for content view loading data and update its frame correctly before animation.
         [self performSelector:@selector(show) withObject:nil afterDelay:0.01];
@@ -468,7 +469,8 @@
         self.utils.needsAutoresizingMask = self.needsAutoresizingMask;
         
         [self setPopoverEdgeType:edgeType];
-        [self setupPopover];
+        [self setupPopoverStyleNormal];
+        [self.utils setResponder];
         
         // Wait for content view loading data and update its frame correctly before animation.
         [self performSelector:@selector(show) withObject:nil afterDelay:0.01];
@@ -480,20 +482,10 @@
     [self displayWithAnimationProcess:YES];
 }
 
-- (void)setupPopover {
-    if (self.utils.popoverStyle == FLOPopoverStyleAlert) {
-        [self setupPopoverStyleAlert];
-    } else {
-        [self setupPopoverStyleNormal];
-    }
-    
-    [self.utils setResponder];
-}
-
 - (void)setupPopoverStyleNormal {
-    [self.utils.backgroundView setFrame:NSMakeRect(SHRT_MIN, SHRT_MIN, self.utils.contentView.frame.size.width, self.utils.contentView.frame.size.height)];
+    [self.utils.backgroundView setFrame:NSMakeRect(SHRT_MIN, SHRT_MIN, NSWidth(self.utils.contentView.frame), NSHeight(self.utils.contentView.frame))];
     [self.utils.backgroundView setNeedsDisplay:YES];
-    [self.utils.backgroundView displayRect:NSMakeRect(SHRT_MIN, SHRT_MIN, self.utils.contentView.frame.size.width, self.utils.contentView.frame.size.height)];
+    [self.utils.backgroundView displayRect:NSMakeRect(SHRT_MIN, SHRT_MIN, NSWidth(self.utils.contentView.frame), NSHeight(self.utils.contentView.frame))];
     [self.utils.backgroundView setTag:self.tag];
     
     [self.utils addView:self.utils.contentView toParent:self.utils.backgroundView autoresizingMask:NO];
@@ -505,7 +497,7 @@
     [self.utils setupAutoresizingMaskIfNeeded:YES];
 }
 
-- (void)setupPopoverStyleAlert {
+- (void)setupPopoverStyleAlertWithColor:(NSColor *)backgroundColor {
     // Currently do nothing for FLOViewPopover.
 }
 

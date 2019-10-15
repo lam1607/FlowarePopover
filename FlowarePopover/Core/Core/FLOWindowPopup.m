@@ -46,6 +46,7 @@
 @synthesize animated = _animated;
 @synthesize animatedForwarding = _animatedForwarding;
 @synthesize bottomOffset = _bottomOffset;
+@synthesize floatsWhenAppResignsActive = _floatsWhenAppResignsActive;
 @synthesize stopsAtContainerBounds = _stopsAtContainerBounds;
 @synthesize staysInContainer = _staysInContainer;
 @synthesize updatesFrameWhileShowing = _updatesFrameWhileShowing;
@@ -83,6 +84,7 @@
         _animated = NO;
         _animatedForwarding = NO;
         _bottomOffset = kFlowarePopover_BottomOffset;
+        _floatsWhenAppResignsActive = NO;
         _stopsAtContainerBounds = YES;
         _staysInContainer = NO;
         _updatesFrameWhileShowing = NO;
@@ -184,6 +186,12 @@
 
 - (NSMutableArray<NSClipView *> *)observerClipViews {
     return [self.utils observerClipViews];
+}
+
+- (void)setFloatsWhenAppResignsActive:(BOOL)floatsWhenAppResignsActive {
+    _floatsWhenAppResignsActive = floatsWhenAppResignsActive;
+    
+    [self.popoverWindow setFloatsWhenAppResignsActive:floatsWhenAppResignsActive];
 }
 
 - (void)setShouldShowArrow:(BOOL)shouldShowArrow {
@@ -391,8 +399,8 @@
     [self.utils setUserInteractionEnable:isEnable];
 }
 
-- (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
-    [self.utils shouldShowArrowWithVisualEffect:needed material:material blendingMode:blendingMode state:state];
+- (void)showWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
+    [self.utils showWithVisualEffect:needed material:material blendingMode:blendingMode state:state];
 }
 
 - (void)updateFrame:(NSRect)frame {
@@ -441,7 +449,8 @@
         self.utils.needsAutoresizingMask = self.needsAutoresizingMask;
         
         [self setPopoverEdgeType:edgeType];
-        [self setupPopover];
+        [self setupPopoverStyleNormal];
+        [self.utils setResponder];
         
         // Wait for content view loading data and update its frame correctly before animation.
         [self performSelector:@selector(show) withObject:nil afterDelay:0.01];
@@ -486,7 +495,8 @@
         self.utils.needsAutoresizingMask = self.needsAutoresizingMask;
         
         [self setPopoverEdgeType:edgeType];
-        [self setupPopover];
+        [self setupPopoverStyleNormal];
+        [self.utils setResponder];
         
         // Wait for content view loading data and update its frame correctly before animation.
         [self performSelector:@selector(show) withObject:nil afterDelay:0.01];
@@ -498,8 +508,9 @@
  * Display popover as system alert style for presented window.
  *
  * @param presentedWindow the target window that the popover will be alerted on.
+ * @param backgroundColor background color for alert window.
  */
-- (void)showWithAlertStyleForWindow:(NSWindow *)presentedWindow {
+- (void)showWithAlertStyleForWindow:(NSWindow *)presentedWindow backgroundColor:(NSColor *)backgroundColor {
     if ([presentedWindow isKindOfClass:[NSWindow class]]) {
         self.utils.presentedWindow = presentedWindow;
         self.utils.popoverStyle = FLOPopoverStyleAlert;
@@ -511,7 +522,8 @@
         self.isDetachable = NO;
         self.animatedByMovingFrame = NO;
         
-        [self setupPopover];
+        [self setupPopoverStyleAlertWithColor:backgroundColor];
+        [self.utils setResponder];
         
         _popover = self.popoverWindow;
         
@@ -524,26 +536,17 @@
     [self displayWithAnimationProcess:YES];
 }
 
-- (void)setupPopover {
-    if (self.utils.popoverStyle == FLOPopoverStyleAlert) {
-        [self setupPopoverStyleAlert];
-    } else {
-        [self setupPopoverStyleNormal];
-    }
-    
-    [self.utils setResponder];
-}
-
 - (void)setupPopoverStyleNormal {
     [self.utils.backgroundView setFrame:(NSRect){ .size = self.utils.contentView.frame.size }];
     
     if (self.popoverWindow == nil) {
-        self.popoverWindow = [[FLOPopoverWindow alloc] initWithContentRect:NSMakeRect(SHRT_MIN, SHRT_MIN, self.utils.contentView.frame.size.width, self.utils.contentView.frame.size.height) styleMask:NSWindowStyleMaskBorderless backing:NSBackingStoreBuffered defer:YES];
+        self.popoverWindow = [[FLOPopoverWindow alloc] initWithContentRect:NSMakeRect(SHRT_MIN, SHRT_MIN, NSWidth(self.utils.contentView.frame), NSHeight(self.utils.contentView.frame)) styleMask:NSWindowStyleMaskBorderless backing:NSBackingStoreBuffered defer:YES];
         [self.popoverWindow setHasShadow:NO];
         [self.popoverWindow setReleasedWhenClosed:NO];
         [self.popoverWindow setOpaque:NO];
         [self.popoverWindow setBackgroundColor:[NSColor clearColor]];
         [self.popoverWindow setTag:self.tag];
+        [self.popoverWindow setFloatsWhenAppResignsActive:self.floatsWhenAppResignsActive];
     }
     
     [self.utils addView:self.utils.contentView toParent:self.utils.backgroundView autoresizingMask:NO];
@@ -559,7 +562,7 @@
     [self.popoverWindow setLevel:self.popoverWindowLevel];
 }
 
-- (void)setupPopoverStyleAlert {
+- (void)setupPopoverStyleAlertWithColor:(NSColor *)backgroundColor {
     [self.utils.backgroundView setFrame:(NSRect){ .size = self.utils.contentView.frame.size }];
     
     if (self.popoverWindow == nil) {
@@ -571,8 +574,9 @@
         [self.popoverWindow setOpaque:NO];
         [self.popoverWindow setBackgroundColor:[NSColor clearColor]];
         [self.popoverWindow setTag:self.tag];
+        [self.popoverWindow setFloatsWhenAppResignsActive:self.floatsWhenAppResignsActive];
         [[self.popoverWindow contentView] setWantsLayer:YES];
-        [[[self.popoverWindow contentView] layer] setBackgroundColor:[[[NSColor whiteColor] colorWithAlphaComponent:0.01] CGColor]];
+        [[[self.popoverWindow contentView] layer] setBackgroundColor:[backgroundColor CGColor]];
     }
     
     [self.utils addView:self.utils.contentView toParent:self.utils.backgroundView centerAutoresizingMask:YES];

@@ -87,6 +87,18 @@
     return [_popover isShown];
 }
 
+- (NSResponder *)representedObject {
+    return _popover.representedObject;
+}
+
+- (BOOL)isShowing {
+    return _popover.isShowing;
+}
+
+- (BOOL)isClosing {
+    return _popover.isClosing;
+}
+
 - (BOOL)isCloseEventReceived {
     return _popover.isCloseEventReceived;
 }
@@ -141,6 +153,14 @@
     _stopsAtContainerBounds = stopsAtContainerBounds;
     
     _popover.stopsAtContainerBounds = stopsAtContainerBounds;
+}
+
+- (void)setFloatsWhenAppResignsActive:(BOOL)floatsWhenAppResignsActive {
+    _floatsWhenAppResignsActive = floatsWhenAppResignsActive;
+    
+    if ([_popover respondsToSelector:@selector(setFloatsWhenAppResignsActive:)]) {
+        _popover.floatsWhenAppResignsActive = floatsWhenAppResignsActive;
+    }
 }
 
 - (void)setStaysInContainer:(BOOL)staysInContainer {
@@ -464,8 +484,8 @@
     }
 }
 
-- (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
-    [_popover shouldShowArrowWithVisualEffect:needed material:material blendingMode:blendingMode state:state];
+- (void)showWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
+    [_popover showWithVisualEffect:needed material:material blendingMode:blendingMode state:state];
 }
 
 /**
@@ -556,8 +576,18 @@
  * @param presentedWindow the target window that the popover will be alerted on.
  */
 - (void)showWithAlertStyleForWindow:(NSWindow *)presentedWindow {
-    if ([_popover respondsToSelector:@selector(showWithAlertStyleForWindow:)]) {
-        [_popover showWithAlertStyleForWindow:presentedWindow];
+    [self showWithAlertStyleForWindow:presentedWindow backgroundColor:[[NSColor whiteColor] colorWithAlphaComponent:0.01]];
+}
+
+/**
+ * Display popover as system alert style for presented window.
+ *
+ * @param presentedWindow the target window that the popover will be alerted on.
+ * @param backgroundColor background color for alert window.
+ */
+- (void)showWithAlertStyleForWindow:(NSWindow *)presentedWindow backgroundColor:(NSColor *)backgroundColor {
+    if ([_popover respondsToSelector:@selector(showWithAlertStyleForWindow:backgroundColor:)]) {
+        [_popover showWithAlertStyleForWindow:presentedWindow backgroundColor:backgroundColor];
         
         [self invalidateTimeIntervalTimer];
         [self cancelCloseAfterTimeInterval];

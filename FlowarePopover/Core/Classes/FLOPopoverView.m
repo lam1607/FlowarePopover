@@ -41,7 +41,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     BOOL _mouseDownEventReceived;
     BOOL _mouseEnteredEventReceived;
     
-    BOOL _shouldShowArrowWithVisualEffect;
+    BOOL _showsWithVisualEffect;
 }
 
 // The clipping view that's used to shape the popover to the correct path. This
@@ -64,7 +64,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
         _fillColor = [NSColor clearColor];
         _mouseDownEventReceived = NO;
         _mouseEnteredEventReceived = NO;
-        _shouldShowArrowWithVisualEffect = NO;
+        _showsWithVisualEffect = NO;
         _userInteractionEnable = YES;
         _becomesKeyOnMouseOver = NO;
         
@@ -97,7 +97,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
         _fillColor = [NSColor clearColor];
         _mouseDownEventReceived = NO;
         _mouseEnteredEventReceived = NO;
-        _shouldShowArrowWithVisualEffect = NO;
+        _showsWithVisualEffect = NO;
         _userInteractionEnable = YES;
         _becomesKeyOnMouseOver = NO;
         
@@ -242,7 +242,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 }
 
 - (void)setVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
-    _shouldShowArrowWithVisualEffect = needed;
+    _showsWithVisualEffect = needed;
     
     if (needed) {
         [self.clippingView setVisualEffectMaterial:material blendingMode:blendingMode state:state];
@@ -418,7 +418,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     
     CGMutablePathRef path = CGPathCreateMutable();
     
-    if (_shouldShowArrowWithVisualEffect) {
+    if (_showsWithVisualEffect) {
         CGFloat minX = NSMinX(contentRect);
         CGFloat maxX = NSMaxX(contentRect);
         CGFloat minY = NSMinY(contentRect);
@@ -463,7 +463,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 }
 
 - (void)mouseEntered:(NSEvent *)event {
-    if (![[NSApplication sharedApplication] isActive]) return;
+    if (!([[NSApplication sharedApplication] isActive] && [[[[NSWorkspace sharedWorkspace] frontmostApplication] bundleIdentifier] isEqualToString:[[NSBundle mainBundle] bundleIdentifier]])) return;
     if (!self.becomesKeyOnMouseOver) return;
     if (!self.userInteractionEnable) return;
     
@@ -475,7 +475,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 }
 
 - (void)mouseExited:(NSEvent *)event {
-    if (![[NSApplication sharedApplication] isActive]) return;
+    if (!([[NSApplication sharedApplication] isActive] && [[[[NSWorkspace sharedWorkspace] frontmostApplication] bundleIdentifier] isEqualToString:[[NSBundle mainBundle] bundleIdentifier]])) return;
     if (!self.becomesKeyOnMouseOver) return;
     if (!self.userInteractionEnable) return;
     
@@ -487,7 +487,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 }
 
 - (void)mouseMoved:(NSEvent *)event {
-    if (![[NSApplication sharedApplication] isActive]) return;
+    if (!([[NSApplication sharedApplication] isActive] && [[[[NSWorkspace sharedWorkspace] frontmostApplication] bundleIdentifier] isEqualToString:[[NSBundle mainBundle] bundleIdentifier]])) return;
     if (!self.becomesKeyOnMouseOver) return;
     if (!self.userInteractionEnable) return;
     if (!_mouseEnteredEventReceived) return;

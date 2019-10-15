@@ -24,7 +24,7 @@
     NSRect _positionFrame;
     CGFloat _verticallyAvailableMargin;
     
-    BOOL _shouldShowArrowWithVisualEffect;
+    BOOL _showsWithVisualEffect;
     NSVisualEffectMaterial _arrowVisualEffectMaterial;
     NSVisualEffectBlendingMode _arrowVisualEffectBlendingMode;
     NSVisualEffectState _arrowVisualEffectState;
@@ -62,7 +62,7 @@
         _userInteractionEnable = YES;
         _popoverStyle = FLOPopoverStyleNormal;
         
-        _shouldShowArrowWithVisualEffect = NO;
+        _showsWithVisualEffect = NO;
         _arrowVisualEffectMaterial = NSVisualEffectMaterialLight;
         _arrowVisualEffectBlendingMode = NSVisualEffectBlendingModeBehindWindow;
         _arrowVisualEffectState = NSVisualEffectStateInactive;
@@ -795,8 +795,8 @@
         [self.backgroundView setArrow:_popover.shouldShowArrow];
         [self.backgroundView setArrowColor:[[self.contentView layer] backgroundColor]];
         
-        if (_shouldShowArrowWithVisualEffect) {
-            [self.backgroundView setVisualEffect:_shouldShowArrowWithVisualEffect material:_arrowVisualEffectMaterial blendingMode:_arrowVisualEffectBlendingMode state:_arrowVisualEffectState];
+        if (_showsWithVisualEffect) {
+            [self.backgroundView setVisualEffect:_showsWithVisualEffect material:_arrowVisualEffectMaterial blendingMode:_arrowVisualEffectBlendingMode state:_arrowVisualEffectState];
         }
     } else {
         [_popover setArrowSize:NSZeroSize];
@@ -925,8 +925,8 @@
     }
 }
 
-- (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
-    _shouldShowArrowWithVisualEffect = needed;
+- (void)showWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
+    _showsWithVisualEffect = needed;
     _arrowVisualEffectMaterial = material;
     _arrowVisualEffectBlendingMode = blendingMode;
     _arrowVisualEffectState = state;

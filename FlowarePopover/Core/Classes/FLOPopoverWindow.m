@@ -14,6 +14,7 @@
     if (self = [super init]) {
         _tag = -1;
         _userInteractionEnable = YES;
+        _floatsWhenAppResignsActive = NO;
     }
     
     return self;
@@ -23,6 +24,7 @@
     if (self = [super initWithContentRect:contentRect styleMask:style backing:backingStoreType defer:flag]) {
         _tag = -1;
         _userInteractionEnable = YES;
+        _floatsWhenAppResignsActive = NO;
     }
     
     return self;

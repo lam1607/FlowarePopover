@@ -76,7 +76,7 @@
 - (void)setupComponentsForPopover:(BOOL)observerNeeded;
 - (void)setPopoverEdgeType:(FLOPopoverEdgeType)edgeType;
 - (void)setUserInteractionEnable:(BOOL)isEnable;
-- (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
+- (void)showWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 - (void)setupPositioningAnchorWithView:(NSView *)positioningView positioningRect:(NSRect)positioningRect shouldUpdatePosition:(BOOL)shouldUpdatePosition;
 - (NSRect)popoverFrame;
 

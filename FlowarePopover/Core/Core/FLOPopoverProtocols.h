@@ -15,7 +15,7 @@
 
 @protocol FLOPopoverProtocols <NSObject>
 
-@property (nonatomic, strong, readonly) NSResponder *representedObject;
+@property (nonatomic, weak, readonly) NSResponder *representedObject;
 
 @property (nonatomic, assign, readonly) NSRect frame;
 @property (nonatomic, assign, readonly, getter = isShown) BOOL shown;
@@ -134,7 +134,7 @@
 - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;
 - (void)setUserInteractionEnable:(BOOL)isEnable;
 
-- (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
+- (void)showWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 
 - (void)updateFrame:(NSRect)frame;
 - (void)invalidateShadow;
@@ -188,6 +188,12 @@
 @property (nonatomic, assign) BOOL canBecomeKey;
 
 /**
+ * This property is used out side of this scope for handling
+ * whether the popover floats or not when application resigns active.
+ */
+@property (nonatomic, assign) BOOL floatsWhenAppResignsActive;
+
+/**
  * Set level for popover. Only used for FLOWindowPopover type.
  *
  * @param level the level of window popover.
@@ -198,8 +204,9 @@
  * Display popover as system alert style for presented window.
  *
  * @param presentedWindow the target window that the popover will be alerted on.
+ * @param backgroundColor background color for alert window.
  */
-- (void)showWithAlertStyleForWindow:(NSWindow *)presentedWindow;
+- (void)showWithAlertStyleForWindow:(NSWindow *)presentedWindow backgroundColor:(NSColor *)backgroundColor;
 
 @end
 

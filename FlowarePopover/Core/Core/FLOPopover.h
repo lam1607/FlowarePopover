@@ -37,15 +37,28 @@
 @property (nonatomic, assign, readonly) FLOPopoverType type;
 @property (nonatomic, assign, readonly) NSRect frame;
 @property (nonatomic, assign, readonly, getter = isShown) BOOL shown;
+/**
+ * This property is represented for the popover's real object
+ * which is FLOPopoverView or FLOPopoverWindow popup relatively to
+ * FLOViewPopover or FLOWindowPopover popover type.
+ */
+@property (nonatomic, weak, readonly) NSResponder *representedObject;
 @property (nonatomic, assign, readonly) BOOL isMoved;
+@property (nonatomic, assign, readonly) BOOL isShowing;
+@property (nonatomic, assign, readonly) BOOL isClosing;
 @property (nonatomic, assign, readonly) BOOL isCloseEventReceived;
-
 
 @property (nonatomic, assign) BOOL shouldShowArrow;
 @property (nonatomic, assign) NSSize arrowSize;
 @property (nonatomic, assign) BOOL animated;
 @property (nonatomic, assign) BOOL animatedForwarding;
 @property (nonatomic, assign) CGFloat bottomOffset;
+
+/**
+ * This property is used out side of this scope for handling
+ * whether the popover floats or not when application resigns active.
+ */
+@property (nonatomic, assign) BOOL floatsWhenAppResignsActive;
 
 @property (nonatomic, assign) BOOL stopsAtContainerBounds;
 
@@ -163,7 +176,7 @@
 - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;
 - (void)setUserInteractionEnable:(BOOL)isEnable;
 
-- (void)shouldShowArrowWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
+- (void)showWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 
 
 /**
@@ -238,6 +251,14 @@
  * @param presentedWindow the target window that the popover will be alerted on.
  */
 - (void)showWithAlertStyleForWindow:(NSWindow *)presentedWindow;
+
+/**
+ * Display popover as system alert style for presented window.
+ *
+ * @param presentedWindow the target window that the popover will be alerted on.
+ * @param backgroundColor background color for alert window.
+ */
+- (void)showWithAlertStyleForWindow:(NSWindow *)presentedWindow backgroundColor:(NSColor *)backgroundColor;
 
 - (void)close;
 

@@ -14,4 +14,10 @@
 @property (nonatomic, assign) NSInteger tag;
 @property (nonatomic, assign) BOOL userInteractionEnable;
 
+/**
+ * This property is used out side of this scope for handling
+ * whether the popover floats or not when application resigns active.
+ */
+@property (nonatomic, assign) BOOL floatsWhenAppResignsActive;
+
 @end
