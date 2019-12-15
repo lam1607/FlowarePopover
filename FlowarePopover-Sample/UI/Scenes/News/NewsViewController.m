@@ -85,20 +85,6 @@
     [self.tableView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
 }
 
-- (void)refreshUIColors
-{
-    [super refreshUIColors];
-    
-    if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name])
-    {
-#ifdef kFlowarePopover_UseAssetColors
-        [Utils setBackgroundColor:[NSColor _tealColor] forView:self.vHeader];
-#else
-        [Utils setBackgroundColor:[NSColor tealColor] forView:self.vHeader];
-#endif
-    }
-}
-
 #pragma mark - Local methods
 
 - (void)loadData
@@ -253,6 +239,13 @@
 }
 
 #pragma mark - NewsViewProtocols implementation
+
+- (void)refreshUIAppearance
+{
+    [super refreshUIAppearance];
+    
+    [Utils setBackgroundColor:[NSColor tealColor] forView:self.vHeader];
+}
 
 - (void)reloadViewData
 {

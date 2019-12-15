@@ -39,13 +39,7 @@
     
     [self objectsInitialize];
     [self setupUI];
-}
-
-- (void)layout
-{
-    [super layout];
-    
-    [self refreshUIColors];
+    [self refreshUIAppearance];
 }
 
 #pragma mark - Initialize
@@ -64,30 +58,6 @@
     self.imgView.imageScaling = NSImageScaleProportionallyDown;
     self.lblTitle.maximumNumberOfLines = 0;
     self.lblContent.maximumNumberOfLines = 0;
-}
-
-- (void)refreshUIColors
-{
-    if ([self.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name])
-    {
-        [Utils setShadowForView:self.vContainer];
-        
-#ifdef kFlowarePopover_UseAssetColors
-        [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] borderWidth:0.0 borderColor:[NSColor _blueColor] forView:self.vContainer];
-        
-        [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
-        
-        [Utils setTitle:self.lblTitle.stringValue color:[NSColor _textBlackColor] fontSize:16.0 forControl:self.lblTitle];
-        [Utils setTitle:self.lblContent.stringValue color:[NSColor _textGrayColor] fontSize:14.0 forControl:self.lblContent];
-#else
-        [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] borderWidth:0.0 borderColor:[NSColor blueColor] forView:self.vContainer];
-        
-        [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
-        
-        [Utils setTitle:self.lblTitle.stringValue color:[NSColor textBlackColor] fontSize:16.0 forControl:self.lblTitle];
-        [Utils setTitle:self.lblContent.stringValue color:[NSColor textGrayColor] fontSize:14.0 forControl:self.lblContent];
-#endif
-    }
 }
 
 #pragma mark - Public methods
@@ -118,6 +88,18 @@
 }
 
 #pragma mark - NewsCellViewProtocols implementation
+
+- (void)refreshUIAppearance
+{
+    [Utils setShadowForView:self.vContainer];
+    
+    [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] borderWidth:0.0 borderColor:[NSColor blueColor] forView:self.vContainer];
+    
+    [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
+    
+    [Utils setTitle:self.lblTitle.stringValue color:[NSColor textBlackColor] fontSize:16.0 forControl:self.lblTitle];
+    [Utils setTitle:self.lblContent.stringValue color:[NSColor textGrayColor] fontSize:14.0 forControl:self.lblContent];
+}
 
 - (void)updateViewImage
 {

@@ -9,8 +9,6 @@
 #ifndef NotificationServiceProtocols_h
 #define NotificationServiceProtocols_h
 
-#import <Foundation/Foundation.h>
-
 @protocol NotificationServiceProtocols <NSObject>
 
 @optional

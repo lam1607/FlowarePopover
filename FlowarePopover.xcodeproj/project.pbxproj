@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		343FA1F523A6356C0074C55C /* EntitlementsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 343FA1ED23A6356A0074C55C /* EntitlementsManager.m */; };
+		343FA1F823A6356C0074C55C /* WindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 343FA1F023A6356B0074C55C /* WindowManager.m */; };
+		343FA1FC23A636820074C55C /* NSAppearance+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 343FA1FB23A636820074C55C /* NSAppearance+Extensions.m */; };
+		343FA1FF23A637D90074C55C /* NSColor+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 343FA1FE23A637D90074C55C /* NSColor+Extensions.m */; };
+		343FA20223A63F5C0074C55C /* NSString+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 343FA20123A63F5C0074C55C /* NSString+Extensions.m */; };
+		343FA20523A642340074C55C /* SettingsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 343FA20423A642340074C55C /* SettingsManager.m */; };
+		343FA20E23A678DB0074C55C /* NSView+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 343FA20D23A678DB0074C55C /* NSView+Extensions.m */; };
 		DE0575E6223610A100B94B81 /* DragDroppableView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0575E5223610A100B94B81 /* DragDroppableView.m */; };
 		DE0575EE223638E200B94B81 /* TrashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0575EC223638E200B94B81 /* TrashViewController.m */; };
 		DE0575EF223638E300B94B81 /* TrashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE0575ED223638E200B94B81 /* TrashViewController.xib */; };
@@ -16,7 +23,6 @@
 		DE0575FF22366ADC00B94B81 /* NotificationObservers.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0575FE22366ADC00B94B81 /* NotificationObservers.m */; };
 		DE05760722366F1C00B94B81 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = DE05760622366F1C00B94B81 /* NotificationService.m */; };
 		DE05760B223670FE00B94B81 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = DE05760A223670FE00B94B81 /* Notification.m */; };
-		DE0BF080219BB9E800FF3AD6 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE0BF07F219BB9E800FF3AD6 /* Colors.xcassets */; };
 		DE7A697822E16A850046FEA8 /* FLOVirtualView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7A697622E16A850046FEA8 /* FLOVirtualView.m */; };
 		DE8E5C7121534233002AE872 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE8E5C7021534233002AE872 /* AppleScriptObjC.framework */; };
 		DE8E5C7A21534821002AE872 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5C7921534821002AE872 /* AppDelegate.m */; };
@@ -118,7 +124,6 @@
 		DEF15EBB21DDCBD400FDE038 /* AbstractData.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EAD21DDCBD400FDE038 /* AbstractData.m */; };
 		DEF15EBC21DDCBD400FDE038 /* AbstractService.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EB321DDCBD400FDE038 /* AbstractService.m */; };
 		DEF15EBD21DDCBD400FDE038 /* AbstractViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EB621DDCBD400FDE038 /* AbstractViewController.m */; };
-		DEF15EC221DDCC8400FDE038 /* NSColor+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF15EC121DDCC8400FDE038 /* NSColor+Custom.m */; };
 		DEF1F87B22B78FBE00D54049 /* FLOPopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF1F87922B78FBE00D54049 /* FLOPopoverView.m */; };
 		DEF1F87F22B7900500D54049 /* FLOPopoverWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF1F87D22B7900500D54049 /* FLOPopoverWindow.m */; };
 		DEF1F89722B79BB800D54049 /* FLOPopoverClippingView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF1F89522B79BB800D54049 /* FLOPopoverClippingView.m */; };
@@ -154,6 +159,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		343FA1EA23A6356A0074C55C /* EntitlementsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntitlementsManager.h; sourceTree = "<group>"; };
+		343FA1EB23A6356A0074C55C /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
+		343FA1ED23A6356A0074C55C /* EntitlementsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntitlementsManager.m; sourceTree = "<group>"; };
+		343FA1F023A6356B0074C55C /* WindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowManager.m; sourceTree = "<group>"; };
+		343FA1FA23A636820074C55C /* NSAppearance+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAppearance+Extensions.h"; sourceTree = "<group>"; };
+		343FA1FB23A636820074C55C /* NSAppearance+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAppearance+Extensions.m"; sourceTree = "<group>"; };
+		343FA1FD23A637D90074C55C /* NSColor+Extensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSColor+Extensions.h"; sourceTree = "<group>"; };
+		343FA1FE23A637D90074C55C /* NSColor+Extensions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Extensions.m"; sourceTree = "<group>"; };
+		343FA20023A63F5C0074C55C /* NSString+Extensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Extensions.h"; sourceTree = "<group>"; };
+		343FA20123A63F5C0074C55C /* NSString+Extensions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extensions.m"; sourceTree = "<group>"; };
+		343FA20323A642330074C55C /* SettingsManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingsManager.h; sourceTree = "<group>"; };
+		343FA20423A642340074C55C /* SettingsManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SettingsManager.m; sourceTree = "<group>"; };
+		343FA20C23A678DB0074C55C /* NSView+Extensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSView+Extensions.h"; sourceTree = "<group>"; };
+		343FA20D23A678DB0074C55C /* NSView+Extensions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSView+Extensions.m"; sourceTree = "<group>"; };
 		DE0575E4223610A100B94B81 /* DragDroppableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DragDroppableView.h; sourceTree = "<group>"; };
 		DE0575E5223610A100B94B81 /* DragDroppableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DragDroppableView.m; sourceTree = "<group>"; };
 		DE0575EB223638E200B94B81 /* TrashViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrashViewController.h; sourceTree = "<group>"; };
@@ -173,7 +192,6 @@
 		DE05760822366F3800B94B81 /* NotificationServiceProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationServiceProtocols.h; sourceTree = "<group>"; };
 		DE05760922366FA500B94B81 /* Notification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
 		DE05760A223670FE00B94B81 /* Notification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
-		DE0BF07F219BB9E800FF3AD6 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		DE7A697522E16A850046FEA8 /* FLOVirtualView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOVirtualView.h; sourceTree = "<group>"; };
 		DE7A697622E16A850046FEA8 /* FLOVirtualView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOVirtualView.m; sourceTree = "<group>"; };
 		DE8E5C7021534233002AE872 /* AppleScriptObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptObjC.framework; path = System/Library/Frameworks/AppleScriptObjC.framework; sourceTree = SDKROOT; };
@@ -335,8 +353,6 @@
 		DEF15EB321DDCBD400FDE038 /* AbstractService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractService.m; sourceTree = "<group>"; };
 		DEF15EB521DDCBD400FDE038 /* AbstractViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractViewController.h; sourceTree = "<group>"; };
 		DEF15EB621DDCBD400FDE038 /* AbstractViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractViewController.m; sourceTree = "<group>"; };
-		DEF15EC021DDCC8400FDE038 /* NSColor+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+Custom.h"; sourceTree = "<group>"; };
-		DEF15EC121DDCC8400FDE038 /* NSColor+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Custom.m"; sourceTree = "<group>"; };
 		DEF1F87822B78FBE00D54049 /* FLOPopoverView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOPopoverView.h; sourceTree = "<group>"; };
 		DEF1F87922B78FBE00D54049 /* FLOPopoverView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOPopoverView.m; sourceTree = "<group>"; };
 		DEF1F87C22B7900500D54049 /* FLOPopoverWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOPopoverWindow.h; sourceTree = "<group>"; };
@@ -374,6 +390,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		343FA1E723A635400074C55C /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				343FA1EA23A6356A0074C55C /* EntitlementsManager.h */,
+				343FA1ED23A6356A0074C55C /* EntitlementsManager.m */,
+				343FA20323A642330074C55C /* SettingsManager.h */,
+				343FA20423A642340074C55C /* SettingsManager.m */,
+				343FA1EB23A6356A0074C55C /* WindowManager.h */,
+				343FA1F023A6356B0074C55C /* WindowManager.m */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		DE0575E8223638B600B94B81 /* Trash */ = {
 			isa = PBXGroup;
 			children = (
@@ -456,6 +485,7 @@
 				DE0575FB22366A9300B94B81 /* Notification */,
 				DE8E5D8F215348EE002AE872 /* Models */,
 				DED3A3D121E6E64200B479BF /* DatasourcesManager */,
+				343FA1E723A635400074C55C /* Managers */,
 				DE8E5DC2215348EE002AE872 /* UI */,
 				DE8E5DBE215348EE002AE872 /* Utils */,
 				DE8E5D62215348EE002AE872 /* Resources */,
@@ -470,7 +500,6 @@
 			isa = PBXGroup;
 			children = (
 				DE8E5C7B21534822002AE872 /* Assets.xcassets */,
-				DE0BF07F219BB9E800FF3AD6 /* Colors.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -848,15 +877,6 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
-		DEBBA69B2232077800811EFE /* NSObject */ = {
-			isa = PBXGroup;
-			children = (
-				DEBBA69C223207C400811EFE /* NSObject+Extensions.h */,
-				DEBBA69D223207C400811EFE /* NSObject+Extensions.m */,
-			);
-			path = NSObject;
-			sourceTree = "<group>";
-		};
 		DEBD6E92222E15EA000E1FE3 /* Provider */ = {
 			isa = PBXGroup;
 			children = (
@@ -1186,19 +1206,18 @@
 		DEF15EBE21DDCC8400FDE038 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				DEBBA69B2232077800811EFE /* NSObject */,
-				DEF15EBF21DDCC8400FDE038 /* Colors */,
+				343FA1FA23A636820074C55C /* NSAppearance+Extensions.h */,
+				343FA1FB23A636820074C55C /* NSAppearance+Extensions.m */,
+				343FA1FD23A637D90074C55C /* NSColor+Extensions.h */,
+				343FA1FE23A637D90074C55C /* NSColor+Extensions.m */,
+				DEBBA69C223207C400811EFE /* NSObject+Extensions.h */,
+				DEBBA69D223207C400811EFE /* NSObject+Extensions.m */,
+				343FA20023A63F5C0074C55C /* NSString+Extensions.h */,
+				343FA20123A63F5C0074C55C /* NSString+Extensions.m */,
+				343FA20C23A678DB0074C55C /* NSView+Extensions.h */,
+				343FA20D23A678DB0074C55C /* NSView+Extensions.m */,
 			);
 			path = Categories;
-			sourceTree = "<group>";
-		};
-		DEF15EBF21DDCC8400FDE038 /* Colors */ = {
-			isa = PBXGroup;
-			children = (
-				DEF15EC021DDCC8400FDE038 /* NSColor+Custom.h */,
-				DEF15EC121DDCC8400FDE038 /* NSColor+Custom.m */,
-			);
-			path = Colors;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1307,7 +1326,6 @@
 				DED3A41021E6FDF000B479BF /* TechnologiesViewController.xib in Resources */,
 				DE8E5E52215348EF002AE872 /* NewsViewController.xib in Resources */,
 				DE8E5E4E215348EF002AE872 /* ComicsViewController.xib in Resources */,
-				DE0BF080219BB9E800FF3AD6 /* Colors.xcassets in Resources */,
 				DE8E5E3C215348EF002AE872 /* MockData.plist in Resources */,
 				DE0575EF223638E300B94B81 /* TrashViewController.xib in Resources */,
 				DE8E5E65215348EF002AE872 /* FilmCellView.xib in Resources */,
@@ -1337,19 +1355,24 @@
 				DE05760722366F1C00B94B81 /* NotificationService.m in Sources */,
 				DE8E5E45215348EF002AE872 /* NewsRepository.m in Sources */,
 				DE8E5E67215348EF002AE872 /* FilmCellView.m in Sources */,
+				343FA20E23A678DB0074C55C /* NSView+Extensions.m in Sources */,
 				DEBD6EB6222E714F000E1FE3 /* DataProvider.m in Sources */,
 				DE8E5E4F215348EF002AE872 /* ComicsViewController.m in Sources */,
 				DE8E5E66215348EF002AE872 /* FilmCellPresenter.m in Sources */,
 				DE8F742F2238DC7500291F69 /* TableRowView.m in Sources */,
 				DE8E5E41215348EF002AE872 /* News.m in Sources */,
 				DE8E5E3F215348EF002AE872 /* Film.m in Sources */,
+				343FA1F523A6356C0074C55C /* EntitlementsManager.m in Sources */,
 				DE8E5E49215348EF002AE872 /* NewsService.m in Sources */,
 				DED3A40F21E6FDF000B479BF /* TechnologiesViewController.m in Sources */,
+				343FA1FC23A636820074C55C /* NSAppearance+Extensions.m in Sources */,
 				DED3A3C621E6E52500B479BF /* TechnologyService.m in Sources */,
 				DEF15EB921DDCBD400FDE038 /* AbstractWindowController.m in Sources */,
+				343FA1F823A6356C0074C55C /* WindowManager.m in Sources */,
 				DEF15EBD21DDCBD400FDE038 /* AbstractViewController.m in Sources */,
 				DED3A3CC21E6E5DB00B479BF /* TechnologyRepository.m in Sources */,
 				DE8E5E55215348EF002AE872 /* FilmsViewController.m in Sources */,
+				343FA1FF23A637D90074C55C /* NSColor+Extensions.m in Sources */,
 				DED3A40B21E6F97300B479BF /* TechnologiesPresenter.m in Sources */,
 				DED3A3F421E6E64200B479BF /* OutlineViewManager.m in Sources */,
 				DE8E5E40215348EF002AE872 /* Comic.m in Sources */,
@@ -1363,9 +1386,9 @@
 				DE8E5E5A215348EF002AE872 /* HomeViewController.m in Sources */,
 				DED3A3FB21E6EB3B00B479BF /* TechnologyCellView.m in Sources */,
 				DE8E5E5B215348EF002AE872 /* HomePresenter.m in Sources */,
-				DEF15EC221DDCC8400FDE038 /* NSColor+Custom.m in Sources */,
 				DEF15EBA21DDCBD400FDE038 /* AbstractPresenter.m in Sources */,
 				DE8E5E54215348EF002AE872 /* FilmsPresenter.m in Sources */,
+				343FA20223A63F5C0074C55C /* NSString+Extensions.m in Sources */,
 				DE8E5E4B215348EF002AE872 /* Utils.m in Sources */,
 				DE8E5C7A21534821002AE872 /* AppDelegate.m in Sources */,
 				DE8E5E63215348EF002AE872 /* ComicCellView.m in Sources */,
@@ -1376,6 +1399,7 @@
 				DE8E5E43215348EF002AE872 /* FilmRepository.m in Sources */,
 				DE0575E6223610A100B94B81 /* DragDroppableView.m in Sources */,
 				DE8E5E51215348EF002AE872 /* NewsViewController.m in Sources */,
+				343FA20523A642340074C55C /* SettingsManager.m in Sources */,
 				DE8E5E53215348EF002AE872 /* NewsPresenter.m in Sources */,
 				DEF15EB721DDCBD400FDE038 /* AbstractRepository.m in Sources */,
 				DE8E5E3B215348EF002AE872 /* AppleScriptBridge.applescript in Sources */,

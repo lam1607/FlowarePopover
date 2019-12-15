@@ -9,8 +9,6 @@
 #ifndef ListSupplierProtocol_h
 #define ListSupplierProtocol_h
 
-#import <Foundation/Foundation.h>
-
 @protocol ListSupplierProtocol <NSObject>
 
 @optional

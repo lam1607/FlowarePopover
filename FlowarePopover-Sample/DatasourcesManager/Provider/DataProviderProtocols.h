@@ -9,8 +9,6 @@
 #ifndef DataProviderProtocols_h
 #define DataProviderProtocols_h
 
-#import <Foundation/Foundation.h>
-
 @protocol ListSupplierProtocol;
 
 @protocol DataProviderProtocols <NSObject>

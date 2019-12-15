@@ -9,8 +9,6 @@
 #ifndef AbstractPresenterProtocols_h
 #define AbstractPresenterProtocols_h
 
-#import <Foundation/Foundation.h>
-
 #import "AbstractViewProtocols.h"
 #import "AbstractRepositoryProtocols.h"
 

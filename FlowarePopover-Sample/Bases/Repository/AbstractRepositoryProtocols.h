@@ -9,8 +9,6 @@
 #ifndef AbstractRepositoryProtocols_h
 #define AbstractRepositoryProtocols_h
 
-#import <Foundation/Foundation.h>
-
 @protocol AbstractRepositoryProtocols <NSObject>
 
 - (void)fetchImageFromUrl:(NSURL *)url completion:(void (^)(NSImage *image))complete;

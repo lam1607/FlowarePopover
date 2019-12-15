@@ -10,13 +10,21 @@
 #define PrefixHeader_pch
 
 #import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 #import <FlowarePopover/FlowarePopover.h>
 
-#import "Constants.h"
+#import "NSAppearance+Extensions.h"
+#import "NSColor+Extensions.h"
 #import "NSObject+Extensions.h"
-#import "NSColor+Custom.h"
+#import "NSString+Extensions.h"
+#import "NSView+Extensions.h"
 
+#import "EntitlementsManager.h"
+#import "SettingsManager.h"
+#import "WindowManager.h"
+
+#import "Constants.h"
 #import "Utils.h"
 
 #endif /* PrefixHeader_pch */

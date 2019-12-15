@@ -6,11 +6,10 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
+#import "AbstractViewProtocols.h"
 #import "ItemCellViewProtocols.h"
 
-@interface ComicCellView : NSTableCellView <ItemCellViewProtocols>
+@interface ComicCellView : NSTableCellView <AbstractViewProtocols, ItemCellViewProtocols>
 
 /// @property
 ///

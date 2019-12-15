@@ -6,8 +6,6 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "NewsCellViewProtocols.h"
 
 #import "ItemCellViewProtocols.h"

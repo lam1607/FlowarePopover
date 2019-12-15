@@ -9,8 +9,6 @@
 #ifndef ItemCellViewProtocols_h
 #define ItemCellViewProtocols_h
 
-#import <Foundation/Foundation.h>
-
 @protocol ListSupplierProtocol;
 
 @protocol ItemCellViewProtocols <NSObject>

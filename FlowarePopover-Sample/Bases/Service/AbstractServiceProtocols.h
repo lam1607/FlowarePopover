@@ -9,8 +9,6 @@
 #ifndef AbstractServiceProtocols_h
 #define AbstractServiceProtocols_h
 
-#import <Foundation/Foundation.h>
-
 @protocol AbstractServiceProtocols <NSObject>
 
 @optional

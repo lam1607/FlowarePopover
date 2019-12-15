@@ -39,13 +39,7 @@
     
     [self objectsInitialize];
     [self setupUI];
-}
-
-- (void)viewWillLayout
-{
-    [super viewWillLayout];
-    
-    [self refreshUIColors];
+    [self refreshUIAppearance];
 }
 
 #pragma mark - Initialize
@@ -70,28 +64,6 @@
 {
     self.imgView.imageScaling = NSImageScaleProportionallyUpOrDown;
     self.lblName.maximumNumberOfLines = 0;
-}
-
-- (void)refreshUIColors
-{
-    if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name])
-    {
-        [Utils setShadowForView:self.vContainer];
-        
-#ifdef kFlowarePopover_UseAssetColors
-        [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] borderWidth:0.0 borderColor:[NSColor _blueColor] forView:self.vContainer];
-        
-        [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
-        
-        [Utils setTitle:self.lblName.stringValue color:[NSColor _textBlackColor] fontSize:16.0 forControl:self.lblName];
-#else
-        [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] borderWidth:0.0 borderColor:[NSColor blueColor] forView:self.vContainer];
-        
-        [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
-        
-        [Utils setTitle:self.lblName.stringValue color:[NSColor textBlackColor] fontSize:16.0 forControl:self.lblName];
-#endif
-    }
 }
 
 #pragma mark - Public methods
@@ -120,6 +92,17 @@
 }
 
 #pragma mark - FilmCellViewProtocols implementation
+
+- (void)refreshUIAppearance
+{
+    [Utils setShadowForView:self.vContainer];
+    
+    [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] borderWidth:0.0 borderColor:[NSColor blueColor] forView:self.vContainer];
+    
+    [Utils setBackgroundColor:NSColor.clearColor cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.imgView];
+    
+    [Utils setTitle:self.lblName.stringValue color:[NSColor textBlackColor] fontSize:16.0 forControl:self.lblName];
+}
 
 - (void)updateViewImage
 {

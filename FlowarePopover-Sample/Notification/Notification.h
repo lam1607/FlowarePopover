@@ -9,8 +9,6 @@
 #ifndef Notification_h
 #define Notification_h
 
-#import <Foundation/Foundation.h>
-
 typedef struct DataChangeNotification
 {
     __unsafe_unretained NSString *insertNotification;

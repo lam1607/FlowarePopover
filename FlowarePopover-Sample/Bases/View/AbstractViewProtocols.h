@@ -9,11 +9,10 @@
 #ifndef AbstractViewProtocols_h
 #define AbstractViewProtocols_h
 
-#import <Foundation/Foundation.h>
-
 @protocol AbstractViewProtocols <NSObject>
 
 @optional
+- (void)refreshUIAppearance;
 - (void)reloadViewData;
 - (void)updateViewImage;
 

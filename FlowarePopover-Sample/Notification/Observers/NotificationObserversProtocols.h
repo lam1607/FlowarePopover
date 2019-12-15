@@ -9,8 +9,6 @@
 #ifndef NotificationObserversProtocols_h
 #define NotificationObserversProtocols_h
 
-#import <Foundation/Foundation.h>
-
 @protocol NotificationObserversProtocols <NSObject>
 
 @optional

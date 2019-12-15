@@ -6,8 +6,6 @@
 //  Copyright © 2018 Floware Inc. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 extern void script_openFile(NSString *appName, NSString *filePath, float x, float y, float w, float h);
 extern void script_hideFile(NSString *appName, NSString *filePath);
 extern void script_closeFile(NSString *appName, NSString *filePath);

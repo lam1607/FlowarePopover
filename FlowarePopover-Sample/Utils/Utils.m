@@ -10,23 +10,7 @@
 
 #import "Utils.h"
 
-#import "NSObject+Extensions.h"
-
 @implementation Utils
-
-#pragma mark - Singleton
-
-+ (Utils *)sharedInstance
-{
-    static Utils *_sharedInstance = nil;
-    static dispatch_once_t onceToken;
-    
-    dispatch_once(&onceToken, ^{
-        _sharedInstance = [[Utils alloc] init];
-    });
-    
-    return _sharedInstance;
-}
 
 #pragma mark - Formats
 
@@ -39,11 +23,7 @@
 {
     NSShadow *dropShadow = [[NSShadow alloc] init];
     
-#ifdef kFlowarePopover_UseAssetColors
-    [dropShadow setShadowColor:[NSColor _shadowColor]];
-#else
     [dropShadow setShadowColor:[NSColor shadowColor]];
-#endif
     
     [dropShadow setShadowOffset:NSMakeSize(-0.1, 0.1)];
     [dropShadow setShadowBlurRadius:1.0];
@@ -165,108 +145,6 @@
 + (NSSize)screenSize
 {
     return [[NSScreen mainScreen] frame].size;
-}
-
-+ (BOOL)isDarkMode
-{
-#ifdef NSAppKitVersionNumber10_14
-    NSAppearance *appearance = NSAppearance.currentAppearance;
-    
-    if (@available(macOS 10.14, *))
-    {
-        return appearance.name == NSAppearanceNameDarkAqua;
-    }
-#endif
-    
-    return NO;
-}
-
-#pragma mark - Application utilities
-
-+ (void)setIsApplicationActive:(BOOL)isApplicationActive
-{
-}
-
-+ (NSString *)getAppPathWithIdentifier:(NSString *)bundleIdentifier
-{
-    NSString *path = nil;
-    NSArray *urls = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationDirectory inDomains:NSLocalDomainMask];
-    NSArray *properties = [NSArray arrayWithObjects: NSURLLocalizedNameKey, NSURLCreationDateKey, NSURLLocalizedTypeDescriptionKey, nil];
-    NSError *error = nil;
-    
-    NSArray *array = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[urls objectAtIndex:0]
-                                                   includingPropertiesForKeys:properties
-                                                                      options:(NSDirectoryEnumerationSkipsHiddenFiles)
-                                                                        error:&error];
-    
-    for (NSURL *appUrl in array)
-    {
-        NSString *appPath = [appUrl path];
-        NSBundle *appBundle = [NSBundle bundleWithPath:appPath];
-        
-        if ([bundleIdentifier isEqualToString:[appBundle bundleIdentifier]])
-        {
-            path = appPath;
-            break;
-        }
-    }
-    
-    if (path == nil)
-    {
-        path = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:bundleIdentifier];
-    }
-    
-    return path;
-}
-
-+ (NSString *)getAppNameWithIdentifier:(NSString *)bundleIdentifier
-{
-    if ([bundleIdentifier isKindOfClass:[NSString class]])
-    {
-        NSString *path = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:bundleIdentifier];
-        path = [Utils getAppPathWithIdentifier:bundleIdentifier];
-        
-        return [[NSFileManager defaultManager] displayNameAtPath:path];
-    }
-    
-    return nil;
-}
-
-#pragma mark - Window utilities
-
-+ (CGWindowLevel)windowLevelDesktop
-{
-    return ((CGWindowLevel)WindowLevelGroupTagDesktop);
-}
-
-+ (CGWindowLevel)windowLevelBase
-{
-    return ((CGWindowLevel)WindowLevelGroupTagBase);
-}
-
-+ (CGWindowLevel)windowLevelNormal
-{
-    return ((CGWindowLevel)WindowLevelGroupTagNormal);
-}
-
-+ (CGWindowLevel)windowLevelSetting
-{
-    return ((CGWindowLevel)WindowLevelGroupTagSetting);
-}
-
-+ (CGWindowLevel)windowLevelUtility
-{
-    return ((CGWindowLevel)WindowLevelGroupTagUtility);
-}
-
-+ (CGWindowLevel)windowLevelHigh
-{
-    return ((CGWindowLevel)WindowLevelGroupTagHigh);
-}
-
-+ (CGWindowLevel)windowLevelAlert
-{
-    return ((CGWindowLevel)WindowLevelGroupTagAlert);
 }
 
 @end

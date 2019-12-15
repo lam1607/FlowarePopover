@@ -8,8 +8,6 @@
 
 #import "AbstractData.h"
 
-#import "NSObject+Extensions.h"
-
 @interface AbstractData ()
 {
     NSMutableDictionary *_imageDictionary;

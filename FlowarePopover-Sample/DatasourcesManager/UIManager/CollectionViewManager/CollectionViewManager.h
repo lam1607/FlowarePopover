@@ -6,8 +6,6 @@
 //  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
 @class CollectionViewManager;
 @class DataProvider;
 @protocol ListSupplierProtocol;

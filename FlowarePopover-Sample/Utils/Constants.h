@@ -9,18 +9,11 @@
 #ifndef Constants_h
 #define Constants_h
 
-#define kFlowarePopover_UseAssetColors
-
 #define kFlowarePopover_WindowWillChangeMode                @"kFlowarePopover_WindowWillChangeMode"
 #define kFlowarePopover_WindowDidChangeMode                 @"kFlowarePopover_WindowDidChangeMode"
 
 #define kFlowarePopover_BundleIdentifier_Finder             @"com.apple.finder"
 #define kFlowarePopover_BundleIdentifier_Safari             @"com.apple.Safari"
-
-typedef NS_ENUM(NSInteger, FLOWindowMode) {
-    FLOWindowModeNormal,
-    FLOWindowModeDesktop
-};
 
 #define LOG_DEBUG
 
@@ -59,19 +52,5 @@ typedef NS_ENUM(NSInteger, FLOWindowMode) {
 #define DASH                                                    @"-"
 
 #define CORNER_RADIUSES                                         @[@(5.0), @(10.0)]
-
-//--------------------------------------------------------------------------------------------------------------------------------
-//      WINDOW LEVEL GROUP TAG
-//--------------------------------------------------------------------------------------------------------------------------------
-typedef NS_ENUM(NSInteger, WindowLevelGroupTag) {
-    WindowLevelGroupTagDesktop          = kCGDesktopIconWindowLevel + 1,
-    WindowLevelGroupTagBase             = kCGNormalWindowLevel,
-    WindowLevelGroupTagNormal           = kCGNormalWindowLevel + 1,
-    WindowLevelGroupTagSetting          = kCGNormalWindowLevel + 2,
-    WindowLevelGroupTagUtility          = kCGFloatingWindowLevel,
-    WindowLevelGroupTagHigh             = kCGFloatingWindowLevel + 2,
-    WindowLevelGroupTagAlert            = kCGModalPanelWindowLevel,
-};
-//--------------------------------------------------------------------------------------------------------------------------------
 
 #endif /* Constants_h */

@@ -25,31 +25,13 @@
     [super viewWillAppear];
     
     [self setupUI];
-}
-
-- (void)viewWillLayout
-{
-    [super viewWillLayout];
-    
-    [self refreshUIColors];
+    [self refreshUIAppearance];
 }
 
 #pragma mark - Setup UI
 
 - (void)setupUI
 {
-}
-
-- (void)refreshUIColors
-{
-    if ([self.view.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name])
-    {
-#ifdef kFlowarePopover_UseAssetColors
-        [Utils setBackgroundColor:[NSColor _backgroundColor] forView:self.view];
-#else
-        [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.view];
-#endif
-    }
 }
 
 - (void)addView:(NSView *)child toParent:(NSView *)parent
@@ -76,5 +58,11 @@
     }
 }
 
+#pragma mark - AbstractViewProtocols
+
+- (void)refreshUIAppearance
+{
+    [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.view];
+}
 
 @end

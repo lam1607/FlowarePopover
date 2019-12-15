@@ -10,8 +10,6 @@
 
 #import "AbstractData.h"
 
-#import "NSObject+Extensions.h"
-
 @interface TrashCellView ()
 {
 }
@@ -34,13 +32,7 @@
     [super awakeFromNib];
     
     [self setupUI];
-}
-
-- (void)layout
-{
-    [super layout];
-    
-    [self refreshUIColors];
+    [self refreshUIAppearance];
 }
 
 #pragma mark - Setup UI
@@ -49,24 +41,6 @@
 {
     self.lblTitle.maximumNumberOfLines = 1;
     self.lblUrl.maximumNumberOfLines = 1;
-}
-
-- (void)refreshUIColors
-{
-    if ([self.effectiveAppearance.name isEqualToString:[NSAppearance currentAppearance].name])
-    {
-        [Utils setShadowForView:self.vContainer];
-        
-#ifdef kFlowarePopover_UseAssetColors
-        [Utils setBackgroundColor:[NSColor _backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] borderWidth:0.0 borderColor:[NSColor _blueColor] forView:self.vContainer];
-        
-        [Utils setTitle:self.lblTitle.stringValue color:[NSColor _textGrayColor] fontSize:16.0 forControl:self.lblTitle];
-#else
-        [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] borderWidth:0.0 borderColor:[NSColor blueColor] forView:self.vContainer];
-        
-        [Utils setTitle:self.lblTitle.stringValue color:[NSColor textGrayColor] fontSize:16.0 forControl:self.lblTitle];
-#endif
-    }
 }
 
 #pragma mark - ItemCellViewProtocols implementation
@@ -81,4 +55,16 @@
         self.lblUrl.stringValue = object.imageUrl;
     }
 }
+
+#pragma mark - AbstractViewProtocols
+
+- (void)refreshUIAppearance
+{
+    [Utils setShadowForView:self.vContainer];
+    
+    [Utils setBackgroundColor:[NSColor backgroundWhiteColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] borderWidth:0.0 borderColor:[NSColor blueColor] forView:self.vContainer];
+    
+    [Utils setTitle:self.lblTitle.stringValue color:[NSColor textGrayColor] fontSize:16.0 forControl:self.lblTitle];
+}
+
 @end

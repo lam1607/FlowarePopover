@@ -28,13 +28,8 @@
         NSView *containerView = [[[self.subviews firstObject] subviews] firstObject];
         NSRect selectionRect = [containerView convertRect:containerView.bounds toView:self];
         
-#ifdef kFlowarePopover_UseAssetColors
-        [[NSColor _blueColor] setStroke];
-        [[NSColor _backgroundColor] setFill];
-#else
         [[NSColor blueColor] setStroke];
         [[NSColor backgroundColor] setFill];
-#endif
         
         NSBezierPath *selectionPath = [NSBezierPath bezierPathWithRoundedRect:selectionRect xRadius:5.0 yRadius:5.0];
         selectionPath.lineWidth = 5.0;

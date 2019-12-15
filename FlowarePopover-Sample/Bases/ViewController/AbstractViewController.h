@@ -6,11 +6,10 @@
 //  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import "AbstractViewProtocols.h"
 
-@interface AbstractViewController : NSViewController
+@interface AbstractViewController : NSViewController <AbstractViewProtocols>
 
-- (void)refreshUIColors;
 - (void)addView:(NSView *)child toParent:(NSView *)parent;
 - (void)addView:(NSView *)child toParent:(NSView *)parent needConstraints:(BOOL)needConstraints;
 

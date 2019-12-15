@@ -1,2 +1,7 @@
-FlowarePopover.xcodeproj/project.xcworkspace/xcuserdata/lamnguyen.xcuserdatad/UserInterfaceState.xcuserstate
-FlowarePopover.xcodeproj/xcuserdata/lamnguyen.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
+FlowarePopover.xcodeproj/project.xcworkspace/xcuserdata/
+FlowarePopover.xcodeproj/xcuserdata/
+
+*.xcuserdatad/UserInterfaceState.xcuserstate
+*.xcuserdatad/IDEFindNavigatorScopes.plist
+*.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
+
