@@ -15,10 +15,13 @@
 
 @interface EntitlementsManager ()
 {
+    NSArray<NSString *> *_entitlementAppBundles;
+    
     NSMutableDictionary *_entitlementAppStates;
     NSMutableArray<NSString *> *_openedBundleIdentifiers;
+    NSMutableArray<NSString *> *_otherBundleIdentifiers;
+    
     NSString *_lastBundleIdentifier;
-    NSMutableArray<NSString *>  *_otherBundleIdentifiers;
 }
 
 @end
@@ -58,11 +61,23 @@
     return _openedBundleIdentifiers;
 }
 
+- (NSArray *)entitlementAppBundles
+{
+    if (_entitlementAppBundles == nil)
+    {
+        _entitlementAppBundles = [[NSArray alloc] initWithObjects:kFlowarePopover_BundleIdentifier_Finder, kFlowarePopover_BundleIdentifier_Safari, nil];
+    }
+    
+    return _entitlementAppBundles;
+}
+
 #pragma mark - Local methods
 
 - (void)initialize
 {
     [[NSBundle mainBundle] loadAppleScriptObjectiveCScripts];
+    
+    _entitlementAppBundles = [[NSArray alloc] initWithObjects:kFlowarePopover_BundleIdentifier_Finder, kFlowarePopover_BundleIdentifier_Safari, nil];
     
     if (_entitlementAppStates == nil)
     {
@@ -71,6 +86,16 @@
     
     _openedBundleIdentifiers = [[NSMutableArray alloc] init];
     [_openedBundleIdentifiers addObject:[[NSBundle mainBundle] bundleIdentifier]];
+    
+    [self setupEntitlementAppBundles];
+}
+
+- (void)setupEntitlementAppBundles
+{
+    for (NSString *bundleIdentifier in _entitlementAppBundles)
+    {
+        [self addWithBundleIdentifier:bundleIdentifier];
+    }
 }
 
 #pragma mark - EntitlementsManager methods

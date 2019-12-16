@@ -11,6 +11,7 @@
 @interface EntitlementsManager : NSObject
 
 @property (nonatomic, strong, readonly) NSMutableArray<NSString *> *openedBundleIdentifiers;
+@property (nonatomic, strong, readonly) NSMutableArray<NSString *> *entitlementAppBundles;
 
 #pragma mark - Singleton
 

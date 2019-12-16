@@ -94,30 +94,29 @@ static AbstractWindowController *_sharedInstance = nil;
     [self.window makeKeyAndOrderFront:nil];
 }
 
-- (void)changeWindowToDesktopMode
+- (void)changeToDesktopMode
 {
-    self.window.titleVisibility = NSWindowTitleHidden;
-    self.window.styleMask = NSWindowStyleMaskBorderless;
-    [self.window makeKeyAndOrderFront:nil];
-    self.window.level = [WindowManager levelForTag:WindowLevelGroupTagDesktop];
-    
-    [self.window setFrame:[self.window.screen visibleFrame] display:YES animate:YES];
+    [[self window] setTitleVisibility:NSWindowTitleHidden];
+    [[self window] setStyleMask:NSWindowStyleMaskBorderless];
+    [[self window] makeKeyAndOrderFront:nil];
+    [[self window] setLevel:[WindowManager levelForTag:WindowLevelGroupTagDesktop]];
+    [[self window] setFrame:[[[self window] screen] visibleFrame] display:YES animate:YES];
 }
 
-- (void)changeWindowToNormalMode
+- (void)changeToNormalMode
 {
-    self.window.titleVisibility = NSWindowTitleVisible;
-    self.window.styleMask = (NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable);
-    self.window.level = [WindowManager levelForTag:WindowLevelGroupTagNormal];
-    
-    [self.window setFrame:self.normalFrame display:YES animate:YES];
+    [[self window] setTitleVisibility:NSWindowTitleVisible];
+    [[self window] setStyleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable)];
+    [[self window] makeKeyAndOrderFront:nil];
+    [[self window] setLevel:[WindowManager levelForTag:WindowLevelGroupTagNormal]];
+    [[self window] setFrame:self.normalFrame display:YES animate:YES];
 }
 
 #pragma mark - Event handles
 
 - (void)windowWillChangeMode:(NSNotification *)notification
 {
-    if (![notification.name isEqualToString:kFlowarePopover_WindowWillChangeMode]) return;
+    if (![notification.name isEqualToString:kFlowarePopover_WindowWillChangeModeNotification]) return;
     
     if ([[SettingsManager sharedInstance] isNormalMode])
     {
@@ -127,16 +126,16 @@ static AbstractWindowController *_sharedInstance = nil;
 
 - (void)windowDidChangeMode:(NSNotification *)notification
 {
-    if (![notification.name isEqualToString:kFlowarePopover_WindowDidChangeMode]) return;
+    if (![notification.name isEqualToString:kFlowarePopover_WindowDidChangeModeNotification]) return;
     
     if ([[SettingsManager sharedInstance] isDesktopMode])
     {
-        [self changeWindowToDesktopMode];
+        [self changeToDesktopMode];
         script_hideAllApps();
     }
     else
     {
-        [self changeWindowToNormalMode];
+        [self changeToNormalMode];
     }
 }
 
@@ -149,14 +148,14 @@ static AbstractWindowController *_sharedInstance = nil;
 
 - (void)registerWindowChangeModeEvent
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowWillChangeMode:) name:kFlowarePopover_WindowWillChangeMode object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidChangeMode:) name:kFlowarePopover_WindowDidChangeMode object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowWillChangeMode:) name:kFlowarePopover_WindowWillChangeModeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidChangeMode:) name:kFlowarePopover_WindowDidChangeModeNotification object:nil];
 }
 
 - (void)removeWindowChangeModeEvent
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kFlowarePopover_WindowWillChangeMode object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kFlowarePopover_WindowDidChangeMode object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kFlowarePopover_WindowWillChangeModeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kFlowarePopover_WindowDidChangeModeNotification object:nil];
 }
 
 @end

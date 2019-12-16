@@ -23,6 +23,7 @@
 		DE0575FF22366ADC00B94B81 /* NotificationObservers.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0575FE22366ADC00B94B81 /* NotificationObservers.m */; };
 		DE05760722366F1C00B94B81 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = DE05760622366F1C00B94B81 /* NotificationService.m */; };
 		DE05760B223670FE00B94B81 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = DE05760A223670FE00B94B81 /* Notification.m */; };
+		DE515B7623A763770057EBCD /* AbstractWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DE515B7523A763770057EBCD /* AbstractWindow.m */; };
 		DE7A697822E16A850046FEA8 /* FLOVirtualView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7A697622E16A850046FEA8 /* FLOVirtualView.m */; };
 		DE8E5C7121534233002AE872 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE8E5C7021534233002AE872 /* AppleScriptObjC.framework */; };
 		DE8E5C7A21534821002AE872 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8E5C7921534821002AE872 /* AppDelegate.m */; };
@@ -192,6 +193,8 @@
 		DE05760822366F3800B94B81 /* NotificationServiceProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationServiceProtocols.h; sourceTree = "<group>"; };
 		DE05760922366FA500B94B81 /* Notification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
 		DE05760A223670FE00B94B81 /* Notification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
+		DE515B7423A763770057EBCD /* AbstractWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AbstractWindow.h; sourceTree = "<group>"; };
+		DE515B7523A763770057EBCD /* AbstractWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AbstractWindow.m; sourceTree = "<group>"; };
 		DE7A697522E16A850046FEA8 /* FLOVirtualView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOVirtualView.h; sourceTree = "<group>"; };
 		DE7A697622E16A850046FEA8 /* FLOVirtualView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOVirtualView.m; sourceTree = "<group>"; };
 		DE8E5C7021534233002AE872 /* AppleScriptObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptObjC.framework; path = System/Library/Frameworks/AppleScriptObjC.framework; sourceTree = SDKROOT; };
@@ -694,9 +697,9 @@
 			isa = PBXGroup;
 			children = (
 				DE8E5DF0215348EE002AE872 /* Home */,
+				DE8E5DC6215348EE002AE872 /* Comics */,
 				DE8E5DDC215348EE002AE872 /* Films */,
 				DE8E5DD2215348EE002AE872 /* News */,
-				DE8E5DC6215348EE002AE872 /* Comics */,
 				DED3A40421E6F90800B479BF /* Technologies */,
 				DE0575E8223638B600B94B81 /* Trash */,
 			);
@@ -789,8 +792,8 @@
 		DE8E5DFE215348EE002AE872 /* CustomClasses */ = {
 			isa = PBXGroup;
 			children = (
-				DE7BCDE121BA0CC500EE1B33 /* CustomNSView */,
 				DE8E5DFF215348EE002AE872 /* CustomNSTableRowView */,
+				DE7BCDE121BA0CC500EE1B33 /* CustomNSView */,
 			);
 			path = CustomClasses;
 			sourceTree = "<group>";
@@ -807,9 +810,9 @@
 		DE8E5E05215348EE002AE872 /* ViewComponents */ = {
 			isa = PBXGroup;
 			children = (
+				DE8E5E10215348EE002AE872 /* ComicCellView */,
 				DE8E5E14215348EE002AE872 /* FilmCellView */,
 				DE8E5E06215348EE002AE872 /* NewsCellView */,
-				DE8E5E10215348EE002AE872 /* ComicCellView */,
 				DED3A3F621E6EAF900B479BF /* TechnologyCellView */,
 				DE0575F52236415600B94B81 /* TrashCellView */,
 			);
@@ -1144,6 +1147,8 @@
 		DEF15EA221DDCBD400FDE038 /* WindowController */ = {
 			isa = PBXGroup;
 			children = (
+				DE515B7423A763770057EBCD /* AbstractWindow.h */,
+				DE515B7523A763770057EBCD /* AbstractWindow.m */,
 				DEF15EA521DDCBD400FDE038 /* AbstractWindowController.h */,
 				DEF15EA421DDCBD400FDE038 /* AbstractWindowController.m */,
 			);
@@ -1381,6 +1386,7 @@
 				DE0575EE223638E200B94B81 /* TrashViewController.m in Sources */,
 				DE8E5E60215348EF002AE872 /* NewsCellPresenter.m in Sources */,
 				DE0575F42236391100B94B81 /* TrashPresenter.m in Sources */,
+				DE515B7623A763770057EBCD /* AbstractWindow.m in Sources */,
 				DED3A40321E6EC9A00B479BF /* TechnologyCellPresenter.m in Sources */,
 				DE8E5C8221534822002AE872 /* main.m in Sources */,
 				DE8E5E5A215348EF002AE872 /* HomeViewController.m in Sources */,

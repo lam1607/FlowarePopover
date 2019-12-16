@@ -28,7 +28,11 @@
     FLOPopover *_popoverNews;
     FLOPopover *_popoverComics;
     
-    NSArray<NSString *> *_entitlementAppBundles;
+    FilmsViewController *_filmsViewController;
+    NewsViewController *_newsViewController;
+    TechnologiesViewController *_technologiesViewController;
+    ComicsViewController *_comicsViewController;
+    TrashViewController *_trashViewController;
 }
 
 /// IBOutlet
@@ -63,11 +67,6 @@
 
 /// @property
 ///
-@property (nonatomic, strong) FilmsViewController *filmsViewController;
-@property (nonatomic, strong) NewsViewController *newsViewController;
-@property (nonatomic, strong) TechnologiesViewController *technologiesViewController;
-@property (nonatomic, strong) ComicsViewController *comicsViewController;
-@property (nonatomic, strong) TrashViewController *trashViewController;
 
 @end
 
@@ -79,7 +78,6 @@
     // Do view setup here.
     
     [self objectsInitialize];
-    [self setupEntitlementAppBundles];
     [self setupUI];
 }
 
@@ -94,8 +92,6 @@
 {
     _presenter = [[HomePresenter alloc] init];
     [_presenter attachView:self];
-    
-    _entitlementAppBundles = [[NSArray alloc] initWithObjects:kFlowarePopover_BundleIdentifier_Finder, kFlowarePopover_BundleIdentifier_Safari, nil];
 }
 
 #pragma mark - Setup UI
@@ -112,26 +108,18 @@
 {
     [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.viewContainerTrash];
     
-    if (self.trashViewController == nil)
+    if (_trashViewController == nil)
     {
-        self.trashViewController = [[TrashViewController alloc] initWithNibName:NSStringFromClass([TrashViewController class]) bundle:nil];
+        _trashViewController = [[TrashViewController alloc] initWithNibName:NSStringFromClass([TrashViewController class]) bundle:nil];
     }
     
-    if (![self.trashViewController.view isDescendantOf:self.viewContainerTrash])
+    if (![_trashViewController.view isDescendantOf:self.viewContainerTrash])
     {
-        [self addView:self.trashViewController.view toParent:self.viewContainerTrash];
+        [self addView:_trashViewController.view toParent:self.viewContainerTrash];
     }
 }
 
 #pragma mark - Local methods
-
-- (void)setupEntitlementAppBundles
-{
-    for (NSString *bundle in _entitlementAppBundles)
-    {
-        [[EntitlementsManager sharedInstance] addWithBundleIdentifier:bundle];
-    }
-}
 
 - (void)changeWindowMode
 {
@@ -158,11 +146,11 @@
 
 - (void)observeComicsViewContentSizeChange
 {
-    if (self.comicsViewController)
+    if (_comicsViewController)
     {
         __weak typeof(self) wself = self;
         
-        self.comicsViewController.didContentSizeChange = ^(NSSize newSize) {
+        _comicsViewController.didContentSizeChange = ^(NSSize newSize) {
             [wself handleComicsViewContentSizeChanging:newSize];
         };
     }
@@ -170,7 +158,7 @@
 
 - (void)handleComicsViewContentSizeChanging:(NSSize)newSize
 {
-    if (self.comicsViewController)
+    if (_comicsViewController)
     {
         NSRect visibleRect = [self.view visibleRect];
         CGFloat menuHeight = self.viewMenu.frame.size.height;
@@ -179,7 +167,7 @@
         CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
         CGFloat contentViewWidth = 350.0;
         CGFloat contentViewHeight = (newSize.height > availableHeight) ? availableHeight : newSize.height;
-        NSRect contentViewRect = self.comicsViewController.view.frame;
+        NSRect contentViewRect = _comicsViewController.view.frame;
         
         contentViewRect = NSMakeRect(contentViewRect.origin.x, contentViewRect.origin.y, contentViewWidth, contentViewHeight);
         
@@ -189,7 +177,7 @@
 
 - (void)handleShowSecondBar
 {
-    if (self.comicsViewController)
+    if (_comicsViewController)
     {
         CGFloat secondBarHeight = self.constraintVSecondBarHeight.constant;
         
@@ -213,7 +201,7 @@
         CGFloat menuHeight = self.viewMenu.frame.size.height;
         CGFloat verticalMargin = 10.0;
         CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
-        CGFloat contentHeight = [self.comicsViewController getContentSizeHeight];
+        CGFloat contentHeight = [_comicsViewController getContentSizeHeight];
         CGFloat contentViewWidth = 350.0;
         CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : contentHeight;
         NSRect contentViewRect = NSMakeRect(0.0, 0.0, contentViewWidth, contentViewHeight);
@@ -263,10 +251,10 @@
         
         if (_popoverFilms == nil)
         {
-            self.filmsViewController = [[FilmsViewController alloc] initWithNibName:NSStringFromClass([FilmsViewController class]) bundle:nil];
-            [self.filmsViewController.view setFrame:contentViewRect];
+            _filmsViewController = [[FilmsViewController alloc] initWithNibName:NSStringFromClass([FilmsViewController class]) bundle:nil];
+            [_filmsViewController.view setFrame:contentViewRect];
             
-            _popoverFilms = [[FLOPopover alloc] initWithContentViewController:self.filmsViewController type:FLOViewPopover];
+            _popoverFilms = [[FLOPopover alloc] initWithContentViewController:_filmsViewController type:FLOViewPopover];
         }
         
         _popoverFilms.animated = YES;
@@ -302,10 +290,10 @@
         
         if (_popoverNews == nil)
         {
-            self.newsViewController = [[NewsViewController alloc] initWithNibName:NSStringFromClass([NewsViewController class]) bundle:nil];
-            [self.newsViewController.view setFrame:contentViewRect];
+            _newsViewController = [[NewsViewController alloc] initWithNibName:NSStringFromClass([NewsViewController class]) bundle:nil];
+            [_newsViewController.view setFrame:contentViewRect];
             
-            _popoverNews = [[FLOPopover alloc] initWithContentViewController:self.newsViewController];
+            _popoverNews = [[FLOPopover alloc] initWithContentViewController:_newsViewController];
         }
         
         _popoverNews.animated = YES;
@@ -342,18 +330,18 @@
             CGFloat contentViewWidth = 350.0;
             CGFloat minHeight = 429.0;
             CGFloat availableHeight = visibleRect.size.height - menuHeight - secondBarHeight - verticalMargin;
-            CGFloat contentHeight = [self.comicsViewController getContentSizeHeight];
+            CGFloat contentHeight = [_comicsViewController getContentSizeHeight];
             CGFloat contentViewHeight = (contentHeight > availableHeight) ? availableHeight : ((contentHeight >= minHeight) ? contentHeight : minHeight);
             NSRect contentViewRect = NSMakeRect(0.0, 0.0, contentViewWidth, contentViewHeight);
             
             if (_popoverComics == nil)
             {
-                self.comicsViewController = [[ComicsViewController alloc] initWithNibName:NSStringFromClass([ComicsViewController class]) bundle:nil];
-                [self.comicsViewController.view setFrame:contentViewRect];
+                _comicsViewController = [[ComicsViewController alloc] initWithNibName:NSStringFromClass([ComicsViewController class]) bundle:nil];
+                [_comicsViewController.view setFrame:contentViewRect];
                 
                 //            _popoverComics = [[FLOPopover alloc] initWithContentViewController:self.comicsViewController];
                 //            _popoverComics = [[FLOPopover alloc] initWithContentViewController:self.comicsViewController type:FLOViewPopover];
-                _popoverComics = [[FLOPopover alloc] initWithContentView:self.comicsViewController.view];
+                _popoverComics = [[FLOPopover alloc] initWithContentView:_comicsViewController.view];
                 //            _popoverComics = [[FLOPopover alloc] initWithContentView:self.comicsViewController.view type:FLOViewPopover];
             }
             
@@ -392,10 +380,10 @@
             
             if (_popoverComics == nil)
             {
-                self.technologiesViewController = [[TechnologiesViewController alloc] initWithNibName:NSStringFromClass([TechnologiesViewController class]) bundle:nil];
-                [self.technologiesViewController.view setFrame:contentViewRect];
+                _technologiesViewController = [[TechnologiesViewController alloc] initWithNibName:NSStringFromClass([TechnologiesViewController class]) bundle:nil];
+                [_technologiesViewController.view setFrame:contentViewRect];
                 
-                _popoverComics = [[FLOPopover alloc] initWithContentViewController:self.technologiesViewController];
+                _popoverComics = [[FLOPopover alloc] initWithContentViewController:_technologiesViewController];
             }
             
             _popoverComics.shouldShowArrow = YES;
@@ -544,7 +532,8 @@
 
 - (void)floPopoverDidClose:(FLOPopover *)popover
 {
-    // @warning: MUST set the popover to nil for completely deallocating the content view or content view controller, when popover closed.
+    // @warning: MUST set the popover to nil for completely deallocating
+    // the content view or content view controller, when popover closed.
     if (popover == _popoverFilms)
     {
         _popoverFilms = nil;

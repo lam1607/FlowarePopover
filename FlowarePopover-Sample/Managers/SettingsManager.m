@@ -71,7 +71,7 @@
 
 - (void)changeApplicationMode
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kFlowarePopover_WindowWillChangeMode object:nil userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kFlowarePopover_WindowWillChangeModeNotification object:nil userInfo:nil];
     
     if (_appMode == ApplicationModeNormal)
     {
@@ -82,7 +82,7 @@
         _appMode = ApplicationModeNormal;
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kFlowarePopover_WindowDidChangeMode object:nil userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kFlowarePopover_WindowDidChangeModeNotification object:nil userInfo:nil];
 }
 
 @end

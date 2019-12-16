@@ -9,8 +9,8 @@
 #ifndef Constants_h
 #define Constants_h
 
-#define kFlowarePopover_WindowWillChangeMode                @"kFlowarePopover_WindowWillChangeMode"
-#define kFlowarePopover_WindowDidChangeMode                 @"kFlowarePopover_WindowDidChangeMode"
+#define kFlowarePopover_WindowWillChangeModeNotification    @"kFlowarePopover_WindowWillChangeModeNotification"
+#define kFlowarePopover_WindowDidChangeModeNotification     @"kFlowarePopover_WindowDidChangeModeNotification"
 
 #define kFlowarePopover_BundleIdentifier_Finder             @"com.apple.finder"
 #define kFlowarePopover_BundleIdentifier_Safari             @"com.apple.Safari"
