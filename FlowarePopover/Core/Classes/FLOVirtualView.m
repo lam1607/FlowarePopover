@@ -52,4 +52,76 @@
     // instead of those below.
 }
 
+- (void)rightMouseDown:(NSEvent *)event {
+    // Don't do anything here. Just leave this method
+    // for receiving the mouse click event on the custom view,
+    // instead of those below.
+}
+
+- (void)otherMouseDown:(NSEvent *)event {
+    // Don't do anything here. Just leave this method
+    // for receiving the mouse click event on the custom view,
+    // instead of those below.
+}
+
+- (void)mouseUp:(NSEvent *)event {
+    // Don't do anything here. Just leave this method
+    // for receiving the mouse click event on the custom view,
+    // instead of those below.
+}
+
+- (void)rightMouseUp:(NSEvent *)event {
+    // Don't do anything here. Just leave this method
+    // for receiving the mouse click event on the custom view,
+    // instead of those below.
+}
+
+- (void)otherMouseUp:(NSEvent *)event {
+    // Don't do anything here. Just leave this method
+    // for receiving the mouse click event on the custom view,
+    // instead of those below.
+}
+
+- (void)mouseMoved:(NSEvent *)event {
+    // Don't do anything here. Just leave this method
+    // for receiving the mouse click event on the custom view,
+    // instead of those below.
+}
+
+- (void)mouseDragged:(NSEvent *)event {
+    // Don't do anything here. Just leave this method
+    // for receiving the mouse click event on the custom view,
+    // instead of those below.
+}
+
+- (void)scrollWheel:(NSEvent *)event {
+    // Don't do anything here. Just leave this method
+    // for receiving the mouse click event on the custom view,
+    // instead of those below.
+}
+
+- (void)rightMouseDragged:(NSEvent *)event {
+    // Don't do anything here. Just leave this method
+    // for receiving the mouse click event on the custom view,
+    // instead of those below.
+}
+
+- (void)otherMouseDragged:(NSEvent *)event {
+    // Don't do anything here. Just leave this method
+    // for receiving the mouse click event on the custom view,
+    // instead of those below.
+}
+
+- (void)mouseEntered:(NSEvent *)event {
+    // Don't do anything here. Just leave this method
+    // for receiving the mouse click event on the custom view,
+    // instead of those below.
+}
+
+- (void)mouseExited:(NSEvent *)event {
+    // Don't do anything here. Just leave this method
+    // for receiving the mouse click event on the custom view,
+    // instead of those below.
+}
+
 @end

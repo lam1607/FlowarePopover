@@ -844,32 +844,26 @@
  - FLOPopoverAnimationBehaviorDefault
  */
 - (void)popoverDefaultAnimationShowing:(BOOL)showing {
+    [self.utils.backgroundView setAlphaValue:1.0];
+    [self.utils.contentView setAlphaValue:1.0];
+    
+    [self.popoverView setAlphaValue:1.0];
+    
     if (showing) {
-        [self.utils.backgroundView setAlphaValue:1.0];
-        [self.utils.contentView setAlphaValue:1.0];
-        
-        [self.popoverView setAlphaValue:0.0];
-        
+        [self popoverDidStopAnimation];
+    } else {
         [NSAnimationContext beginGrouping];
-        [[NSAnimationContext currentContext] setDuration:0.17];
+        [[NSAnimationContext currentContext] setDuration:0.16];
         [[NSAnimationContext currentContext] setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
         [[NSAnimationContext currentContext] setCompletionHandler:^{
-            [self.popoverView setAlphaValue:1.0];
+            [self.popoverView setAlphaValue:0.0];
             
             [self popoverDidStopAnimation];
         }];
         
-        [self.popoverView.animator setAlphaValue:1.0];
+        [self.popoverView.animator setAlphaValue:0.0];
         
         [NSAnimationContext endGrouping];
-    } else {
-        [NSAnimationContext runAnimationGroup:^(NSAnimationContext *context) {
-            [context setDuration:0.1];
-            
-            [self.popoverView setAlphaValue:0.0];
-        } completionHandler:^{
-            [self popoverDidStopAnimation];
-        }];
     }
 }
 

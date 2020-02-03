@@ -915,12 +915,28 @@
             _disableView = nil;
         }
     } else {
-        if (_disableView == nil) {
-            _disableView = [[FLOVirtualView alloc] initWithFrame:self.backgroundView.frame type:FLOVirtualViewDisable];
+        FLOVirtualView *disableView = _disableView;
+        
+        if (disableView == nil) {
+            disableView = [[FLOVirtualView alloc] initWithFrame:self.backgroundView.frame type:FLOVirtualViewDisable];
         }
         
-        if (![_disableView isDescendantOf:self.backgroundView]) {
-            [self.backgroundView addSubview:_disableView];
+        if (![disableView isDescendantOf:self.backgroundView]) {
+            [self.backgroundView addSubview:disableView];
+            
+            [disableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+            
+            [self.backgroundView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[disableView]|"
+                                                                                        options:0
+                                                                                        metrics:nil
+                                                                                          views:NSDictionaryOfVariableBindings(disableView)]];
+            
+            [self.backgroundView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[disableView]|"
+                                                                                        options:0
+                                                                                        metrics:nil
+                                                                                          views:NSDictionaryOfVariableBindings(disableView)]];
+            
+            _disableView = disableView;
         }
     }
 }
