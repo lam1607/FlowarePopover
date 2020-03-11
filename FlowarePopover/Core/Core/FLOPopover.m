@@ -103,6 +103,10 @@
     return _popover.isCloseEventReceived;
 }
 
+- (BOOL)userInteractionEnable {
+    return _popover.userInteractionEnable;
+}
+
 - (void)setType:(FLOPopoverType)type {
     _type = type;
     
@@ -173,6 +177,12 @@
     _updatesFrameWhileShowing = updatesFrameWhileShowing;
     
     _popover.updatesFrameWhileShowing = updatesFrameWhileShowing;
+}
+
+- (void)setUpdatesFrameWhenApplicationResizes:(BOOL)updatesFrameWhenApplicationResizes {
+    _updatesFrameWhenApplicationResizes = updatesFrameWhenApplicationResizes;
+    
+    _popover.updatesFrameWhenApplicationResizes = updatesFrameWhenApplicationResizes;
 }
 
 - (void)setShouldRegisterSuperviewObservers:(BOOL)shouldRegisterSuperviewObservers {

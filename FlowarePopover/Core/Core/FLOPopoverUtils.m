@@ -766,6 +766,15 @@
 - (void)setResponder {
     if (_popover == nil) return;
     
+    NSResponder *representedObject = _popover.representedObject;
+    
+    if ([representedObject isKindOfClass:[FLOPopoverView class]]) {
+        [(FLOPopoverView *)representedObject setResponder:_popover];
+    } else if ([representedObject isKindOfClass:[FLOPopoverWindow class]]) {
+        [(FLOPopoverWindow *)representedObject setResponder:_popover];
+    } else {
+    }
+    
     [self.backgroundView setResponder:_popover];
 }
 
@@ -1599,6 +1608,7 @@
 - (void)eventObserver_windowDidResize:(NSNotification *)notification {
     if (!([notification.name isEqualToString:NSWindowDidResizeNotification] && [notification.object isKindOfClass:[NSWindow class]])) return;
     if (_popover == nil) return;
+    if (!_popover.updatesFrameWhenApplicationResizes) return;
     if (_popover.isShowing || _popover.isClosing) return;
     
     NSWindow *window = (NSWindow *)notification.object;

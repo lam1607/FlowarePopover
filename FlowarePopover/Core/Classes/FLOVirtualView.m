@@ -124,4 +124,16 @@
     // instead of those below.
 }
 
+- (void)keyDown:(NSEvent *)event {
+    // Don't do anything here. Just leave this method
+    // for receiving the mouse click event on the custom view,
+    // instead of those below.
+}
+
+- (void)keyUp:(NSEvent *)event {
+    // Don't do anything here. Just leave this method
+    // for receiving the mouse click event on the custom view,
+    // instead of those below.
+}
+
 @end

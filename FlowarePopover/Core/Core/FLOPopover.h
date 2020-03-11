@@ -47,6 +47,7 @@
 @property (nonatomic, assign, readonly) BOOL isShowing;
 @property (nonatomic, assign, readonly) BOOL isClosing;
 @property (nonatomic, assign, readonly) BOOL isCloseEventReceived;
+@property (nonatomic, assign, readonly) BOOL userInteractionEnable;
 
 @property (nonatomic, assign) BOOL shouldShowArrow;
 @property (nonatomic, assign) NSSize arrowSize;
@@ -68,6 +69,7 @@
  */
 @property (nonatomic, assign) BOOL staysInContainer;
 @property (nonatomic, assign) BOOL updatesFrameWhileShowing;
+@property (nonatomic, assign) BOOL updatesFrameWhenApplicationResizes;
 @property (nonatomic, assign) BOOL shouldRegisterSuperviewObservers;
 @property (nonatomic, assign) BOOL shouldChangeSizeWhenApplicationResizes;
 @property (nonatomic, assign) BOOL closesWhenPopoverResignsKey;

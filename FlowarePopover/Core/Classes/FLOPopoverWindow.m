@@ -8,6 +8,14 @@
 
 #import "FLOPopoverWindow.h"
 
+#import "FLOPopoverProtocols.h"
+
+@interface FLOPopoverWindow () {
+    __weak id<FLOPopoverProtocols> _responder;
+}
+
+@end
+
 @implementation FLOPopoverWindow
 
 - (instancetype)init {
@@ -30,8 +38,29 @@
     return self;
 }
 
+#pragma mark - Getter/Setter
+
 - (BOOL)canBecomeKeyWindow {
     return (self.userInteractionEnable ? self.canBecomeKey : NO);
 }
+
+- (void)setUserInteractionEnable:(BOOL)userInteractionEnable {
+    _userInteractionEnable = userInteractionEnable;
+    
+    if (self.responder.userInteractionEnable != _userInteractionEnable) {
+        [self.responder setUserInteractionEnable:userInteractionEnable];
+    }
+}
+
+#pragma mark - FLOPopoverWindow methods
+
+- (void)setResponder:(id<FLOPopoverProtocols>)responder {
+    _responder = responder;
+}
+
+- (id<FLOPopoverProtocols>)responder {
+    return _responder;
+}
+
 
 @end

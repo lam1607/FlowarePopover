@@ -31,6 +31,7 @@ typedef NS_ENUM(NSInteger, WindowLevelGroupTag)
 
 - (void)hideChildWindows;
 - (void)showChildWindows;
+- (void)setUserInteractionEnable:(BOOL)isEnable;
 
 + (NSWindowLevel)levelForTag:(WindowLevelGroupTag)tag;
 + (NSWindowLevel)levelForTag:(WindowLevelGroupTag)tag floatsWhenAppResignsActive:(BOOL)floatsWhenAppResignsActive;

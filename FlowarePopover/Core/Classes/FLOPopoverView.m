@@ -165,6 +165,14 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     [[self layer] setCornerRadius:borderRadius];
 }
 
+- (void)setUserInteractionEnable:(BOOL)userInteractionEnable {
+    _userInteractionEnable = userInteractionEnable;
+    
+    if (self.responder.userInteractionEnable != _userInteractionEnable) {
+        [self.responder setUserInteractionEnable:userInteractionEnable];
+    }
+}
+
 #pragma mark - Local methods
 
 - (NSRectEdge)arrowEdgeForPopoverEdge:(NSRectEdge)popoverEdge {

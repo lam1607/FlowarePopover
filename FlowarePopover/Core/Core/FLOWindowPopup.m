@@ -37,6 +37,7 @@
 
 @implementation FLOWindowPopup
 
+@synthesize userInteractionEnable = _userInteractionEnable;
 @synthesize initialFrame = _initialFrame;
 @synthesize utils = _utils;
 @synthesize isShowing = _isShowing;
@@ -50,6 +51,7 @@
 @synthesize stopsAtContainerBounds = _stopsAtContainerBounds;
 @synthesize staysInContainer = _staysInContainer;
 @synthesize updatesFrameWhileShowing = _updatesFrameWhileShowing;
+@synthesize updatesFrameWhenApplicationResizes = _updatesFrameWhenApplicationResizes;
 @synthesize shouldRegisterSuperviewObservers = _shouldRegisterSuperviewObservers;
 @synthesize shouldChangeSizeWhenApplicationResizes = _shouldChangeSizeWhenApplicationResizes;
 @synthesize closesWhenPopoverResignsKey = _closesWhenPopoverResignsKey;
@@ -78,6 +80,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
+        _userInteractionEnable = YES;
         _utils = [[FLOPopoverUtils alloc] initWithPopover:self];
         _shouldShowArrow = NO;
         _arrowSize = NSZeroSize;
@@ -88,6 +91,7 @@
         _stopsAtContainerBounds = YES;
         _staysInContainer = NO;
         _updatesFrameWhileShowing = NO;
+        _updatesFrameWhenApplicationResizes = YES;
         _shouldRegisterSuperviewObservers = YES;
         _shouldChangeSizeWhenApplicationResizes = NO;
         _closesWhenPopoverResignsKey = NO;
@@ -186,6 +190,10 @@
 
 - (NSMutableArray<NSClipView *> *)observerClipViews {
     return [self.utils observerClipViews];
+}
+
+- (BOOL)userInteractionEnable {
+    return _userInteractionEnable;
 }
 
 - (void)setFloatsWhenAppResignsActive:(BOOL)floatsWhenAppResignsActive {
@@ -394,6 +402,8 @@
 }
 
 - (void)setUserInteractionEnable:(BOOL)isEnable {
+    _userInteractionEnable = isEnable;
+    
     self.popoverWindow.userInteractionEnable = isEnable;
     
     [self.utils setUserInteractionEnable:isEnable];

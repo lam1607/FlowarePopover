@@ -8,7 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
+@protocol FLOPopoverProtocols;
+
 @interface FLOPopoverWindow : NSWindow
+
+@property (nonatomic, weak, readonly) id<FLOPopoverProtocols> responder;
 
 @property (nonatomic, assign) BOOL canBecomeKey;
 @property (nonatomic, assign) NSInteger tag;
@@ -19,5 +23,7 @@
  * whether the popover floats or not when application resigns active.
  */
 @property (nonatomic, assign) BOOL floatsWhenAppResignsActive;
+
+- (void)setResponder:(id<FLOPopoverProtocols>)responder;
 
 @end

@@ -85,18 +85,8 @@
     return ((NSWindowLevel)WindowLevelGroupTagTop);
 }
 
-#pragma mark - WindowManager methods
-
-/// Children Popup Windows
-///
-- (void)hideChildWindows
+- (void)hideChildWindowsForWindow:(NSWindow *)window
 {
-    NSWindow *window = [AbstractWindowController sharedInstance].window;
-    
-    // If the application window is set as hide/show at Dock, do nothing here.
-    // Fix issue 0030047: Open any view, hide FLOM and open again will show UI incorrectly.
-    if ([[NSApplication sharedApplication] isHidden] || [window isMiniaturized]) return;
-    
     BOOL shouldChildWindowsFloat = [self shouldChildWindowsFloat];
     NSWindowLevel levelNormal = [WindowManager levelForTag:WindowLevelGroupTagNormal];
     
@@ -108,6 +98,11 @@
             // Should keep the line below, to make sure that the child window will 'sink' successfully.
             // Otherwise, the child window still floats even the level is NSNormalWindowLevel.
             [childWindow orderFront:window];
+        }
+        
+        if ([childWindow childWindows].count > 0)
+        {
+            [self hideChildWindowsForWindow:childWindow];
         }
     }
     
@@ -123,10 +118,8 @@
     }
 }
 
-- (void)showChildWindows
+- (void)showChildWindowsForWindow:(NSWindow *)window
 {
-    NSWindow *window = [AbstractWindowController sharedInstance].window;
-    
     for (NSWindow *childWindow in [window childWindows])
     {
         NSWindowLevel level = [WindowManager levelForTag:WindowLevelGroupTagFloat];
@@ -138,7 +131,57 @@
         
         [childWindow setLevel:level];
         [[childWindow attachedSheet] setLevel:(childWindow.level + 1)];
+        
+        if ([childWindow childWindows].count > 0)
+        {
+            [self showChildWindowsForWindow:childWindow];
+        }
     }
+}
+
+- (void)setWindow:(NSWindow *)window userInteractionEnable:(BOOL)isEnable
+{
+    if ([window isKindOfClass:[FLOPopoverWindow class]])
+    {
+        [(FLOPopoverWindow *)window setUserInteractionEnable:isEnable];
+    }
+    
+    NSArray *childWindows = [window childWindows];
+    
+    if (childWindows.count > 0)
+    {
+        for (NSWindow *childWindow in childWindows)
+        {
+            [self setWindow:childWindow userInteractionEnable:isEnable];
+        }
+    }
+}
+
+#pragma mark - WindowManager methods
+
+/// Children Popup Windows
+///
+- (void)hideChildWindows
+{
+    NSWindow *window = [AbstractWindowController sharedInstance].window;
+    
+    if ([[NSApplication sharedApplication] isHidden] || [window isMiniaturized]) return;
+    
+    [self hideChildWindowsForWindow:window];
+}
+
+- (void)showChildWindows
+{
+    NSWindow *window = [AbstractWindowController sharedInstance].window;
+    
+    [self showChildWindowsForWindow:window];
+}
+
+- (void)setUserInteractionEnable:(BOOL)isEnable
+{
+    NSWindow *window = [AbstractWindowController sharedInstance].window;
+    
+    [self setWindow:window userInteractionEnable:isEnable];
 }
 
 #pragma mark - WindowManager class methods
