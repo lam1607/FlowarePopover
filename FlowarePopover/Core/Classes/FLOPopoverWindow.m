@@ -62,5 +62,14 @@
     return _responder;
 }
 
+- (void)invalidateShadow {
+    // Because of [invalidateShadow] of NSWindow is not working,
+    // We should do the trick as following to force the NSWindow re-renders its shadow.
+    NSRect frame = [self frame];
+    NSRect updatedFrame = NSMakeRect(frame.origin.x, frame.origin.y, frame.size.width + 1.0, frame.size.height + 1.0);
+    
+    [self setFrame:updatedFrame display:YES];
+    [self setFrame:frame display:YES];
+}
 
 @end

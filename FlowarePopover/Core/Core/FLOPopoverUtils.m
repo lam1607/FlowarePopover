@@ -31,6 +31,7 @@
     
     BOOL _windowLiveResizeReceived;
     BOOL _scrollingEventReceived;
+    BOOL _superviewObserversRegistered;
     
     NSTimer *_closeTimer;
     
@@ -38,6 +39,9 @@
     
     NSMutableArray<NSView *> *_observerSuperviews;
     NSMutableArray<NSClipView *> *_observerClipViews;
+    NSMutableArray<NSClipView *> *_registeredViewBoundsObservers;
+    NSMutableArray<NSView *> *_registeredSuperviewObservers;
+    NSMutableArray<NSView *> *_registeredFrameObservers;
     NSMutableDictionary *_observerClipViewFrames;
     NSMutableDictionary *_observerClipViewStates;
 }
@@ -76,6 +80,7 @@
         
         _windowLiveResizeReceived = NO;
         _scrollingEventReceived = NO;
+        _superviewObserversRegistered = NO;
     }
     
     return self;
@@ -231,15 +236,32 @@
 - (void)registerObserverView:(NSView *)view selector:(SEL)selector source:(id)source {
     if ([source respondsToSelector:selector]) {
         if ([view isKindOfClass:[NSClipView class]]) {
-            [view setPostsBoundsChangedNotifications:YES];
-            
-            [[NSNotificationCenter defaultCenter] addObserver:source
-                                                     selector:selector
-                                                         name:NSViewBoundsDidChangeNotification
-                                                       object:view];
+            if (_popover.shouldRegisterSuperviewObservers) {
+                [view setPostsBoundsChangedNotifications:YES];
+                
+                [[NSNotificationCenter defaultCenter] addObserver:source
+                                                         selector:selector
+                                                             name:NSViewBoundsDidChangeNotification
+                                                           object:view];
+                
+                if (![_registeredViewBoundsObservers containsObject:(NSClipView *)view]) {
+                    [_registeredViewBoundsObservers addObject:(NSClipView *)view];
+                }
+            }
         } else {
-            [view addObserver:source forKeyPath:@"frame" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
             [view addObserver:source forKeyPath:@"superview" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
+            
+            if (![_registeredSuperviewObservers containsObject:view]) {
+                [_registeredSuperviewObservers addObject:view];
+            }
+            
+            if (_popover.shouldRegisterSuperviewObservers) {
+                [view addObserver:source forKeyPath:@"frame" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
+                
+                if (![_registeredFrameObservers containsObject:view]) {
+                    [_registeredFrameObservers addObject:view];
+                }
+            }
         }
     }
 }
@@ -758,6 +780,14 @@
     } else {
         [self invalidateCloseTimer];
         [_popover close];
+    }
+}
+
+- (void)invalidateArrowPathColor {
+    if (_popover == nil) return;
+    
+    if (_popover.containsArrow) {
+        [self.backgroundView setArrowColor:[[self.contentView layer] backgroundColor]];
     }
 }
 
@@ -1448,12 +1478,15 @@
 - (void)registerSuperviewObservers {
     if (_popoverStyle != FLOPopoverStyleNormal) return;
     if (_popover == nil) return;
-    if (!_popover.shouldRegisterSuperviewObservers) return;
     
     @autoreleasepool {
         SEL selector = @selector(eventObserver_viewBoundsDidChange:);
         
         _observerSuperviews = [[NSMutableArray alloc] init];
+        
+        _registeredViewBoundsObservers = [[NSMutableArray alloc] init];
+        _registeredSuperviewObservers = [[NSMutableArray alloc] init];
+        _registeredFrameObservers = [[NSMutableArray alloc] init];
         
         [_observerSuperviews addObject:self.positioningAnchorView];
         
@@ -1493,28 +1526,32 @@
                 [self registerObserverView:clipView selector:selector source:self];
             }
         }
+        
+        _superviewObserversRegistered = (_registeredViewBoundsObservers.count > 0) || (_registeredSuperviewObservers.count > 0) || (_registeredFrameObservers.count > 0);
     }
 }
 
 - (void)unregisterSuperviewObservers {
-    if (_popoverStyle != FLOPopoverStyleNormal) return;
-    if (_popover == nil) return;
-    if (!_popover.shouldRegisterSuperviewObservers) return;
+    if (!_superviewObserversRegistered) return;
     
-    for (NSView *observerView in _observerSuperviews) {
-        @try {
-            if ([observerView isKindOfClass:[NSClipView class]]) {
-                [[NSNotificationCenter defaultCenter] removeObserver:self name:NSViewBoundsDidChangeNotification object:observerView];
-            } else {
-                [observerView removeObserver:self forKeyPath:@"frame"];
-                [observerView removeObserver:self forKeyPath:@"superview"];
-            }
-        } @catch (NSException *exception) {
-            NSLog(@"%s-[%d] exception - reason = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason);
+    for (NSView *observerView in _registeredViewBoundsObservers) {
+        if ([observerView isKindOfClass:[NSClipView class]]) {
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:NSViewBoundsDidChangeNotification object:observerView];
         }
     }
     
+    for (NSView *observerView in _registeredSuperviewObservers) {
+        [observerView removeObserver:self forKeyPath:@"superview"];
+    }
+    
+    for (NSView *observerView in _registeredFrameObservers) {
+        [observerView removeObserver:self forKeyPath:@"frame"];
+    }
+    
     _observerSuperviews = nil;
+    _registeredViewBoundsObservers = nil;
+    _registeredSuperviewObservers = nil;
+    _registeredFrameObservers = nil;
 }
 
 - (void)registerWindowEvents {
@@ -1542,7 +1579,7 @@
     
     NSView *view = (NSView *)object;
     
-    if (_popover.shouldRegisterSuperviewObservers && [keyPath isEqualToString:@"superview"]) {
+    if ([self.positioningView isDescendantOf:view] && [keyPath isEqualToString:@"superview"]) {
         if ([self popoverShouldCloseForChangedView:view]) {
             [self closePopoverWithTimerIfNeeded];
             

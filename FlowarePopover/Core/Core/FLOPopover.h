@@ -180,6 +180,13 @@
 
 - (void)showWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 
+// Invalidate the popover shadow in case of changing position of popover arrow
+// or other case the popover shadow not updated when popover moves.
+- (void)invalidateShadow;
+
+// Invalidate the arrow color of popover in case of the view of contentView or
+// contentViewController changed its background color.
+- (void)invalidateArrowPathColor;
 
 /**
  * Sticking rect: Display the popover relative to the rect of positioning view

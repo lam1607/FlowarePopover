@@ -498,6 +498,18 @@
     [_popover showWithVisualEffect:needed material:material blendingMode:blendingMode state:state];
 }
 
+- (void)invalidateShadow {
+    if ([_popover respondsToSelector:@selector(invalidateShadow)]) {
+        [_popover invalidateShadow];
+    }
+}
+
+- (void)invalidateArrowPathColor {
+    if ([_popover respondsToSelector:@selector(invalidateArrowPathColor)]) {
+        [_popover invalidateArrowPathColor];
+    }
+}
+
 /**
  * Sticking rect: Display the popover relative to the rect of positioning view
  *

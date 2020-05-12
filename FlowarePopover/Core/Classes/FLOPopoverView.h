@@ -47,9 +47,8 @@
 
 @property (nonatomic, assign) BOOL userInteractionEnable;
 
-/**
- * Make popover become key, order front when mouse hovers the popover
- */
+// Make popover become key, order front when mouse hovers the popover
+//
 @property (nonatomic, assign) BOOL becomesKeyOnMouseOver;
 
 // Given a size of the content this should be overridden by subclasses to
@@ -95,5 +94,9 @@
 - (void)setArrowColor:(CGColorRef)color;
 - (void)setPopoverEdge:(NSRectEdge)popoverEdge;
 - (void)setPopoverOrigin:(NSRect)popoverOrigin;
+
+// Invalidate the popover shadow in case of changing position of popover arrow
+// or other case the popover shadow not updated when popover moves.
+- (void)invalidateShadow;
 
 @end

@@ -70,6 +70,8 @@
 - (void)setupAutoresizingMaskIfNeeded:(BOOL)needed;
 - (void)closePopoverWithTimerIfNeeded;
 
+- (void)invalidateArrowPathColor;
+
 #pragma mark - Display utilities
 
 - (void)setResponder;

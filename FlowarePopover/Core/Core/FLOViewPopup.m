@@ -401,8 +401,11 @@
 }
 
 - (void)invalidateShadow {
-    // Shadow of FLOViewPopover is already re-rendered every time [setNeedsDisplay:] called.
-    // Don't do anything here.
+    [self.popoverView invalidateShadow];
+}
+
+- (void)invalidateArrowPathColor {
+    [self.utils invalidateArrowPathColor];
 }
 
 /**

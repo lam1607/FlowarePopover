@@ -8,7 +8,7 @@
 
 #import "FLOPopoverClippingView.h"
 
-static void CGPathCallback(void *info, const CGPathElement *element) {
+static void CGPathApplier(void *info, const CGPathElement *element) {
     NSBezierPath *bezierPath = (__bridge NSBezierPath *)info;
     CGPoint *points = element->points;
     
@@ -44,7 +44,7 @@ static void CGPathCallback(void *info, const CGPathElement *element) {
 
 static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
     NSBezierPath *bezierPath = [NSBezierPath bezierPath];
-    CGPathApply(cgPath, (__bridge void *)bezierPath, CGPathCallback);
+    CGPathApply(cgPath, (__bridge void *)bezierPath, CGPathApplier);
     
     return bezierPath;
 }
@@ -85,7 +85,9 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 
 - (void)setPathColor:(CGColorRef)pathColor {
     if (pathColor != NULL) {
+        CGColorRelease(_pathColor);
         _pathColor = pathColor;
+        CGColorRetain(_pathColor);
     }
 }
 
@@ -103,6 +105,8 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 }
 
 - (void)drawClippingPath {
+    if (self.clippingPath == NULL) return;
+    
     if (_visualEffectView != nil) {
         [_visualEffectView setFrameSize:self.frame.size];
         [_visualEffectView setMaskImage:[NSImage imageWithSize:self.frame.size flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
@@ -114,9 +118,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
     } else {
         CGContextRef currentContext = [[NSGraphicsContext currentContext] CGContext];
         
-        if (currentContext != NULL) {
-            self.pathColor = ((self.pathColor != NULL) && (self.pathColor != [[NSColor clearColor] CGColor])) ? self.pathColor : [[NSColor lightGrayColor] CGColor];
-            
+        if ((currentContext != NULL) && (self.pathColor != NULL)) {
             CGContextAddPath(currentContext, self.clippingPath);
             CGContextSetFillColorWithColor(currentContext, self.pathColor);
             CGContextFillPath(currentContext);

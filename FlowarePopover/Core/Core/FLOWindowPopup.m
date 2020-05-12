@@ -418,15 +418,11 @@
 }
 
 - (void)invalidateShadow {
-    // Because of [invalidateShadow] of NSWindow is not working,
-    // We should do the trick as following to force the NSWindow re-renders its shadow.
-    // Each time arrow's position of the popover updated.
-    if (self.containsArrow) {
-        NSRect frame = [self.popoverWindow frame];
-        
-        [self updateFrame:(NSRect){ .origin = frame.origin, .size = NSMakeSize(frame.size.width + 1.0, frame.size.height + 1.0) }];
-        [self updateFrame:frame];
-    }
+    [self.popoverWindow invalidateShadow];
+}
+
+- (void)invalidateArrowPathColor {
+    [self.utils invalidateArrowPathColor];
 }
 
 /**

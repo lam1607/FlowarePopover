@@ -260,6 +260,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 - (void)setArrowColor:(CGColorRef)color {
     if (!NSEqualSizes(self.arrowSize, NSZeroSize) && (color != NULL)) {
         [self.clippingView setPathColor:color];
+        [self setNeedsDisplay:YES];
     }
 }
 
@@ -281,6 +282,11 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     if (NSEqualRects(popoverOrigin, self.popoverOrigin)) return;
     
     _popoverOrigin = popoverOrigin;
+}
+
+- (void)invalidateShadow {
+    // Shadow of FLOViewPopover is already re-rendered every time [setNeedsDisplay:] called.
+    [self setNeedsDisplay:YES];
 }
 
 - (NSSize)sizeForBackgroundViewWithContentSize:(NSSize)contentSize popoverEdge:(NSRectEdge)popoverEdge {
