@@ -10,24 +10,18 @@
 
 @interface NSView (FLOExtensionsNSView)
 
-- (CALayer *)layerFromContents;
+- (NSVisualEffectView *)containsVisualEffect;
+- (NSLayoutConstraint *)constraintForAttribute:(NSLayoutAttribute)constraintAttribute;
+- (void)removeAttribute:(NSLayoutAttribute)constraintAttribute;
+- (void)setSizeConstraints:(NSRect)withFrame;
+- (void)removeConstraints;
+- (void)addAutoResize:(BOOL)isAutoResize toParent:(NSView *)parentView;
+- (void)addAutoResize:(BOOL)isAutoResize toParent:(NSView *)parentView contentInsets:(NSEdgeInsets)contentInsets;
+- (void)addCenterAutoResize:(BOOL)isCenterAutoResize toParent:(NSView *)parentView;
+- (void)updateConstraintsWithInsets:(NSEdgeInsets)contentInsets;
+- (NSEdgeInsets)contentInsetsWithFrame:(NSRect)frame;
 
-#pragma mark - Transform animator
-
-- (void)transformAlongAxis:(NSInteger)axis scaleFactor:(CGFloat)scaleFactor startPoint:(CGFloat)startPoint endPoint:(CGFloat)endPoint onDuration:(CGFloat)duration;
-- (void)transitionAlongAxis:(NSInteger)axis startPoint:(NSPoint)startPoint endPoint:(NSPoint)endPoint onDuration:(CGFloat)duration;
-
-#pragma mark - Utilities
-
-- (void)displayAnimatedWillBeginAtPoint:(NSPoint)beginPoint endAtPoint:(NSPoint)endedPoint handler:(void(^)(void))handler;
-- (void)closeAnimatedWillBeginAtPoint:(NSPoint)beginPoint endAtPoint:(NSPoint)endedPoint handler:(void(^)(void))handler;
-
-- (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame;
-- (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame source:(id)source;
-- (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame duration:(NSTimeInterval)duration source:(id)source;
-
-- (void)showingAnimated:(BOOL)showing fromPosition:(NSPoint)fromPosition toPosition:(NSPoint)toPosition;
-- (void)showingAnimated:(BOOL)showing fromPosition:(NSPoint)fromPosition toPosition:(NSPoint)toPosition completionHandler:(void(^)(void))complete;
-- (void)showingAnimated:(BOOL)showing fromPosition:(NSPoint)fromPosition toPosition:(NSPoint)toPosition duration:(NSTimeInterval)duration completionHandler:(void(^)(void))complete;
+- (void)displayScaleTransitionWithFactor:(NSPoint)scaleFactor beginAtPoint:(NSPoint)beginPoint endAtPoint:(NSPoint)endedPoint duration:(NSTimeInterval)duration removedOnCompletion:(BOOL)isRemovedOnCompletion completion:(void(^)(void))complete;
+- (void)closeScaleTransitionWithFactor:(NSPoint)scaleFactor beginAtPoint:(NSPoint)beginPoint endAtPoint:(NSPoint)endedPoint duration:(NSTimeInterval)duration removedOnCompletion:(BOOL)isRemovedOnCompletion completion:(void(^)(void))complete;
 
 @end

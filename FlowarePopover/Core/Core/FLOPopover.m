@@ -60,7 +60,6 @@
 
 - (void)dealloc {
     _popover = nil;
-    
     self.contentView = nil;
     self.contentViewController = nil;
 }
@@ -125,37 +124,36 @@
 
 - (void)setShouldShowArrow:(BOOL)needed {
     _shouldShowArrow = needed;
-    
     _popover.shouldShowArrow = needed;
 }
 
 - (void)setArrowSize:(NSSize)arrowSize {
     _arrowSize = arrowSize;
-    
     _popover.arrowSize = arrowSize;
 }
 
 - (void)setAnimated:(BOOL)animated {
     _animated = animated;
-    
     _popover.animated = animated;
 }
 
 - (void)setAnimatedForwarding:(BOOL)animatedForwarding {
     _animatedForwarding = animatedForwarding;
-    
     _popover.animatedForwarding = animatedForwarding;
 }
 
 - (void)setBottomOffset:(CGFloat)bottomOffset {
     _bottomOffset = bottomOffset;
-    
     _popover.bottomOffset = bottomOffset;
+}
+
+- (void)setMaxHeight:(CGFloat)maxHeight {
+    _maxHeight = maxHeight;
+    _popover.maxHeight = maxHeight;
 }
 
 - (void)setStopsAtContainerBounds:(BOOL)stopsAtContainerBounds {
     _stopsAtContainerBounds = stopsAtContainerBounds;
-    
     _popover.stopsAtContainerBounds = stopsAtContainerBounds;
 }
 
@@ -169,61 +167,64 @@
 
 - (void)setStaysInContainer:(BOOL)staysInContainer {
     _staysInContainer = staysInContainer;
-    
     _popover.staysInContainer = staysInContainer;
+    
+    if (staysInContainer) {
+        [self setStaysInScreen:NO];
+    }
+}
+
+- (void)setStaysInScreen:(BOOL)staysInScreen {
+    _staysInScreen = staysInScreen;
+    _popover.staysInScreen = staysInScreen;
+    
+    if (staysInScreen) {
+        [self setStaysInContainer:NO];
+    }
 }
 
 - (void)setUpdatesFrameWhileShowing:(BOOL)updatesFrameWhileShowing {
     _updatesFrameWhileShowing = updatesFrameWhileShowing;
-    
     _popover.updatesFrameWhileShowing = updatesFrameWhileShowing;
 }
 
 - (void)setUpdatesFrameWhenApplicationResizes:(BOOL)updatesFrameWhenApplicationResizes {
     _updatesFrameWhenApplicationResizes = updatesFrameWhenApplicationResizes;
-    
     _popover.updatesFrameWhenApplicationResizes = updatesFrameWhenApplicationResizes;
 }
 
 - (void)setShouldRegisterSuperviewObservers:(BOOL)shouldRegisterSuperviewObservers {
     _shouldRegisterSuperviewObservers = shouldRegisterSuperviewObservers;
-    
     _popover.shouldRegisterSuperviewObservers = shouldRegisterSuperviewObservers;
 }
 
 - (void)setShouldChangeSizeWhenApplicationResizes:(BOOL)shouldChangeSizeWhenApplicationResizes {
     _shouldChangeSizeWhenApplicationResizes = shouldChangeSizeWhenApplicationResizes;
-    
     _popover.shouldChangeSizeWhenApplicationResizes = shouldChangeSizeWhenApplicationResizes;
 }
 
 - (void)setClosesWhenPopoverResignsKey:(BOOL)closeWhenResign {
     _closesWhenPopoverResignsKey = closeWhenResign;
-    
     _popover.closesWhenPopoverResignsKey = closeWhenResign;
 }
 
 - (void)setClosesWhenApplicationBecomesInactive:(BOOL)closeWhenInactive {
     _closesWhenApplicationBecomesInactive = closeWhenInactive;
-    
     _popover.closesWhenApplicationBecomesInactive = closeWhenInactive;
 }
 
 - (void)setClosesWhenApplicationResizes:(BOOL)closesWhenApplicationResizes {
     _closesWhenApplicationResizes = closesWhenApplicationResizes;
-    
     _popover.closesWhenApplicationResizes = closesWhenApplicationResizes;
 }
 
 - (void)setClosesWhenNotBelongToContainer:(BOOL)closesWhenNotBelongToContainer {
     _closesWhenNotBelongToContainer = closesWhenNotBelongToContainer;
-    
     _popover.closesWhenNotBelongToContainer = closesWhenNotBelongToContainer;
 }
 
 - (void)setClosesWhenReceivesEvent:(BOOL)closesWhenReceivesEvent {
     _closesWhenReceivesEvent = closesWhenReceivesEvent;
-    
     _popover.closesWhenReceivesEvent = closesWhenReceivesEvent;
 }
 
@@ -236,42 +237,23 @@
 
 - (void)setIsMovable:(BOOL)isMovable {
     _isMovable = isMovable;
-    
     _popover.isMovable = isMovable;
 }
 
 - (void)setIsDetachable:(BOOL)isDetachable {
     _isDetachable = isDetachable;
-    
     _popover.isMovable = isDetachable;
     _popover.isDetachable = isDetachable;
 }
 
 - (void)setTag:(NSInteger)tag {
     _tag = tag;
-    
     _popover.tag = tag;
-}
-
-/**
- * Make transition animation by moving frame of the popover instead of using CALayer.
- */
-- (void)setAnimatedByMovingFrame:(BOOL)animatedByMovingFrame {
-    _animatedByMovingFrame = animatedByMovingFrame;
-    
-    _popover.animatedByMovingFrame = animatedByMovingFrame;
 }
 
 - (void)setAnimationDuration:(NSTimeInterval)animationDuration {
     _animationDuration = animationDuration;
-    
     _popover.animationDuration = animationDuration;
-}
-
-- (void)setNeedsAutoresizingMask:(BOOL)needsAutoresizingMask {
-    _needsAutoresizingMask = needsAutoresizingMask;
-    
-    _popover.needsAutoresizingMask = needsAutoresizingMask;
 }
 
 - (void)setResignsFieldsOnClosing:(BOOL)resignsFieldsOnClosing {
@@ -366,13 +348,13 @@
     __weak typeof(self) wself = self;
     __weak typeof(target) wtarget = target;
     
-    target.willShowBlock = ^(id<FLOPopoverProtocols> popover) {
+    target.floPopoverWillShowBlock = ^(id<FLOPopoverProtocols> popover) {
         if ((popover == wtarget) && [wself.delegate respondsToSelector:@selector(floPopoverWillShow:)]) {
             [wself.delegate floPopoverWillShow:wself];
         }
     };
     
-    target.didShowBlock = ^(id<FLOPopoverProtocols> popover) {
+    target.floPopoverDidShowBlock = ^(id<FLOPopoverProtocols> popover) {
         if (popover == wtarget) {
             if (wself.closesAfterTimeInterval > 0) {
                 [wself closeAfterTimeInterval];
@@ -384,7 +366,17 @@
         }
     };
     
-    target.willCloseBlock = ^(id<FLOPopoverProtocols> popover) {
+    target.floPopoverShouldCloseBlock = ^BOOL(id<FLOPopoverProtocols> popover) {
+        if (popover == wtarget) {
+            if ([wself.delegate respondsToSelector:@selector(floPopoverShouldClose:)]) {
+                return [wself.delegate floPopoverShouldClose:wself];
+            }
+        }
+        
+        return YES;
+    };
+    
+    target.floPopoverWillCloseBlock = ^(id<FLOPopoverProtocols> popover) {
         if (popover == wtarget) {
             wself.isMoved = NO;
             
@@ -394,7 +386,7 @@
         }
     };
     
-    target.didCloseBlock = ^(id<FLOPopoverProtocols> popover) {
+    target.floPopoverDidCloseBlock = ^(id<FLOPopoverProtocols> popover) {
         if (popover == wtarget) {
             if (wself.closesAfterTimeInterval > 0) {
                 wself.closesAfterTimeInterval = 0.0;
@@ -408,7 +400,7 @@
         }
     };
     
-    target.didMoveBlock = ^(id<FLOPopoverProtocols> popover) {
+    target.floPopoverWillMoveBlock = ^(id<FLOPopoverProtocols> popover) {
         if (popover == wtarget) {
             wself.isMoved = YES;
             
@@ -416,15 +408,42 @@
                 wself.closesAfterTimeInterval = 0.0;
                 
                 [wself invalidateTimeIntervalTimer];
-                
                 [NSObject cancelPreviousPerformRequestsWithTarget:wself selector:@selector(close) object:nil];
+            }
+            
+            if ([wself.delegate respondsToSelector:@selector(floPopoverWillMove:)]) {
+                [wself.delegate floPopoverWillMove:wself];
             }
         }
     };
     
-    target.didDetachBlock = ^(id<FLOPopoverProtocols> popover) {
+    target.floPopoverDidMoveBlock = ^(id<FLOPopoverProtocols> popover) {
+        if (popover == wtarget) {
+            wself.isMoved = YES;
+            
+            if ([wself.delegate respondsToSelector:@selector(floPopoverDidMove:)]) {
+                [wself.delegate floPopoverDidMove:wself];
+            }
+        }
+    };
+    
+    target.floPopoverWillDetachBlock = ^(id<FLOPopoverProtocols> popover) {
         if (popover == wtarget) {
             wself.animated = NO;
+            
+            if ([wself.delegate respondsToSelector:@selector(floPopoverWillDetach:)]) {
+                [wself.delegate floPopoverWillDetach:wself];
+            }
+        }
+    };
+    
+    target.floPopoverDidDetachBlock = ^(id<FLOPopoverProtocols> popover) {
+        if (popover == wtarget) {
+            wself.animated = NO;
+            
+            if ([wself.delegate respondsToSelector:@selector(floPopoverDidDetach:)]) {
+                [wself.delegate floPopoverDidDetach:wself];
+            }
         }
     };
 }
@@ -488,6 +507,31 @@
     [_popover setPopoverContentViewSize:newSize positioningRect:rect];
 }
 
+/**
+ * Sticking rect: Re-arrange the popover with new positioningView and edgeType.
+ *
+ * @param positioningView is the view that popover will be displayed relatively to.
+ * @param edgeType 'position' that the popover should be displayed.
+ *
+ * @note positioningView is also a sender that sends event for showing the popover (positioningView ≡ sender).
+ */
+- (void)setPopoverPositioningView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType {
+    [_popover setPopoverPositioningView:positioningView edgeType:edgeType];
+}
+
+/**
+ * Sticking rect: Re-arrange the popover with new positioningView, edgeType and positioningRect.
+ *
+ * @param positioningView is the view that popover will be displayed relatively to.
+ * @param edgeType 'position' that the popover should be displayed.
+ * @param rect 'position' that the popover should be displayed.
+ *
+ * @note positioningView is also a sender that sends event for showing the popover (positioningView ≡ sender).
+ */
+- (void)setPopoverPositioningView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType positioningRect:(NSRect)rect {
+    [_popover setPopoverPositioningView:positioningView edgeType:edgeType positioningRect:rect];
+}
+
 - (void)setUserInteractionEnable:(BOOL)isEnable {
     if ([_popover respondsToSelector:@selector(setUserInteractionEnable:)]) {
         [_popover setUserInteractionEnable:isEnable];
@@ -523,8 +567,10 @@
 - (void)showRelativeToRect:(NSRect)rect ofView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType {
     [_popover showRelativeToRect:rect ofView:positioningView edgeType:edgeType];
     
-    [self invalidateTimeIntervalTimer];
-    [self cancelCloseAfterTimeInterval];
+    if ((_popover != nil) && (_popover.isShowing || [_popover isShown])) {
+        [self invalidateTimeIntervalTimer];
+        [self cancelCloseAfterTimeInterval];
+    }
 }
 
 /**
@@ -588,8 +634,10 @@
 - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect sender:(NSView *)sender relativePositionType:(FLOPopoverRelativePositionType)relativePositionType {
     [_popover showRelativeToView:positioningView withRect:rect sender:sender relativePositionType:relativePositionType edgeType:FLOPopoverEdgeTypeBelowLeftEdge];
     
-    [self invalidateTimeIntervalTimer];
-    [self cancelCloseAfterTimeInterval];
+    if ((_popover != nil) && (_popover.isShowing || [_popover isShown])) {
+        [self invalidateTimeIntervalTimer];
+        [self cancelCloseAfterTimeInterval];
+    }
 }
 
 /**
@@ -598,7 +646,7 @@
  * @param presentedWindow the target window that the popover will be alerted on.
  */
 - (void)showWithAlertStyleForWindow:(NSWindow *)presentedWindow {
-    [self showWithAlertStyleForWindow:presentedWindow backgroundColor:[[NSColor whiteColor] colorWithAlphaComponent:0.01]];
+    [self showWithAlertStyleForWindow:presentedWindow backgroundColor:[[NSColor whiteColor] colorWithAlphaComponent:0.001]];
 }
 
 /**
@@ -611,8 +659,10 @@
     if ([_popover respondsToSelector:@selector(showWithAlertStyleForWindow:backgroundColor:)]) {
         [_popover showWithAlertStyleForWindow:presentedWindow backgroundColor:backgroundColor];
         
-        [self invalidateTimeIntervalTimer];
-        [self cancelCloseAfterTimeInterval];
+        if ((_popover != nil) && (_popover.isShowing || [_popover isShown])) {
+            [self invalidateTimeIntervalTimer];
+            [self cancelCloseAfterTimeInterval];
+        }
     }
 }
 

@@ -9,6 +9,22 @@
 #import "AbstractViewProtocols.h"
 #import "AbstractPresenterProtocols.h"
 
+static const CGFloat SECOND_BAR_DEFAULT_HEIGHT = 40.0;
+
+typedef NS_ENUM(NSInteger, PopoverGeneralType)
+{
+    PopoverGeneralTypeComics,
+    PopoverGeneralTypeTechnologies,
+    PopoverGeneralTypeAlert
+};
+
+typedef NS_ENUM(NSInteger, PopoverGeneralDisplayStyle)
+{
+    PopoverGeneralDisplayStyleStickyRect,
+    PopoverGeneralDisplayStyleGivenRect,
+    PopoverGeneralDisplayStyleAlert
+};
+
 ///
 /// View
 @protocol HomeViewProtocols <AbstractViewProtocols>
@@ -18,7 +34,8 @@
 - (void)viewOpensSafari;
 - (void)viewOpensFilmsView;
 - (void)viewOpensNewsView;
-- (void)viewOpensComicsView;
+- (void)viewOpensGeneralView;
+- (void)viewOpensGeneralMenuAtView:(NSView *)sender;
 - (void)viewShowsSecondBar;
 - (void)viewShowsTrashView;
 
@@ -33,7 +50,8 @@
 - (void)openSafari;
 - (void)openFilmsView;
 - (void)openNewsView;
-- (void)openComicsView;
+- (void)openGeneralView;
+- (void)openGeneralMenuAtView:(NSView *)sender;
 - (void)showSecondBar;
 - (void)showTrashView;
 

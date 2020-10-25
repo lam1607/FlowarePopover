@@ -114,14 +114,11 @@
 - (void)updateContentSize
 {
     CGFloat height = [self getContentSizeHeight];
-    NSSize newSize = NSMakeSize(350.0, height);
+    NSSize newSize = NSMakeSize(COMICS_VIEW_DETAIL_WIDTH, height);
     
-    if (!NSEqualSizes(self.view.frame.size, newSize))
+    if (!NSEqualSizes([self.view frame].size, newSize))
     {
-        if (self.didContentSizeChange)
-        {
-            self.didContentSizeChange(newSize);
-        }
+        [self.view setFrameSize:newSize];
     }
 }
 

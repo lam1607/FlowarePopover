@@ -10,6 +10,7 @@
 
 #import "FLOPopoverProtocols.h"
 #import "FLOPopoverClippingView.h"
+#import "FLOExtensionsNSView.h"
 
 static CGFloat getMedianXFromRects(NSRect r1, NSRect r2) {
     CGFloat minX = fmax(NSMinX(r1), NSMinX(r2));
@@ -68,23 +69,8 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
         _userInteractionEnable = YES;
         _becomesKeyOnMouseOver = NO;
         
-        FLOPopoverClippingView *clippingView = [[FLOPopoverClippingView alloc] initWithFrame:[self bounds]];
-        
-        [self addSubview:clippingView];
-        
-        [clippingView setTranslatesAutoresizingMaskIntoConstraints:NO];
-        
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[clippingView]|"
-                                                                     options:0
-                                                                     metrics:nil
-                                                                       views:NSDictionaryOfVariableBindings(clippingView)]];
-        
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[clippingView]|"
-                                                                     options:0
-                                                                     metrics:nil
-                                                                       views:NSDictionaryOfVariableBindings(clippingView)]];
-        
-        _clippingView = clippingView;
+        _clippingView = [[FLOPopoverClippingView alloc] initWithFrame:[self bounds]];
+        [_clippingView addAutoResize:YES toParent:self];
     }
     
     return self;
@@ -101,23 +87,8 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
         _userInteractionEnable = YES;
         _becomesKeyOnMouseOver = NO;
         
-        FLOPopoverClippingView *clippingView = [[FLOPopoverClippingView alloc] initWithFrame:[self bounds]];
-        
-        [self addSubview:clippingView];
-        
-        [clippingView setTranslatesAutoresizingMaskIntoConstraints:NO];
-        
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[clippingView]|"
-                                                                     options:0
-                                                                     metrics:nil
-                                                                       views:NSDictionaryOfVariableBindings(clippingView)]];
-        
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[clippingView]|"
-                                                                     options:0
-                                                                     metrics:nil
-                                                                       views:NSDictionaryOfVariableBindings(clippingView)]];
-        
-        _clippingView = clippingView;
+        _clippingView = [[FLOPopoverClippingView alloc] initWithFrame:[self bounds]];
+        [_clippingView addAutoResize:YES toParent:self];
     }
     
     return self;
@@ -225,19 +196,24 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 }
 
 - (void)setShadow:(BOOL)needed {
-    if (needed) {
+    if (needed || (!needed && ([self layer].shadowColor != NULL))) {
+        NSColor *shadowColor = needed ? [NSColor darkGrayColor] : [NSColor clearColor];
+        NSSize shadowOffset = NSZeroSize;
+        CGFloat shadowOpacity = needed ? 0.35 : 0.0;
+        CGFloat shadowRadius = needed ? kFlowarePopover_ShadowRadius : 0.0;
+        
         [[self superview] setWantsLayer:YES];
         [self setWantsLayer:YES];
         [[self layer] setMasksToBounds:NO];
-        [[self layer] setShadowColor:[[NSColor blackColor] CGColor]];
-        [[self layer] setShadowOpacity:0.5];
+        [[self layer] setShadowColor:[shadowColor CGColor]];
         // Shadow on top, left
         //        [[self layer] setShadowOffset:NSMakeSize(-5.0, -5.0)];
         // Shadow on bottom, right
         //        [[self layer] setShadowOffset:NSMakeSize(5.0, 5.0)];
         // Shadow for all sides top, left, bottom, right
-        [[self layer] setShadowOffset:NSZeroSize];
-        [[self layer] setShadowRadius:kFlowarePopover_ShadowRadius];
+        [[self layer] setShadowOffset:shadowOffset];
+        [[self layer] setShadowOpacity:shadowOpacity];
+        [[self layer] setShadowRadius:shadowRadius];
     }
 }
 
@@ -291,6 +267,11 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 - (NSSize)sizeForBackgroundViewWithContentSize:(NSSize)contentSize popoverEdge:(NSRectEdge)popoverEdge {
     NSSize returnSize = contentSize;
+    CGFloat maxHeight = self.responder.maxHeight;
+    
+    if ((maxHeight > 0) && (returnSize.height > maxHeight)) {
+        returnSize.height = maxHeight;
+    }
     
     if (!NSEqualSizes(self.arrowSize, NSZeroSize)) {
         if (popoverEdge == NSRectEdgeMaxX || popoverEdge == NSRectEdgeMinX) {
@@ -526,8 +507,8 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     if (_mouseDownEventReceived && (_isMovable || _isDetachable)) {
         _dragging = YES;
         
-        if ([self.delegate respondsToSelector:@selector(popoverDidMakeMovement)]) {
-            [self.delegate popoverDidMakeMovement];
+        if ([self.delegate respondsToSelector:@selector(popoverWillMakeMovement)]) {
+            [self.delegate popoverWillMakeMovement];
         }
         
         BOOL isPopover = [event.window respondsToSelector:@selector(tag)];
@@ -541,6 +522,10 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
             [event.window setFrameOrigin:nextOrigin];
         } else {
             [self setFrameOrigin:nextOrigin];
+        }
+        
+        if ([self.delegate respondsToSelector:@selector(popoverDidMakeMovement)]) {
+            [self.delegate popoverDidMakeMovement];
         }
     }
 }

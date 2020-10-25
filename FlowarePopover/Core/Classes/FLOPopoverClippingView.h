@@ -8,13 +8,13 @@
 
 #import <Cocoa/Cocoa.h>
 
-// A class which forcably draws `NSClearColor.clearColor` around a given path,
-// effectively clipping any views to the path. You can think of it like a
-// `maskLayer` on a `CALayer`.
+/// A class which forcably draws `NSClearColor.clearColor` around a given path,
+/// effectively clipping any views to the path. You can think of it like a
+/// `maskLayer` on a `CALayer`.
 @interface FLOPopoverClippingView : NSView
 
-// The path which the view will clip to. The clippingPath will be retained and
-// released automatically.
+/// The path which the view will clip to. The clippingPath will be retained and
+/// released automatically.
 @property (nonatomic) CGPathRef clippingPath;
 
 @property (nonatomic) CGColorRef pathColor;

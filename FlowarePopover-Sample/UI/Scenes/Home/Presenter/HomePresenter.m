@@ -52,11 +52,19 @@
     }
 }
 
-- (void)openComicsView
+- (void)openGeneralView
 {
     if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
     {
-        [(id<HomeViewProtocols>)self.view viewOpensComicsView];
+        [(id<HomeViewProtocols>)self.view viewOpensGeneralView];
+    }
+}
+
+- (void)openGeneralMenuAtView:(NSView *)sender
+{
+    if ([self.view conformsToProtocol:@protocol(HomeViewProtocols)])
+    {
+        [(id<HomeViewProtocols>)self.view viewOpensGeneralMenuAtView:sender];
     }
 }
 

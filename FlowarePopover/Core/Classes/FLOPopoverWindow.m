@@ -38,11 +38,13 @@
     return self;
 }
 
-#pragma mark - Getter/Setter
+#pragma mark - Override methods
 
 - (BOOL)canBecomeKeyWindow {
     return (self.userInteractionEnable ? self.canBecomeKey : NO);
 }
+
+#pragma mark - Getter/Setter
 
 - (void)setUserInteractionEnable:(BOOL)userInteractionEnable {
     _userInteractionEnable = userInteractionEnable;

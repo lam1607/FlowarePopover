@@ -9,6 +9,9 @@
 #import "AbstractViewProtocols.h"
 #import "AbstractPresenterProtocols.h"
 
+static const CGFloat COMICS_VIEW_DETAIL_WIDTH = 350.0;
+static const CGFloat COMICS_VIEW_DEFAULT_HEIGHT = 429.0;
+
 ///
 /// View
 @protocol ComicsViewProtocols <AbstractViewProtocols>

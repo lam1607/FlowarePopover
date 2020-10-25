@@ -40,7 +40,7 @@
     if (self.type == FLOVirtualViewDisable) {
         [self setWantsLayer:YES];
         [[self layer] setMasksToBounds:NO];
-        [[self layer] setBackgroundColor:[[[NSColor whiteColor] colorWithAlphaComponent:0.01] CGColor]];
+        [[self layer] setBackgroundColor:[[[NSColor whiteColor] colorWithAlphaComponent:0.001] CGColor]];
     }
 }
 

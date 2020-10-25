@@ -10,351 +10,359 @@
 
 #import "FLOExtensionsNSView.h"
 
-#import "FLOExtensionsCABasicAnimation.h"
-#import "FLOExtensionsCAKeyframeAnimation.h"
-#import "FLOExtensionsGraphicsContext.h"
-
-typedef NS_ENUM(NSInteger, AXIS_XY) {
-    axis_x = 1,
-    axis_y
-};
-
 @implementation NSView (FLOExtensionsNSView)
 
-- (NSImage *)imageRepresentationOffscreen:(NSRect)screenBounds {
-    // Grab the image representation of the window, without the shadows.
-    CGImageRef windowImageRef;
-    windowImageRef = CGWindowListCreateImage(screenBounds, kCGWindowListOptionIncludingWindow, (CGWindowID)self.window.windowNumber, kCGWindowImageBoundsIgnoreFraming);
+- (NSVisualEffectView *)containsVisualEffect {
+    NSArray<NSView *> *subviews = [self subviews];
     
-    CGColorSpaceRef colorSpace = CGImageGetColorSpace(windowImageRef);
-    CGSize imageSize = CGSizeMake(CGImageGetWidth(windowImageRef), CGImageGetHeight(windowImageRef));
+    for (NSView *view in subviews) {
+        if ([view isKindOfClass:[NSVisualEffectView class]]) {
+            return (NSVisualEffectView *)view;
+        }
+    }
     
-    CGContextRef ctx = FLOExtensionsGraphicsContextCreate(screenBounds.size, colorSpace);
-    
-    // Draw the window image into the newly-created context.
-    CGContextDrawImage(ctx, (CGRect){ .size = imageSize }, windowImageRef);
-    
-    CGImageRef copiedWindowImageRef = CGBitmapContextCreateImage(ctx);
-    NSImage *image = [[NSImage alloc] initWithCGImage:copiedWindowImageRef
-                                                 size:imageSize];
-    
-    CGContextRelease(ctx);
-    CGImageRelease(windowImageRef);
-    CGImageRelease(copiedWindowImageRef);
-    
-    return image;
+    return nil;
 }
 
-- (CALayer *)layerFromVisibleContents {
-    CALayer *newLayer = [CALayer layer];
-    newLayer.contents = [self imageRepresentationOffscreen:NSZeroRect];
-    return newLayer;
+- (NSLayoutConstraint *)constraintForAttribute:(NSLayoutAttribute)constraintAttribute {
+    NSView *parentView = [self superview];
+    NSArray<NSLayoutConstraint *> *constraints = [parentView constraints];
+    
+    for (NSLayoutConstraint *constraint in constraints) {
+        if ((constraint.firstItem == self) || (constraint.secondItem == self)) {
+            if ((constraint.firstAttribute == constraintAttribute) || (constraint.secondAttribute == constraintAttribute)) {
+                return constraint;
+            }
+        }
+    }
+    
+    constraints = [self constraints];
+    
+    for (NSLayoutConstraint *constraint in constraints) {
+        if ((constraint.firstItem == self) || (constraint.secondItem == nil)) {
+            if (constraint.firstAttribute == constraintAttribute) {
+                return constraint;
+            }
+        }
+    }
+    
+    return nil;
 }
 
-- (CALayer *)layerFromContents {
-    CALayer *newLayer = [CALayer layer];
-    newLayer.bounds = self.bounds;
-    NSBitmapImageRep *bitmapRep;
-    bitmapRep = [self bitmapImageRepForCachingDisplayInRect:self.bounds];
-    [self cacheDisplayInRect:self.bounds toBitmapImageRep:bitmapRep];
-    id layerContents = (id)bitmapRep.CGImage;;
-    newLayer.contents = layerContents;
-    return newLayer;
+- (void)removeAttribute:(NSLayoutAttribute)constraintAttribute {
+    NSMutableArray *removedConstraints = [NSMutableArray array];
+    NSView *parentView = [self superview];
+    NSArray<NSLayoutConstraint *> *constraints = [parentView constraints];
+    
+    for (NSLayoutConstraint *constraint in constraints) {
+        if ((constraint.firstItem == self) || (constraint.secondItem == self)) {
+            if ((constraint.firstAttribute == constraintAttribute) || (constraint.secondAttribute == constraintAttribute)) {
+                [removedConstraints addObject:constraint];
+            }
+        }
+    }
+    
+    for (NSLayoutConstraint *constraint in removedConstraints) {
+        [constraint setActive:NO];
+        [parentView removeConstraint:constraint];
+    }
+    
+    [removedConstraints removeAllObjects];
+    constraints = [self constraints];
+    
+    for (NSLayoutConstraint *constraint in constraints) {
+        if ((constraint.firstItem == self) || (constraint.secondItem == nil)) {
+            if (constraint.firstAttribute == constraintAttribute) {
+                [removedConstraints addObject:constraint];
+            }
+        }
+    }
+    
+    for (NSLayoutConstraint *constraint in removedConstraints) {
+        [constraint setActive:NO];
+        [self removeConstraint:constraint];
+    }
 }
 
-#pragma mark - Internals
-
-- (CGRect)shadowRect {
-    CGRect windowBounds = (CGRect){ .size = self.frame.size };
-    CGRect rect = CGRectInset(windowBounds, -JNWAnimatableWindowShadowHorizontalOutset, 0);
-    rect.size.height += JNWAnimatableWindowShadowTopOffset;
+- (void)setSizeConstraints:(NSRect)withFrame {
+    CGFloat width = NSWidth(withFrame);
+    CGFloat height = NSHeight(withFrame);
+    NSLayoutConstraint *widthConstraint = [self constraintForAttribute:NSLayoutAttributeWidth];
+    NSLayoutConstraint *heightConstraint = [self constraintForAttribute:NSLayoutAttributeHeight];
     
-    return rect;
-}
-
-- (CGRect)convertWindowFrameToScreenFrame:(CGRect)windowFrame {
-    return (CGRect) {
-        .size = windowFrame.size,
-        .origin.x = windowFrame.origin.x - self.window.screen.frame.origin.x,
-        .origin.y = windowFrame.origin.y - self.window.screen.frame.origin.y
-    };
-}
-
-#pragma mark - View animated
-
-static const CGFloat JNWAnimatableWindowShadowOpacity = 0.58;
-static const CGSize JNWAnimatableWindowShadowOffset = (CGSize){ 0, -30.0 };
-static const CGFloat JNWAnimatableWindowShadowRadius = 19.0;
-static const CGFloat JNWAnimatableWindowShadowHorizontalOutset = 7.0;
-static const CGFloat JNWAnimatableWindowShadowTopOffset = 14.0;
-
-static CALayer *subLayer;
-
-- (void)resizeAnimationWithDuration:(NSTimeInterval)duration fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame fromOpacity:(CGFloat)fromOpacity toOpacity:(CGFloat)toOpacity {
-    subLayer = [CALayer layer];
-    subLayer.contentsScale = 1.2;
-    
-    CGColorRef shadowColor = CGColorCreateGenericRGB(0, 0, 0, JNWAnimatableWindowShadowOpacity);
-    subLayer.shadowColor = shadowColor;
-    subLayer.shadowOffset = JNWAnimatableWindowShadowOffset;
-    subLayer.shadowRadius = JNWAnimatableWindowShadowRadius;
-    subLayer.shadowOpacity = 1.0;
-    CGColorRelease(shadowColor);
-    
-    CGPathRef shadowPath = CGPathCreateWithRect(self.shadowRect, NULL);
-    subLayer.shadowPath = shadowPath;
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
-    animation.fromValue = (id)subLayer.shadowPath;
-    animation.toValue = (__bridge id)(shadowPath);
-    animation.duration = 5;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    subLayer.shadowPath = shadowPath;
-    CGPathRelease(shadowPath);
-    
-    subLayer.contentsGravity = kCAGravityResize;
-    subLayer.opaque = YES;
-    
-    // ensure that the layer's contents are set before we get rid of the real window.
-    subLayer.frame = [self convertWindowFrameToScreenFrame:fromFrame];
-    
-    [self.layer addSublayer:subLayer];
-    
-    NSImage *originalImg = [self imageRepresentationOffscreen:fromFrame];
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    subLayer.contents = originalImg;
-    [CATransaction commit];
-    
-    NSImage *finalImg = [self imageRepresentationOffscreen:toFrame];
-    [NSAnimationContext beginGrouping];
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:5];
-    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-    
-    [CATransaction setCompletionBlock:^{
-        [subLayer removeFromSuperlayer];
+    if (widthConstraint == nil) {
+        widthConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                       attribute:NSLayoutAttributeWidth
+                                                       relatedBy:NSLayoutRelationEqual
+                                                          toItem:nil
+                                                       attribute:NSLayoutAttributeWidth
+                                                      multiplier:1
+                                                        constant:width];
         
-        subLayer = nil;
+        [self addConstraint:widthConstraint];
+    } else {
+        widthConstraint.constant = width;
+    }
+    
+    if (heightConstraint == nil) {
+        heightConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                        attribute:NSLayoutAttributeHeight
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:nil
+                                                        attribute:NSLayoutAttributeHeight
+                                                       multiplier:1
+                                                         constant:height];
+        
+        [self addConstraint:heightConstraint];
+    } else {
+        heightConstraint.constant = height;
+    }
+    
+    [widthConstraint setActive:YES];
+    [heightConstraint setActive:YES];
+}
+
+- (void)removeConstraints {
+    NSMutableArray *removedConstraints = [NSMutableArray array];
+    NSView *parentView = [self superview];
+    NSArray<NSLayoutConstraint *> *constraints = [parentView constraints];
+    
+    for (NSLayoutConstraint *constraint in constraints) {
+        if ((constraint.firstItem == self) || (constraint.secondItem == self)) {
+            if ((constraint.firstAttribute == NSLayoutAttributeTop) || (constraint.secondAttribute == NSLayoutAttributeTop) ||
+                (constraint.firstAttribute == NSLayoutAttributeLeading) || (constraint.secondAttribute == NSLayoutAttributeLeading) ||
+                (constraint.firstAttribute == NSLayoutAttributeBottom) || (constraint.secondAttribute == NSLayoutAttributeBottom) ||
+                (constraint.firstAttribute == NSLayoutAttributeTrailing) || (constraint.secondAttribute == NSLayoutAttributeTrailing)) {
+                [removedConstraints addObject:constraint];
+            }
+        }
+    }
+    
+    for (NSLayoutConstraint *constraint in removedConstraints) {
+        [constraint setActive:NO];
+        [parentView removeConstraint:constraint];
+    }
+    
+    [removedConstraints removeAllObjects];
+    constraints = [self constraints];
+    
+    for (NSLayoutConstraint *constraint in constraints) {
+        if ((constraint.firstItem == self) && (constraint.secondItem == nil)) {
+            if ((constraint.firstAttribute == NSLayoutAttributeWidth) || (constraint.firstAttribute == NSLayoutAttributeHeight)) {
+                [removedConstraints addObject:constraint];
+            }
+        }
+    }
+    
+    for (NSLayoutConstraint *constraint in removedConstraints) {
+        [constraint setActive:NO];
+        [self removeConstraint:constraint];
+    }
+}
+
+- (void)addAutoResize:(BOOL)isAutoResize toParent:(NSView *)parentView {
+    [self addAutoResize:isAutoResize toParent:parentView contentInsets:NSEdgeInsetsZero];
+}
+
+- (void)addAutoResize:(BOOL)isAutoResize toParent:(NSView *)parentView contentInsets:(NSEdgeInsets)contentInsets {
+    NSView *view = self;
+    
+    if (![view isKindOfClass:[NSView class]] || ![parentView isKindOfClass:[NSView class]]) return;
+    
+    if (![view isDescendantOf:parentView]) {
+        [parentView addSubview:view];
+    }
+    
+    if (isAutoResize && [view isDescendantOf:parentView]) {
+        NSDictionary *metrics = @{@"top":@(contentInsets.top), @"leading":@(contentInsets.left), @"bottom":@(contentInsets.bottom), @"trailing":@(contentInsets.right)};
+        
+        [view setTranslatesAutoresizingMaskIntoConstraints:NO];
+        
+        [parentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(leading)-[view]-(trailing)-|"
+                                                                           options:NSLayoutFormatDirectionLeadingToTrailing
+                                                                           metrics:metrics
+                                                                             views:NSDictionaryOfVariableBindings(view)]];
+        
+        [parentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(top)-[view]-(bottom)-|"
+                                                                           options:NSLayoutFormatDirectionLeadingToTrailing
+                                                                           metrics:metrics
+                                                                             views:NSDictionaryOfVariableBindings(view)]];
+    }
+}
+
+- (void)addCenterAutoResize:(BOOL)isCenterAutoResize toParent:(NSView *)parentView {
+    NSView *view = self;
+    
+    if (![view isKindOfClass:[NSView class]] || ![parentView isKindOfClass:[NSView class]]) return;
+    
+    if (![view isDescendantOf:parentView]) {
+        [parentView addSubview:view];
+    }
+    
+    if (isCenterAutoResize && [view isDescendantOf:parentView]) {
+        [view setTranslatesAutoresizingMaskIntoConstraints:NO];
+        
+        [parentView addConstraint:[NSLayoutConstraint constraintWithItem:parentView
+                                                               attribute:NSLayoutAttributeCenterX
+                                                               relatedBy:0
+                                                                  toItem:view
+                                                               attribute:NSLayoutAttributeCenterX
+                                                              multiplier:1
+                                                                constant:0]];
+        
+        [parentView addConstraint:[NSLayoutConstraint constraintWithItem:parentView
+                                                               attribute:NSLayoutAttributeCenterY
+                                                               relatedBy:0
+                                                                  toItem:view
+                                                               attribute:NSLayoutAttributeCenterY
+                                                              multiplier:1
+                                                                constant:0]];
+        
+        NSLayoutConstraint *width = [NSLayoutConstraint constraintWithItem:view
+                                                                 attribute:NSLayoutAttributeWidth
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:nil
+                                                                 attribute:NSLayoutAttributeWidth
+                                                                multiplier:1
+                                                                  constant:NSWidth(view.frame)];
+        NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:view
+                                                                  attribute:NSLayoutAttributeHeight
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:nil
+                                                                  attribute:NSLayoutAttributeHeight
+                                                                 multiplier:1
+                                                                   constant:NSHeight(view.frame)];
+        
+        [width setActive:YES];
+        [height setActive:YES];
+        
+        [view addConstraints:@[width, height]];
+    }
+}
+
+- (void)updateConstraintsWithInsets:(NSEdgeInsets)contentInsets {
+    NSLayoutConstraint *topConstraint = [self constraintForAttribute:NSLayoutAttributeTop];
+    NSLayoutConstraint *leadingConstraint = [self constraintForAttribute:NSLayoutAttributeLeading];
+    NSLayoutConstraint *bottomConstraint = [self constraintForAttribute:NSLayoutAttributeBottom];
+    NSLayoutConstraint *trailingConstraint = [self constraintForAttribute:NSLayoutAttributeTrailing];
+    
+    topConstraint.constant = contentInsets.top;
+    leadingConstraint.constant = contentInsets.left;
+    bottomConstraint.constant = contentInsets.bottom;
+    trailingConstraint.constant = contentInsets.right;
+}
+
+- (NSEdgeInsets)contentInsetsWithFrame:(NSRect)frame {
+    NSView *view = self;
+    NSView *parentView = [view superview];
+    
+    if (![view isKindOfClass:[NSView class]] || ![parentView isKindOfClass:[NSView class]]) return NSEdgeInsetsZero;
+    
+    NSEdgeInsets edgeInsets = NSEdgeInsetsZero;
+    
+    if ([view isDescendantOf:parentView]) {
+        NSRect viewFrame = frame;
+        NSRect parentFrame = [parentView bounds];
+        CGFloat top = NSMaxY(parentFrame) - NSMaxY(viewFrame);
+        CGFloat left = NSMinX(viewFrame) - NSMinX(parentFrame);
+        CGFloat bottom = NSMinY(viewFrame) - NSMinY(parentFrame);
+        CGFloat right = NSMaxX(parentFrame) - NSMaxX(viewFrame);
+        
+        edgeInsets = NSEdgeInsetsMake(top, left, bottom, right);
+    }
+    
+    return edgeInsets;
+}
+
+- (void)displayScaleTransitionWithFactor:(NSPoint)scaleFactor beginAtPoint:(NSPoint)beginPoint endAtPoint:(NSPoint)endedPoint duration:(NSTimeInterval)duration removedOnCompletion:(BOOL)isRemovedOnCompletion completion:(void(^)(void))complete {
+    [[self layer] removeAllAnimations];
+    
+    CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:nil];
+    [opacityAnimation setFillMode:kCAFillModeForwards];
+    [opacityAnimation setRemovedOnCompletion:NO];
+    [opacityAnimation setFromValue:@(0.0)];
+    [opacityAnimation setToValue:@(1.0)];
+    
+    CATransform3D scaleTransform = CATransform3DMakeScale(scaleFactor.x, scaleFactor.y, 1.0);
+    
+    CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:nil];
+    [transformAnimation setFillMode:kCAFillModeForwards];
+    [transformAnimation setRemovedOnCompletion:NO];
+    [transformAnimation setFromValue:[NSValue valueWithCATransform3D:scaleTransform]];
+    [transformAnimation setToValue:[NSValue valueWithCATransform3D:CATransform3DIdentity]];
+    
+    CABasicAnimation *transitionAnimation = [CABasicAnimation animationWithKeyPath:nil];
+    [transitionAnimation setFillMode:kCAFillModeForwards];
+    [transitionAnimation setRemovedOnCompletion:NO];
+    [transitionAnimation setFromValue:[NSValue valueWithPoint:beginPoint]];
+    [transitionAnimation setToValue:[NSValue valueWithPoint:endedPoint]];
+    
+    [NSAnimationContext beginGrouping];
+    [[NSAnimationContext currentContext] setAllowsImplicitAnimation:YES];
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:duration];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+    [CATransaction setCompletionBlock:^{
+        if (isRemovedOnCompletion || (complete == nil)) {
+            [[self layer] removeAllAnimations];
+        }
+        
+        if (complete != nil) {
+            complete();
+        }
     }];
     
-    [subLayer addAnimation:animation forKey:@"shadowPath"];
-    subLayer.contents = finalImg;
-    subLayer.frame = toFrame;
+    [[self layer] addAnimation:opacityAnimation forKey:@"opacity"];
+    [[self layer] addAnimation:transformAnimation forKey:@"transform"];
+    [[self layer] addAnimation:transitionAnimation forKey:@"position"];
+    
     [CATransaction commit];
     [NSAnimationContext endGrouping];
 }
 
-- (void)transformAlongAxis:(NSInteger)axis scaleFactor:(CGFloat)scaleFactor startPoint:(CGFloat)startPoint endPoint:(CGFloat)endPoint onDuration:(CGFloat)duration {
-    // ensure that the layer's contents are set before we get rid of the real window.
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    [CATransaction commit];
-    
-    CAAnimation *animator;
-    if (axis == axis_x) {
-        animator = [CABasicAnimation transformAxisXAnimationWithDuration:duration forLayerBeginningOnTop:YES scaleFactor:1.0 fromTransX:startPoint toTransX:endPoint fromOpacity:0.0 toOpacity:1.0];
-    } else if (axis == axis_y) {
-        animator = [CABasicAnimation transformAxisYAnimationWithDuration:duration forLayerBeginningOnTop:YES scaleFactor:1.0 fromTransY:startPoint toTransY:endPoint fromOpacity:0.0 toOpacity:1.0];
-    }
-    
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:duration];
-    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-    
-    [CATransaction setCompletionBlock:^{
-        self.alphaValue = 1.0;
-        [self.layer removeAllAnimations];
-    }];
-    
-    [self.layer addAnimation:animator forKey:@"axis-transform"];
-    [CATransaction commit];
-}
-
-- (void)transitionAlongAxis:(NSInteger)axis startPoint:(NSPoint)startPoint endPoint:(NSPoint)endPoint onDuration:(CGFloat)duration {
-    // ensure that the layer's contents are set before we get rid of the real window.
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    [CATransaction commit];
-    
-    CABasicAnimation *positionAnim;
-    
-    if (axis == axis_x) {
-        positionAnim = [CABasicAnimation animationWithKeyPath:@"position"];
-        positionAnim.fromValue = [NSValue valueWithPoint:startPoint];
-        positionAnim.toValue = [NSValue valueWithPoint:endPoint];
-    } else if (axis == axis_y) {
-        positionAnim = [CABasicAnimation animationWithKeyPath:@"position"];
-        positionAnim.fromValue = [NSValue valueWithPoint:startPoint];
-        positionAnim.toValue = [NSValue valueWithPoint:endPoint];
-    }
-    
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:duration];
-    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
-    
-    [CATransaction setCompletionBlock:^{
-        [self.layer removeAllAnimations];
-    }];
-    
-    [self.layer addAnimation:positionAnim forKey:@"axis-transform"];
-    [CATransaction commit];
-}
-
-#pragma mark - Utilities
-
-- (void)displayAnimatedWillBeginAtPoint:(NSPoint)beginPoint endAtPoint:(NSPoint)endedPoint handler:(void(^)(void))handler {
-    [self setWantsLayer:YES];
-    [self.layer removeAllAnimations];
-    
-    CABasicAnimation *transitionAnimation = [CABasicAnimation animationWithKeyPath:nil];
-    transitionAnimation.fillMode = kCAFillModeForwards;
-    transitionAnimation.removedOnCompletion = NO;
-    
-    if (beginPoint.y != endedPoint.y) {
-        transitionAnimation.byValue = @(endedPoint.y - beginPoint.y);
-    } else {
-        transitionAnimation.fromValue = [NSValue valueWithPoint:beginPoint];
-        transitionAnimation.toValue = [NSValue valueWithPoint:endedPoint];
-    }
+- (void)closeScaleTransitionWithFactor:(NSPoint)scaleFactor beginAtPoint:(NSPoint)beginPoint endAtPoint:(NSPoint)endedPoint duration:(NSTimeInterval)duration removedOnCompletion:(BOOL)isRemovedOnCompletion completion:(void(^)(void))complete {
+    [[self layer] removeAllAnimations];
     
     CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:nil];
-    opacityAnimation.fillMode = kCAFillModeForwards;
-    opacityAnimation.removedOnCompletion = NO;
-    opacityAnimation.fromValue = @(0.0);
-    opacityAnimation.toValue = @(1.0);
+    [opacityAnimation setFillMode:kCAFillModeForwards];
+    [opacityAnimation setRemovedOnCompletion:NO];
+    [opacityAnimation setFromValue:@(1.0)];
+    [opacityAnimation setToValue:@(0.0)];
     
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:0.2];
-    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-    [CATransaction setCompletionBlock:^{
-        [self.layer removeAllAnimations];
-        
-        if (handler != nil) {
-            handler();
-        }
-    }];
+    CATransform3D scaleTransform = CATransform3DMakeScale(scaleFactor.x, scaleFactor.y, 1.0);
     
-    if (beginPoint.x != endedPoint.x) {
-        [self.layer addAnimation:transitionAnimation forKey:@"position.x"];
-    } else if (beginPoint.y != endedPoint.y) {
-        [self.layer addAnimation:transitionAnimation forKey:@"position.y"];
-    } else {
-        [self.layer addAnimation:transitionAnimation forKey:@"position"];
-    }
+    CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:nil];
+    [transformAnimation setFillMode:kCAFillModeForwards];
+    [transformAnimation setRemovedOnCompletion:NO];
+    [transformAnimation setFromValue:[NSValue valueWithCATransform3D:CATransform3DIdentity]];
+    [transformAnimation setToValue:[NSValue valueWithCATransform3D:scaleTransform]];
     
-    [self.layer addAnimation:opacityAnimation forKey:@"opacity"];
-    [CATransaction commit];
-}
-
-- (void)closeAnimatedWillBeginAtPoint:(NSPoint)beginPoint endAtPoint:(NSPoint)endedPoint handler:(void(^)(void))handler {
     CABasicAnimation *transitionAnimation = [CABasicAnimation animationWithKeyPath:nil];
-    transitionAnimation.fillMode = kCAFillModeForwards;
-    transitionAnimation.removedOnCompletion = NO;
-    
-    if (beginPoint.y != endedPoint.y) {
-        transitionAnimation.byValue = @(endedPoint.y - beginPoint.y);
-    } else {
-        transitionAnimation.fromValue = [NSValue valueWithPoint:beginPoint];
-        transitionAnimation.toValue = [NSValue valueWithPoint:endedPoint];
-    }
-    
-    CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:nil];
-    opacityAnimation.fillMode = kCAFillModeForwards;
-    opacityAnimation.removedOnCompletion = NO;
-    opacityAnimation.fromValue = @(1.0);
-    opacityAnimation.toValue = @(0.0);
-    
-    self.alphaValue = 0.0;
-    
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:0.2];
-    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-    [CATransaction setCompletionBlock:^{
-        self.alphaValue = 1.0;
-        [self.layer removeAllAnimations];
-        
-        if (handler != nil) {
-            handler();
-        }
-    }];
-    
-    if (beginPoint.x != endedPoint.x) {
-        [self.layer addAnimation:transitionAnimation forKey:@"position.x"];
-    } else if (beginPoint.y != endedPoint.y) {
-        [self.layer addAnimation:transitionAnimation forKey:@"position.y"];
-    } else {
-        [self.layer addAnimation:transitionAnimation forKey:@"position"];
-    }
-    
-    [self.layer addAnimation:opacityAnimation forKey:@"opacity"];
-    [CATransaction commit];
-}
-
-- (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame {
-    [self showingAnimated:showing fromFrame:fromFrame toFrame:toFrame source:nil];
-}
-
-- (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame source:(id)source {
-    [self showingAnimated:showing fromFrame:fromFrame toFrame:toFrame duration:0.2 source:source];
-}
-
-- (void)showingAnimated:(BOOL)showing fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame duration:(NSTimeInterval)duration source:(id)source {
-    [self setWantsLayer:YES];
-    [self setFrame:fromFrame];
-    
-    CABasicAnimation *fadeAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-    fadeAnimation.fromValue = [NSNumber numberWithFloat:showing ? 0.0 : 1.0];
-    fadeAnimation.toValue = [NSNumber numberWithFloat:showing ? 1.0 : 0.0];
-    fadeAnimation.duration = duration;
-    
-    NSString *fadeEffect = showing ? NSViewAnimationFadeInEffect : NSViewAnimationFadeOutEffect;
-    
-    NSDictionary *effectAttr = [[NSDictionary alloc] initWithObjectsAndKeys: self, NSViewAnimationTargetKey,
-                                [NSValue valueWithRect:fromFrame], NSViewAnimationStartFrameKey,
-                                [NSValue valueWithRect:toFrame], NSViewAnimationEndFrameKey,
-                                fadeEffect, NSViewAnimationEffectKey, nil];
-    
-    NSArray *effects = [[NSArray alloc] initWithObjects:effectAttr, nil];
-    NSViewAnimation *animation = [[NSViewAnimation alloc] initWithViewAnimations:effects];
-    
-    animation.animationBlockingMode = NSAnimationBlocking;
-    animation.animationCurve = NSAnimationEaseInOut;
-    animation.frameRate = 0.0;
-    animation.duration = duration;
-    animation.delegate = source;
-    
-    [self.layer addAnimation:fadeAnimation forKey:@"FLOExtensionsNSView.opacity"];
-    
-    [animation startAnimation];
-    
-    // Change the actual data value in the layer to the final value.
-    self.layer.opacity = showing ? 1.0 : 0.0;
-}
-
-- (void)showingAnimated:(BOOL)showing fromPosition:(NSPoint)fromPosition toPosition:(NSPoint)toPosition {
-    [self showingAnimated:showing fromPosition:fromPosition toPosition:toPosition completionHandler:nil];
-}
-
-- (void)showingAnimated:(BOOL)showing fromPosition:(NSPoint)fromPosition toPosition:(NSPoint)toPosition completionHandler:(void(^)(void))complete {
-    [self showingAnimated:showing fromPosition:fromPosition toPosition:toPosition duration:0.2 completionHandler:complete];
-}
-
-- (void)showingAnimated:(BOOL)showing fromPosition:(NSPoint)fromPosition toPosition:(NSPoint)toPosition duration:(NSTimeInterval)duration completionHandler:(void(^)(void))complete {
-    [[self animator] setFrameOrigin:fromPosition];
-    [[self animator] setAlphaValue:showing ? 0.0 : 1.0];
+    [transitionAnimation setFillMode:kCAFillModeForwards];
+    [transitionAnimation setRemovedOnCompletion:NO];
+    [transitionAnimation setFromValue:[NSValue valueWithPoint:beginPoint]];
+    [transitionAnimation setToValue:[NSValue valueWithPoint:endedPoint]];
     
     [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration:duration];
-    [[NSAnimationContext currentContext] setCompletionHandler:^{
-        [[self animator] setFrameOrigin:toPosition];
+    [[NSAnimationContext currentContext] setAllowsImplicitAnimation:YES];
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:duration];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+    [CATransaction setCompletionBlock:^{
+        if (isRemovedOnCompletion || (complete == nil)) {
+            [[self layer] removeAllAnimations];
+        }
         
         if (complete != nil) {
-            [[NSOperationQueue mainQueue] addOperationWithBlock:complete];
+            complete();
         }
     }];
     
-    [[self animator] setFrameOrigin:toPosition];
-    [[self animator] setAlphaValue:showing ? 1.0 : 0.0];
+    [[self layer] addAnimation:opacityAnimation forKey:@"opacity"];
+    [[self layer] addAnimation:transformAnimation forKey:@"transform"];
+    [[self layer] addAnimation:transitionAnimation forKey:@"position"];
+    
+    [CATransaction commit];
     [NSAnimationContext endGrouping];
 }
 

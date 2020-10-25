@@ -17,10 +17,17 @@
 @protocol FLOPopoverDelegate <NSObject>
 
 @optional
+
 - (void)floPopoverWillShow:(FLOPopover *)popover;
 - (void)floPopoverDidShow:(FLOPopover *)popover;
+- (BOOL)floPopoverShouldClose:(FLOPopover *)popover;
 - (void)floPopoverWillClose:(FLOPopover *)popover;
 - (void)floPopoverDidClose:(FLOPopover *)popover;
+
+- (void)floPopoverWillMove:(FLOPopover *)popover;
+- (void)floPopoverDidMove:(FLOPopover *)popover;
+- (void)floPopoverWillDetach:(FLOPopover *)popover;
+- (void)floPopoverDidDetach:(FLOPopover *)popover;
 
 @end
 
@@ -28,7 +35,7 @@
 ///
 @interface FLOPopover : NSResponder
 
-@property (weak, readwrite) id<FLOPopoverDelegate> delegate;
+@property (nonatomic, weak) id<FLOPopoverDelegate> delegate;
 
 #pragma mark - Properties
 
@@ -54,6 +61,10 @@
 @property (nonatomic, assign) BOOL animated;
 @property (nonatomic, assign) BOOL animatedForwarding;
 @property (nonatomic, assign) CGFloat bottomOffset;
+/**
+ * This maximum height the popover could be set.
+ */
+@property (nonatomic, assign) CGFloat maxHeight;
 
 /**
  * This property is used out side of this scope for handling
@@ -63,6 +74,7 @@
 
 @property (nonatomic, assign) BOOL stopsAtContainerBounds;
 
+@property (nonatomic, assign) BOOL staysInScreen;
 /**
  * Determine whether the popover should stay in parent or application or screen.
  * Default value of staysInContainer is NO, it means that the popover will stay inside the screen.
@@ -70,6 +82,7 @@
 @property (nonatomic, assign) BOOL staysInContainer;
 @property (nonatomic, assign) BOOL updatesFrameWhileShowing;
 @property (nonatomic, assign) BOOL updatesFrameWhenApplicationResizes;
+@property (nonatomic, assign) BOOL shouldUseRelativeVisibleRect;
 @property (nonatomic, assign) BOOL shouldRegisterSuperviewObservers;
 @property (nonatomic, assign) BOOL shouldChangeSizeWhenApplicationResizes;
 @property (nonatomic, assign) BOOL closesWhenPopoverResignsKey;
@@ -117,14 +130,7 @@
  */
 @property (nonatomic, assign) NSInteger tag;
 
-/**
- * Make transition animation by moving frame of the popover instead of using CABasicAnimation.
- */
-@property (nonatomic, assign) BOOL animatedByMovingFrame;
-
 @property (nonatomic, assign) NSTimeInterval animationDuration;
-
-@property (nonatomic, assign) BOOL needsAutoresizingMask;
 
 #pragma mark - Initialize
 
@@ -176,6 +182,26 @@
 - (void)setPopoverPositioningRect:(NSRect)rect;
 - (void)setPopoverPositioningView:(NSView *)positioningView positioningRect:(NSRect)rect;
 - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;
+/**
+ * Sticking rect: Re-arrange the popover with new positioningView and edgeType.
+ *
+ * @param positioningView is the view that popover will be displayed relatively to.
+ * @param edgeType 'position' that the popover should be displayed.
+ *
+ * @note positioningView is also a sender that sends event for showing the popover (positioningView ≡ sender).
+ */
+- (void)setPopoverPositioningView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType;
+/**
+ * Sticking rect: Re-arrange the popover with new positioningView, edgeType and positioningRect.
+ *
+ * @param positioningView is the view that popover will be displayed relatively to.
+ * @param edgeType 'position' that the popover should be displayed.
+ * @param rect 'position' that the popover should be displayed.
+ *
+ * @note positioningView is also a sender that sends event for showing the popover (positioningView ≡ sender).
+ */
+- (void)setPopoverPositioningView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType positioningRect:(NSRect)rect;
+
 - (void)setUserInteractionEnable:(BOOL)isEnable;
 
 - (void)showWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;

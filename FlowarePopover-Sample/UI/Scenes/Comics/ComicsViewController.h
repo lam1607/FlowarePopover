@@ -14,7 +14,6 @@
 
 /// @property
 ///
-@property (nonatomic, copy) void (^didContentSizeChange)(NSSize newSize);
 
 /// Methods
 ///

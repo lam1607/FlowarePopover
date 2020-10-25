@@ -23,6 +23,7 @@
 		DE0575FF22366ADC00B94B81 /* NotificationObservers.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0575FE22366ADC00B94B81 /* NotificationObservers.m */; };
 		DE05760722366F1C00B94B81 /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = DE05760622366F1C00B94B81 /* NotificationService.m */; };
 		DE05760B223670FE00B94B81 /* Notification.m in Sources */ = {isa = PBXBuildFile; fileRef = DE05760A223670FE00B94B81 /* Notification.m */; };
+		DE1BEF04254523DA0036F289 /* DoubleClickButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DE1BEF02254523DA0036F289 /* DoubleClickButton.m */; };
 		DE515B7623A763770057EBCD /* AbstractWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DE515B7523A763770057EBCD /* AbstractWindow.m */; };
 		DE7A697822E16A850046FEA8 /* FLOVirtualView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE7A697622E16A850046FEA8 /* FLOVirtualView.m */; };
 		DE8E5C7121534233002AE872 /* AppleScriptObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE8E5C7021534233002AE872 /* AppleScriptObjC.framework */; };
@@ -193,6 +194,8 @@
 		DE05760822366F3800B94B81 /* NotificationServiceProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationServiceProtocols.h; sourceTree = "<group>"; };
 		DE05760922366FA500B94B81 /* Notification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Notification.h; sourceTree = "<group>"; };
 		DE05760A223670FE00B94B81 /* Notification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Notification.m; sourceTree = "<group>"; };
+		DE1BEF02254523DA0036F289 /* DoubleClickButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoubleClickButton.m; sourceTree = "<group>"; };
+		DE1BEF03254523DA0036F289 /* DoubleClickButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoubleClickButton.h; sourceTree = "<group>"; };
 		DE515B7423A763770057EBCD /* AbstractWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AbstractWindow.h; sourceTree = "<group>"; };
 		DE515B7523A763770057EBCD /* AbstractWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AbstractWindow.m; sourceTree = "<group>"; };
 		DE7A697522E16A850046FEA8 /* FLOVirtualView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOVirtualView.h; sourceTree = "<group>"; };
@@ -466,6 +469,15 @@
 				DE0575FE22366ADC00B94B81 /* NotificationObservers.m */,
 			);
 			path = Observers;
+			sourceTree = "<group>";
+		};
+		DE1BEF01254523DA0036F289 /* CustomNSButton */ = {
+			isa = PBXGroup;
+			children = (
+				DE1BEF03254523DA0036F289 /* DoubleClickButton.h */,
+				DE1BEF02254523DA0036F289 /* DoubleClickButton.m */,
+			);
+			path = CustomNSButton;
 			sourceTree = "<group>";
 		};
 		DE7BCDE121BA0CC500EE1B33 /* CustomNSView */ = {
@@ -792,6 +804,7 @@
 		DE8E5DFE215348EE002AE872 /* CustomClasses */ = {
 			isa = PBXGroup;
 			children = (
+				DE1BEF01254523DA0036F289 /* CustomNSButton */,
 				DE8E5DFF215348EE002AE872 /* CustomNSTableRowView */,
 				DE7BCDE121BA0CC500EE1B33 /* CustomNSView */,
 			);
@@ -1049,9 +1062,9 @@
 		DEDE463721534005004E8DEF /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				DEEB1C3722D3535E0019985C /* Extensions */,
 				DEEB1C3822D353640019985C /* Classes */,
 				DEEB1C3622D3535A0019985C /* Core */,
+				DEEB1C3722D3535E0019985C /* Extensions */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1071,16 +1084,16 @@
 		DEEB1C3622D3535A0019985C /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				DEDE465421534005004E8DEF /* FLOPopoverConstants.h */,
-				DEDE4050229FAC6E00456551 /* FLOPopoverProtocols.h */,
 				DEDE463C21534005004E8DEF /* FLOPopover.h */,
 				DEDE465321534005004E8DEF /* FLOPopover.m */,
+				DEDE465421534005004E8DEF /* FLOPopoverConstants.h */,
+				DEDE4050229FAC6E00456551 /* FLOPopoverProtocols.h */,
+				DEDE465521534005004E8DEF /* FLOPopoverUtils.h */,
+				DEDE463B21534005004E8DEF /* FLOPopoverUtils.m */,
 				DEDE463821534005004E8DEF /* FLOViewPopup.h */,
 				DEDE464F21534005004E8DEF /* FLOViewPopup.m */,
 				DEDE464E21534005004E8DEF /* FLOWindowPopup.h */,
 				DEDE463921534005004E8DEF /* FLOWindowPopup.m */,
-				DEDE465521534005004E8DEF /* FLOPopoverUtils.h */,
-				DEDE463B21534005004E8DEF /* FLOPopoverUtils.m */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1107,12 +1120,12 @@
 		DEEB1C3822D353640019985C /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				DEF1F89422B79BB800D54049 /* FLOPopoverClippingView.h */,
+				DEF1F89522B79BB800D54049 /* FLOPopoverClippingView.m */,
 				DEF1F87822B78FBE00D54049 /* FLOPopoverView.h */,
 				DEF1F87922B78FBE00D54049 /* FLOPopoverView.m */,
 				DEF1F87C22B7900500D54049 /* FLOPopoverWindow.h */,
 				DEF1F87D22B7900500D54049 /* FLOPopoverWindow.m */,
-				DEF1F89422B79BB800D54049 /* FLOPopoverClippingView.h */,
-				DEF1F89522B79BB800D54049 /* FLOPopoverClippingView.m */,
 				DE7A697522E16A850046FEA8 /* FLOVirtualView.h */,
 				DE7A697622E16A850046FEA8 /* FLOVirtualView.m */,
 			);
@@ -1367,6 +1380,7 @@
 				DE8F742F2238DC7500291F69 /* TableRowView.m in Sources */,
 				DE8E5E41215348EF002AE872 /* News.m in Sources */,
 				DE8E5E3F215348EF002AE872 /* Film.m in Sources */,
+				DE1BEF04254523DA0036F289 /* DoubleClickButton.m in Sources */,
 				343FA1F523A6356C0074C55C /* EntitlementsManager.m in Sources */,
 				DE8E5E49215348EF002AE872 /* NewsService.m in Sources */,
 				DED3A40F21E6FDF000B479BF /* TechnologiesViewController.m in Sources */,

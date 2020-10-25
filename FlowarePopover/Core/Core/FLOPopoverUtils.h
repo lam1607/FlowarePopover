@@ -17,8 +17,10 @@
 
 #pragma mark - Properties
 
-@property (nonatomic, strong, readonly) NSWindow *mainWindow;
+@property (nonatomic, weak, readonly) NSWindow *mainWindow;
 @property (nonatomic, assign, readonly) BOOL isCloseEventReceived;
+
+@property (nonatomic, assign, readonly) NSRectEdge preferredEdge;
 
 @property (nonatomic, strong) NSView *contentView;
 @property (nonatomic, strong) NSViewController *contentViewController;
@@ -37,8 +39,6 @@
 @property (nonatomic, assign) FLOPopoverAnimationType animationType;
 @property (nonatomic, assign) BOOL animatedInAppFrame;
 
-@property (nonatomic, assign) BOOL needsAutoresizingMask;
-
 @property (nonatomic, strong) NSView *positioningAnchorView;
 @property (nonatomic, strong) NSView *senderView;
 @property (nonatomic, assign) FLOPopoverRelativePositionType relativePositionType;
@@ -55,7 +55,7 @@
 
 #pragma mark - Utilities
 
-- (NSMutableArray<NSClipView *> *)observerClipViews;
+- (NSMutableArray<NSView *> *)observerSuperviews;
 - (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame animationType:(FLOPopoverAnimationType)animationType forwarding:(BOOL)forwarding showing:(BOOL)showing;
 - (void)calculateTransitionFrame:(NSRect *)transitionFrame fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame animationType:(FLOPopoverAnimationType)animationType forwarding:(BOOL)forwarding showing:(BOOL)showing;
 - (BOOL)treeOfView:(NSView *)view containsPosition:(NSPoint)position;
@@ -63,14 +63,11 @@
 - (BOOL)views:(NSArray *)views contain:(NSView *)view;
 - (BOOL)window:(NSWindow *)parent contains:(NSWindow *)child;
 - (BOOL)windows:(NSArray *)windows contain:(NSWindow *)window;
-- (NSVisualEffectView *)contentViewDidContainVisualEffect;
-- (void)addView:(NSView *)view toParent:(NSView *)parentView;
-- (void)addView:(NSView *)view toParent:(NSView *)parentView autoresizingMask:(BOOL)isAutoresizingMask;
-- (void)addView:(NSView *)view toParent:(NSView *)parentView centerAutoresizingMask:(BOOL)isCenterAutoresizingMask;
-- (void)setupAutoresizingMaskIfNeeded:(BOOL)needed;
-- (void)closePopoverWithTimerIfNeeded;
 
+- (void)updateContentViewFrameInsets:(NSRectEdge)popoverEdge;
+- (void)closePopoverWithTimerIfNeeded;
 - (void)invalidateArrowPathColor;
+- (void)setLocalUpdatedBlock:(void(^)(void))block;
 
 #pragma mark - Display utilities
 
@@ -86,5 +83,7 @@
 
 - (void)registerForApplicationEvents;
 - (void)removeAllApplicationEvents;
+- (void)registerContentViewEvents;
+- (void)removeContentViewEvents;
 
 @end

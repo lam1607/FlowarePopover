@@ -22,9 +22,15 @@
 @property (nonatomic, assign, readonly) FLOPopoverType type;
 @property (nonatomic, assign, readonly) BOOL containsArrow;
 @property (nonatomic, assign, readonly) BOOL isCloseEventReceived;
-@property (nonatomic, weak, readonly) NSMutableArray<NSClipView *> *observerClipViews;
 
 @property (nonatomic, assign, readonly) BOOL userInteractionEnable;
+
+/**
+ * This is used for checking purpose, when the utilities received
+ * the content view's frame changed notification.
+ * For updating the popover frame correctly instead of unnecessary notification.
+ */
+@property (nonatomic, assign) BOOL localUpdated;
 
 @property (nonatomic, assign) NSRect initialFrame;
 
@@ -38,12 +44,18 @@
 @property (nonatomic, assign) BOOL animated;
 @property (nonatomic, assign) BOOL animatedForwarding;
 @property (nonatomic, assign) CGFloat bottomOffset;
+/**
+ * This maximum height the popover could be set.
+ */
+@property (nonatomic, assign) CGFloat maxHeight;
 
 @property (nonatomic, assign) BOOL stopsAtContainerBounds;
 
+@property (nonatomic, assign) BOOL staysInScreen;
 @property (nonatomic, assign) BOOL staysInContainer;
 @property (nonatomic, assign) BOOL updatesFrameWhileShowing;
 @property (nonatomic, assign) BOOL updatesFrameWhenApplicationResizes;
+@property (nonatomic, assign) BOOL shouldUseRelativeVisibleRect;
 @property (nonatomic, assign) BOOL shouldRegisterSuperviewObservers;
 @property (nonatomic, assign) BOOL shouldChangeSizeWhenApplicationResizes;
 @property (nonatomic, assign) BOOL closesWhenPopoverResignsKey;
@@ -77,24 +89,20 @@
  */
 @property (nonatomic, assign) NSInteger tag;
 
-/**
- * Make transition animation by moving frame of the popover instead of using CALayer.
- */
-@property (nonatomic, assign) BOOL animatedByMovingFrame;
-
 @property (nonatomic, assign) NSTimeInterval animationDuration;
-
-@property (nonatomic, assign) BOOL needsAutoresizingMask;
 
 #pragma mark - Callback utilities
 
-@property (nonatomic, copy) void (^willShowBlock)(id<FLOPopoverProtocols> popover);
-@property (nonatomic, copy) void (^didShowBlock)(id<FLOPopoverProtocols> popover);
-@property (nonatomic, copy) void (^willCloseBlock)(id<FLOPopoverProtocols> popover);
-@property (nonatomic, copy) void (^didCloseBlock)(id<FLOPopoverProtocols> popover);
+@property (nonatomic, copy) void (^floPopoverWillShowBlock)(id<FLOPopoverProtocols> popover);
+@property (nonatomic, copy) void (^floPopoverDidShowBlock)(id<FLOPopoverProtocols> popover);
+@property (nonatomic, copy) BOOL (^floPopoverShouldCloseBlock)(id<FLOPopoverProtocols> popover);
+@property (nonatomic, copy) void (^floPopoverWillCloseBlock)(id<FLOPopoverProtocols> popover);
+@property (nonatomic, copy) void (^floPopoverDidCloseBlock)(id<FLOPopoverProtocols> popover);
 
-@property (nonatomic, copy) void (^didMoveBlock)(id<FLOPopoverProtocols> popover);
-@property (nonatomic, copy) void (^didDetachBlock)(id<FLOPopoverProtocols> popover);
+@property (nonatomic, copy) void (^floPopoverWillMoveBlock)(id<FLOPopoverProtocols> popover);
+@property (nonatomic, copy) void (^floPopoverDidMoveBlock)(id<FLOPopoverProtocols> popover);
+@property (nonatomic, copy) void (^floPopoverWillDetachBlock)(id<FLOPopoverProtocols> popover);
+@property (nonatomic, copy) void (^floPopoverDidDetachBlock)(id<FLOPopoverProtocols> popover);
 
 #pragma mark - Initialize
 
@@ -135,11 +143,32 @@
 - (void)setPopoverPositioningRect:(NSRect)rect;
 - (void)setPopoverPositioningView:(NSView *)positioningView positioningRect:(NSRect)rect;
 - (void)setPopoverContentViewSize:(NSSize)newSize positioningRect:(NSRect)rect;
+/**
+ * Sticking rect: Re-arrange the popover with new positioningView and edgeType.
+ *
+ * @param positioningView is the view that popover will be displayed relatively to.
+ * @param edgeType 'position' that the popover should be displayed.
+ *
+ * @note positioningView is also a sender that sends event for showing the popover (positioningView ≡ sender).
+ */
+- (void)setPopoverPositioningView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType;
+/**
+ * Sticking rect: Re-arrange the popover with new positioningView, edgeType and positioningRect.
+ *
+ * @param positioningView is the view that popover will be displayed relatively to.
+ * @param edgeType 'position' that the popover should be displayed.
+ * @param rect 'position' that the popover should be displayed.
+ *
+ * @note positioningView is also a sender that sends event for showing the popover (positioningView ≡ sender).
+ */
+- (void)setPopoverPositioningView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType positioningRect:(NSRect)rect;
+
 - (void)setUserInteractionEnable:(BOOL)isEnable;
 
 - (void)showWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 
 - (void)updateFrame:(NSRect)frame;
+- (void)updatePopoverFrame;
 
 // Invalidate the popover shadow in case of changing position of popover arrow
 // or other case the popover shadow not updated when popover moves.
@@ -178,8 +207,6 @@
 - (void)showRelativeToView:(NSView *)positioningView withRect:(NSRect)rect sender:(NSView *)sender relativePositionType:(FLOPopoverRelativePositionType)relativePositionType edgeType:(FLOPopoverEdgeType)edgeType;
 
 - (void)close;
-- (void)closePopover:(id<FLOPopoverProtocols>)sender;
-- (void)closePopover:(id<FLOPopoverProtocols>)sender completion:(void(^)(void))complete;
 
 @optional
 /// For FLOWindowPopover only
