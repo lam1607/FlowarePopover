@@ -11,6 +11,7 @@
 
 #import <Foundation/Foundation.h>
 
+static const NSUInteger kFlowarePopover_Max_Try                     = 4;
 static const NSTimeInterval kFlowarePopover_AnimationTimeInterval   = 0.2;
 static const CGFloat kFlowarePopover_BottomOffset                   = 5.0;
 static const CGFloat kFlowarePopover_ShadowRadius                   = 5.0;

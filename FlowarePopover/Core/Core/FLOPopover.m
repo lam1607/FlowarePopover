@@ -59,9 +59,11 @@
 }
 
 - (void)dealloc {
+    [_popover close];
     _popover = nil;
     self.contentView = nil;
     self.contentViewController = nil;
+    self.arrowColor = NULL;
 }
 
 #pragma mark - Getter/Setter
@@ -99,7 +101,7 @@
 }
 
 - (BOOL)isCloseEventReceived {
-    return _popover.isCloseEventReceived;
+    return _popover.closeEventReceived;
 }
 
 - (BOOL)userInteractionEnable {
@@ -130,6 +132,14 @@
 - (void)setArrowSize:(NSSize)arrowSize {
     _arrowSize = arrowSize;
     _popover.arrowSize = arrowSize;
+}
+
+- (void)setArrowColor:(CGColorRef)arrowColor {
+    CGColorRelease(_arrowColor);
+    _arrowColor = arrowColor;
+    CGColorRetain(_arrowColor);
+    
+    _popover.arrowColor = arrowColor;
 }
 
 - (void)setAnimated:(BOOL)animated {
@@ -165,6 +175,15 @@
     }
 }
 
+- (void)setStaysInScreen:(BOOL)staysInScreen {
+    _staysInScreen = staysInScreen;
+    _popover.staysInScreen = staysInScreen;
+    
+    if (staysInScreen) {
+        [self setStaysInContainer:NO];
+    }
+}
+
 - (void)setStaysInContainer:(BOOL)staysInContainer {
     _staysInContainer = staysInContainer;
     _popover.staysInContainer = staysInContainer;
@@ -174,13 +193,9 @@
     }
 }
 
-- (void)setStaysInScreen:(BOOL)staysInScreen {
-    _staysInScreen = staysInScreen;
-    _popover.staysInScreen = staysInScreen;
-    
-    if (staysInScreen) {
-        [self setStaysInContainer:NO];
-    }
+- (void)setUpdatesPositionCircularly:(BOOL)updatesPositionCircularly {
+    _updatesPositionCircularly = updatesPositionCircularly;
+    _popover.updatesPositionCircularly = updatesPositionCircularly;
 }
 
 - (void)setUpdatesFrameWhileShowing:(BOOL)updatesFrameWhileShowing {
@@ -191,6 +206,11 @@
 - (void)setUpdatesFrameWhenApplicationResizes:(BOOL)updatesFrameWhenApplicationResizes {
     _updatesFrameWhenApplicationResizes = updatesFrameWhenApplicationResizes;
     _popover.updatesFrameWhenApplicationResizes = updatesFrameWhenApplicationResizes;
+}
+
+- (void)setShouldUseRelativeVisibleRect:(BOOL)shouldUseRelativeVisibleRect {
+    _shouldUseRelativeVisibleRect = shouldUseRelativeVisibleRect;
+    _popover.shouldUseRelativeVisibleRect = shouldUseRelativeVisibleRect;
 }
 
 - (void)setShouldRegisterSuperviewObservers:(BOOL)shouldRegisterSuperviewObservers {

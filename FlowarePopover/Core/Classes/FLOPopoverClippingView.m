@@ -84,11 +84,11 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 }
 
 - (void)setPathColor:(CGColorRef)pathColor {
-    if (pathColor != NULL) {
-        CGColorRelease(_pathColor);
-        _pathColor = pathColor;
-        CGColorRetain(_pathColor);
-    }
+    if (pathColor == _pathColor) return;
+    
+    CGColorRelease(_pathColor);
+    _pathColor = pathColor;
+    CGColorRetain(_pathColor);
 }
 
 #pragma mark - FLOPopoverClippingView methods
@@ -127,6 +127,7 @@ static NSBezierPath *bezierPathWithCGPath(CGPathRef cgPath) {
 }
 
 - (void)clearClippingPath {
+    self.pathColor = NULL;
     self.clippingPath = NULL;
 }
 

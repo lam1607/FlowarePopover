@@ -58,6 +58,7 @@
 
 @property (nonatomic, assign) BOOL shouldShowArrow;
 @property (nonatomic, assign) NSSize arrowSize;
+@property (nonatomic) CGColorRef arrowColor;
 @property (nonatomic, assign) BOOL animated;
 @property (nonatomic, assign) BOOL animatedForwarding;
 @property (nonatomic, assign) CGFloat bottomOffset;
@@ -74,12 +75,27 @@
 
 @property (nonatomic, assign) BOOL stopsAtContainerBounds;
 
+/**
+ * Determine whether the popover should stay in screen.
+ * Default value of staysInScreen is NO, it means that the popover will keep its orginal frame
+ * without fitting its frame to the container.
+ */
 @property (nonatomic, assign) BOOL staysInScreen;
 /**
- * Determine whether the popover should stay in parent or application or screen.
- * Default value of staysInContainer is NO, it means that the popover will stay inside the screen.
+ * Determine whether the popover should stay in container.
+ * Default value of staysInContainer is NO, it means that the popover will keep its orginal frame
+ * without fitting its frame to the container.
  */
 @property (nonatomic, assign) BOOL staysInContainer;
+/**
+ * Update the position of the popover when its NSRectEdge changed by circular direction.
+ * Default value of staysInContainer is YES.
+ * @code NSRectEdgeMinX (backward) --> NSRectEdgeMaxY (above) --> NSRectEdgeMaxX (forward) --> NSRectEdgeMinY (below) @endcode
+ * If the value of staysInContainer is set as NO, it means that
+ * the popover's position will be updated with cross direction.
+ * @code NSRectEdgeMinX (backward) --> NSRectEdgeMaxX (forward) --> NSRectEdgeMinY (below) --> NSRectEdgeMaxY (above) @endcode
+ */
+@property (nonatomic, assign) BOOL updatesPositionCircularly;
 @property (nonatomic, assign) BOOL updatesFrameWhileShowing;
 @property (nonatomic, assign) BOOL updatesFrameWhenApplicationResizes;
 @property (nonatomic, assign) BOOL shouldUseRelativeVisibleRect;

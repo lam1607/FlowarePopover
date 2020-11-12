@@ -118,6 +118,20 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 
 #pragma mark - Getter/Setter
 
+/// The path which the view will clip to. The clippingPath will be retained and
+/// released automatically.
+- (CGPathRef)clippingPath {
+    return self.clippingView.clippingPath;
+}
+
+- (CGColorRef)pathColor {
+    return self.clippingView.pathColor;
+}
+
+- (BOOL)isArrowVisible {
+    return _arrowVisible;
+}
+
 - (void)setArrowSize:(CGSize)arrowSize {
     if (NSEqualSizes(arrowSize, self.arrowSize) && !NSEqualSizes(self.arrowSize, NSZeroSize)) return;
     
@@ -234,7 +248,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 }
 
 - (void)setArrowColor:(CGColorRef)color {
-    if (!NSEqualSizes(self.arrowSize, NSZeroSize) && (color != NULL)) {
+    if (!NSEqualSizes(self.arrowSize, NSZeroSize) && (color != self.clippingView.pathColor)) {
         [self.clippingView setPathColor:color];
         [self setNeedsDisplay:YES];
     }

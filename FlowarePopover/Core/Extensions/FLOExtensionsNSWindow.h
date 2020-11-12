@@ -10,4 +10,10 @@
 
 @interface NSWindow (FLOExtensionsNSWindow)
 
+- (BOOL)containsChildWindow:(NSWindow *)child;
+
+/// Class methods
+///
++ (BOOL)windows:(NSArray *)windows contain:(NSWindow *)window;
+
 @end

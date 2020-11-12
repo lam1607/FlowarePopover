@@ -12,6 +12,30 @@
 
 @implementation NSView (FLOExtensionsNSView)
 
+- (BOOL)containsView:(NSView *)child {
+    return [[self class] views:[self subviews] contain:child];
+}
+
+- (BOOL)containsPosition:(NSPoint)position {
+    NSView *view = self;
+    NSRect relativeRect = [view convertRect:[view alignmentRectForFrame:[view bounds]] toView:nil];
+    NSRect viewRect = [view.window convertRectToScreen:relativeRect];
+    
+    if (NSPointInRect(position, viewRect)) {
+        return YES;
+    } else {
+        NSArray<NSView *> *subviews = [view subviews];
+        
+        for (NSView *item in subviews) {
+            if ([item containsPosition:position]) {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
 - (NSVisualEffectView *)containsVisualEffect {
     NSArray<NSView *> *subviews = [self subviews];
     
@@ -120,6 +144,16 @@
     
     [widthConstraint setActive:YES];
     [heightConstraint setActive:YES];
+}
+
+- (void)removeSizeConstraints {
+    NSLayoutConstraint *widthConstraint = [self constraintForAttribute:NSLayoutAttributeWidth];
+    NSLayoutConstraint *heightConstraint = [self constraintForAttribute:NSLayoutAttributeHeight];
+    
+    [widthConstraint setActive:NO];
+    [heightConstraint setActive:NO];
+    [self removeConstraint:widthConstraint];
+    [self removeConstraint:heightConstraint];
 }
 
 - (void)removeConstraints {
@@ -364,6 +398,22 @@
     
     [CATransaction commit];
     [NSAnimationContext endGrouping];
+}
+
+#pragma mark - Class methods
+
++ (BOOL)views:(NSArray *)views contain:(NSView *)view {
+    if ([views containsObject:view]) {
+        return YES;
+    } else {
+        for (NSView *item in views) {
+            if ([[self class] views:[item subviews] contain:view]) {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
 }
 
 @end

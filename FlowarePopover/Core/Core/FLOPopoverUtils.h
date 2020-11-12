@@ -58,11 +58,6 @@
 - (NSMutableArray<NSView *> *)observerSuperviews;
 - (void)calculateFromFrame:(NSRect *)fromFrame toFrame:(NSRect *)toFrame animationType:(FLOPopoverAnimationType)animationType forwarding:(BOOL)forwarding showing:(BOOL)showing;
 - (void)calculateTransitionFrame:(NSRect *)transitionFrame fromFrame:(NSRect)fromFrame toFrame:(NSRect)toFrame animationType:(FLOPopoverAnimationType)animationType forwarding:(BOOL)forwarding showing:(BOOL)showing;
-- (BOOL)treeOfView:(NSView *)view containsPosition:(NSPoint)position;
-- (BOOL)view:(NSView *)parent contains:(NSView *)child;
-- (BOOL)views:(NSArray *)views contain:(NSView *)view;
-- (BOOL)window:(NSWindow *)parent contains:(NSWindow *)child;
-- (BOOL)windows:(NSArray *)windows contain:(NSWindow *)window;
 
 - (void)updateContentViewFrameInsets:(NSRectEdge)popoverEdge;
 - (void)closePopoverWithTimerIfNeeded;
@@ -81,8 +76,9 @@
 
 #pragma mark - Event monitor
 
-- (void)registerForApplicationEvents;
-- (void)removeAllApplicationEvents;
+- (void)registerObserverForSuperviews;
+- (void)registerApplicationEvents;
+- (void)removeApplicationEvents;
 - (void)registerContentViewEvents;
 - (void)removeContentViewEvents;
 

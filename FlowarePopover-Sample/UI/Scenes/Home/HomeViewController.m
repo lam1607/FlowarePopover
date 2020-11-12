@@ -198,7 +198,8 @@
 
 - (void)showRelativeToRectOfViewWithPopover:(FLOPopover *)popover edgeType:(FLOPopoverEdgeType)edgeType atView:(NSView *)sender
 {
-    NSRect rect = (sender.superview != nil) ? [sender.superview visibleRect] : [sender visibleRect];
+    NSView *view = (sender.superview != nil) ? sender.superview : sender;
+    NSRect rect = [view convertRect:[view visibleRect] toView:sender];
     
     if (popover == _popoverGeneral)
     {
@@ -591,7 +592,7 @@
 
 - (void)viewOpensGeneralView
 {
-    [self showGeneralPopupAtView:self.btnGeneral option:PopoverGeneralTypeComics];
+    [self showGeneralPopupAtView:self.btnGeneral option:PopoverGeneralTypeTechnologies];
 }
 
 - (void)viewOpensGeneralMenuAtView:(NSView *)sender

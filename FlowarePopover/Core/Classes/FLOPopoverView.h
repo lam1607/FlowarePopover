@@ -35,6 +35,13 @@
 /// be set by the popover.
 @property (nonatomic, assign, readonly) NSRect popoverOrigin;
 
+/// The path which the view will clip to. The clippingPath will be retained and
+/// released automatically.
+@property (nonatomic, readonly) CGPathRef clippingPath;
+@property (nonatomic, readonly) CGColorRef pathColor;
+
+@property (nonatomic, assign, readonly) BOOL isArrowVisible;
+
 /// The size of the arrow used to indicate the origin of the popover.
 ///
 /// Note that the height will always be the distance from the view to the tip of
