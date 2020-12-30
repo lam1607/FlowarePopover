@@ -21,13 +21,16 @@
 
 #import "HomePresenter.h"
 
-@interface HomeViewController () <FLOPopoverDelegate, DragDropTrackingDelegate>
+@interface HomeViewController () <SplitViewManagerProtocols, FLOPopoverDelegate, DragDropTrackingDelegate>
 {
     id<HomePresenterProtocols> _presenter;
+    
+    SplitViewManager *_splitViewManager;
     
     FLOPopover *_popoverFilms;
     FLOPopover *_popoverNews;
     FLOPopover *_popoverGeneral;
+    FLOPopover *_popoverTrash;
     
     PopoverGeneralType _generalType;
     PopoverGeneralDisplayStyle _generalDisplayStyle;
@@ -41,7 +44,13 @@
 
 /// IBOutlet
 ///
+@property (weak) IBOutlet AspectImageView *backgroundImageView;
+
 @property (weak) IBOutlet NSView *menuView;
+
+@property (weak) IBOutlet DragDroppableView *viewContainerTrashIcon;
+@property (weak) IBOutlet NSImageView *imgTrashIcon;
+@property (weak) IBOutlet NSButton *btnTrashIcon;
 
 @property (weak) IBOutlet NSView *viewContainerMode;
 @property (weak) IBOutlet DoubleClickButton *btnChangeMode;
@@ -60,13 +69,10 @@
 @property (weak) IBOutlet DoubleClickButton *btnGeneral;
 
 @property (weak) IBOutlet NSView *viewSecondBar;
+
+@property (weak) IBOutlet NSSplitView *contentSplitView;
+
 @property (weak) IBOutlet NSLayoutConstraint *constraintHeightSecondBar;
-
-@property (weak) IBOutlet DragDroppableView *viewContainerTrashIcon;
-@property (weak) IBOutlet NSImageView *imgTrashIcon;
-@property (weak) IBOutlet NSButton *btnTrashIcon;
-
-@property (weak) IBOutlet NSView *viewContainerTrash;
 
 /// @property
 ///
@@ -89,6 +95,34 @@
     [super viewWillAppear];
 }
 
+- (void)viewDidAppear
+{
+    [super viewDidAppear];
+    
+    [_splitViewManager setPriority:0 forViewAtIndex:0];
+    [_splitViewManager setMinimumLength:50.0 forViewAtIndex:0];
+    [_splitViewManager setLength:218.0 forViewAtIndex:0];
+    
+    [_splitViewManager setPriority:1 forViewAtIndex:1];
+    [_splitViewManager setMinimumLength:100.0 forViewAtIndex:1];
+    [_splitViewManager setLength:SplitSubviewNormaWidthTypeWide forViewAtIndex:1];
+    
+    [_splitViewManager setPriority:2 forViewAtIndex:2];
+    [_splitViewManager setMinimumLength:50.0 forViewAtIndex:2];
+    [_splitViewManager setLength:217.0 forViewAtIndex:2];
+    
+    [_splitViewManager setPriority:3 forViewAtIndex:3];
+    [_splitViewManager setMinimumLength:50.0 forViewAtIndex:3];
+    [_splitViewManager setLength:SplitSubviewNormaWidthTypeWide forViewAtIndex:3];
+    
+    [[[self.contentSplitView subviews] objectAtIndex:0] setBackgroundColor:[NSColor orangeColor]];
+    [[[self.contentSplitView subviews] objectAtIndex:1] setBackgroundColor:[NSColor dustColor]];
+    [[[self.contentSplitView subviews] objectAtIndex:2] setBackgroundColor:[NSColor tealColor]];
+    [[[self.contentSplitView subviews] objectAtIndex:3] setBackgroundColor:[NSColor lavenderColor]];
+    
+    [_splitViewManager adjustSubviews];
+}
+
 #pragma mark - Initialize
 
 - (void)objectsInitialize
@@ -97,6 +131,7 @@
     [_presenter attachView:self];
     
     _generalType = PopoverGeneralTypeComics;
+    _splitViewManager = [[SplitViewManager alloc] initWithSplitView:self.contentSplitView source:self];
 }
 
 #pragma mark - Setup UI
@@ -114,26 +149,15 @@
     [self.btnGeneral setFocusRingType:NSFocusRingTypeNone];
     [self.btnGeneral setRightClickAction:@selector(btnGeneralRightClicked:)];
     
-    [self setupTrashView];
-    [self setTrashViewHidden:YES];
-}
-
-- (void)setupTrashView
-{
-    [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.viewContainerTrash];
-    
-    if (_trashViewController == nil)
-    {
-        _trashViewController = [[TrashViewController alloc] initWithNibName:NSStringFromClass([TrashViewController class]) bundle:nil];
-    }
-    
-    if (![_trashViewController.view isDescendantOf:self.viewContainerTrash])
-    {
-        [self addView:_trashViewController.view toParent:self.viewContainerTrash];
-    }
+    [self refreshBackground];
 }
 
 #pragma mark - Local methods
+
+- (void)refreshBackground
+{
+    [self.backgroundImageView setImage:[NSImage imageNamed:@"Paradox Valley"]];
+}
 
 - (void)changeWindowMode
 {
@@ -416,6 +440,35 @@
     }
 }
 
+- (void)showTrashPopupAtView:(NSView *)sender
+{
+    if ([_popoverTrash isShown])
+    {
+        [_popoverTrash close];
+    }
+    else
+    {
+        NSRect contentViewRect = NSMakeRect(0.0, 0.0, COMICS_VIEW_DETAIL_WIDTH, COMICS_VIEW_DEFAULT_HEIGHT);
+        
+        if (_popoverTrash == nil)
+        {
+            _trashViewController = [[TrashViewController alloc] initWithNibName:NSStringFromClass([TrashViewController class]) bundle:nil];
+            [_trashViewController.view setFrame:contentViewRect];
+            
+            _popoverTrash = [[FLOPopover alloc] initWithContentViewController:_trashViewController];
+        }
+        
+        _popoverTrash.shouldShowArrow = YES;
+        _popoverTrash.animated = YES;
+        _popoverTrash.staysInContainer = YES;
+        _popoverTrash.tag = WindowLevelGroupTagSetting;
+        
+        [_popoverTrash setAnimationBehaviour:FLOPopoverAnimationBehaviorTransition type:FLOPopoverAnimationLeftToRight animatedInAppFrame:YES];
+        
+        [self showRelativeToRectOfViewWithPopover:_popoverTrash edgeType:FLOPopoverEdgeTypeBelowRightEdge atView:sender];
+    }
+}
+
 - (void)generalMenuDidSelectForItem:(NSMenuItem *)item
 {
     if (![_popoverGeneral isShown]) return;
@@ -488,11 +541,6 @@
     }
 }
 
-- (void)setTrashViewHidden:(BOOL)isHidden
-{
-    [self.viewContainerTrash setHidden:isHidden];
-}
-
 #pragma mark - Actions
 
 - (IBAction)btnChangeModeClicked:(NSButton *)sender
@@ -547,7 +595,7 @@
 {
     [super refreshUIAppearance];
     
-    [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.menuView];
+    [Utils setBackgroundColor:[NSColor menuColor] forView:self.menuView];
     
     [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerMode];
     [Utils setBackgroundColor:[NSColor grayColor] cornerRadius:[CORNER_RADIUSES[0] doubleValue] forView:self.viewContainerFinder];
@@ -582,17 +630,26 @@
 
 - (void)viewOpensFilmsView
 {
+#ifndef DEBUGGER_CONSTANT_USING_SPLIT_VIEW_IN_WORKSPACE
     [self showFilmsPopupAtView:self.btnOpenFilms];
+#else
+#endif
 }
 
 - (void)viewOpensNewsView
 {
+#ifndef DEBUGGER_CONSTANT_USING_SPLIT_VIEW_IN_WORKSPACE
     [self showNewsPopupAtView:self.btnOpenNews];
+#else
+#endif
 }
 
 - (void)viewOpensGeneralView
 {
+#ifndef DEBUGGER_CONSTANT_USING_SPLIT_VIEW_IN_WORKSPACE
     [self showGeneralPopupAtView:self.btnGeneral option:PopoverGeneralTypeTechnologies];
+#else
+#endif
 }
 
 - (void)viewOpensGeneralMenuAtView:(NSView *)sender
@@ -620,12 +677,15 @@
 
 - (void)viewShowsSecondBar
 {
+#ifndef DEBUGGER_CONSTANT_USING_SPLIT_VIEW_IN_WORKSPACE
     [self handleShowSecondBar];
+#else
+#endif
 }
 
 - (void)viewShowsTrashView
 {
-    [self setTrashViewHidden:!self.viewContainerTrash.isHidden];
+    [self showTrashPopupAtView:self.btnTrashIcon];
 }
 
 #pragma mark - FLOPopoverDelegate
@@ -657,6 +717,10 @@
     else if (popover == _popoverGeneral)
     {
         _popoverGeneral = nil;
+    }
+    else if (popover == _popoverTrash)
+    {
+        _popoverTrash = nil;
     }
 }
 

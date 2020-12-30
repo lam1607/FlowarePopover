@@ -16,7 +16,12 @@
 
 @property (nonatomic, assign) BOOL canBecomeKey;
 @property (nonatomic, assign) NSInteger tag;
+
+/// Determine whether the popover can be interacted.
 @property (nonatomic, assign) BOOL userInteractionEnable;
+
+/// The dim color of disable view when the popover interaction is disabled.
+@property (nonatomic, strong) NSColor *disabledColor;
 
 /// This property is used out side of this scope for handling
 /// whether the popover floats or not when application resigns active.

@@ -8,4 +8,6 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
+- (void)setMenuItemsEnabled:(BOOL)isEnabled;
+
 @end

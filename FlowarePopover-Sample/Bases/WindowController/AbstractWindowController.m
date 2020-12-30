@@ -16,6 +16,8 @@
 {
     NSRect _normalFrame;
     CGFloat _titleBarHeight;
+    
+    FLOVirtualView *_disableView;
 }
 
 /// @property
@@ -77,8 +79,10 @@ static AbstractWindowController *_sharedInstance = nil;
 - (void)setupUI
 {
     NSRect visibleFrame = [self.window.screen visibleFrame];
-    CGFloat width = 0.7 * visibleFrame.size.width;
-    CGFloat height = 0.8 * visibleFrame.size.height;
+    // CGFloat width = 0.7 * visibleFrame.size.width;
+    // CGFloat height = 0.8 * visibleFrame.size.height;
+    CGFloat width = 883.0;
+    CGFloat height = 767.0;
     CGFloat x = (visibleFrame.size.width - width) / 2;
     CGFloat y = (visibleFrame.size.height + visibleFrame.origin.y - height) / 2;
     NSRect viewFrame = NSMakeRect(x, y, width, height);
@@ -88,11 +92,6 @@ static AbstractWindowController *_sharedInstance = nil;
 }
 
 #pragma mark - Local methods
-
-- (void)activate
-{
-    [self.window makeKeyAndOrderFront:nil];
-}
 
 - (void)changeToDesktopMode
 {
@@ -110,6 +109,57 @@ static AbstractWindowController *_sharedInstance = nil;
     [[self window] makeKeyAndOrderFront:nil];
     [[self window] setLevel:[WindowManager levelForTag:WindowLevelGroupTagNormal]];
     [[self window] setFrame:self.normalFrame display:YES animate:YES];
+}
+
+#pragma mark - AbstractWindowController methods
+
+- (FLOVirtualView *)setUserInteractionEnabled:(BOOL)isEnabled
+{
+    NSView *contentView = [self.window contentView];
+    
+    FLOVirtualView *disableView = _disableView;
+    
+    if (isEnabled)
+    {
+        if ([disableView isDescendantOf:contentView])
+        {
+            [disableView removeFromSuperview];
+            _disableView = nil;
+        }
+    }
+    else
+    {
+        if (disableView == nil)
+        {
+            disableView = [[FLOVirtualView alloc] initWithFrame:contentView.frame type:FLOVirtualViewDisable];
+        }
+        
+        if (![disableView isDescendantOf:contentView])
+        {
+            [contentView addSubview:disableView];
+            
+            [disableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+            
+            [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[disableView]|"
+                                                                                options:0
+                                                                                metrics:nil
+                                                                                  views:NSDictionaryOfVariableBindings(disableView)]];
+            
+            [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[disableView]|"
+                                                                                options:0
+                                                                                metrics:nil
+                                                                                  views:NSDictionaryOfVariableBindings(disableView)]];
+            
+            _disableView = disableView;
+        }
+    }
+    
+    return _disableView;
+}
+
+- (void)activate
+{
+    [self.window makeKeyAndOrderFront:nil];
 }
 
 #pragma mark - Event handles

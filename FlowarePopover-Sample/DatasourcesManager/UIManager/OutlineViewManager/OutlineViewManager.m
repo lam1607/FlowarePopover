@@ -48,6 +48,7 @@
             
             [_outlineView setTarget:self];
             [_outlineView setAction:@selector(outlineViewDidSelectItem)];
+            [_outlineView setDoubleAction:@selector(outlineViewDidDoubleSelectItem)];
         }
         else
         {
@@ -614,10 +615,43 @@
             {
                 [self.protocols outlineViewManager:self didSelectItem:object forRow:row];
             }
-            else if (!isSelectable && [self.protocols respondsToSelector:@selector(outlineViewManager:didSelectUnselectableItem:forRow:)])
+            else if ((isSelectable == NO) && [self.protocols respondsToSelector:@selector(outlineViewManager:didSelectUnselectableItem:forRow:)])
             {
                 // For some cases, we want this delegate to perform some special stuffs.
                 [self.protocols outlineViewManager:self didSelectUnselectableItem:object forRow:row];
+            }
+        }
+    }
+    @catch (NSException *exception)
+    {
+        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
+    }
+}
+
+- (void)outlineViewDidDoubleSelectItem
+{
+    @try
+    {
+        NSInteger row = [self.outlineView clickedRow];
+        id<ListSupplierProtocol> object;
+        
+        if ((row != -1) && (row != NSNotFound))
+        {
+            object = (id<ListSupplierProtocol>)[self.outlineView itemAtRow:row];
+        }
+        
+        if ((object != nil) && (self.protocols != nil))
+        {
+            BOOL isSelectable = [self.outlineView.delegate outlineView:self.outlineView shouldSelectItem:object];
+            
+            if (isSelectable && [self.protocols respondsToSelector:@selector(outlineViewManager:didDoubleSelectItem:forRow:)])
+            {
+                [self.protocols outlineViewManager:self didDoubleSelectItem:object forRow:row];
+            }
+            else if ((isSelectable == NO) && [self.protocols respondsToSelector:@selector(outlineViewManager:didDoubleSelectUnselectableItem:forRow:)])
+            {
+                // For some cases, we want this delegate to perform some special stuffs.
+                [self.protocols outlineViewManager:self didDoubleSelectUnselectableItem:object forRow:row];
             }
         }
     }

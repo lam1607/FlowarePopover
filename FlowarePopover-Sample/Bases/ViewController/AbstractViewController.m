@@ -34,34 +34,13 @@
 {
 }
 
-- (void)addView:(NSView *)child toParent:(NSView *)parent
-{
-    [self addView:child toParent:parent needConstraints:YES];
-}
-
-- (void)addView:(NSView *)child toParent:(NSView *)parent needConstraints:(BOOL)needConstraints
-{
-    [parent addSubview:child];
-    
-    if (needConstraints)
-    {
-        child.translatesAutoresizingMaskIntoConstraints = NO;
-        
-        [parent addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(0)-[child]-(0)-|"
-                                                                       options:0
-                                                                       metrics:nil
-                                                                         views:NSDictionaryOfVariableBindings(child)]];
-        [parent addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(0)-[child]-(0)-|"
-                                                                       options:0
-                                                                       metrics:nil
-                                                                         views:NSDictionaryOfVariableBindings(child)]];
-    }
-}
-
 #pragma mark - AbstractViewProtocols
 
 - (void)refreshUIAppearance
 {
+    [self.view setWantsLayer:YES];
+    [[self.view layer] setCornerRadius:[CORNER_RADIUSES[0] doubleValue]];
+    
     [Utils setBackgroundColor:[NSColor backgroundColor] forView:self.view];
 }
 

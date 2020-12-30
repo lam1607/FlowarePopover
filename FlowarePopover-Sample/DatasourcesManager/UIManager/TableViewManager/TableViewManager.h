@@ -6,6 +6,7 @@
 //  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
+
 @class TableViewManager;
 @class DataProvider;
 @protocol ListSupplierProtocol;
@@ -91,6 +92,20 @@
  * Tells the delegate that an unselectable item is selected at the specified row.
  */
 - (void)tableViewManager:(TableViewManager *)manager didSelectUnselectableItem:(id)item forRow:(NSInteger)row;
+
+/**
+ * Tells the delegate that an item is selected at the specified row by double click action.
+ * @note The [-tableViewManager:didSelectItem:forRow:] protocol will be called before this delegate implemented.
+ * To avoid the call of [-tableViewManager:didSelectItem:forRow:], we should perform that protocol with delay.
+ */
+- (void)tableViewManager:(TableViewManager *)manager didDoubleSelectItem:(id)item forRow:(NSInteger)row;
+
+/**
+ * Tells the delegate that an unselectable item is selected at the specified row by double click action.
+ * @note The [-tableViewManager:didSelectUnselectableItem:forRow:] protocol will be called before this delegate implemented.
+ * To avoid the call of [-tableViewManager:didSelectUnselectableItem:forRow:], we should perform that protocol with delay.
+ */
+- (void)tableViewManager:(TableViewManager *)manager didDoubleSelectUnselectableItem:(id)item forRow:(NSInteger)row;
 
 #pragma mark - Drag/Drop
 

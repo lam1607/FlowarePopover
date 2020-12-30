@@ -18,6 +18,8 @@
 
 @implementation FLOPopoverWindow
 
+@synthesize disabledColor = _disabledColor;
+
 - (instancetype)init {
     if (self = [super init]) {
         _tag = -1;
@@ -44,6 +46,14 @@
     return (self.userInteractionEnable ? self.canBecomeKey : NO);
 }
 
+- (void)addChildWindow:(NSWindow *)childWindow ordered:(NSWindowOrderingMode)place {
+    [super addChildWindow:childWindow ordered:place];
+    
+    if ([childWindow isKindOfClass:[FLOPopoverWindow class]]) {
+        [(FLOPopoverWindow *)childWindow setUserInteractionEnable:self.userInteractionEnable];
+    }
+}
+
 #pragma mark - Getter/Setter
 
 - (void)setUserInteractionEnable:(BOOL)userInteractionEnable {
@@ -51,6 +61,14 @@
     
     if (self.responder.userInteractionEnable != _userInteractionEnable) {
         [self.responder setUserInteractionEnable:userInteractionEnable];
+    }
+}
+
+- (void)setDisabledColor:(NSColor *)disabledColor {
+    _disabledColor = disabledColor;
+    
+    if (self.responder.disabledColor != _disabledColor) {
+        [self.responder setDisabledColor:disabledColor];
     }
 }
 

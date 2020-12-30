@@ -48,6 +48,7 @@
             
             [_tableView setTarget:self];
             [_tableView setAction:@selector(tableViewDidSelectItem)];
+            [_tableView setDoubleAction:@selector(tableViewDidDoubleSelectItem)];
         }
         else
         {
@@ -405,10 +406,43 @@
             {
                 [self.protocols tableViewManager:self didSelectItem:object forRow:row];
             }
-            else if (!isSelectable && [self.protocols respondsToSelector:@selector(tableViewManager:didSelectUnselectableItem:forRow:)])
+            else if ((isSelectable == NO) && [self.protocols respondsToSelector:@selector(tableViewManager:didSelectUnselectableItem:forRow:)])
             {
                 // For some cases, we want this delegate to perform some special stuffs.
                 [self.protocols tableViewManager:self didSelectUnselectableItem:object forRow:row];
+            }
+        }
+    }
+    @catch (NSException *exception)
+    {
+        NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols] = %@", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
+    }
+}
+
+- (void)tableViewDidDoubleSelectItem
+{
+    @try
+    {
+        NSInteger row = [self.tableView clickedRow];
+        id<ListSupplierProtocol> object;
+        
+        if ((row != -1) && (row != NSNotFound))
+        {
+            object = (id<ListSupplierProtocol>)[_provider objectForRow:row];
+        }
+        
+        if ((object != nil) && (self.protocols != nil))
+        {
+            BOOL isSelectable = [self.tableView.delegate tableView:self.tableView shouldSelectRow:row];
+            
+            if (isSelectable && [self.protocols respondsToSelector:@selector(tableViewManager:didDoubleSelectItem:forRow:)])
+            {
+                [self.protocols tableViewManager:self didDoubleSelectItem:object forRow:row];
+            }
+            else if ((isSelectable == NO) && [self.protocols respondsToSelector:@selector(tableViewManager:didDoubleSelectUnselectableItem:forRow:)])
+            {
+                // For some cases, we want this delegate to perform some special stuffs.
+                [self.protocols tableViewManager:self didDoubleSelectUnselectableItem:object forRow:row];
             }
         }
     }

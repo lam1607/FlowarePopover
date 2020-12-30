@@ -40,6 +40,16 @@
 
 #pragma mark - Extensions methods
 
++ (NSColor *)black
+{
+    return [NSColor colorWithSRGBRed:1.0 green:1.0 blue:1.0 alpha:1.0];
+}
+
++ (NSColor *)menuColor
+{
+    return [NSAppearance isDarkAppearance] ? [[NSColor alloc] initWithHex:@"#1F1F1F"] : [[NSColor alloc] initWithHex:@"#F9F9F9"];
+}
+
 + (NSColor *)backgroundColor
 {
     return [NSAppearance isDarkAppearance] ? [[NSColor alloc] initWithHex:@"#323232"] : [[NSColor alloc] initWithHex:@"#E1E1E1"];

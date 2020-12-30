@@ -108,6 +108,10 @@
     return _popover.userInteractionEnable;
 }
 
+- (NSColor *)disabledColor {
+    return _popover.disabledColor;
+}
+
 - (void)setType:(FLOPopoverType)type {
     _type = type;
     
@@ -122,6 +126,11 @@
             // default is FLOWindowPopover
             break;
     }
+}
+
+- (void)setHasShadow:(BOOL)hasShadow {
+    _hasShadow = hasShadow;
+    _popover.hasShadow = hasShadow;
 }
 
 - (void)setShouldShowArrow:(BOOL)needed {
@@ -552,9 +561,17 @@
     [_popover setPopoverPositioningView:positioningView edgeType:edgeType positioningRect:rect];
 }
 
-- (void)setUserInteractionEnable:(BOOL)isEnable {
+/// Determine whether the popover can be interacted.
+- (void)setUserInteractionEnable:(BOOL)isEnabled {
     if ([_popover respondsToSelector:@selector(setUserInteractionEnable:)]) {
-        [_popover setUserInteractionEnable:isEnable];
+        [_popover setUserInteractionEnable:isEnabled];
+    }
+}
+
+/// The dim color of disable view when the popover interaction is disabled.
+- (void)setDisabledColor:(NSColor *)disabledColor {
+    if ([_popover respondsToSelector:@selector(setDisabledColor:)]) {
+        [_popover setDisabledColor:disabledColor];
     }
 }
 

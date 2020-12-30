@@ -776,184 +776,6 @@ void script_openAccessibilityPreference()
     }
 }
 
-void script_positionApp2(NSString *appName, float x, float y, float width, float height)
-{
-    if ([NSObject isEmpty:appName]) return;
-    
-    NSString *source = [NSString stringWithFormat:@" \
-                        \ntell application \"System Events\" \
-                        \ntell application \"%@\" \
-                        \nactivate \
-                        \nend tell \
-                        \nset condition to true \
-                        \nset tryNumbers to 0 \
-                        \nrepeat until condition is false \
-                        \nset processWindows to windows of process \"%@\" \
-                        \nset numeberOfWindows to the length of processWindows \
-                        \nset tryNumbers to tryNumbers + 1 \
-                        \nif (numeberOfWindows > 0) or (tryNumbers > 100) then \
-                        \nset condition to false \
-                        \nend if \
-                        \nend repeat \
-                        \ntell process \"%@\" \
-                        \nset position of every window to {%f, %f} \
-                        \nset size of every window to {%f, %f} \
-                        \nend tell \
-                        \nend tell", appName, appName, appName, x, y, width, height];
-    
-    NSDictionary *errorDictionary;
-    NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
-    
-    DLog(@"AppleScript execute script:\n%@\n", source);
-    
-    if (![script executeAndReturnError:&errorDictionary])
-    {
-        DLog(@"Error execute script: %@. \n", errorDictionary);
-    }
-}
-
-//static BOOL fixed = NO;
-
-int script_presentApp(NSString *appName, NSString *bundle, float x, float y, float maxWidth, float maxHeight, BOOL needResize)
-{
-    if (maxWidth == 0 || maxHeight == 0 || [NSObject isEmpty:appName]) return 2;
-    
-    NSString *processName = appName;
-    NSString *extension = @".app";
-    
-    if ([appName containsString:extension])
-    {
-        processName = [processName substringWithRange:NSMakeRange(0, processName.length - extension.length)];
-    }
-    
-    int ret = -1;
-    float width = maxWidth;
-    float height = maxHeight;
-    
-    NSString *source = [NSString stringWithFormat:@"set ret to 0 \
-                        \ntell application \"System Events\" \
-                        \ntell process \"%@\" \
-                        \nset position of window 1 to {%f, %f} \
-                        \nset size of window 1 to {%f, %f} \
-                        \n\nset winposition to position of window 1 \
-                        \n\nif (item 1 of winposition) is equal to %f then \
-                        \nset ret to 1 \
-                        \nend if \
-                        \n\nset winposition to position of window 1 \
-                        \nset winsize to size of window 1 \
-                        \n\nif (ret = 1) and (((item 1 of winposition) is not equal to %f) or ((item 2 of winposition) is not equal to %f) or ((item 1 of winsize) is not equal to %f) or ((item 2 of winsize) is not equal to %f)) then \
-                        \ntell window 1 of application \"%@\" to set bounds to {%f, %f, %f, %f} \
-                        \nend if \
-                        \nend tell \
-                        \nend tell \
-                        \n\nget ret", processName, x, y + 1, width, height, x, x, y + 1, width, height, processName, x, y + 1, width + x, height + y + 1];
-    
-    NSDictionary *errorDictionary = nil;
-    NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
-    NSAppleEventDescriptor *result = [script executeAndReturnError:&errorDictionary];
-    
-    DLog(@"AppleScript execute script:\n%@\n", source);
-    
-    if (!result)
-    {
-        DLog(@"Error execute script: %@. \n", errorDictionary);
-        
-        ret = 0;
-    }
-    else
-    {
-        NSData *data = [result data];
-        [data getBytes:&ret length:data.length];
-        
-        // @param: ret
-        // ret = 0: has an unexpected error => we can't handle => need to reset script
-        // ret = 1: successfull
-        // ret = 2: has an error that can be managed
-    }
-    
-    return ret;
-}
-
-int script_presentDocument(NSString *appName, NSString *title, NSString *siblingTitle, float x, float y, float w, float h, BOOL needResize)
-{
-    if ([NSObject isEmpty:appName]) return 1;
-    
-    NSString *processName = appName;
-    
-    if ([appName containsString:@".app"])
-    {
-        processName = [processName substringWithRange:NSMakeRange(0, processName.length - 4)];
-    }
-    
-    int ret;
-    BOOL documentWindow = [appName isEqualToString:@"Microsoft PowerPoint"];
-    
-    NSString *windowTitle = [[title lastPathComponent] stringByDeletingPathExtension];
-    NSString *siblingWindowTitle = (siblingTitle == nil) ? @"" : [[siblingTitle lastPathComponent] stringByDeletingPathExtension];
-    
-    NSString *resizeWin = needResize ? [NSString stringWithFormat:@"set the bounds of win to {%f, %f, %f, %f}", x, y + 1, x + w, y + h + 1] : @"";
-    
-    NSString *source = siblingTitle == nil ? [NSString stringWithFormat:@" \
-                                              \nset ret to 0 \
-                                              \ntell application \"%@\" \
-                                              \ntry \
-                                              \nrepeat with i from 1 to (count of %@ windows) \
-                                              \nset win to %@ window i \
-                                              \nif name of win contains \"%@\" then \
-                                              \n%@ \
-                                              \ntell win to set active to true \
-                                              \nset ret to 1 \
-                                              \nelse \
-                                              \nset miniaturized of win  to true\
-                                              \ntell win to set collapsed to true \
-                                              \nend if\
-                                              \nend repeat \
-                                              \nend try \
-                                              \nend tell \
-                                              \nget ret", processName, documentWindow ? @"document" : @"", documentWindow ? @"document" : @"", windowTitle, resizeWin]
-    : [NSString stringWithFormat:@" \
-       \nset ret to 0 \
-       \ntell application \"%@\" \
-       \ntry \
-       \nrepeat with i from 1 to (count of %@ windows) \
-       \nset win to %@ window i \
-       \nif name of win contains \"%@\" then \
-       \n%@ \
-       \ntell win to set active to true \
-       \nset ret to 1 \
-       \nelse \
-       \nerror number -128 \
-       \nif not name of win contains \"%@\"  \
-       \nset miniaturized of win to true\
-       \ntell win to set collapsed to true \
-       \nend if\
-       \nend if\
-       \nend repeat \
-       \nend try \
-       \nend tell \
-       \nget ret", processName, documentWindow ? @"document" : @"", documentWindow ? @"document" : @"", windowTitle, resizeWin, siblingWindowTitle];
-    
-    NSDictionary *errorDictionary;
-    NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
-    NSAppleEventDescriptor *result = [script executeAndReturnError:&errorDictionary];
-    
-    DLog(@"AppleScript execute script:\n%@\n", source);
-    
-    if (!result)
-    {
-        DLog(@"Error execute script: %@. \n", errorDictionary);
-        
-        ret = -1;
-    }
-    else
-    {
-        NSData *data = [result data];
-        [data getBytes:&ret length:data.length];
-    }
-    
-    return ret;
-}
-
 void script_activateApplication(NSString *appName)
 {
     if ([NSObject isEmpty:appName]) return;
@@ -984,6 +806,253 @@ void script_activateApplication(NSString *appName)
     }
 }
 
+int script_resizeApplication(NSString *appName, NSString *bundle, NSInteger x, NSInteger y, NSInteger width, NSInteger height, BOOL autoArrange)
+{
+    if ([NSObject isEmpty:appName] || (width == 0) || (height == 0)) return 2;
+    
+    NSString *processName = appName;
+    
+    if ([appName containsString:@".app"])
+    {
+        processName = [processName substringWithRange:NSMakeRange(0, processName.length - 4)];
+    }
+    
+    int ret = 0;
+    
+    NSString *source = [NSString stringWithFormat:@"\
+                        \nset ret to 0 \
+                        \n \
+                        \ntell application \"System Events\" \
+                        \ntell process \"%@\" \
+                        \nset winList to windows \
+                        \nset winListCount to (count of winList) \
+                        \nset firstWindowFound to false \
+                        \nset firstWindow to missing value \
+                        \n \
+                        \nif winListCount > 0 then \
+                        \nrepeat with idx from 1 to winListCount \
+                        \nif window idx exists then \
+                        \nset windowCloseButton to (value of attribute \"AXCloseButton\" of window idx) \
+                        \nset windowMinimizeButton to (value of attribute \"AXMinimizeButton\" of window idx) \
+                        \n \
+                        \nif window idx is not missing value and windowCloseButton is not missing value and windowMinimizeButton is not missing value and (enabled of windowCloseButton is true) and (enabled of windowMinimizeButton is true) then \
+                        \nif firstWindowFound then \
+                        \ntell window idx to set value of attribute \"AXMinimized\" to true \
+                        \nelse \
+                        \nset firstWindowFound to true \
+                        \nset firstWindow to (a reference to (window idx)) \
+                        \nend if \
+                        \nend if \
+                        \nend if \
+                        \nend repeat \
+                        \nend if \
+                        \n \
+                        \nif winListCount = 0 then \
+                        \nset ret to 4 \
+                        \nelse if not firstWindowFound then \
+                        \nset ret to 2 \
+                        \nelse if firstWindow is not missing value then \
+                        \nset isMinimized to (value of attribute \"AXMinimized\" of firstWindow) \
+                        \n \
+                        \nif (isMinimized = 1) or (isMinimized is true) then \
+                        \ntell firstWindow to set value of attribute \"AXMinimized\" to false \
+                        \nend if \
+                        \n \
+                        \nset position of firstWindow to {%ld, %ld} \
+                        \nset size of firstWindow to {%ld, %ld} \
+                        \n \
+                        \nset windowPosition to position of firstWindow \
+                        \nset windowSize to size of firstWindow \
+                        \n \
+                        \nif ((item 1 of windowPosition) is equal to %ld) and ((item 2 of windowPosition) is equal to %ld) and ((item 1 of windowSize) is equal to %ld) and ((item 2 of windowSize) is equal to %ld) then \
+                        \nset ret to 1 \
+                        \nend if \
+                        \nend if \
+                        \nend tell \
+                        \nend tell \
+                        \nget ret", processName, x, y, width, height, x, y, width, height];
+    
+    NSLog(@"[AppleScriptLog]-->%s-%d Before executing script:\n%@\n", __PRETTY_FUNCTION__, __LINE__, source);
+    
+    NSDictionary *errorDictionary;
+    NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
+    NSAppleEventDescriptor *result = [script executeAndReturnError:&errorDictionary];
+    
+    if (!result)
+    {
+        NSLog(@"[AppleScriptLog]-->%s-%d Error execute script:\n%@\n", __PRETTY_FUNCTION__, __LINE__, errorDictionary);
+    }
+    else
+    {
+        // * @return
+        // case 0: unexpected error.
+        // case 1: succeeded
+        // case 2: first window not found
+        // case 4: no window found
+        NSData *data = [result data];
+        [data getBytes:&ret length:data.length];
+    }
+    
+    NSLog(@"[AppleScriptLog]-->%s-%d After executing script with result:%d\n", __PRETTY_FUNCTION__, __LINE__, ret);
+    
+    return ret;
+}
+
+int script_resizeDocument(NSString *appName, NSString *fullPath, NSString *siblingTitle, NSInteger x, NSInteger y, NSInteger width, NSInteger height, BOOL autoArrange)
+{
+    if ([NSObject isEmpty:appName] || (width == 0) || (height == 0)) return 2;
+    
+    NSString *processName = appName;
+    
+    if ([appName containsString:@".app"])
+    {
+        processName = [processName substringWithRange:NSMakeRange(0, processName.length - 4)];
+    }
+    
+    int ret = 0;
+    NSString *windowTitle = [[fullPath lastPathComponent] stringByDeletingPathExtension];
+    NSString *siblingWindowTitle = (siblingTitle == nil) ? @"" : [[siblingTitle lastPathComponent] stringByDeletingPathExtension];
+    
+    NSString *source = [NSString stringWithFormat:@" \
+                        \nset ret to 0 \
+                        \nset focusTitle to \"%@\" \
+                        \nset siblingTitle to \"%@\" \
+                        \n \
+                        \ntell application \"System Events\" \
+                        \ntell process \"%@\" \
+                        \nset winList to windows \
+                        \nset documentWindowFound to false \
+                        \n \
+                        \nrepeat with checkingWindow in winList \
+                        \nset theWindow to contents of checkingWindow \
+                        \nset theWindowCloseButton to (value of attribute \"AXCloseButton\" of theWindow) \
+                        \nset theWindowMinimizeButton to (value of attribute \"AXMinimizeButton\" of theWindow) \
+                        \n \
+                        \nif theWindow is not missing value and theWindowCloseButton is not missing value and theWindowMinimizeButton is not missing value and (enabled of theWindowCloseButton is true) and (enabled of theWindowMinimizeButton is true) then \
+                        \nset windowTitle to name of theWindow \
+                        \n \
+                        \nif windowTitle contains focusTitle then \
+                        \nset documentWindowFound to true \
+                        \nset isMinimized to (value of attribute \"AXMinimized\" of theWindow) \
+                        \n \
+                        \nif (isMinimized = 1) or (isMinimized is true) then \
+                        \ntell theWindow to set value of attribute \"AXMinimized\" to false \
+                        \nend if \
+                        \n \
+                        \nset position of theWindow to {%ld, %ld} \
+                        \nset size of theWindow to {%ld, %ld} \
+                        \n \
+                        \nset windowPosition to position of theWindow \
+                        \nset windowSize to size of theWindow \
+                        \n \
+                        \nif ((item 1 of windowPosition) is equal to %ld) and ((item 2 of windowPosition) is equal to %ld) and ((item 1 of windowSize) is equal to %ld) and ((item 2 of windowSize) is equal to %ld) then \
+                        \nset ret to 1 \
+                        \nend if \
+                        \nelse \
+                        \nif (siblingTitle is not equal to null) and (siblingTitle is not equal to \"\") then \
+                        \nif (windowTitle does not contain siblingTitle) then \
+                        \ntell theWindow to set value of attribute \"AXMinimized\" to true \
+                        \nend if \
+                        \nelse \
+                        \ntell theWindow to set value of attribute \"AXMinimized\" to true \
+                        \nend if \
+                        \nend if \
+                        \nend if \
+                        \nend repeat \
+                        \n \
+                        \nif (count of winList) = 0 then \
+                        \nset ret to 4 \
+                        \nelse if not documentWindowFound then \
+                        \nset ret to 2 \
+                        \nend if \
+                        \nend tell \
+                        \nend tell \
+                        \nget ret"
+                        , windowTitle, siblingWindowTitle, processName, x, y, width, height, x, y, width, height];
+    
+    NSLog(@"[AppleScriptLog]-->%s-%d script:\n%@\n", __PRETTY_FUNCTION__, __LINE__, source);
+    
+    NSDictionary *errorDictionary;
+    NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
+    NSAppleEventDescriptor *result = [script executeAndReturnError:&errorDictionary];
+    
+    if (!result)
+    {
+        NSLog(@"[AppleScriptLog]-->%s-%d Error execute script:\n%@\n", __PRETTY_FUNCTION__, __LINE__, errorDictionary);
+    }
+    else
+    {
+        NSData *data = [result data];
+        [data getBytes:&ret length:data.length];
+        
+        // @param: ret
+        // ret = 0: resizing but would not be complete because when set position and size for the window both would not be all affective at the same time
+        // ret = 1: already resized
+        // ret = 2: application does not have the document window
+    }
+    
+    return ret;
+}
+
+int script_openURLInCurrentTab(NSString *url, NSString *appName)
+{
+    if ([NSObject isEmpty:appName]) return 0;
+    
+    NSString *source = @"";
+    
+    if ([[appName uppercaseString] isEqualToString:@"SAFARI"])
+    {
+        source = [NSString stringWithFormat:@" \
+                  \n tell application \"Safari\" \
+                  \n tell front window \
+                  \n set URL of current tab to \"%@\" \
+                  \n end tell \
+                  \n end tell", url];
+    }
+    else if ([[appName uppercaseString] isEqualToString:@"GOOGLE CHROME"] || [[appName uppercaseString] isEqualToString:@"CHROME"])
+    {
+        source = [NSString stringWithFormat:@" \
+                  \n tell application \"Google Chrome\" \
+                  \n tell front window \
+                  \n set URL of active tab to \"%@\" \
+                  \n end tell \
+                  \n end tell", url];
+    }
+    else
+    {
+        source = [NSString stringWithFormat:@" \
+                  \n repeat until (the clipboard) is equal to \"%@\"\
+                  \n    set the clipboard to \"%@\"\
+                  \n end repeat\
+                  \n tell application \"%@\" \
+                  \n    activate \
+                  \n    tell application \"System Events\" \
+                  \n        keystroke \"l\" using {command down} \
+                  \n        delay 0.5\
+                  \n        keystroke \"v\" using {command down} \
+                  \n        delay 0.5\
+                  \n        key code 36\
+                  \n    end tell \
+                  \n end tell", url, url, appName];
+    }
+    
+    NSLog(@"[AppleScriptLog]-->%s-%d script:\n%@\n", __PRETTY_FUNCTION__, __LINE__, source);
+    
+    NSDictionary *errorDictionary;
+    NSAppleScript *script = [[NSAppleScript alloc] initWithSource:source];
+    [script executeAndReturnError:&errorDictionary];
+    
+    int ret = 1;
+    
+    if (errorDictionary != nil)
+    {
+        NSLog(@"[AppleScriptLog]-->%s-%d Error execute script:\n%@\n", __PRETTY_FUNCTION__, __LINE__, errorDictionary);
+        
+        ret = [[errorDictionary objectForKey:NSAppleScriptErrorNumber] intValue];
+    }
+    
+    return ret;
+}
 
 @implementation AppleScript
 

@@ -707,18 +707,51 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="HomeViewController" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="2800" height="1800"/>
+                        <rect key="frame" x="0.0" y="0.0" width="883" height="767"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <imageView horizontalCompressionResistancePriority="249" verticalCompressionResistancePriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="Y8i-ib-bNN">
-                                <rect key="frame" x="0.0" y="0.0" width="2800" height="1800"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="Paradox Valley" id="5ox-hz-Opb"/>
+                            <imageView horizontalCompressionResistancePriority="249" verticalCompressionResistancePriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="Y8i-ib-bNN" userLabel="Background Image View" customClass="AspectImageView">
+                                <rect key="frame" x="0.0" y="0.0" width="883" height="767"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="Paradox Valley" id="5ox-hz-Opb"/>
                             </imageView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="WeF-sb-hLO" userLabel="Menu View">
-                                <rect key="frame" x="0.0" y="1750" width="2800" height="50"/>
+                                <rect key="frame" x="0.0" y="717" width="883" height="50"/>
                                 <subviews>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="xay-PV-jAd" userLabel="Change Mode View Container">
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="XGp-hp-9Zr" userLabel="Trash Icon Container View" customClass="DragDroppableView">
                                         <rect key="frame" x="10" y="5" width="40" height="40"/>
+                                        <subviews>
+                                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XrS-aX-ZZO" userLabel="Trash Icon Image View">
+                                                <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="ic_trash_empty" id="Kze-cp-kIP"/>
+                                            </imageView>
+                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gNy-e0-QJo" userLabel="Trash Icon Button">
+                                                <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Wfq-bg-Jnx">
+                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                    <font key="font" metaFont="system"/>
+                                                </buttonCell>
+                                                <connections>
+                                                    <action selector="btnTrashIconClicked:" target="XfG-lQ-9wD" id="r6M-mW-Sbh"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="XrS-aX-ZZO" firstAttribute="top" secondItem="XGp-hp-9Zr" secondAttribute="top" id="2EU-7x-LsM"/>
+                                            <constraint firstItem="gNy-e0-QJo" firstAttribute="top" secondItem="XGp-hp-9Zr" secondAttribute="top" id="EJU-8x-Eoy"/>
+                                            <constraint firstItem="XrS-aX-ZZO" firstAttribute="centerY" secondItem="XGp-hp-9Zr" secondAttribute="centerY" id="EMt-SJ-Nfw"/>
+                                            <constraint firstAttribute="bottom" secondItem="gNy-e0-QJo" secondAttribute="bottom" id="Euk-AJ-FN7"/>
+                                            <constraint firstItem="XrS-aX-ZZO" firstAttribute="leading" secondItem="XGp-hp-9Zr" secondAttribute="leading" id="FVS-Cf-9K8"/>
+                                            <constraint firstAttribute="width" constant="40" id="MI9-Hs-IuO"/>
+                                            <constraint firstItem="gNy-e0-QJo" firstAttribute="leading" secondItem="XGp-hp-9Zr" secondAttribute="leading" id="Pql-pX-N95"/>
+                                            <constraint firstAttribute="trailing" secondItem="gNy-e0-QJo" secondAttribute="trailing" id="Sts-cw-T1s"/>
+                                            <constraint firstItem="XrS-aX-ZZO" firstAttribute="centerX" secondItem="XGp-hp-9Zr" secondAttribute="centerX" id="f6S-88-4TB"/>
+                                            <constraint firstAttribute="width" secondItem="XGp-hp-9Zr" secondAttribute="height" multiplier="1:1" id="jtu-UD-mor"/>
+                                            <constraint firstAttribute="bottom" secondItem="XrS-aX-ZZO" secondAttribute="bottom" id="l4Q-D4-yBr"/>
+                                            <constraint firstAttribute="trailing" secondItem="XrS-aX-ZZO" secondAttribute="trailing" id="pYY-70-XbB"/>
+                                        </constraints>
+                                    </customView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="xay-PV-jAd" userLabel="Change Mode View Container">
+                                        <rect key="frame" x="55" y="5" width="40" height="40"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4P3-pJ-IwM" userLabel="Btn Change Mode" customClass="DoubleClickButton">
                                                 <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -740,7 +773,7 @@
                                         </constraints>
                                     </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="24A-hG-ZdQ" userLabel="Finder View Container">
-                                        <rect key="frame" x="60" y="5" width="40" height="40"/>
+                                        <rect key="frame" x="105" y="5" width="40" height="40"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="diw-HF-RaI" userLabel="Btn Open Finder" customClass="DoubleClickButton">
                                                 <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -762,7 +795,7 @@
                                         </constraints>
                                     </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="uUK-hZ-BLj" userLabel="Safari View Container">
-                                        <rect key="frame" x="110" y="5" width="40" height="40"/>
+                                        <rect key="frame" x="155" y="5" width="40" height="40"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vYx-ID-mZ0" userLabel="Btn Open Safari" customClass="DoubleClickButton">
                                                 <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -784,7 +817,7 @@
                                         </constraints>
                                     </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="uQl-Vp-Bbc" userLabel="Films View Container">
-                                        <rect key="frame" x="160" y="5" width="98" height="40"/>
+                                        <rect key="frame" x="205" y="5" width="98" height="40"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bii-Nb-7uf" userLabel="Btn Open Films" customClass="DoubleClickButton">
                                                 <rect key="frame" x="10" y="0.0" width="78" height="40"/>
@@ -805,7 +838,7 @@
                                         </constraints>
                                     </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="hH7-0V-lua" userLabel="News View Container">
-                                        <rect key="frame" x="268" y="5" width="100" height="40"/>
+                                        <rect key="frame" x="313" y="5" width="100" height="40"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QKT-rF-oHD" userLabel="Btn Open News" customClass="DoubleClickButton">
                                                 <rect key="frame" x="10" y="0.0" width="80" height="40"/>
@@ -826,7 +859,7 @@
                                         </constraints>
                                     </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="4xE-ia-sMm" userLabel="View Container General">
-                                        <rect key="frame" x="2676" y="5" width="114" height="40"/>
+                                        <rect key="frame" x="759" y="5" width="114" height="40"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="95S-F2-TuG" userLabel="Btn General" customClass="DoubleClickButton">
                                                 <rect key="frame" x="10" y="0.0" width="94" height="40"/>
@@ -847,7 +880,7 @@
                                         </constraints>
                                     </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="dAj-4e-xyd" userLabel="Second Bar View Container">
-                                        <rect key="frame" x="2537" y="5" width="129" height="40"/>
+                                        <rect key="frame" x="620" y="5" width="129" height="40"/>
                                         <subviews>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="922-Oc-zMC" userLabel="Btn Show Second Bar" customClass="DoubleClickButton">
                                                 <rect key="frame" x="10" y="0.0" width="109" height="40"/>
@@ -869,95 +902,85 @@
                                     </customView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="xay-PV-jAd" secondAttribute="bottom" constant="5" id="514-Yd-B5e"/>
-                                    <constraint firstItem="uUK-hZ-BLj" firstAttribute="top" secondItem="WeF-sb-hLO" secondAttribute="top" constant="5" id="5yn-l3-xFi"/>
+                                    <constraint firstItem="24A-hG-ZdQ" firstAttribute="centerY" secondItem="WeF-sb-hLO" secondAttribute="centerY" id="6C1-s4-OxS"/>
                                     <constraint firstAttribute="bottom" secondItem="dAj-4e-xyd" secondAttribute="bottom" constant="5" id="98a-Se-SZM"/>
                                     <constraint firstItem="dAj-4e-xyd" firstAttribute="top" secondItem="WeF-sb-hLO" secondAttribute="top" constant="5" id="BPT-EN-DOs"/>
                                     <constraint firstItem="uQl-Vp-Bbc" firstAttribute="top" secondItem="WeF-sb-hLO" secondAttribute="top" constant="5" id="ClT-Wa-q1d"/>
                                     <constraint firstAttribute="height" constant="50" id="Ejm-YL-M96"/>
                                     <constraint firstItem="4xE-ia-sMm" firstAttribute="top" secondItem="WeF-sb-hLO" secondAttribute="top" constant="5" id="KXJ-ym-K9X"/>
                                     <constraint firstAttribute="bottom" secondItem="4xE-ia-sMm" secondAttribute="bottom" constant="5" id="LwG-a5-vap"/>
-                                    <constraint firstItem="xay-PV-jAd" firstAttribute="top" secondItem="WeF-sb-hLO" secondAttribute="top" constant="5" id="MB5-E1-GBx"/>
                                     <constraint firstItem="4xE-ia-sMm" firstAttribute="leading" secondItem="dAj-4e-xyd" secondAttribute="trailing" constant="10" id="RJN-3B-ADU"/>
-                                    <constraint firstItem="xay-PV-jAd" firstAttribute="leading" secondItem="WeF-sb-hLO" secondAttribute="leading" constant="10" id="Swf-ZO-XjU"/>
+                                    <constraint firstItem="xay-PV-jAd" firstAttribute="centerY" secondItem="WeF-sb-hLO" secondAttribute="centerY" id="TVS-T6-ALU"/>
+                                    <constraint firstItem="xay-PV-jAd" firstAttribute="width" secondItem="XGp-hp-9Zr" secondAttribute="width" id="WwE-Dq-K4j"/>
+                                    <constraint firstItem="XGp-hp-9Zr" firstAttribute="centerY" secondItem="WeF-sb-hLO" secondAttribute="centerY" id="XFv-09-HLI"/>
                                     <constraint firstAttribute="bottom" secondItem="uQl-Vp-Bbc" secondAttribute="bottom" constant="5" id="Xac-pm-bgD"/>
-                                    <constraint firstAttribute="bottom" secondItem="uUK-hZ-BLj" secondAttribute="bottom" constant="5" id="b4t-o5-0WO"/>
+                                    <constraint firstItem="uUK-hZ-BLj" firstAttribute="centerY" secondItem="WeF-sb-hLO" secondAttribute="centerY" id="XgC-SF-KDf"/>
+                                    <constraint firstItem="24A-hG-ZdQ" firstAttribute="width" secondItem="XGp-hp-9Zr" secondAttribute="width" id="ZnP-1t-yIO"/>
                                     <constraint firstItem="hH7-0V-lua" firstAttribute="top" secondItem="WeF-sb-hLO" secondAttribute="top" constant="5" id="eP9-zC-kWh"/>
                                     <constraint firstItem="uQl-Vp-Bbc" firstAttribute="leading" secondItem="uUK-hZ-BLj" secondAttribute="trailing" constant="10" id="f2c-4J-vGc"/>
-                                    <constraint firstAttribute="bottom" secondItem="24A-hG-ZdQ" secondAttribute="bottom" constant="5" id="hVL-a1-n8Q"/>
                                     <constraint firstItem="hH7-0V-lua" firstAttribute="leading" secondItem="uQl-Vp-Bbc" secondAttribute="trailing" constant="10" id="j8I-66-lOy"/>
                                     <constraint firstItem="uUK-hZ-BLj" firstAttribute="leading" secondItem="24A-hG-ZdQ" secondAttribute="trailing" constant="10" id="lJg-FA-Ql2"/>
                                     <constraint firstAttribute="trailing" secondItem="4xE-ia-sMm" secondAttribute="trailing" constant="10" id="lYE-jv-njK"/>
                                     <constraint firstAttribute="bottom" secondItem="hH7-0V-lua" secondAttribute="bottom" constant="5" id="loZ-qc-HpQ"/>
                                     <constraint firstItem="24A-hG-ZdQ" firstAttribute="leading" secondItem="xay-PV-jAd" secondAttribute="trailing" constant="10" id="mFF-24-ARc"/>
-                                    <constraint firstItem="24A-hG-ZdQ" firstAttribute="top" secondItem="WeF-sb-hLO" secondAttribute="top" constant="5" id="rDJ-ld-SNa"/>
+                                    <constraint firstItem="XGp-hp-9Zr" firstAttribute="leading" secondItem="WeF-sb-hLO" secondAttribute="leading" constant="10" id="ozL-EC-pV2"/>
+                                    <constraint firstItem="xay-PV-jAd" firstAttribute="leading" secondItem="XGp-hp-9Zr" secondAttribute="trailing" constant="5" id="uIk-LC-PIy"/>
+                                    <constraint firstItem="uUK-hZ-BLj" firstAttribute="width" secondItem="XGp-hp-9Zr" secondAttribute="width" id="uin-mO-C6J"/>
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="1S0-QQ-tGa" userLabel="Second Bar View">
-                                <rect key="frame" x="0.0" y="1709" width="2800" height="40"/>
+                                <rect key="frame" x="0.0" y="676" width="883" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="YfI-Rj-GWa"/>
                                 </constraints>
                             </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="XGp-hp-9Zr" userLabel="Trash Icon Container View" customClass="DragDroppableView">
-                                <rect key="frame" x="20" y="1589" width="100" height="100"/>
+                            <splitView arrangesAllSubviews="NO" dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="crd-Fz-DyL" userLabel="Content Split View">
+                                <rect key="frame" x="5" y="5" width="873" height="666"/>
                                 <subviews>
-                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XrS-aX-ZZO" userLabel="Trash Icon Image View">
-                                        <rect key="frame" x="18" y="18" width="64" height="64"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="64" id="F1l-9j-3rd"/>
-                                            <constraint firstAttribute="width" secondItem="XrS-aX-ZZO" secondAttribute="height" multiplier="1:1" id="HqT-3R-cHa"/>
-                                        </constraints>
-                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="ic_trash_empty" id="Kze-cp-kIP"/>
-                                    </imageView>
-                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gNy-e0-QJo" userLabel="Trash Icon Button">
-                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
-                                        <buttonCell key="cell" type="bevel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Wfq-bg-Jnx">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                        <connections>
-                                            <action selector="btnTrashIconClicked:" target="XfG-lQ-9wD" id="r6M-mW-Sbh"/>
-                                        </connections>
-                                    </button>
+                                    <customView fixedFrame="YES" id="z9h-CC-0jv">
+                                        <rect key="frame" x="0.0" y="0.0" width="218" height="666"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    </customView>
+                                    <customView fixedFrame="YES" id="72n-X3-kmF">
+                                        <rect key="frame" x="219" y="0.0" width="217" height="666"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    </customView>
+                                    <customView fixedFrame="YES" id="QAu-Ek-Dcl">
+                                        <rect key="frame" x="437" y="0.0" width="218" height="666"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    </customView>
+                                    <customView fixedFrame="YES" id="CJr-kN-zPx">
+                                        <rect key="frame" x="656" y="0.0" width="217" height="666"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    </customView>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="gNy-e0-QJo" firstAttribute="top" secondItem="XGp-hp-9Zr" secondAttribute="top" id="EJU-8x-Eoy"/>
-                                    <constraint firstItem="XrS-aX-ZZO" firstAttribute="centerY" secondItem="XGp-hp-9Zr" secondAttribute="centerY" id="EMt-SJ-Nfw"/>
-                                    <constraint firstAttribute="bottom" secondItem="gNy-e0-QJo" secondAttribute="bottom" id="Euk-AJ-FN7"/>
-                                    <constraint firstAttribute="width" constant="100" id="MI9-Hs-IuO"/>
-                                    <constraint firstItem="gNy-e0-QJo" firstAttribute="leading" secondItem="XGp-hp-9Zr" secondAttribute="leading" id="Pql-pX-N95"/>
-                                    <constraint firstAttribute="trailing" secondItem="gNy-e0-QJo" secondAttribute="trailing" id="Sts-cw-T1s"/>
-                                    <constraint firstItem="XrS-aX-ZZO" firstAttribute="centerX" secondItem="XGp-hp-9Zr" secondAttribute="centerX" id="f6S-88-4TB"/>
-                                    <constraint firstAttribute="width" secondItem="XGp-hp-9Zr" secondAttribute="height" multiplier="1:1" id="jtu-UD-mor"/>
-                                </constraints>
-                            </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="2eL-Gn-vhd" userLabel="Trash Container View">
-                                <rect key="frame" x="140" y="20" width="350" height="1669"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="350" id="rM1-jp-LTI"/>
-                                </constraints>
-                            </customView>
+                                <holdingPriorities>
+                                    <real value="250"/>
+                                    <real value="250"/>
+                                    <real value="250"/>
+                                    <real value="250"/>
+                                </holdingPriorities>
+                            </splitView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="XGp-hp-9Zr" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="6K8-I9-bKt"/>
-                            <constraint firstItem="2eL-Gn-vhd" firstAttribute="top" secondItem="XGp-hp-9Zr" secondAttribute="top" id="6r2-zm-KKG"/>
                             <constraint firstItem="Y8i-ib-bNN" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="8wb-rS-4gh"/>
-                            <constraint firstItem="2eL-Gn-vhd" firstAttribute="leading" secondItem="XGp-hp-9Zr" secondAttribute="trailing" constant="20" id="CP1-1P-1Z6"/>
                             <constraint firstAttribute="bottom" secondItem="Y8i-ib-bNN" secondAttribute="bottom" id="D6m-e7-OHC"/>
                             <constraint firstItem="Y8i-ib-bNN" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="KT7-si-xcs"/>
                             <constraint firstItem="WeF-sb-hLO" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="OZa-xU-FvP"/>
                             <constraint firstAttribute="trailing" secondItem="WeF-sb-hLO" secondAttribute="trailing" id="YA7-mP-j48"/>
                             <constraint firstAttribute="trailing" secondItem="Y8i-ib-bNN" secondAttribute="trailing" id="ZZI-We-B95"/>
+                            <constraint firstAttribute="trailing" secondItem="crd-Fz-DyL" secondAttribute="trailing" constant="5" id="fAZ-2B-0sq"/>
+                            <constraint firstAttribute="bottom" secondItem="crd-Fz-DyL" secondAttribute="bottom" constant="5" id="h8k-2N-sGF"/>
                             <constraint firstItem="1S0-QQ-tGa" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="j6b-yT-l8Z"/>
                             <constraint firstItem="WeF-sb-hLO" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="jUs-pM-rGd"/>
-                            <constraint firstAttribute="bottom" secondItem="2eL-Gn-vhd" secondAttribute="bottom" constant="20" id="nJF-Nw-ap4"/>
-                            <constraint firstItem="XGp-hp-9Zr" firstAttribute="top" secondItem="1S0-QQ-tGa" secondAttribute="bottom" constant="20" id="nf6-it-sNB"/>
+                            <constraint firstItem="crd-Fz-DyL" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="5" id="jfc-Hy-MFi"/>
                             <constraint firstItem="1S0-QQ-tGa" firstAttribute="top" secondItem="WeF-sb-hLO" secondAttribute="bottom" constant="1" id="r4C-lx-JQO"/>
+                            <constraint firstItem="crd-Fz-DyL" firstAttribute="top" secondItem="1S0-QQ-tGa" secondAttribute="bottom" constant="5" id="rnZ-jf-PAs"/>
                             <constraint firstAttribute="trailing" secondItem="1S0-QQ-tGa" secondAttribute="trailing" id="tlX-Pg-WX7"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="backgroundImageView" destination="Y8i-ib-bNN" id="b9r-kw-UKV"/>
                         <outlet property="btnChangeMode" destination="4P3-pJ-IwM" id="Epe-A5-hIH"/>
                         <outlet property="btnGeneral" destination="95S-F2-TuG" id="HgC-TQ-ard"/>
                         <outlet property="btnOpenFilms" destination="Bii-Nb-7uf" id="e0a-T3-km4"/>
@@ -967,6 +990,7 @@
                         <outlet property="btnShowSecondBar" destination="922-Oc-zMC" id="w5Z-hW-QbF"/>
                         <outlet property="btnTrashIcon" destination="gNy-e0-QJo" id="Jk6-rJ-bIw"/>
                         <outlet property="constraintHeightSecondBar" destination="YfI-Rj-GWa" id="Vp1-Vd-CMU"/>
+                        <outlet property="contentSplitView" destination="crd-Fz-DyL" id="eiU-0t-ls3"/>
                         <outlet property="imgTrashIcon" destination="XrS-aX-ZZO" id="QtH-l5-tBy"/>
                         <outlet property="menuView" destination="WeF-sb-hLO" id="gLE-B5-lHd"/>
                         <outlet property="viewContainerFilms" destination="uQl-Vp-Bbc" id="7Qm-VY-6bN"/>
@@ -976,7 +1000,6 @@
                         <outlet property="viewContainerNews" destination="hH7-0V-lua" id="CmL-Ft-1sE"/>
                         <outlet property="viewContainerSafari" destination="uUK-hZ-BLj" id="Ogt-Hs-38Y"/>
                         <outlet property="viewContainerSecondBar" destination="dAj-4e-xyd" id="v2r-jm-T0x"/>
-                        <outlet property="viewContainerTrash" destination="2eL-Gn-vhd" id="B0o-Zp-oGF"/>
                         <outlet property="viewContainerTrashIcon" destination="XGp-hp-9Zr" id="1ql-68-faE"/>
                         <outlet property="viewSecondBar" destination="1S0-QQ-tGa" id="0Sa-vp-WPC"/>
                     </connections>

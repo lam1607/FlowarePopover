@@ -20,6 +20,7 @@
 /// Methods
 ///
 - (void)setTitleBarHeight;
+- (FLOVirtualView *)setUserInteractionEnabled:(BOOL)isEnabled;
 
 - (void)activate;
 

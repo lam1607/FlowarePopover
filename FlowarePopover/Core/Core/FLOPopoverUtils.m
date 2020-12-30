@@ -89,6 +89,9 @@
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self removeApplicationEvents];
+    
     _mainWindow = nil;
     _popover = nil;
     _presentedWindow = nil;
@@ -111,8 +114,6 @@
     [self.backgroundView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.backgroundView removeFromSuperview];
     self.backgroundView = nil;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Getter/Setter
@@ -237,31 +238,31 @@
     return frame;
 }
 
-- (void)registerObserverView:(NSView *)view selector:(SEL)selector source:(id)source {
-    if ([source respondsToSelector:selector]) {
-        if ([view isKindOfClass:[NSClipView class]]) {
-            if (_popover.shouldRegisterSuperviewObservers) {
-                if (![_registeredViewBoundsObservers containsObject:(NSClipView *)view]) {
-                    [_registeredViewBoundsObservers addObject:(NSClipView *)view];
-                }
-                
-                [view setPostsBoundsChangedNotifications:YES];
-                [[NSNotificationCenter defaultCenter] addObserver:source selector:selector name:NSViewBoundsDidChangeNotification object:view];
-            }
-        } else {
-            if ([view isKindOfClass:[NSView class]] && ![_registeredSuperviewObservers containsObject:view]) {
-                [_registeredSuperviewObservers addObject:view];
+- (void)registerObserverView:(NSView *)view {
+    if ([view isKindOfClass:[NSView class]]) {
+        if ([view isKindOfClass:[NSClipView class]] && _popover.shouldRegisterSuperviewObservers) {
+            if (![_registeredViewBoundsObservers containsObject:(NSClipView *)view]) {
+                [_registeredViewBoundsObservers addObject:(NSClipView *)view];
             }
             
-            [view addObserver:source forKeyPath:@"superview" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
-            
-            if ([view isKindOfClass:[NSView class]] && _popover.shouldRegisterSuperviewObservers) {
-                if (![_registeredFrameObservers containsObject:view]) {
-                    [_registeredFrameObservers addObject:view];
-                }
-                
-                [view addObserver:source forKeyPath:@"frame" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
+            [view setPostsBoundsChangedNotifications:YES];
+            [view setPostsFrameChangedNotifications:YES];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notification_viewBoundsDidChange:) name:NSViewBoundsDidChangeNotification object:view];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notification_viewFrameDidChange:) name:NSViewFrameDidChangeNotification object:view];
+        }
+        
+        if (![_registeredSuperviewObservers containsObject:view]) {
+            [_registeredSuperviewObservers addObject:view];
+        }
+        
+        [view addObserver:self forKeyPath:@"superview" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
+        
+        if (_popover.shouldRegisterSuperviewObservers) {
+            if (![_registeredFrameObservers containsObject:view]) {
+                [_registeredFrameObservers addObject:view];
             }
+            
+            [view addObserver:self forKeyPath:@"frame" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
         }
     }
 }
@@ -978,12 +979,12 @@
     _preferredEdge = rectEdge;
 }
 
-- (void)setUserInteractionEnable:(BOOL)isEnable {
-    _userInteractionEnable = isEnable;
+- (void)setUserInteractionEnable:(BOOL)isEnabled {
+    _userInteractionEnable = isEnabled;
     
-    self.backgroundView.userInteractionEnable = isEnable;
+    self.backgroundView.userInteractionEnable = isEnabled;
     
-    if (isEnable) {
+    if (isEnabled) {
         if ([_disableView isDescendantOf:self.backgroundView]) {
             [_disableView removeFromSuperview];
             _disableView = nil;
@@ -999,6 +1000,13 @@
             [disableView addAutoResize:YES toParent:self.backgroundView];
             _disableView = disableView;
         }
+    }
+}
+
+- (void)setDisabledColor:(NSColor *)disabledColor {
+    if (!_userInteractionEnable && (_disableView != nil)) {
+        [_disableView setWantsLayer:YES];
+        [[_disableView layer] setBackgroundColor:[([disabledColor isKindOfClass:[NSColor class]] ? disabledColor : [NSColor clearColor]) CGColor]];
     }
 }
 
@@ -1595,8 +1603,6 @@
     if (_popover == nil) return;
     if (!_popover.shouldRegisterSuperviewObservers) return;
     
-    SEL selector = @selector(notification_viewBoundsDidChange:);
-    
     _observerClipViews = [[NSMutableArray alloc] init];
     _registeredViewBoundsObservers = [[NSMutableArray alloc] init];
     _registeredSuperviewObservers = [[NSMutableArray alloc] init];
@@ -1608,7 +1614,7 @@
                 [_observerClipViews addObject:(NSClipView *)observerView];
             }
             
-            [self registerObserverView:observerView selector:selector source:self];
+            [self registerObserverView:observerView];
         }
     }
 }
@@ -1757,21 +1763,27 @@
 }
 
 - (void)notification_viewFrameDidChange:(NSNotification *)notification {
-    if (!([notification.name isEqualToString:NSViewFrameDidChangeNotification] && (notification.object == self.contentView))) return;
+    if (![notification.name isEqualToString:NSViewFrameDidChangeNotification]) return;
     if (_popover == nil) return;
     if (_popover.localUpdated) return;
     
-    NSRect newFrame = [self.contentView frame];
-    
-    if (((NSWidth(newFrame) > 0) && (NSHeight(newFrame) > 0)) && !NSEqualSizes(newFrame.size, self.contentSize)) {
-        BOOL updatesFrameWhileShowing = _popover.updatesFrameWhileShowing;
+    if (notification.object == self.contentView) {
+        NSRect newFrame = [self.contentView frame];
         
-        if ((self.animationBehaviour == FLOPopoverAnimationBehaviorDefault) && (self.animationType == FLOPopoverAnimationDefault)) {
-            _popover.updatesFrameWhileShowing = YES;
+        if (((NSWidth(newFrame) > 0) && (NSHeight(newFrame) > 0)) && !NSEqualSizes(newFrame.size, self.contentSize)) {
+            BOOL updatesFrameWhileShowing = _popover.updatesFrameWhileShowing;
+            
+            if ((self.animationBehaviour == FLOPopoverAnimationBehaviorDefault) && (self.animationType == FLOPopoverAnimationDefault)) {
+                _popover.updatesFrameWhileShowing = YES;
+            }
+            
+            [_popover setPopoverContentViewSize:newFrame.size];
+            _popover.updatesFrameWhileShowing = updatesFrameWhileShowing;
         }
+    } else if ([notification.object isKindOfClass:[NSClipView class]] && [_observerClipViews containsObject:notification.object]) {
+        NSClipView *clipView = (NSClipView *)notification.object;
         
-        [_popover setPopoverContentViewSize:newFrame.size];
-        _popover.updatesFrameWhileShowing = updatesFrameWhileShowing;
+        [self updateFrameWhileScrolling:NO container:clipView];
     }
 }
 

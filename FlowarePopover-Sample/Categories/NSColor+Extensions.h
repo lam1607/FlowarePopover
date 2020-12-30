@@ -16,6 +16,9 @@
 
 #pragma mark - Extensions methods
 
++ (NSColor *)black;
+
++ (NSColor *)menuColor;
 + (NSColor *)backgroundColor;
 + (NSColor *)backgroundWhiteColor;
 + (NSColor *)blueColor;

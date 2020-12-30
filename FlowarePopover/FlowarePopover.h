@@ -13,5 +13,6 @@
 #import <FlowarePopover/FLOPopover.h>
 #import <FlowarePopover/FLOPopoverView.h>
 #import <FlowarePopover/FLOPopoverWindow.h>
+#import <FlowarePopover/FLOVirtualView.h>
 
 #endif /* FlowarePopover_h */

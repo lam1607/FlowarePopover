@@ -53,7 +53,11 @@
 
 @property (nonatomic, assign) CGFloat borderRadius;
 
+/// Determine whether the popover can be interacted.
 @property (nonatomic, assign) BOOL userInteractionEnable;
+
+/// The dim color of disable view when the popover interaction is disabled.
+@property (nonatomic, strong) NSColor *disabledColor;
 
 /// Make popover become key, order front when mouse hovers the popover
 ///

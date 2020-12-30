@@ -22,7 +22,11 @@
 @property (nonatomic, assign, readonly) FLOPopoverType type;
 @property (nonatomic, assign, readonly) BOOL containsArrow;
 
+/// Determine whether the popover can be interacted.
 @property (nonatomic, assign, readonly) BOOL userInteractionEnable;
+
+/// The dim color of disable view when the popover interaction is disabled.
+@property (nonatomic, strong, readonly) NSColor *disabledColor;
 
 /**
  * This is used for checking purpose, when the utilities received
@@ -39,6 +43,7 @@
 @property (nonatomic, assign) BOOL isClosing;
 @property (nonatomic, assign) BOOL closeEventReceived;
 
+@property (nonatomic, assign) BOOL hasShadow;
 @property (nonatomic, assign) BOOL shouldShowArrow;
 @property (nonatomic, assign) NSSize arrowSize;
 @property (nonatomic) CGColorRef arrowColor;
@@ -183,19 +188,23 @@
  */
 - (void)setPopoverPositioningView:(NSView *)positioningView edgeType:(FLOPopoverEdgeType)edgeType positioningRect:(NSRect)rect;
 
-- (void)setUserInteractionEnable:(BOOL)isEnable;
+/// Determine whether the popover can be interacted.
+- (void)setUserInteractionEnable:(BOOL)isEnabled;
+
+/// The dim color of disable view when the popover interaction is disabled.
+- (void)setDisabledColor:(NSColor *)disabledColor;
 
 - (void)showWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 
 - (void)updateFrame:(NSRect)frame;
 - (void)updatePopoverFrame;
 
-// Invalidate the popover shadow in case of changing position of popover arrow
-// or other case the popover shadow not updated when popover moves.
+/// Invalidate the popover shadow in case of changing position of popover arrow
+/// or other case the popover shadow not updated when popover moves.
 - (void)invalidateShadow;
 
-// Invalidate the arrow color of popover in case of the view of contentView or
-// contentViewController changed its background color.
+/// Invalidate the arrow color of popover in case of the view of contentView or
+/// contentViewController changed its background color.
 - (void)invalidateArrowPathColor;
 
 /**

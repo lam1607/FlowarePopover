@@ -10,6 +10,20 @@
 
 @implementation NSAppearance (Extensions)
 
+static id<NSAppearanceExtensionsProtocols> _protocolOwner = nil;
+
+#pragma mark - Getter/Setter
+
++ (id<NSAppearanceExtensionsProtocols>)protocolOwner
+{
+    return _protocolOwner;
+}
+
++ (void)setProtocolOwner:(id<NSAppearanceExtensionsProtocols>)protocolOwner
+{
+    _protocolOwner = protocolOwner;
+}
+
 #pragma mark - Local methods
 
 + (BOOL)isDarkModeSupported
@@ -48,7 +62,23 @@
 
 + (BOOL)isDarkAppearance
 {
-    return ([NSAppearance isDarkModeSupported] && [NSAppearance isDarkMode]);
+    BOOL shouldUseSystemAppearance = NO;
+    
+    if ((NSAppearance.protocolOwner != nil) && [NSAppearance.protocolOwner respondsToSelector:@selector(shouldUseSystemAppearance)])
+    {
+        shouldUseSystemAppearance = [NSAppearance.protocolOwner shouldUseSystemAppearance];
+    }
+    
+    if (shouldUseSystemAppearance)
+    {
+        return ([NSAppearance isDarkModeSupported] && [NSAppearance isDarkMode]);
+    }
+    else if ((NSAppearance.protocolOwner != nil) && [NSAppearance.protocolOwner respondsToSelector:@selector(isDarkAppearance)])
+    {
+        return [NSAppearance.protocolOwner isDarkAppearance];
+    }
+    
+    return NO;
 }
 
 @end

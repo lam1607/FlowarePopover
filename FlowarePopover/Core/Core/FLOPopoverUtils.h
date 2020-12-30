@@ -25,7 +25,7 @@
 @property (nonatomic, strong) NSView *contentView;
 @property (nonatomic, strong) NSViewController *contentViewController;
 
-@property (nonatomic, assign) BOOL userInteractionEnable;
+@property (nonatomic, assign, readonly) BOOL userInteractionEnable;
 
 /**
  * The target window that the popover will be added on.
@@ -69,7 +69,13 @@
 - (void)setResponder;
 - (void)setupComponentsForPopover:(BOOL)observerNeeded;
 - (void)setPopoverEdgeType:(FLOPopoverEdgeType)edgeType;
+
+/// Determine whether the popover can be interacted.
 - (void)setUserInteractionEnable:(BOOL)isEnable;
+
+/// The dim color of disable view when the popover interaction is disabled.
+- (void)setDisabledColor:(NSColor *)disabledColor;
+
 - (void)showWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state;
 - (void)setupPositioningAnchorWithView:(NSView *)positioningView positioningRect:(NSRect)positioningRect shouldUpdatePosition:(BOOL)shouldUpdatePosition;
 - (NSRect)popoverFrame;

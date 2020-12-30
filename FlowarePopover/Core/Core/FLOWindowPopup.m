@@ -32,12 +32,14 @@
 @implementation FLOWindowPopup
 
 @synthesize userInteractionEnable = _userInteractionEnable;
+@synthesize disabledColor = _disabledColor;
 @synthesize localUpdated = _localUpdated;
 @synthesize initialFrame = _initialFrame;
 @synthesize utils = _utils;
 @synthesize isShowing = _isShowing;
 @synthesize isClosing = _isClosing;
 @synthesize closeEventReceived = _closeEventReceived;
+@synthesize hasShadow = _hasShadow;
 @synthesize shouldShowArrow = _shouldShowArrow;
 @synthesize arrowSize = _arrowSize;
 @synthesize arrowColor = _arrowColor;
@@ -84,6 +86,7 @@
     if (self = [super init]) {
         _userInteractionEnable = YES;
         _utils = [[FLOPopoverUtils alloc] initWithPopover:self];
+        _hasShadow = YES;
         _shouldShowArrow = NO;
         _arrowSize = NSZeroSize;
         _animated = NO;
@@ -149,6 +152,9 @@
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self removeAllApplicationEvents];
+    
     self.localEvent = nil;
     self.utils = nil;
     self.arrowColor = NULL;
@@ -165,8 +171,6 @@
     floPopoverDidMoveBlock = nil;
     floPopoverWillDetachBlock = nil;
     floPopoverDidDetachBlock = nil;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Getter/Setter
@@ -193,6 +197,10 @@
 
 - (BOOL)userInteractionEnable {
     return _userInteractionEnable;
+}
+
+- (NSColor *)disabledColor {
+    return _disabledColor;
 }
 
 - (BOOL)closeEventReceived {
@@ -466,6 +474,7 @@
         self.utils.positioningView = positioningView;
         
         [self.utils registerApplicationEvents];
+        [self.utils registerObserverForSuperviews];
     }
     
     [self setPopoverPositioningRect:rect];
@@ -514,16 +523,25 @@
         
         [self setPopoverEdgeType:edgeType];
         [self.utils registerApplicationEvents];
+        [self.utils registerObserverForSuperviews];
         [self updatePopoverFrame];
     }
 }
 
-- (void)setUserInteractionEnable:(BOOL)isEnable {
-    _userInteractionEnable = isEnable;
+- (void)setUserInteractionEnable:(BOOL)isEnabled {
+    _userInteractionEnable = isEnabled;
     
-    self.popoverWindow.userInteractionEnable = isEnable;
+    self.popoverWindow.userInteractionEnable = isEnabled;
     
-    [self.utils setUserInteractionEnable:isEnable];
+    [self.utils setUserInteractionEnable:isEnabled];
+}
+
+- (void)setDisabledColor:(NSColor *)disabledColor {
+    _disabledColor = disabledColor;
+    
+    self.popoverWindow.disabledColor = disabledColor;
+    
+    [self.utils setDisabledColor:disabledColor];
 }
 
 - (void)showWithVisualEffect:(BOOL)needed material:(NSVisualEffectMaterial)material blendingMode:(NSVisualEffectBlendingMode)blendingMode state:(NSVisualEffectState)state {
@@ -793,6 +811,7 @@
             [this.utils.presentedWindow addChildWindow:this.popoverWindow ordered:NSWindowAbove];
             [this.popoverWindow setLevel:level];
             [this.popoverWindow setAlphaValue:1.0];
+            [this.popoverWindow setHasShadow:this.hasShadow];
         }];
         
         if (self.becomesKeyAfterDisplaying) {

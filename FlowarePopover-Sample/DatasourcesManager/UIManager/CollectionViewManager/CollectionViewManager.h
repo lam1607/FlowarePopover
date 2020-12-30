@@ -6,6 +6,7 @@
 //  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
+
 @class CollectionViewManager;
 @class DataProvider;
 @protocol ListSupplierProtocol;

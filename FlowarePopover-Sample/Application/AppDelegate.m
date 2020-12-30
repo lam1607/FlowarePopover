@@ -31,7 +31,7 @@
 {
     if ([[SettingsManager sharedInstance] isDesktopMode] && ![[EntitlementsManager sharedInstance] isEntitlementAppFocused])
     {
-        [[EntitlementsManager sharedInstance] hideOtherAppsExceptThoseInside];
+        [EntitlementsManager hideOtherAppsExceptThoseInWorkspace];
     }
     
     [[AbstractWindowController sharedInstance] activate];
@@ -48,6 +48,14 @@
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
     // Insert code here to tear down your application
+}
+
+#pragma mark - AppDelegate methods
+
+- (void)setMenuItemsEnabled:(BOOL)isEnabled
+{
+    NSMenu *menu = [NSApplication sharedApplication].menu;
+    NSArray<NSMenuItem *> *itemArray = menu.itemArray;
 }
 
 @end

@@ -8,9 +8,19 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define NSAppearanceInterfaceThemeDidChangeNotification @"AppleInterfaceThemeChangedNotification"
+#define NSAppearanceInterfaceThemeDidChangeNotification @"NSAppearanceInterfaceThemeDidChangeNotification"
+
+@protocol NSAppearanceExtensionsProtocols <NSObject>
+
+@optional
+- (BOOL)shouldUseSystemAppearance;
+- (BOOL)isDarkAppearance;
+
+@end
 
 @interface NSAppearance (Extensions)
+
+@property (class, nonatomic, weak) id<NSAppearanceExtensionsProtocols> protocolOwner;
 
 + (BOOL)isDarkAppearance;
 

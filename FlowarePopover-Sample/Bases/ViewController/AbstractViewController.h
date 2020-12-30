@@ -10,7 +10,4 @@
 
 @interface AbstractViewController : NSViewController <AbstractViewProtocols>
 
-- (void)addView:(NSView *)child toParent:(NSView *)parent;
-- (void)addView:(NSView *)child toParent:(NSView *)parent needConstraints:(BOOL)needConstraints;
-
 @end

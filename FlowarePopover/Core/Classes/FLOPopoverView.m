@@ -57,6 +57,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
 @implementation FLOPopoverView
 
 @synthesize tag = _tag;
+@synthesize disabledColor = _disabledColor;
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -158,6 +159,14 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
     }
 }
 
+- (void)setDisabledColor:(NSColor *)disabledColor {
+    _disabledColor = disabledColor;
+    
+    if (self.responder.disabledColor != _disabledColor) {
+        [self.responder setDisabledColor:disabledColor];
+    }
+}
+
 #pragma mark - Local methods
 
 - (NSRectEdge)arrowEdgeForPopoverEdge:(NSRectEdge)popoverEdge {
@@ -218,7 +227,7 @@ static CGFloat getMedianYFromRects(NSRect r1, NSRect r2) {
         
         [[self superview] setWantsLayer:YES];
         [self setWantsLayer:YES];
-        [[self layer] setMasksToBounds:NO];
+        [[self layer] setMasksToBounds:!needed];
         [[self layer] setShadowColor:[shadowColor CGColor]];
         // Shadow on top, left
         //        [[self layer] setShadowOffset:NSMakeSize(-5.0, -5.0)];

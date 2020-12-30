@@ -9,18 +9,25 @@
 #import "AbstractViewProtocols.h"
 #import "AbstractPresenterProtocols.h"
 
+/// This macro is used for determining whether the views
+/// when selected on menu buttons, should be opens as
+/// FLOPopover popup
+/// or
+/// contentSplitView in workspace.
+#define DEBUGGER_CONSTANT_USING_SPLIT_VIEW_IN_WORKSPACE
+
 static const CGFloat SECOND_BAR_DEFAULT_HEIGHT = 40.0;
 
 typedef NS_ENUM(NSInteger, PopoverGeneralType)
 {
-    PopoverGeneralTypeComics,
+    PopoverGeneralTypeComics = 1,
     PopoverGeneralTypeTechnologies,
     PopoverGeneralTypeAlert
 };
 
 typedef NS_ENUM(NSInteger, PopoverGeneralDisplayStyle)
 {
-    PopoverGeneralDisplayStyleStickyRect,
+    PopoverGeneralDisplayStyleStickyRect = 1,
     PopoverGeneralDisplayStyleGivenRect,
     PopoverGeneralDisplayStyleAlert
 };

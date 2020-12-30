@@ -111,6 +111,9 @@
 		DED3A40B21E6F97300B479BF /* TechnologiesPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A40A21E6F97300B479BF /* TechnologiesPresenter.m */; };
 		DED3A40F21E6FDF000B479BF /* TechnologiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DED3A40D21E6FDF000B479BF /* TechnologiesViewController.m */; };
 		DED3A41021E6FDF000B479BF /* TechnologiesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DED3A40E21E6FDF000B479BF /* TechnologiesViewController.xib */; };
+		DEDDBD9425997FAD005F9F23 /* SplitViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDDBD9325997FAD005F9F23 /* SplitViewManager.m */; };
+		DEDDBD9825998F07005F9F23 /* AsynchronousOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDDBD9725998F07005F9F23 /* AsynchronousOperation.m */; };
+		DEDDBD9C2599BD68005F9F23 /* AspectImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDDBD9B2599BD68005F9F23 /* AspectImageView.m */; };
 		DEDE465721534005004E8DEF /* FLOWindowPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE463921534005004E8DEF /* FLOWindowPopup.m */; };
 		DEDE465921534005004E8DEF /* FLOPopoverUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE463B21534005004E8DEF /* FLOPopoverUtils.m */; };
 		DEDE466C21534005004E8DEF /* FLOViewPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDE464F21534005004E8DEF /* FLOViewPopup.m */; };
@@ -326,6 +329,12 @@
 		DED3A40C21E6FDF000B479BF /* TechnologiesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TechnologiesViewController.h; sourceTree = "<group>"; };
 		DED3A40D21E6FDF000B479BF /* TechnologiesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TechnologiesViewController.m; sourceTree = "<group>"; };
 		DED3A40E21E6FDF000B479BF /* TechnologiesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TechnologiesViewController.xib; sourceTree = "<group>"; };
+		DEDDBD9225997FAD005F9F23 /* SplitViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SplitViewManager.h; sourceTree = "<group>"; };
+		DEDDBD9325997FAD005F9F23 /* SplitViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SplitViewManager.m; sourceTree = "<group>"; };
+		DEDDBD9625998F07005F9F23 /* AsynchronousOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AsynchronousOperation.h; sourceTree = "<group>"; };
+		DEDDBD9725998F07005F9F23 /* AsynchronousOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AsynchronousOperation.m; sourceTree = "<group>"; };
+		DEDDBD9A2599BD68005F9F23 /* AspectImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AspectImageView.h; sourceTree = "<group>"; };
+		DEDDBD9B2599BD68005F9F23 /* AspectImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AspectImageView.m; sourceTree = "<group>"; };
 		DEDE4050229FAC6E00456551 /* FLOPopoverProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOPopoverProtocols.h; sourceTree = "<group>"; };
 		DEDE45F021533F86004E8DEF /* FlowarePopover.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FlowarePopover.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEDE45F321533F86004E8DEF /* FlowarePopover.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlowarePopover.h; sourceTree = "<group>"; };
@@ -403,6 +412,8 @@
 				343FA1ED23A6356A0074C55C /* EntitlementsManager.m */,
 				343FA20323A642330074C55C /* SettingsManager.h */,
 				343FA20423A642340074C55C /* SettingsManager.m */,
+				DEDDBD9225997FAD005F9F23 /* SplitViewManager.h */,
+				DEDDBD9325997FAD005F9F23 /* SplitViewManager.m */,
 				343FA1EB23A6356A0074C55C /* WindowManager.h */,
 				343FA1F023A6356B0074C55C /* WindowManager.m */,
 			);
@@ -805,6 +816,8 @@
 			isa = PBXGroup;
 			children = (
 				DE1BEF01254523DA0036F289 /* CustomNSButton */,
+				DEDDBD992599BD3F005F9F23 /* CustomNSImageView */,
+				DEDDBD9525998EE5005F9F23 /* CustomNSOperation */,
 				DE8E5DFF215348EE002AE872 /* CustomNSTableRowView */,
 				DE7BCDE121BA0CC500EE1B33 /* CustomNSView */,
 			);
@@ -1028,6 +1041,24 @@
 				DED3A40A21E6F97300B479BF /* TechnologiesPresenter.m */,
 			);
 			path = Presenter;
+			sourceTree = "<group>";
+		};
+		DEDDBD9525998EE5005F9F23 /* CustomNSOperation */ = {
+			isa = PBXGroup;
+			children = (
+				DEDDBD9625998F07005F9F23 /* AsynchronousOperation.h */,
+				DEDDBD9725998F07005F9F23 /* AsynchronousOperation.m */,
+			);
+			path = CustomNSOperation;
+			sourceTree = "<group>";
+		};
+		DEDDBD992599BD3F005F9F23 /* CustomNSImageView */ = {
+			isa = PBXGroup;
+			children = (
+				DEDDBD9A2599BD68005F9F23 /* AspectImageView.h */,
+				DEDDBD9B2599BD68005F9F23 /* AspectImageView.m */,
+			);
+			path = CustomNSImageView;
 			sourceTree = "<group>";
 		};
 		DEDE45E621533F86004E8DEF = {
@@ -1412,17 +1443,20 @@
 				DE8E5E4B215348EF002AE872 /* Utils.m in Sources */,
 				DE8E5C7A21534821002AE872 /* AppDelegate.m in Sources */,
 				DE8E5E63215348EF002AE872 /* ComicCellView.m in Sources */,
+				DEDDBD9825998F07005F9F23 /* AsynchronousOperation.m in Sources */,
 				DEF15EBC21DDCBD400FDE038 /* AbstractService.m in Sources */,
 				DE8E5E3A215348EF002AE872 /* AppleScript.m in Sources */,
 				DED3A3F021E6E64200B479BF /* CollectionViewManager.m in Sources */,
 				DE8E5E47215348EF002AE872 /* FilmService.m in Sources */,
 				DE8E5E43215348EF002AE872 /* FilmRepository.m in Sources */,
 				DE0575E6223610A100B94B81 /* DragDroppableView.m in Sources */,
+				DEDDBD9425997FAD005F9F23 /* SplitViewManager.m in Sources */,
 				DE8E5E51215348EF002AE872 /* NewsViewController.m in Sources */,
 				343FA20523A642340074C55C /* SettingsManager.m in Sources */,
 				DE8E5E53215348EF002AE872 /* NewsPresenter.m in Sources */,
 				DEF15EB721DDCBD400FDE038 /* AbstractRepository.m in Sources */,
 				DE8E5E3B215348EF002AE872 /* AppleScriptBridge.applescript in Sources */,
+				DEDDBD9C2599BD68005F9F23 /* AspectImageView.m in Sources */,
 				DE8E5E61215348EF002AE872 /* NewsCellView.m in Sources */,
 				DE8E5E48215348EF002AE872 /* ComicService.m in Sources */,
 				DE8E5E44215348EF002AE872 /* ComicRepository.m in Sources */,

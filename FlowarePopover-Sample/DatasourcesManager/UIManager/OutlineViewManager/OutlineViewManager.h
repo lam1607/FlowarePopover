@@ -6,6 +6,7 @@
 //  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
+
 @class OutlineViewManager;
 @class DataProvider;
 @protocol ListSupplierProtocol;
@@ -135,6 +136,20 @@
  * Tells the delegate that an unselectable item is selected at the specified row.
  */
 - (void)outlineViewManager:(OutlineViewManager *)manager didSelectUnselectableItem:(id)item forRow:(NSInteger)row;
+
+/**
+ * Tells the delegate that an item is selected at the specified row by double click action.
+ * @note The [-outlineViewManager:didSelectItem:forRow:] protocol will be called before this delegate implemented.
+ * To avoid the call of [-outlineViewManager:didSelectItem:forRow:], we should perform that protocol with delay.
+ */
+- (void)outlineViewManager:(OutlineViewManager *)manager didDoubleSelectItem:(id)item forRow:(NSInteger)row;
+
+/**
+ * Tells the delegate that an unselectable item is selected at the specified row by double click action.
+ * @note The [-outlineViewManager:didSelectUnselectableItem:forRow:] protocol will be called before this delegate implemented.
+ * To avoid the call of [-outlineViewManager:didSelectUnselectableItem:forRow:], we should perform that protocol with delay.
+ */
+- (void)outlineViewManager:(OutlineViewManager *)manager didDoubleSelectUnselectableItem:(id)item forRow:(NSInteger)row;
 
 #pragma mark - Drag/Drop
 

@@ -13,15 +13,18 @@ typedef NS_ENUM(NSInteger, WindowLevelGroupTag)
     WindowLevelGroupTagDesktop          = kCGDesktopIconWindowLevel + 1,
     WindowLevelGroupTagNormal           = kCGNormalWindowLevel,
     WindowLevelGroupTagFloat            = kCGNormalWindowLevel + 1,
-    WindowLevelGroupTagSetting          = kCGNormalWindowLevel + 2,
-    WindowLevelGroupTagAlert            = kCGModalPanelWindowLevel,
-    WindowLevelGroupTagTop              = kCGModalPanelWindowLevel + 1,
+    WindowLevelGroupTagMiddle           = kCGNormalWindowLevel + 2,
+    WindowLevelGroupTagSetting          = kCGFloatingWindowLevel,
+    WindowLevelGroupTagMenu             = kCGFloatingWindowLevel + 2,
+    WindowLevelGroupTagAlert            = kCGFloatingWindowLevel + 3,
+    WindowLevelGroupTagTop              = kCGFloatingWindowLevel + 4,
 };
 
 
 @interface WindowManager : NSObject
 
-@property (nonatomic, assign, readonly) BOOL shouldChildWindowsFloat;
+@property (nonatomic, assign, readonly) BOOL userInteractionEnabled;
+@property (nonatomic, assign, readonly) BOOL menuItemsEnabled;
 
 #pragma mark - Singleton
 
@@ -29,9 +32,20 @@ typedef NS_ENUM(NSInteger, WindowLevelGroupTag)
 
 #pragma mark - Methods
 
-- (void)hideChildWindows;
-- (void)showChildWindows;
-- (void)setUserInteractionEnable:(BOOL)isEnable;
+- (void)setNSAppearanceProtocolOwner;
+
++ (void)changeWindowsEffectiveAppearance;
+
++ (BOOL)shouldChildWindowsFloat;
++ (void)hideChildWindows;
++ (void)showChildWindows;
++ (FLOVirtualView *)setUserInteractionEnable:(BOOL)isEnabled withMenuItemsEnable:(BOOL)isMenuItemsEnable;
++ (FLOVirtualView *)setUserInteractionEnable:(BOOL)isEnabled withMenuItemsEnable:(BOOL)isMenuItemsEnable disabledColor:(NSColor *)disabledColor;
++ (void)excludeDisableForWindow:(NSWindow *)window;
+
++ (void)floatUpdateWindowsIfNeeded;
++ (BOOL)isUpdateWindow:(NSWindow *)window;
++ (BOOL)isUpdateAlert:(NSWindow *)window;
 
 + (NSWindowLevel)levelForTag:(WindowLevelGroupTag)tag;
 + (NSWindowLevel)levelForTag:(WindowLevelGroupTag)tag floatsWhenAppResignsActive:(BOOL)floatsWhenAppResignsActive;

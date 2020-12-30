@@ -23,8 +23,11 @@
 #import "EntitlementsManager.h"
 #import "SettingsManager.h"
 #import "WindowManager.h"
+#import "SplitViewManager.h"
 
 #import "Constants.h"
 #import "Utils.h"
+#import "AsynchronousOperation.h"
+#import "AspectImageView.h"
 
 #endif /* PrefixHeader_pch */
