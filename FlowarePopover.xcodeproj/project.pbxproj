@@ -201,6 +201,7 @@
 		DE1BEF03254523DA0036F289 /* DoubleClickButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoubleClickButton.h; sourceTree = "<group>"; };
 		DE515B7423A763770057EBCD /* AbstractWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AbstractWindow.h; sourceTree = "<group>"; };
 		DE515B7523A763770057EBCD /* AbstractWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AbstractWindow.m; sourceTree = "<group>"; };
+		DE68443F25A030AB00E5183B /* AbstractWindowProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AbstractWindowProtocols.h; sourceTree = "<group>"; };
 		DE7A697522E16A850046FEA8 /* FLOVirtualView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FLOVirtualView.h; sourceTree = "<group>"; };
 		DE7A697622E16A850046FEA8 /* FLOVirtualView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FLOVirtualView.m; sourceTree = "<group>"; };
 		DE8E5C7021534233002AE872 /* AppleScriptObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptObjC.framework; path = System/Library/Frameworks/AppleScriptObjC.framework; sourceTree = SDKROOT; };
@@ -1195,6 +1196,7 @@
 				DE515B7523A763770057EBCD /* AbstractWindow.m */,
 				DEF15EA521DDCBD400FDE038 /* AbstractWindowController.h */,
 				DEF15EA421DDCBD400FDE038 /* AbstractWindowController.m */,
+				DE68443F25A030AB00E5183B /* AbstractWindowProtocols.h */,
 			);
 			path = WindowController;
 			sourceTree = "<group>";

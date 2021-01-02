@@ -6,7 +6,13 @@
 //  Copyright © 2019 Floware Inc. All rights reserved.
 //
 
+#import "AbstractWindowProtocols.h"
+
 @interface AbstractWindowController : NSWindowController
+
+/// Protocols
+///
+@property (nonatomic, weak) id<AbstractWindowProtocols> protocols;
 
 /// @property
 ///

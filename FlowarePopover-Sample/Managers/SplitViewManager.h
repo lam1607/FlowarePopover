@@ -21,12 +21,12 @@ typedef NS_ENUM(NSInteger, SplitSubviewType)
     SplitSubviewTypeWide
 };
 
-typedef NS_ENUM(NSInteger, SplitSubviewNormaWidthType)
+typedef NS_ENUM(NSInteger, SplitSubviewNormaLengthType)
 {
-    SplitSubviewNormaWidthTypeNarrow = 350,
-    SplitSubviewNormaWidthTypeNarrowExpanded = 660,
-    SplitSubviewNormaWidthTypeWideCollapsed = 520,
-    SplitSubviewNormaWidthTypeWide = -1
+    SplitSubviewNormaLengthTypeNarrow = 350,
+    SplitSubviewNormaLengthTypeNarrowExpanded = 660,
+    SplitSubviewNormaLengthTypeWideCollapsed = 520,
+    SplitSubviewNormaLengthTypeWide = -1
 };
 
 #pragma mark -
@@ -62,6 +62,10 @@ typedef NS_ENUM(NSInteger, SplitSubviewNormaWidthType)
 @property (nonatomic, assign, readonly) BOOL resizesByDivider;
 @property (nonatomic, assign, readonly) CGFloat interSpacing;
 
+@property (nonatomic, assign, readonly) BOOL isVertical;
+@property (nonatomic, assign, readonly) CGFloat subviewsMinimumLength;
+@property (nonatomic, assign, readonly) CGFloat subviewsLength;
+
 /// Initializes
 ///
 - (instancetype)initWithSplitView:(NSSplitView * _Nonnull)splitView source:(id<SplitViewManagerProtocols>_Nonnull)source;
@@ -71,6 +75,7 @@ typedef NS_ENUM(NSInteger, SplitSubviewNormaWidthType)
 ///
 - (void)setSplitType:(SplitViewArrangeType)splitType;
 - (void)setDividerStyle:(NSSplitViewDividerStyle)dividerStyle;
+- (void)setResizesProportionally:(BOOL)resizesProportionally;
 - (void)setResizesByDivider:(BOOL)resizesByDivider;
 - (void)setInterSpacing:(CGFloat)interSpacing;
 

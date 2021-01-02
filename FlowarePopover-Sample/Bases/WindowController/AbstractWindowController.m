@@ -12,7 +12,7 @@
 
 #import "AppleScript.h"
 
-@interface AbstractWindowController ()
+@interface AbstractWindowController () <NSWindowDelegate>
 {
     NSRect _normalFrame;
     CGFloat _titleBarHeight;
@@ -79,16 +79,13 @@ static AbstractWindowController *_sharedInstance = nil;
 - (void)setupUI
 {
     NSRect visibleFrame = [self.window.screen visibleFrame];
-    // CGFloat width = 0.7 * visibleFrame.size.width;
-    // CGFloat height = 0.8 * visibleFrame.size.height;
-    CGFloat width = 883.0;
-    CGFloat height = 767.0;
+    CGFloat width = 800.0;
+    CGFloat height = 600.0;
     CGFloat x = (visibleFrame.size.width - width) / 2;
     CGFloat y = (visibleFrame.size.height + visibleFrame.origin.y - height) / 2;
     NSRect viewFrame = NSMakeRect(x, y, width, height);
     
     [self.window setFrame:viewFrame display:YES];
-    // [self.window setMinSize:NSMakeSize(0.7 * visibleFrame.size.width, 0.8 * visibleFrame.size.height)];
 }
 
 #pragma mark - Local methods
@@ -136,19 +133,7 @@ static AbstractWindowController *_sharedInstance = nil;
         
         if (![disableView isDescendantOf:contentView])
         {
-            [contentView addSubview:disableView];
-            
-            [disableView setTranslatesAutoresizingMaskIntoConstraints:NO];
-            
-            [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[disableView]|"
-                                                                                options:0
-                                                                                metrics:nil
-                                                                                  views:NSDictionaryOfVariableBindings(disableView)]];
-            
-            [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[disableView]|"
-                                                                                options:0
-                                                                                metrics:nil
-                                                                                  views:NSDictionaryOfVariableBindings(disableView)]];
+            [disableView addAutoResize:YES toParent:contentView];
             
             _disableView = disableView;
         }
@@ -160,6 +145,98 @@ static AbstractWindowController *_sharedInstance = nil;
 - (void)activate
 {
     [self.window makeKeyAndOrderFront:nil];
+}
+
+#pragma mark - NSWindowDelegate
+
+- (void)windowDidMiniaturize:(NSNotification *)notification
+{
+}
+
+- (void)windowDidDeminiaturize:(NSNotification *)notification
+{
+}
+
+- (void)windowWillStartLiveResize:(NSNotification *)notification
+{
+}
+
+- (void)windowDidMove:(NSNotification *)notification
+{
+}
+
+- (void)windowWillMove:(NSNotification *)notification
+{
+}
+
+- (void)windowWillClose:(NSNotification *)notification
+{
+}
+
+- (void)windowDidBecomeKey:(NSNotification *)notification
+{
+}
+
+- (void)windowDidResignKey:(NSNotification *)notification
+{
+}
+
+- (NSSize)windowWillResize:(NSWindow *)sender toSize:(NSSize)frameSize
+{
+    if (sender != self.window) return frameSize;
+    
+    NSScreen *screen = [self.window screen];
+    NSRect visibleFrame = [screen visibleFrame];
+    
+    if ([[SettingsManager sharedInstance] isDesktopMode])
+    {
+        return visibleFrame.size;
+    }
+    else
+    {
+        NSSize proposedSize = frameSize;
+        
+        if (self.protocols && [self.protocols respondsToSelector:@selector(windowWillResize:toSize:)])
+        {
+            proposedSize = [self.protocols windowWillResize:self.window toSize:frameSize];
+        }
+        
+        if (frameSize.width < proposedSize.width)
+        {
+            frameSize.width = proposedSize.width;
+        }
+        
+        if (frameSize.height < proposedSize.height)
+        {
+            frameSize.height = proposedSize.height;
+        }
+    }
+    
+    return frameSize;
+}
+
+- (void)windowDidResize:(NSNotification *)notification
+{
+}
+
+- (void)windowDidEndLiveResize:(NSNotification *)notification
+{
+}
+
+- (void)windowWillEnterFullScreen:(NSNotification *)notification
+{
+}
+
+- (void)windowDidEnterFullScreen:(NSNotification *)notification
+{
+}
+
+- (void)windowWillExitFullScreen:(NSNotification *)notification
+{
+}
+
+- (void)windowDidExitFullScreen:(NSNotification *)notification
+{
 }
 
 #pragma mark - Event handles

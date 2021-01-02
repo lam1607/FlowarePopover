@@ -934,32 +934,8 @@
                                     <constraint firstAttribute="height" constant="40" id="YfI-Rj-GWa"/>
                                 </constraints>
                             </customView>
-                            <splitView arrangesAllSubviews="NO" dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="crd-Fz-DyL" userLabel="Content Split View">
+                            <splitView arrangesAllSubviews="NO" dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="crd-Fz-DyL" userLabel="Content Split View" customClass="CustomNSSplitView">
                                 <rect key="frame" x="5" y="5" width="873" height="666"/>
-                                <subviews>
-                                    <customView fixedFrame="YES" id="z9h-CC-0jv">
-                                        <rect key="frame" x="0.0" y="0.0" width="218" height="666"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    </customView>
-                                    <customView fixedFrame="YES" id="72n-X3-kmF">
-                                        <rect key="frame" x="219" y="0.0" width="217" height="666"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    </customView>
-                                    <customView fixedFrame="YES" id="QAu-Ek-Dcl">
-                                        <rect key="frame" x="437" y="0.0" width="218" height="666"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    </customView>
-                                    <customView fixedFrame="YES" id="CJr-kN-zPx">
-                                        <rect key="frame" x="656" y="0.0" width="217" height="666"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    </customView>
-                                </subviews>
-                                <holdingPriorities>
-                                    <real value="250"/>
-                                    <real value="250"/>
-                                    <real value="250"/>
-                                    <real value="250"/>
-                                </holdingPriorities>
                             </splitView>
                         </subviews>
                         <constraints>

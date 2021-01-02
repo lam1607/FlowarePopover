@@ -8,6 +8,8 @@
 
 #import "HomeViewController.h"
 
+#import "AbstractWindowController.h"
+
 #import "FilmsViewController.h"
 #import "NewsViewController.h"
 #import "ComicsViewController.h"
@@ -21,7 +23,7 @@
 
 #import "HomePresenter.h"
 
-@interface HomeViewController () <SplitViewManagerProtocols, FLOPopoverDelegate, DragDropTrackingDelegate>
+@interface HomeViewController () <SplitViewManagerProtocols, AbstractWindowProtocols, FLOPopoverDelegate, DragDropTrackingDelegate>
 {
     id<HomePresenterProtocols> _presenter;
     
@@ -70,7 +72,7 @@
 
 @property (weak) IBOutlet NSView *viewSecondBar;
 
-@property (weak) IBOutlet NSSplitView *contentSplitView;
+@property (weak) IBOutlet CustomNSSplitView *contentSplitView;
 
 @property (weak) IBOutlet NSLayoutConstraint *constraintHeightSecondBar;
 
@@ -93,34 +95,35 @@
 - (void)viewWillAppear
 {
     [super viewWillAppear];
+    
+    [[AbstractWindowController sharedInstance] setProtocols:(id<AbstractWindowProtocols>)self];
 }
 
 - (void)viewDidAppear
 {
     [super viewDidAppear];
     
-    [_splitViewManager setPriority:0 forViewAtIndex:0];
-    [_splitViewManager setMinimumLength:50.0 forViewAtIndex:0];
-    [_splitViewManager setLength:218.0 forViewAtIndex:0];
-    
-    [_splitViewManager setPriority:1 forViewAtIndex:1];
-    [_splitViewManager setMinimumLength:100.0 forViewAtIndex:1];
-    [_splitViewManager setLength:SplitSubviewNormaWidthTypeWide forViewAtIndex:1];
-    
-    [_splitViewManager setPriority:2 forViewAtIndex:2];
-    [_splitViewManager setMinimumLength:50.0 forViewAtIndex:2];
-    [_splitViewManager setLength:217.0 forViewAtIndex:2];
-    
-    [_splitViewManager setPriority:3 forViewAtIndex:3];
-    [_splitViewManager setMinimumLength:50.0 forViewAtIndex:3];
-    [_splitViewManager setLength:SplitSubviewNormaWidthTypeWide forViewAtIndex:3];
-    
-    [[[self.contentSplitView subviews] objectAtIndex:0] setBackgroundColor:[NSColor orangeColor]];
-    [[[self.contentSplitView subviews] objectAtIndex:1] setBackgroundColor:[NSColor dustColor]];
-    [[[self.contentSplitView subviews] objectAtIndex:2] setBackgroundColor:[NSColor tealColor]];
-    [[[self.contentSplitView subviews] objectAtIndex:3] setBackgroundColor:[NSColor lavenderColor]];
-    
-    [_splitViewManager adjustSubviews];
+    if ([_splitViewManager.splitView subviews].count == 0)
+    {
+        CGFloat minimumLengths[] = {200.0, 142.0, 200.0, 142.0};
+        CGFloat lengths[] = {200.0, SplitSubviewNormaLengthTypeWide, 200.0, SplitSubviewNormaLengthTypeWide};
+        NSArray<NSColor *> *backgroundColors = @[[NSColor orangeColor], [NSColor dustColor], [NSColor tealColor], [NSColor lavenderColor]];
+        NSInteger size = sizeof(minimumLengths) / sizeof(minimumLengths[0]);
+        
+        for (NSInteger idx = 0; idx < size - 1; ++idx)
+        {
+            NSRect frame = NSZeroRect;
+            NSView *view = [[NSView alloc] initWithFrame:frame];
+            
+            [_splitViewManager setPriority:idx forViewAtIndex:idx];
+            [_splitViewManager setMinimumLength:minimumLengths[idx] forViewAtIndex:idx];
+            [_splitViewManager setLength:lengths[idx] forViewAtIndex:idx];
+            [_splitViewManager addArrangedSubview:view];
+            [[[_splitViewManager.splitView subviews] objectAtIndex:idx] setBackgroundColor:backgroundColors[idx]];
+        }
+        
+        [_splitViewManager adjustSubviews];
+    }
 }
 
 #pragma mark - Initialize
@@ -588,6 +591,27 @@
     [_presenter showTrashView];
 }
 
+#pragma mark - AbstractWindowProtocols
+
+- (NSSize)windowWillResize:(NSWindow *)sender toSize:(NSSize)frameSize
+{
+    if (_splitViewManager.isVertical)
+    {
+        CGFloat subviewsLength = _splitViewManager.subviewsLength;
+        
+        if (frameSize.width < (subviewsLength + 10.0))
+        {
+            frameSize.width = subviewsLength + 10.0;
+        }
+        
+        if (frameSize.height < 340.0)
+        {
+            frameSize.height = 340.0;
+        }
+    }
+    
+    return frameSize;
+}
 
 #pragma mark - HomeViewProtocols implementation
 

@@ -92,6 +92,8 @@
             [_splitView setDividerStyle:NSSplitViewDividerStyleThin];
             [_splitView setDelegate:self];
             _protocols = source;
+            
+            [self setInterSpacing:_interSpacing];
         }
         else
         {
@@ -201,6 +203,65 @@
     }
 }
 
+- (BOOL)isVertical
+{
+    return (self.splitType == SplitViewArrangeTypeLeftToRight);
+}
+
+- (CGFloat)subviewsMinimumLength
+{
+    CGFloat interspacing = self.interSpacing;
+    __block CGFloat length = SHRT_MIN;
+    
+    @synchronized (_minLengthsByViewIndex)
+    {
+        NSInteger size = _minLengthsByViewIndex.count;
+        
+        if (size > 0)
+        {
+            length = 0.0;
+            
+            [_minLengthsByViewIndex enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                if ([obj isKindOfClass:[NSNumber class]])
+                {
+                    length += [obj doubleValue];
+                }
+            }];
+            
+            length += interspacing * (size - 1);
+        }
+    }
+    
+    return length;
+}
+
+- (CGFloat)subviewsLength
+{
+    CGFloat interspacing = self.interSpacing;
+    __block CGFloat length = SHRT_MIN;
+    
+    @synchronized (_lengthsByViewIndex)
+    {
+        NSInteger size = _lengthsByViewIndex.count;
+        
+        if (size > 0)
+        {
+            length = 0.0;
+            
+            [_lengthsByViewIndex enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                if ([obj isKindOfClass:[NSNumber class]])
+                {
+                    length += (([obj doubleValue] != SplitSubviewNormaLengthTypeWide) ? [obj doubleValue] : [[_minLengthsByViewIndex objectForKey:key] doubleValue]);
+                }
+            }];
+            
+            length += interspacing * (size - 1);
+        }
+    }
+    
+    return length;
+}
+
 #pragma mark - Local methods
 
 - (void)resetMinLengthsByViewIndex
@@ -232,11 +293,14 @@
     if (_lengthsByViewIndex.count > 0)
     {
         NSSplitView *splitView = self.splitView;
+        CGFloat interspacing = self.interSpacing;
         NSArray *subviews = [splitView subviews];
         NSInteger subviewsCount = [subviews count];
         BOOL isVertical = [splitView isVertical];
         NSRect splitViewBounds = [splitView bounds];
-        NSInteger totalTypeWides = [[_lengthsByViewIndex allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF = %ld", SplitSubviewNormaWidthTypeWide]].count;
+        NSArray *narrows = [[_lengthsByViewIndex allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self != %ld", SplitSubviewNormaLengthTypeWide]];
+        CGFloat totalWideLengths = NSWidth(splitViewBounds) - [[narrows valueForKeyPath:@"@sum.self"] doubleValue] - (subviewsCount - 1) * interspacing;
+        NSInteger totalTypeWides = [[_lengthsByViewIndex allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self = %ld", SplitSubviewNormaLengthTypeWide]].count;
         CGFloat delta = ([splitView isVertical] ? (NSWidth(splitViewBounds) - oldSize.width) : (NSHeight(splitViewBounds) - oldSize.height)) / ((totalTypeWides > 0) ? totalTypeWides : 1);
         
         for (NSNumber *priorityIndex in [[_viewIndicesByPriority allKeys] sortedArrayUsingSelector:@selector(compare:)])
@@ -258,35 +322,23 @@
             
             if (isVertical)
             {
-                frameSize.width = ((lengthValue != SplitSubviewNormaWidthTypeWide) ? lengthValue : ((frameSize.width + delta >= minLengthValue) ? (frameSize.width + delta) : minLengthValue));
-                frameSize.height = NSHeight(splitViewBounds);
+                if ((delta == 0) && (lengthValue == SplitSubviewNormaLengthTypeWide))
+                {
+                    delta = (totalWideLengths / ((totalTypeWides > 0) ? totalTypeWides : 1)) - frameSize.width;
+                }
                 
-                // if ((delta > 0) || (frameSize.width + delta >= minLengthValue))
-                // {
-                //     frameSize.width += delta;
-                //     delta = 0;
-                // }
-                // else if (delta < 0)
-                // {
-                //     delta += frameSize.width - minLengthValue;
-                //     frameSize.width = minLengthValue;
-                // }
+                frameSize.width = ((lengthValue != SplitSubviewNormaLengthTypeWide) ? lengthValue : ((frameSize.width + delta >= minLengthValue) ? (frameSize.width + delta) : minLengthValue));
+                frameSize.height = NSHeight(splitViewBounds);
             }
             else
             {
-                frameSize.width = NSWidth(splitViewBounds);
-                frameSize.height = ((lengthValue != SplitSubviewNormaWidthTypeWide) ? lengthValue : ((frameSize.height + delta >= minLengthValue) ? (frameSize.height + delta) : minLengthValue));
+                if ((delta == 0) && (lengthValue == SplitSubviewNormaLengthTypeWide))
+                {
+                    delta = (totalWideLengths / ((totalTypeWides > 0) ? totalTypeWides : 1)) - frameSize.height;
+                }
                 
-                // if ((delta > 0) || (frameSize.height + delta >= minLengthValue))
-                // {
-                //     frameSize.height += delta;
-                //     delta = 0;
-                // }
-                // else if (delta < 0)
-                // {
-                //     delta += frameSize.height - minLengthValue;
-                //     frameSize.height = minLengthValue;
-                // }
+                frameSize.width = NSWidth(splitViewBounds);
+                frameSize.height = ((lengthValue != SplitSubviewNormaLengthTypeWide) ? lengthValue : ((frameSize.height + delta >= minLengthValue) ? (frameSize.height + delta) : minLengthValue));
             }
             
             [view setFrameSize:frameSize];
@@ -326,35 +378,13 @@
             
             if (isVertical)
             {
-                frameSize.width = ((lengthValue != SplitSubviewNormaWidthTypeWide) ? lengthValue : ((frameSize.width + delta >= minLengthValue) ? (frameSize.width + delta) : minLengthValue));
+                frameSize.width = ((lengthValue != SplitSubviewNormaLengthTypeWide) ? lengthValue : ((frameSize.width + delta >= minLengthValue) ? (frameSize.width + delta) : minLengthValue));
                 frameSize.height = NSHeight(splitViewBounds);
-                
-                // if ((delta > 0) || (frameSize.width + delta >= minLengthValue))
-                // {
-                //     frameSize.width += delta;
-                //     delta = 0;
-                // }
-                // else if (delta < 0)
-                // {
-                //     delta += frameSize.width - minLengthValue;
-                //     frameSize.width = minLengthValue;
-                // }
             }
             else
             {
                 frameSize.width = NSWidth(splitViewBounds);
-                frameSize.height = ((lengthValue != SplitSubviewNormaWidthTypeWide) ? lengthValue : ((frameSize.height + delta >= minLengthValue) ? (frameSize.height + delta) : minLengthValue));
-                
-                // if ((delta > 0) || (frameSize.height + delta >= minLengthValue))
-                // {
-                //     frameSize.height += delta;
-                //     delta = 0;
-                // }
-                // else if (delta < 0)
-                // {
-                //     delta += frameSize.height - minLengthValue;
-                //     frameSize.height = minLengthValue;
-                // }
+                frameSize.height = ((lengthValue != SplitSubviewNormaLengthTypeWide) ? lengthValue : ((frameSize.height + delta >= minLengthValue) ? (frameSize.height + delta) : minLengthValue));
             }
             
             [view setFrameSize:frameSize];
@@ -403,7 +433,7 @@
 
 - (void)setLength:(CGFloat)length forViewAtIndex:(NSInteger)viewIndex
 {
-    if ((length > 0.0) || (length == SplitSubviewNormaWidthTypeWide))
+    if ((length > 0.0) || (length == SplitSubviewNormaLengthTypeWide))
     {
         if (!_lengthsByViewIndex)
         {
@@ -618,6 +648,8 @@
     
     CGFloat minimumSize = [[_minLengthsByViewIndex objectForKey:[NSNumber numberWithInteger:dividerIndex]] doubleValue];
     
+    /// Should keep the minimum size (+ minimumSize) of the view on left side
+    /// when dragging the the divider at index to the left direction.
     return frameOrigin + minimumSize;
 }
 
@@ -658,6 +690,8 @@
     
     CGFloat minimumSize = [[_minLengthsByViewIndex objectForKey:[NSNumber numberWithInteger:(dividerIndex + 1)]] doubleValue];
     
+    /// Should keep the minimum size (- minimumSize) of the view on right side
+    /// when dragging the the divider at index to the right direction.
     return currentCoordinate + (shrinkingSize - minimumSize);
 }
 
@@ -671,7 +705,7 @@
  */
 - (CGFloat)splitView:(NSSplitView *)splitView constrainSplitPosition:(CGFloat)proposedPosition ofSubviewAt:(NSInteger)dividerIndex
 {
-    return 0.0;
+    return floor(proposedPosition);
 }
 
 /**
@@ -724,7 +758,12 @@
 - (NSRect)splitView:(NSSplitView *)splitView effectiveRect:(NSRect)proposedEffectiveRect forDrawnRect:(NSRect)drawnRect ofDividerAtIndex:(NSInteger)dividerIndex
 {
     // NSZeroRect: Remove the dragable area so the subview is not resizable
-    return (self.resizesByDivider ? proposedEffectiveRect : NSZeroRect);
+    if (self.resizesByDivider)
+    {
+        return proposedEffectiveRect;
+    }
+    
+    return NSZeroRect;
 }
 
 /**
@@ -735,6 +774,16 @@
  */
 - (NSRect)splitView:(NSSplitView *)splitView additionalEffectiveRectOfDividerAtIndex:(NSInteger)dividerIndex
 {
+    if (self.resizesByDivider)
+    {
+        CGFloat interspacing = self.interSpacing;
+        NSView *subview = [[splitView subviews] objectAtIndex:dividerIndex];
+        NSRect subviewFrame = subview.frame;
+        NSRect additionalEffectiveRect = NSMakeRect(NSMaxX(subview.frame), NSMinY(subview.frame), interspacing, NSHeight(subviewFrame));
+        
+        return additionalEffectiveRect;
+    }
+    
     return NSZeroRect;
 }
 
