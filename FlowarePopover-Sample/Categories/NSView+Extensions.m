@@ -7,6 +7,7 @@
 //
 
 #import <objc/runtime.h>
+#import <QuartzCore/QuartzCore.h>
 
 #import "NSView+Extensions.h"
 
@@ -393,6 +394,100 @@
     }
     
     return edgeInsets;
+}
+
+#pragma mark -
+
+- (void)displayScaleTransitionWithFactor:(NSPoint)scaleFactor beginAtPoint:(NSPoint)beginPoint endAtPoint:(NSPoint)endedPoint duration:(NSTimeInterval)duration removedOnCompletion:(BOOL)isRemovedOnCompletion completion:(void(^)(void))complete {
+    [[self layer] removeAllAnimations];
+    
+    CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:nil];
+    [opacityAnimation setFillMode:kCAFillModeForwards];
+    [opacityAnimation setRemovedOnCompletion:NO];
+    [opacityAnimation setFromValue:@(0.0)];
+    [opacityAnimation setToValue:@(1.0)];
+    
+    CATransform3D scaleTransform = CATransform3DMakeScale(scaleFactor.x, scaleFactor.y, 1.0);
+    
+    CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:nil];
+    [transformAnimation setFillMode:kCAFillModeForwards];
+    [transformAnimation setRemovedOnCompletion:NO];
+    [transformAnimation setFromValue:[NSValue valueWithCATransform3D:scaleTransform]];
+    [transformAnimation setToValue:[NSValue valueWithCATransform3D:CATransform3DIdentity]];
+    
+    CABasicAnimation *transitionAnimation = [CABasicAnimation animationWithKeyPath:nil];
+    [transitionAnimation setFillMode:kCAFillModeForwards];
+    [transitionAnimation setRemovedOnCompletion:NO];
+    [transitionAnimation setFromValue:[NSValue valueWithPoint:beginPoint]];
+    [transitionAnimation setToValue:[NSValue valueWithPoint:endedPoint]];
+    
+    [NSAnimationContext beginGrouping];
+    [[NSAnimationContext currentContext] setAllowsImplicitAnimation:YES];
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:duration];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+    [CATransaction setCompletionBlock:^{
+        if (isRemovedOnCompletion || (complete == nil)) {
+            [[self layer] removeAllAnimations];
+        }
+        
+        if (complete != nil) {
+            complete();
+        }
+    }];
+    
+    [[self layer] addAnimation:opacityAnimation forKey:@"opacity"];
+    [[self layer] addAnimation:transformAnimation forKey:@"transform"];
+    [[self layer] addAnimation:transitionAnimation forKey:@"position"];
+    
+    [CATransaction commit];
+    [NSAnimationContext endGrouping];
+}
+
+- (void)closeScaleTransitionWithFactor:(NSPoint)scaleFactor beginAtPoint:(NSPoint)beginPoint endAtPoint:(NSPoint)endedPoint duration:(NSTimeInterval)duration removedOnCompletion:(BOOL)isRemovedOnCompletion completion:(void(^)(void))complete {
+    [[self layer] removeAllAnimations];
+    
+    CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:nil];
+    [opacityAnimation setFillMode:kCAFillModeForwards];
+    [opacityAnimation setRemovedOnCompletion:NO];
+    [opacityAnimation setFromValue:@(1.0)];
+    [opacityAnimation setToValue:@(0.0)];
+    
+    CATransform3D scaleTransform = CATransform3DMakeScale(scaleFactor.x, scaleFactor.y, 1.0);
+    
+    CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:nil];
+    [transformAnimation setFillMode:kCAFillModeForwards];
+    [transformAnimation setRemovedOnCompletion:NO];
+    [transformAnimation setFromValue:[NSValue valueWithCATransform3D:CATransform3DIdentity]];
+    [transformAnimation setToValue:[NSValue valueWithCATransform3D:scaleTransform]];
+    
+    CABasicAnimation *transitionAnimation = [CABasicAnimation animationWithKeyPath:nil];
+    [transitionAnimation setFillMode:kCAFillModeForwards];
+    [transitionAnimation setRemovedOnCompletion:NO];
+    [transitionAnimation setFromValue:[NSValue valueWithPoint:beginPoint]];
+    [transitionAnimation setToValue:[NSValue valueWithPoint:endedPoint]];
+    
+    [NSAnimationContext beginGrouping];
+    [[NSAnimationContext currentContext] setAllowsImplicitAnimation:YES];
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:duration];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+    [CATransaction setCompletionBlock:^{
+        if (isRemovedOnCompletion || (complete == nil)) {
+            [[self layer] removeAllAnimations];
+        }
+        
+        if (complete != nil) {
+            complete();
+        }
+    }];
+    
+    [[self layer] addAnimation:opacityAnimation forKey:@"opacity"];
+    [[self layer] addAnimation:transformAnimation forKey:@"transform"];
+    [[self layer] addAnimation:transitionAnimation forKey:@"position"];
+    
+    [CATransaction commit];
+    [NSAnimationContext endGrouping];
 }
 
 #pragma mark - Class methods

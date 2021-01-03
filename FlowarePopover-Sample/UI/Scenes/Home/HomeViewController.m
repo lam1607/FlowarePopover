@@ -102,28 +102,6 @@
 - (void)viewDidAppear
 {
     [super viewDidAppear];
-    
-    if ([_splitViewManager.splitView subviews].count == 0)
-    {
-        CGFloat minimumLengths[] = {200.0, 142.0, 200.0, 142.0};
-        CGFloat lengths[] = {200.0, SplitSubviewNormaLengthTypeWide, 200.0, SplitSubviewNormaLengthTypeWide};
-        NSArray<NSColor *> *backgroundColors = @[[NSColor orangeColor], [NSColor dustColor], [NSColor tealColor], [NSColor lavenderColor]];
-        NSInteger size = sizeof(minimumLengths) / sizeof(minimumLengths[0]);
-        
-        for (NSInteger idx = 0; idx < size - 1; ++idx)
-        {
-            NSRect frame = NSZeroRect;
-            NSView *view = [[NSView alloc] initWithFrame:frame];
-            
-            [_splitViewManager setPriority:idx forViewAtIndex:idx];
-            [_splitViewManager setMinimumLength:minimumLengths[idx] forViewAtIndex:idx];
-            [_splitViewManager setLength:lengths[idx] forViewAtIndex:idx];
-            [_splitViewManager addArrangedSubview:view];
-            [[[_splitViewManager.splitView subviews] objectAtIndex:idx] setBackgroundColor:backgroundColors[idx]];
-        }
-        
-        [_splitViewManager adjustSubviews];
-    }
 }
 
 #pragma mark - Initialize
@@ -164,6 +142,7 @@
 
 - (void)changeWindowMode
 {
+    [self refreshWorkspaceViews];
     [[SettingsManager sharedInstance] changeApplicationMode];
 }
 
@@ -544,6 +523,255 @@
     }
 }
 
+- (WorkspaceViewType)viewTypeForView:(NSView *)view
+{
+    WorkspaceViewType viewType = WorkspaceViewTypeTechnologies;
+    NSResponder *responder = [view nextResponder];
+    
+    if (responder == _filmsViewController)
+    {
+        viewType = WorkspaceViewTypeFilms;
+    }
+    else if (responder == _newsViewController)
+    {
+        viewType = WorkspaceViewTypeNews;
+    }
+    else if (responder == _comicsViewController)
+    {
+        viewType = WorkspaceViewTypeComics;
+    }
+    else
+    {
+        viewType = WorkspaceViewTypeTechnologies;
+    }
+    
+    return viewType;
+}
+
+- (AbstractViewController *)workspaceControllerWithType:(WorkspaceViewType)viewType
+{
+    BOOL isDesktopMode = [[SettingsManager sharedInstance] isDesktopMode];
+    NSSplitView *splitView = self.contentSplitView;
+    NSRect splitViewbounds = [splitView bounds];
+    CGFloat minimumLengths[] = {200.0, 142.0, 200.0, 142.0};
+    CGFloat lengths[] = {200.0, SplitSubviewNormaLengthTypeWide, 200.0, SplitSubviewNormaLengthTypeWide};
+    CGFloat proportionalLengths[] = {0.25, 0.5, 0.25, 0.5};
+    AbstractViewController *controller = nil;
+    
+    if (viewType == WorkspaceViewTypeFilms)
+    {
+        controller = _filmsViewController;
+        
+        if (controller == nil)
+        {
+            controller = [[FilmsViewController alloc] initWithNibName:NSStringFromClass([FilmsViewController class]) bundle:nil];
+            [controller.view setFrame:splitViewbounds];
+        }
+        
+        if (![controller.view isDescendantOf:splitView])
+        {
+            _filmsViewController = (FilmsViewController *)controller;
+            
+            if (isDesktopMode)
+            {
+                [_splitViewManager addArrangedSubview:controller.view minimumLength:minimumLengths[viewType - 1] proportionalLength:proportionalLengths[viewType - 1]];
+            }
+            else
+            {
+                [_splitViewManager addArrangedSubview:controller.view minimumLength:minimumLengths[viewType - 1] length:lengths[viewType - 1]];
+            }
+        }
+    }
+    else if (viewType == WorkspaceViewTypeNews)
+    {
+        controller = _newsViewController;
+        
+        if (controller == nil)
+        {
+            controller = [[NewsViewController alloc] initWithNibName:NSStringFromClass([NewsViewController class]) bundle:nil];
+            [controller.view setFrame:splitViewbounds];
+        }
+        
+        if (![controller.view isDescendantOf:splitView])
+        {
+            _newsViewController = (NewsViewController *)controller;
+            
+            if (isDesktopMode)
+            {
+                [_splitViewManager addArrangedSubview:controller.view minimumLength:minimumLengths[viewType - 1] proportionalLength:proportionalLengths[viewType - 1]];
+            }
+            else
+            {
+                [_splitViewManager addArrangedSubview:controller.view minimumLength:minimumLengths[viewType - 1] length:lengths[viewType - 1]];
+            }
+        }
+    }
+    else if (viewType == WorkspaceViewTypeComics)
+    {
+        controller = _comicsViewController;
+        
+        if (controller == nil)
+        {
+            controller = [[ComicsViewController alloc] initWithNibName:NSStringFromClass([ComicsViewController class]) bundle:nil];
+            [controller.view setFrame:splitViewbounds];
+        }
+        
+        if (![controller.view isDescendantOf:splitView])
+        {
+            _comicsViewController = (ComicsViewController *)controller;
+            
+            if (isDesktopMode)
+            {
+                [_splitViewManager addArrangedSubview:controller.view minimumLength:minimumLengths[viewType - 1] proportionalLength:proportionalLengths[viewType - 1]];
+            }
+            else
+            {
+                [_splitViewManager addArrangedSubview:controller.view minimumLength:minimumLengths[viewType - 1] length:lengths[viewType - 1]];
+            }
+        }
+    }
+    else
+    {
+        controller = _technologiesViewController;
+        
+        if (controller == nil)
+        {
+            controller = [[TechnologiesViewController alloc] initWithNibName:NSStringFromClass([TechnologiesViewController class]) bundle:nil];
+            [controller.view setFrame:splitViewbounds];
+        }
+        
+        if (![controller.view isDescendantOf:splitView])
+        {
+            _technologiesViewController = (TechnologiesViewController *)controller;
+            
+            if (isDesktopMode)
+            {
+                [_splitViewManager addArrangedSubview:controller.view minimumLength:minimumLengths[viewType - 1] proportionalLength:proportionalLengths[viewType - 1]];
+            }
+            else
+            {
+                [_splitViewManager addArrangedSubview:controller.view minimumLength:minimumLengths[viewType - 1] length:lengths[viewType - 1]];
+            }
+        }
+    }
+    
+    return controller;
+}
+
+- (void)showViewInWorkspaceWithType:(WorkspaceViewType)viewType
+{
+    BOOL isDisplaying = (viewType == WorkspaceViewTypeFilms) ? (_filmsViewController == nil) : ((viewType == WorkspaceViewTypeNews) ? (_newsViewController == nil) : ((viewType == WorkspaceViewTypeComics) ? (_comicsViewController == nil) : (_technologiesViewController == nil)));
+    AbstractViewController *controller = [self workspaceControllerWithType:viewType];
+    NSButton *button = (viewType == WorkspaceViewTypeFilms) ? self.btnOpenFilms : ((viewType == WorkspaceViewTypeNews) ? self.btnOpenNews : self.btnGeneral);
+    
+    NSRect buttonFrame = [[button window] convertRectToScreen:[button convertRect:[button bounds] toView:[[button window] contentView]]];
+    NSRect detailViewFrame = [[controller.view window] convertRectToScreen:[controller.view convertRect:[controller.view bounds] toView:[[controller.view window] contentView]]];
+    NSRect fromFrame = isDisplaying ? buttonFrame : detailViewFrame;
+    NSRect toFrame = isDisplaying ? detailViewFrame : buttonFrame;
+    
+    NSView *parentView = [controller.view superview];
+    BOOL wantedSuperLayer = parentView.wantsLayer;
+    BOOL wantedLayer = controller.view.wantsLayer;
+    
+    [parentView setWantsLayer:YES];
+    [controller.view setWantsLayer:YES];
+    
+    BOOL masksToBounds = [[parentView layer] masksToBounds];
+    
+    [[parentView layer] setMasksToBounds:NO];
+    
+    NSRect windowStartFrame = [[controller.view window] convertRectFromScreen:fromFrame];
+    NSRect windowEndFrame = [[controller.view window] convertRectFromScreen:toFrame];
+    NSRect startFrame = [[[controller.view window] contentView] convertRect:windowStartFrame toView:parentView];
+    NSRect endFrame = [[[controller.view window] contentView] convertRect:windowEndFrame toView:parentView];
+    NSPoint startPosition = NSMakePoint(NSMinX(startFrame), NSMinY(startFrame));
+    NSPoint endPosition = NSMakePoint(NSMinX(endFrame), NSMinY(endFrame));
+    CGFloat scaleFactorX = isDisplaying ? (NSWidth(startFrame) / NSWidth(endFrame)) : (NSWidth(endFrame) / NSWidth(startFrame));
+    CGFloat scaleFactorY = isDisplaying ? (NSHeight(startFrame) / NSHeight(endFrame)) : (NSHeight(endFrame) / NSHeight(startFrame));
+    NSPoint scaleFactor = NSMakePoint(scaleFactorX, scaleFactorY);
+    NSTimeInterval duration = 0.35;
+    
+    __weak typeof(self) wself = self;
+    
+    void (^completionBlock)(void) = ^{
+        __strong typeof(self) this = wself;
+        
+        [parentView setWantsLayer:wantedSuperLayer];
+        [[parentView layer] setMasksToBounds:masksToBounds];
+        [[controller.view layer] removeAllAnimations];
+        [controller.view setWantsLayer:wantedLayer];
+        
+        if (!isDisplaying)
+        {
+            if (viewType == WorkspaceViewTypeFilms)
+            {
+                [controller.view removeFromSuperview];
+                this->_filmsViewController = nil;
+            }
+            else if (viewType == WorkspaceViewTypeNews)
+            {
+                [controller.view removeFromSuperview];
+                this->_newsViewController = nil;
+            }
+            else if (viewType == WorkspaceViewTypeComics)
+            {
+                [controller.view removeFromSuperview];
+                this->_comicsViewController = nil;
+            }
+            else
+            {
+                [controller.view removeFromSuperview];
+                this->_technologiesViewController = nil;
+            }
+        }
+        
+        [this->_splitViewManager adjustSubviews];
+    };
+    
+    [_splitViewManager adjustSubviews];
+    
+    if (isDisplaying)
+    {
+        [controller.view displayScaleTransitionWithFactor:scaleFactor beginAtPoint:startPosition endAtPoint:endPosition duration:duration removedOnCompletion:NO completion:completionBlock];
+    }
+    else
+    {
+        [controller.view closeScaleTransitionWithFactor:scaleFactor beginAtPoint:startPosition endAtPoint:endPosition duration:duration removedOnCompletion:NO completion:completionBlock];
+    }
+}
+
+- (void)refreshWorkspaceViews
+{
+#ifndef DEBUGGER_CONSTANT_USING_SPLIT_VIEW_IN_WORKSPACE
+#else
+    BOOL isDesktopMode = ![[SettingsManager sharedInstance] isDesktopMode];
+    NSSplitView *splitView = self.contentSplitView;
+    NSArray *subviews = [splitView subviews];
+    CGFloat minimumLengths[] = {200.0, 142.0, 200.0, 142.0};
+    CGFloat lengths[] = {200.0, SplitSubviewNormaLengthTypeWide, 200.0, SplitSubviewNormaLengthTypeWide};
+    CGFloat proportionalLengths[] = {0.25, 0.5, 0.25, 0.5};
+    
+    for (NSView *view in subviews)
+    {
+        WorkspaceViewType viewType = [self viewTypeForView:view];
+        
+        if (isDesktopMode)
+        {
+            [_splitViewManager setProportionalLength:proportionalLengths[viewType - 1] forView:view];
+        }
+        else
+        {
+            [_splitViewManager setLength:lengths[viewType - 1] forView:view];
+        }
+        
+        [_splitViewManager setMinimumLength:minimumLengths[viewType - 1] forView:view];
+    }
+    
+    [_splitViewManager setResizesProportionally:isDesktopMode];
+    [_splitViewManager adjustSubviews];
+#endif
+}
+
 #pragma mark - Actions
 
 - (IBAction)btnChangeModeClicked:(NSButton *)sender
@@ -657,6 +885,7 @@
 #ifndef DEBUGGER_CONSTANT_USING_SPLIT_VIEW_IN_WORKSPACE
     [self showFilmsPopupAtView:self.btnOpenFilms];
 #else
+    [self showViewInWorkspaceWithType:WorkspaceViewTypeFilms];
 #endif
 }
 
@@ -665,6 +894,7 @@
 #ifndef DEBUGGER_CONSTANT_USING_SPLIT_VIEW_IN_WORKSPACE
     [self showNewsPopupAtView:self.btnOpenNews];
 #else
+    [self showViewInWorkspaceWithType:WorkspaceViewTypeNews];
 #endif
 }
 
@@ -673,6 +903,7 @@
 #ifndef DEBUGGER_CONSTANT_USING_SPLIT_VIEW_IN_WORKSPACE
     [self showGeneralPopupAtView:self.btnGeneral option:PopoverGeneralTypeTechnologies];
 #else
+    [self showViewInWorkspaceWithType:WorkspaceViewTypeComics];
 #endif
 }
 

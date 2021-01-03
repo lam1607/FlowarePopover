@@ -29,6 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateConstraintsWithInsets:(NSEdgeInsets)contentInsets;
 - (NSEdgeInsets)contentInsetsWithFrame:(NSRect)frame;
 
+- (void)displayScaleTransitionWithFactor:(NSPoint)scaleFactor beginAtPoint:(NSPoint)beginPoint endAtPoint:(NSPoint)endedPoint duration:(NSTimeInterval)duration removedOnCompletion:(BOOL)isRemovedOnCompletion completion:(void(^)(void))complete;
+- (void)closeScaleTransitionWithFactor:(NSPoint)scaleFactor beginAtPoint:(NSPoint)beginPoint endAtPoint:(NSPoint)endedPoint duration:(NSTimeInterval)duration removedOnCompletion:(BOOL)isRemovedOnCompletion completion:(void(^)(void))complete;
+
 /// Class methods
 ///
 + (BOOL)views:(NSArray *)views contain:(NSView *)view;

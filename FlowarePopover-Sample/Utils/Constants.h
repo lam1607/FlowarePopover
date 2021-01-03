@@ -54,6 +54,16 @@
 #define CORNER_RADIUSES                                         @[@(5.0), @(10.0)]
 
 ///
+/// Workspace values
+///
+/// This macro is used for determining whether the views
+/// when selected on menu buttons, should be opens as
+/// FLOPopover popup
+/// or
+/// contentSplitView in workspace.
+#define DEBUGGER_CONSTANT_USING_SPLIT_VIEW_IN_WORKSPACE
+
+///
 /// Entitlements Identifiers
 ///
 static NSString *const EntitlementsApplicationExtension = @".app";

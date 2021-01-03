@@ -8,11 +8,30 @@
 
 #import "SplitViewManager.h"
 
+#pragma mark -
+
+@protocol SplitViewProtocols <NSObject>
+
+@optional
+- (void)splitView:(NSSplitView *_Nonnull)splitView willRemoveSubview:(NSView *_Nonnull)subview;
+
+@end
+
 @interface CustomNSSplitView ()
 
 @end
 
 @implementation CustomNSSplitView
+
+- (void)willRemoveSubview:(NSView *)subview
+{
+    id<SplitViewProtocols> protocols = (id<SplitViewProtocols>)self.delegate;
+    
+    if (protocols && [protocols respondsToSelector:@selector(splitView:willRemoveSubview:)])
+    {
+        [protocols splitView:self willRemoveSubview:subview];
+    }
+}
 
 /**
  * Return the color of the dividers that the split view is drawing between subviews.
@@ -54,7 +73,7 @@
 
 #pragma mark -
 
-@interface SplitViewManager () <NSSplitViewDelegate>
+@interface SplitViewManager () <NSSplitViewDelegate, SplitViewProtocols>
 {
     __weak NSSplitView *_splitView;
     __weak id<SplitViewManagerProtocols> _protocols;
@@ -63,8 +82,8 @@
     BOOL _resizesByDivider;
     CGFloat _interSpacing;
     
-    NSMutableDictionary *_minLengthsByViewIndex, *_lengthsByViewIndex, *_proportionalLengthsByViewIndex;
-    NSMutableDictionary *_viewIndicesByPriority;
+    NSMutableDictionary *_minLengthsByView, *_lengthsByView, *_proportionalLengthsByView;
+    NSMutableArray<NSView *> *_subviews, *_willRemoveSubviews;
 }
 
 @end
@@ -73,12 +92,12 @@
 
 #pragma mark - Initialize
 
-- (instancetype)initWithSplitView:(NSSplitView * _Nonnull)splitView source:(id<SplitViewManagerProtocols>_Nonnull)source
+- (instancetype _Nullable)initWithSplitView:(NSSplitView * _Nonnull)splitView source:(id<SplitViewManagerProtocols>_Nonnull)source
 {
     return [self initWithSplitView:splitView splitType:SplitViewArrangeTypeLeftToRight source:source];
 }
 
-- (instancetype)initWithSplitView:(NSSplitView * _Nonnull)splitView splitType:(SplitViewArrangeType)splitType source:(id<SplitViewManagerProtocols>_Nonnull)source
+- (instancetype _Nullable)initWithSplitView:(NSSplitView * _Nonnull)splitView splitType:(SplitViewArrangeType)splitType source:(id<SplitViewManagerProtocols>_Nonnull)source
 {
     if (self = [super init])
     {
@@ -91,7 +110,10 @@
             [_splitView setVertical:(splitType == SplitViewArrangeTypeLeftToRight)];
             [_splitView setDividerStyle:NSSplitViewDividerStyleThin];
             [_splitView setDelegate:self];
+            [_splitView setArrangesAllSubviews:YES];
             _protocols = source;
+            _subviews = [[NSMutableArray alloc] init];
+            _willRemoveSubviews = [[NSMutableArray alloc] init];
             
             [self setInterSpacing:_interSpacing];
         }
@@ -110,10 +132,11 @@
     _splitView = nil;
     _protocols = nil;
     
-    [self resetMinLengthsByViewIndex];
-    [self resetLengthsByViewIndex];
-    [self resetProportionalLengthsByViewIndex];
-    [self resetViewIndicesByPriority];
+    [self resetMinLengthsByView];
+    [self resetLengthsByView];
+    [self resetProportionalLengthsByView];
+    [self resetSubviews];
+    [self resetWillRemoveSubviews];
 }
 
 #pragma mark - Getter/Setter
@@ -159,11 +182,6 @@
     }
 }
 
-- (BOOL)resizesByDivider
-{
-    return _resizesByDivider;
-}
-
 - (BOOL)resizesProportionally
 {
     return _resizesProportionally;
@@ -179,6 +197,11 @@
     {
         [self adjustSubviews];
     }
+}
+
+- (BOOL)resizesByDivider
+{
+    return _resizesByDivider;
 }
 
 - (void)setResizesByDivider:(BOOL)resizesByDivider
@@ -213,15 +236,15 @@
     CGFloat interspacing = self.interSpacing;
     __block CGFloat length = SHRT_MIN;
     
-    @synchronized (_minLengthsByViewIndex)
+    @synchronized (_minLengthsByView)
     {
-        NSInteger size = _minLengthsByViewIndex.count;
+        NSInteger size = _minLengthsByView.count;
         
         if (size > 0)
         {
             length = 0.0;
             
-            [_minLengthsByViewIndex enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [_minLengthsByView enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 if ([obj isKindOfClass:[NSNumber class]])
                 {
                     length += [obj doubleValue];
@@ -240,18 +263,18 @@
     CGFloat interspacing = self.interSpacing;
     __block CGFloat length = SHRT_MIN;
     
-    @synchronized (_lengthsByViewIndex)
+    @synchronized (_lengthsByView)
     {
-        NSInteger size = _lengthsByViewIndex.count;
+        NSInteger size = _lengthsByView.count;
         
         if (size > 0)
         {
             length = 0.0;
             
-            [_lengthsByViewIndex enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [_lengthsByView enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 if ([obj isKindOfClass:[NSNumber class]])
                 {
-                    length += (([obj doubleValue] != SplitSubviewNormaLengthTypeWide) ? [obj doubleValue] : [[_minLengthsByViewIndex objectForKey:key] doubleValue]);
+                    length += (([obj doubleValue] != SplitSubviewNormaLengthTypeWide) ? [obj doubleValue] : [[_minLengthsByView objectForKey:key] doubleValue]);
                 }
             }];
             
@@ -264,60 +287,90 @@
 
 #pragma mark - Local methods
 
-- (void)resetMinLengthsByViewIndex
+- (void)resetMinLengthsByView
 {
-    [_minLengthsByViewIndex removeAllObjects];
-    _minLengthsByViewIndex = nil;
+    [_minLengthsByView removeAllObjects];
+    _minLengthsByView = nil;
 }
 
-- (void)resetLengthsByViewIndex
+- (void)resetLengthsByView
 {
-    [_lengthsByViewIndex removeAllObjects];
-    _lengthsByViewIndex = nil;
+    [_lengthsByView removeAllObjects];
+    _lengthsByView = nil;
 }
 
-- (void)resetProportionalLengthsByViewIndex
+- (void)resetProportionalLengthsByView
 {
-    [_proportionalLengthsByViewIndex removeAllObjects];
-    _proportionalLengthsByViewIndex = nil;
+    [_proportionalLengthsByView removeAllObjects];
+    _proportionalLengthsByView = nil;
 }
 
-- (void)resetViewIndicesByPriority
+- (void)resetSubviews
 {
-    [_viewIndicesByPriority removeAllObjects];
-    _viewIndicesByPriority = nil;
+    [_subviews removeAllObjects];
+    _subviews = nil;
+}
+
+- (void)resetWillRemoveSubviews
+{
+    [_willRemoveSubviews removeAllObjects];
+    _willRemoveSubviews = nil;
+}
+
+- (void)removeMinimumLengthForView:(NSView *)view
+{
+    @synchronized (_minLengthsByView)
+    {
+        NSValue *key = [NSValue valueWithNonretainedObject:view];
+        
+        [_minLengthsByView removeObjectForKey:key];
+    }
+}
+
+- (void)removeLengthForView:(NSView *)view
+{
+    @synchronized (_lengthsByView)
+    {
+        NSValue *key = [NSValue valueWithNonretainedObject:view];
+        
+        [_lengthsByView removeObjectForKey:key];
+    }
+}
+
+- (void)removeProportionalLengthForView:(NSView *)view
+{
+    @synchronized (_proportionalLengthsByView)
+    {
+        NSValue *key = [NSValue valueWithNonretainedObject:view];
+        
+        [_proportionalLengthsByView removeObjectForKey:key];
+    }
 }
 
 - (void)handleResizeSubviewsLengthsWithOldSize:(NSSize)oldSize
 {
-    if (_lengthsByViewIndex.count > 0)
+    if (_lengthsByView.count > 0)
     {
         NSSplitView *splitView = self.splitView;
         CGFloat interspacing = self.interSpacing;
+        NSMutableDictionary *minLengthsByView = _minLengthsByView;
+        NSMutableDictionary *lengthsByView = _lengthsByView;
         NSArray *subviews = [splitView subviews];
         NSInteger subviewsCount = [subviews count];
         BOOL isVertical = [splitView isVertical];
         NSRect splitViewBounds = [splitView bounds];
-        NSArray *narrows = [[_lengthsByViewIndex allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self != %ld", SplitSubviewNormaLengthTypeWide]];
+        NSArray *narrows = [[lengthsByView allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self != %ld", SplitSubviewNormaLengthTypeWide]];
         CGFloat totalWideLengths = NSWidth(splitViewBounds) - [[narrows valueForKeyPath:@"@sum.self"] doubleValue] - (subviewsCount - 1) * interspacing;
-        NSInteger totalTypeWides = [[_lengthsByViewIndex allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self = %ld", SplitSubviewNormaLengthTypeWide]].count;
+        NSInteger totalTypeWides = [[lengthsByView allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self = %ld", SplitSubviewNormaLengthTypeWide]].count;
         CGFloat delta = ([splitView isVertical] ? (NSWidth(splitViewBounds) - oldSize.width) : (NSHeight(splitViewBounds) - oldSize.height)) / ((totalTypeWides > 0) ? totalTypeWides : 1);
         
-        for (NSNumber *priorityIndex in [[_viewIndicesByPriority allKeys] sortedArrayUsingSelector:@selector(compare:)])
+        for (NSView *view in subviews)
         {
-            NSNumber *viewIndex = [_viewIndicesByPriority objectForKey:priorityIndex];
-            NSInteger viewIndexValue = [viewIndex integerValue];
-            
-            if (viewIndexValue >= subviewsCount)
-            {
-                continue;
-            }
-            
-            NSView *view = [subviews objectAtIndex:viewIndexValue];
+            NSValue *key = [NSValue valueWithNonretainedObject:view];
             NSSize frameSize = [view frame].size;
-            NSNumber *minLength = [_minLengthsByViewIndex objectForKey:viewIndex];
+            NSNumber *minLength = [minLengthsByView objectForKey:key];
             CGFloat minLengthValue = [minLength doubleValue];
-            NSNumber *length = [_lengthsByViewIndex objectForKey:viewIndex];
+            NSNumber *length = [lengthsByView objectForKey:key];
             CGFloat lengthValue = [length doubleValue];
             
             if (isVertical)
@@ -350,31 +403,26 @@
 
 - (void)handleResizeSubviewsProportionalLengthsWithOldSize:(NSSize)oldSize
 {
-    if (_proportionalLengthsByViewIndex.count > 0)
+    if (_proportionalLengthsByView.count > 0)
     {
         NSSplitView *splitView = self.splitView;
+        CGFloat interspacing = self.interSpacing;
+        NSMutableDictionary *minLengthsByView = _minLengthsByView;
+        NSMutableDictionary *proportionalLengthsByView = _proportionalLengthsByView;
         NSArray *subviews = [splitView subviews];
         NSInteger subviewsCount = [subviews count];
         BOOL isVertical = [splitView isVertical];
         NSRect splitViewBounds = [splitView bounds];
         CGFloat delta = [splitView isVertical] ? (NSWidth(splitViewBounds) - oldSize.width) : (NSHeight(splitViewBounds) - oldSize.height);
         
-        for (NSNumber *priorityIndex in [[_viewIndicesByPriority allKeys] sortedArrayUsingSelector:@selector(compare:)])
+        for (NSView *view in subviews)
         {
-            NSNumber *viewIndex = [_viewIndicesByPriority objectForKey:priorityIndex];
-            NSInteger viewIndexValue = [viewIndex integerValue];
-            
-            if (viewIndexValue >= subviewsCount)
-            {
-                continue;
-            }
-            
-            NSView *view = [subviews objectAtIndex:viewIndexValue];
+            NSValue *key = [NSValue valueWithNonretainedObject:view];
             NSSize frameSize = [view frame].size;
-            NSNumber *minLength = [_minLengthsByViewIndex objectForKey:viewIndex];
+            NSNumber *minLength = [minLengthsByView objectForKey:key];
             CGFloat minLengthValue = [minLength doubleValue];
-            NSNumber *proportionalLength = [_lengthsByViewIndex objectForKey:viewIndex];
-            CGFloat lengthValue = [proportionalLength doubleValue] * (isVertical ? NSWidth(splitViewBounds) : NSHeight(splitViewBounds));
+            NSNumber *proportionalLength = [proportionalLengthsByView objectForKey:key];
+            CGFloat lengthValue = [proportionalLength doubleValue] * ((isVertical ? NSWidth(splitViewBounds) : NSHeight(splitViewBounds)) - (subviewsCount - 1) * interspacing);
             
             if (isVertical)
             {
@@ -400,7 +448,6 @@
     CGFloat interspacing = self.interSpacing;
     NSArray *subviews = [splitView subviews];
     CGFloat offset = 0;
-    // CGFloat dividerThickness = [splitView dividerThickness];
     
     for (NSView *subview in subviews)
     {
@@ -414,67 +461,72 @@
 
 #pragma mark - SplitViewManager methods
 
-- (void)setMinimumLength:(CGFloat)minLength forViewAtIndex:(NSInteger)viewIndex
+- (void)setMinimumLength:(CGFloat)minLength forView:(NSView *_Nonnull)view
 {
-    if (minLength > 0.0)
+    @synchronized (_minLengthsByView)
     {
-        if (!_minLengthsByViewIndex)
+        if (minLength > 0.0)
         {
-            _minLengthsByViewIndex = [[NSMutableDictionary alloc] initWithCapacity:0];
+            NSValue *key = [NSValue valueWithNonretainedObject:view];
+            
+            if (!_minLengthsByView)
+            {
+                _minLengthsByView = [[NSMutableDictionary alloc] initWithCapacity:0];
+            }
+            
+            [_minLengthsByView setObject:[NSNumber numberWithDouble:minLength] forKey:key];
         }
-        
-        [_minLengthsByViewIndex setObject:[NSNumber numberWithDouble:minLength] forKey:[NSNumber numberWithInteger:viewIndex]];
-    }
-    else
-    {
-        NSAssert1((minLength > 0.0), @"minLength value must be larger than 0.0. minLength parameter value %f is not valid.", minLength);
+        else
+        {
+            NSAssert1((minLength > 0.0), @"minLength value must be larger than 0.0. minLength parameter value %f is not valid.", minLength);
+        }
     }
 }
 
-- (void)setLength:(CGFloat)length forViewAtIndex:(NSInteger)viewIndex
+- (void)setLength:(CGFloat)length forView:(NSView *_Nonnull)view
 {
-    if ((length > 0.0) || (length == SplitSubviewNormaLengthTypeWide))
+    @synchronized (_lengthsByView)
     {
-        if (!_lengthsByViewIndex)
+        if ((length > 0.0) || (length == SplitSubviewNormaLengthTypeWide))
         {
-            _lengthsByViewIndex = [[NSMutableDictionary alloc] initWithCapacity:0];
+            NSValue *key = [NSValue valueWithNonretainedObject:view];
+            
+            if (!_lengthsByView)
+            {
+                _lengthsByView = [[NSMutableDictionary alloc] initWithCapacity:0];
+            }
+            
+            [_lengthsByView setObject:[NSNumber numberWithDouble:length] forKey:key];
         }
-        
-        [_lengthsByViewIndex setObject:[NSNumber numberWithDouble:length] forKey:[NSNumber numberWithInteger:viewIndex]];
-    }
-    else
-    {
-        NSAssert1((length > 0.0), @"minLength value must be larger than 0.0. minLength parameter value %f is not valid.", length);
+        else
+        {
+            NSAssert1((length > 0.0), @"minLength value must be larger than 0.0. minLength parameter value %f is not valid.", length);
+        }
     }
 }
 
-- (void)setProportionalLength:(CGFloat)proportionalLength forViewAtIndex:(NSInteger)viewIndex
+- (void)setProportionalLength:(CGFloat)proportionalLength forView:(NSView *_Nonnull)view
 {
-    if ((proportionalLength > 0.0) && (proportionalLength <= 1.0))
+    @synchronized (_proportionalLengthsByView)
     {
-        if (!_proportionalLengthsByViewIndex)
+        if ((proportionalLength > 0.0) && (proportionalLength <= 1.0))
         {
-            _proportionalLengthsByViewIndex = [[NSMutableDictionary alloc] initWithCapacity:0];
+            NSValue *key = [NSValue valueWithNonretainedObject:view];
+            
+            if (!_proportionalLengthsByView)
+            {
+                _proportionalLengthsByView = [[NSMutableDictionary alloc] initWithCapacity:0];
+            }
+            
+            [_proportionalLengthsByView setObject:[NSNumber numberWithDouble:proportionalLength] forKey:key];
         }
-        
-        [_proportionalLengthsByViewIndex setObject:[NSNumber numberWithDouble:proportionalLength] forKey:[NSNumber numberWithInteger:viewIndex]];
+        else
+        {
+            NSAssert1(((proportionalLength > 0.0) && (proportionalLength <= 1.0)),
+                      @"Proportional length value must stay in range (0, 1]. proportionalLength parameter value %f is not valid.",
+                      proportionalLength);
+        }
     }
-    else
-    {
-        NSAssert1(((proportionalLength > 0.0) && (proportionalLength <= 1.0)),
-                  @"Proportional length value must stay in range (0, 1]. proportionalLength parameter value %f is not valid.",
-                  proportionalLength);
-    }
-}
-
-- (void)setPriority:(NSInteger)priorityIndex forViewAtIndex:(NSInteger)viewIndex
-{
-    if (!_viewIndicesByPriority)
-    {
-        _viewIndicesByPriority = [[NSMutableDictionary alloc] initWithCapacity:0];
-    }
-    
-    [_viewIndicesByPriority setObject:[NSNumber numberWithInteger:viewIndex] forKey:[NSNumber numberWithInteger:priorityIndex]];
 }
 
 /**
@@ -499,11 +551,11 @@
     {
         BOOL resizesProportionally = self.resizesProportionally;
         
-        if (!resizesProportionally && (_lengthsByViewIndex.count > 0))
+        if (!resizesProportionally && (_lengthsByView.count > 0))
         {
             [self handleResizeSubviewsLengthsWithOldSize:oldSize];
         }
-        else if (resizesProportionally && (_proportionalLengthsByViewIndex.count > 0))
+        else if (resizesProportionally && (_proportionalLengthsByView.count > 0))
         {
             [self handleResizeSubviewsProportionalLengthsWithOldSize:oldSize];
         }
@@ -513,15 +565,41 @@
 /**
  * Adds a view as arranged split pane. If the view is not a subview of the receiver, it will be added as one.
  */
-- (BOOL)addArrangedSubview:(NSView *_Nonnull)view
+- (BOOL)addArrangedSubview:(NSView *_Nonnull)view minimumLength:(CGFloat)minLength length:(CGFloat)length
 {
     BOOL successful = NO;
     
     if ([view isKindOfClass:[NSView class]] && [self.splitView isKindOfClass:[NSSplitView class]])
     {
-        if (![view isDescendantOf:self.splitView])
+        if (![_subviews containsObject:view])
         {
             successful = YES;
+            [_subviews addObject:view];
+            [self setMinimumLength:minLength forView:view];
+            [self setLength:length forView:view];
+            [self.splitView addArrangedSubview:view];
+            [self adjustSubviews];
+        }
+    }
+    
+    return successful;
+}
+
+/**
+ * Adds a view as arranged split pane. If the view is not a subview of the receiver, it will be added as one.
+ */
+- (BOOL)addArrangedSubview:(NSView *_Nonnull)view minimumLength:(CGFloat)minLength proportionalLength:(CGFloat)proportionalLength
+{
+    BOOL successful = NO;
+    
+    if ([view isKindOfClass:[NSView class]] && [self.splitView isKindOfClass:[NSSplitView class]])
+    {
+        if (![_subviews containsObject:view])
+        {
+            successful = YES;
+            [_subviews addObject:view];
+            [self setMinimumLength:minLength forView:view];
+            [self setProportionalLength:proportionalLength forView:view];
             [self.splitView addArrangedSubview:view];
             [self adjustSubviews];
         }
@@ -535,17 +613,52 @@
  * If the view is already an arranged split view, it will move the view the specified index (but not move the subview index).
  * If the view is not a subview of the receiver, it will be added as one (not necessarily at the same index).
  */
-- (BOOL)insertArrangedSubview:(NSView *_Nonnull)view atIndex:(NSInteger)index
+- (BOOL)insertArrangedSubview:(NSView *_Nonnull)view minimumLength:(CGFloat)minLength length:(CGFloat)length atIndex:(NSInteger)index
 {
     BOOL successful = NO;
     
     if ([view isKindOfClass:[NSView class]] && [self.splitView isKindOfClass:[NSSplitView class]])
     {
-        if (![view isDescendantOf:self.splitView])
+        if (![_subviews containsObject:view])
         {
             @try
             {
                 successful = YES;
+                [_subviews insertObject:view atIndex:index];
+                [self setMinimumLength:minLength forView:view];
+                [self setLength:length forView:view];
+                [self.splitView insertArrangedSubview:view atIndex:index];
+                [self adjustSubviews];
+            }
+            @catch (NSException *exception)
+            {
+                NSLog(@"%s-[%d] exception - reason = %@, [NSThread callStackSymbols]:\n%@\n", __PRETTY_FUNCTION__, __LINE__, exception.reason, [NSThread callStackSymbols]);
+            }
+        }
+    }
+    
+    return successful;
+}
+
+/**
+ * Adds a view as an arranged split pane list at the specific index.
+ * If the view is already an arranged split view, it will move the view the specified index (but not move the subview index).
+ * If the view is not a subview of the receiver, it will be added as one (not necessarily at the same index).
+ */
+- (BOOL)insertArrangedSubview:(NSView *_Nonnull)view minimumLength:(CGFloat)minLength proportionalLength:(CGFloat)proportionalLength atIndex:(NSInteger)index
+{
+    BOOL successful = NO;
+    
+    if ([view isKindOfClass:[NSView class]] && [self.splitView isKindOfClass:[NSSplitView class]])
+    {
+        if (![_subviews containsObject:view])
+        {
+            @try
+            {
+                successful = YES;
+                [_subviews insertObject:view atIndex:index];
+                [self setMinimumLength:minLength forView:view];
+                [self setProportionalLength:proportionalLength forView:view];
                 [self.splitView insertArrangedSubview:view atIndex:index];
                 [self adjustSubviews];
             }
@@ -569,10 +682,19 @@
     
     if ([view isKindOfClass:[NSView class]] && [self.splitView isKindOfClass:[NSSplitView class]])
     {
-        if ([view isDescendantOf:self.splitView])
+        if ([_subviews containsObject:view])
         {
             successful = YES;
-            [self.splitView removeArrangedSubview:view];
+            [_subviews removeObject:view];
+            [self removeMinimumLengthForView:view];
+            [self removeLengthForView:view];
+            [self removeProportionalLengthForView:view];
+            
+            if (![_willRemoveSubviews containsObject:view])
+            {
+                [self.splitView removeArrangedSubview:view];
+            }
+            
             [self adjustSubviews];
         }
     }
@@ -646,7 +768,7 @@
         frameOrigin = subviewFrame.origin.y;
     }
     
-    CGFloat minimumSize = [[_minLengthsByViewIndex objectForKey:[NSNumber numberWithInteger:dividerIndex]] doubleValue];
+    CGFloat minimumSize = [[_minLengthsByView objectForKey:[NSNumber numberWithInteger:dividerIndex]] doubleValue];
     
     /// Should keep the minimum size (+ minimumSize) of the view on left side
     /// when dragging the the divider at index to the left direction.
@@ -688,7 +810,7 @@
         shrinkingSize = shrinkingSubviewFrame.size.height;
     }
     
-    CGFloat minimumSize = [[_minLengthsByViewIndex objectForKey:[NSNumber numberWithInteger:(dividerIndex + 1)]] doubleValue];
+    CGFloat minimumSize = [[_minLengthsByView objectForKey:[NSNumber numberWithInteger:(dividerIndex + 1)]] doubleValue];
     
     /// Should keep the minimum size (- minimumSize) of the view on right side
     /// when dragging the the divider at index to the right direction.
@@ -803,6 +925,21 @@
  */
 - (void)splitViewDidResizeSubviews:(NSNotification *)notification
 {
+}
+
+#pragma mark - SplitViewProtocols
+
+- (void)splitView:(NSSplitView *_Nonnull)splitView willRemoveSubview:(NSView *_Nonnull)subview
+{
+    @synchronized (_willRemoveSubviews)
+    {
+        if (![_willRemoveSubviews containsObject:subview])
+        {
+            [_willRemoveSubviews addObject:subview];
+            [self removeArrangedSubview:subview];
+            [_willRemoveSubviews removeObject:subview];
+        }
+    }
 }
 
 @end

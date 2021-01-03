@@ -113,6 +113,7 @@
 
 - (void)updateContentSize
 {
+#ifndef DEBUGGER_CONSTANT_USING_SPLIT_VIEW_IN_WORKSPACE
     CGFloat height = [self getContentSizeHeight];
     NSSize newSize = NSMakeSize(COMICS_VIEW_DETAIL_WIDTH, height);
     
@@ -120,6 +121,8 @@
     {
         [self.view setFrameSize:newSize];
     }
+#else
+#endif
 }
 
 #pragma mark - OutlineViewManagerProtocols UI

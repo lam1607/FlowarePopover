@@ -31,17 +31,17 @@ typedef NS_ENUM(NSInteger, SplitSubviewNormaLengthType)
 
 #pragma mark -
 
-@protocol SplitViewManagerProtocols <NSObject>
+@interface CustomNSSplitView : NSSplitView
 
-@optional
+@property (nonatomic, assign) CGFloat interSpacing;
 
 @end
 
 #pragma mark -
 
-@interface CustomNSSplitView : NSSplitView
+@protocol SplitViewManagerProtocols <NSObject>
 
-@property (nonatomic, assign) CGFloat interSpacing;
+@optional
 
 @end
 
@@ -68,8 +68,8 @@ typedef NS_ENUM(NSInteger, SplitSubviewNormaLengthType)
 
 /// Initializes
 ///
-- (instancetype)initWithSplitView:(NSSplitView * _Nonnull)splitView source:(id<SplitViewManagerProtocols>_Nonnull)source;
-- (instancetype)initWithSplitView:(NSSplitView * _Nonnull)splitView splitType:(SplitViewArrangeType)splitType source:(id<SplitViewManagerProtocols>_Nonnull)source;
+- (instancetype _Nullable)initWithSplitView:(NSSplitView * _Nonnull)splitView source:(id<SplitViewManagerProtocols>_Nonnull)source;
+- (instancetype _Nullable)initWithSplitView:(NSSplitView * _Nonnull)splitView splitType:(SplitViewArrangeType)splitType source:(id<SplitViewManagerProtocols>_Nonnull)source;
 
 /// SplitViewManager methods
 ///
@@ -79,10 +79,9 @@ typedef NS_ENUM(NSInteger, SplitSubviewNormaLengthType)
 - (void)setResizesByDivider:(BOOL)resizesByDivider;
 - (void)setInterSpacing:(CGFloat)interSpacing;
 
-- (void)setMinimumLength:(CGFloat)minLength forViewAtIndex:(NSInteger)viewIndex;
-- (void)setLength:(CGFloat)length forViewAtIndex:(NSInteger)viewIndex;
-- (void)setProportionalLength:(CGFloat)proportionalLength forViewAtIndex:(NSInteger)viewIndex;
-- (void)setPriority:(NSInteger)priorityIndex forViewAtIndex:(NSInteger)viewIndex;
+- (void)setMinimumLength:(CGFloat)minLength forView:(NSView *_Nonnull)view;
+- (void)setLength:(CGFloat)length forView:(NSView *_Nonnull)view;
+- (void)setProportionalLength:(CGFloat)proportionalLength forView:(NSView *_Nonnull)view;
 
 /**
  * Set the frames of the split view's subviews so that they, plus the dividers, fill the split view.
@@ -97,14 +96,26 @@ typedef NS_ENUM(NSInteger, SplitSubviewNormaLengthType)
 /**
  * Adds a view as arranged split pane. If the view is not a subview of the receiver, it will be added as one.
  */
-- (BOOL)addArrangedSubview:(NSView *_Nonnull)view;
+- (BOOL)addArrangedSubview:(NSView *_Nonnull)view minimumLength:(CGFloat)minLength length:(CGFloat)length;
+
+/**
+ * Adds a view as arranged split pane. If the view is not a subview of the receiver, it will be added as one.
+ */
+- (BOOL)addArrangedSubview:(NSView *_Nonnull)view minimumLength:(CGFloat)minLength proportionalLength:(CGFloat)proportionalLength;
 
 /**
  * Adds a view as an arranged split pane list at the specific index.
  * If the view is already an arranged split view, it will move the view the specified index (but not move the subview index).
  * If the view is not a subview of the receiver, it will be added as one (not necessarily at the same index).
  */
-- (BOOL)insertArrangedSubview:(NSView *_Nonnull)view atIndex:(NSInteger)index;
+- (BOOL)insertArrangedSubview:(NSView *_Nonnull)view minimumLength:(CGFloat)minLength length:(CGFloat)length atIndex:(NSInteger)index;
+
+/**
+ * Adds a view as an arranged split pane list at the specific index.
+ * If the view is already an arranged split view, it will move the view the specified index (but not move the subview index).
+ * If the view is not a subview of the receiver, it will be added as one (not necessarily at the same index).
+ */
+- (BOOL)insertArrangedSubview:(NSView *_Nonnull)view minimumLength:(CGFloat)minLength proportionalLength:(CGFloat)proportionalLength atIndex:(NSInteger)index;
 
 /**
  * Removes a view as arranged split pane. If \c -arrangesAllSubviews is set to NO, this does not remove the view as a subview.
