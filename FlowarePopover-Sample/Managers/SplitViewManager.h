@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, SplitSubviewNormaLengthType)
 
 #pragma mark -
 
-@interface CustomNSSplitView : NSSplitView
+@interface SVMSplitView : NSSplitView
 
 @property (nonatomic, assign) CGFloat interSpacing;
 

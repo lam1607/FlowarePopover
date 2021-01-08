@@ -72,7 +72,7 @@
 
 @property (weak) IBOutlet NSView *viewSecondBar;
 
-@property (weak) IBOutlet CustomNSSplitView *contentSplitView;
+@property (weak) IBOutlet SVMSplitView *contentSplitView;
 
 @property (weak) IBOutlet NSLayoutConstraint *constraintHeightSecondBar;
 
@@ -112,7 +112,11 @@
     [_presenter attachView:self];
     
     _generalType = PopoverGeneralTypeComics;
+    
+#ifndef DEBUGGER_CONSTANT_USING_SPLIT_VIEW_IN_WORKSPACE
+#else
     _splitViewManager = [[SplitViewManager alloc] initWithSplitView:self.contentSplitView source:self];
+#endif
 }
 
 #pragma mark - Setup UI

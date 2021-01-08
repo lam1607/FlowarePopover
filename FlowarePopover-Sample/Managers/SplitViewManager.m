@@ -10,22 +10,22 @@
 
 #pragma mark -
 
-@protocol SplitViewProtocols <NSObject>
+@protocol SVMSplitViewProtocols <NSObject>
 
 @optional
 - (void)splitView:(NSSplitView *_Nonnull)splitView willRemoveSubview:(NSView *_Nonnull)subview;
 
 @end
 
-@interface CustomNSSplitView ()
+@interface SVMSplitView ()
 
 @end
 
-@implementation CustomNSSplitView
+@implementation SVMSplitView
 
 - (void)willRemoveSubview:(NSView *)subview
 {
-    id<SplitViewProtocols> protocols = (id<SplitViewProtocols>)self.delegate;
+    id<SVMSplitViewProtocols> protocols = (id<SVMSplitViewProtocols>)self.delegate;
     
     if (protocols && [protocols respondsToSelector:@selector(splitView:willRemoveSubview:)])
     {
@@ -73,7 +73,7 @@
 
 #pragma mark -
 
-@interface SplitViewManager () <NSSplitViewDelegate, SplitViewProtocols>
+@interface SplitViewManager () <NSSplitViewDelegate, SVMSplitViewProtocols>
 {
     __weak NSSplitView *_splitView;
     __weak id<SplitViewManagerProtocols> _protocols;
@@ -215,9 +215,9 @@
     
     _interSpacing = interSpacing;
     
-    if ([self.splitView isKindOfClass:[CustomNSSplitView class]])
+    if ([self.splitView isKindOfClass:[SVMSplitView class]])
     {
-        [(CustomNSSplitView *)self.splitView setInterSpacing:interSpacing];
+        [(SVMSplitView *)self.splitView setInterSpacing:interSpacing];
     }
     
     if (isUpdated)
@@ -927,7 +927,7 @@
 {
 }
 
-#pragma mark - SplitViewProtocols
+#pragma mark - SVMSplitViewProtocols
 
 - (void)splitView:(NSSplitView *_Nonnull)splitView willRemoveSubview:(NSView *_Nonnull)subview
 {
